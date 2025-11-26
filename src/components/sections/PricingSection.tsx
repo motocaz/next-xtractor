@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useUser, useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { useUser, useAuth, useClerk } from "@clerk/nextjs";
 import { Check, AlertCircle, Loader2 } from "lucide-react";
 import { fetchProducts, type Product } from "@/lib/pricing";
 import { createCheckoutSession } from "@/lib/checkout";
@@ -12,7 +11,7 @@ import { MarkerSlanted } from "@/components/ui/marker-slanted";
 export function PricingSection() {
   const { user, isLoaded } = useUser();
   const { getToken } = useAuth();
-  const router = useRouter();
+  const clerk = useClerk();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,7 +58,7 @@ export function PricingSection() {
       setProcessingProductId(productId);
 
       if (!user) {
-        router.push("/sign-in");
+        clerk.openSignIn();
         return;
       }
 
