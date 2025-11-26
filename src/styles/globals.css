@@ -1,8 +1,32 @@
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/600.css";
+@import "@fontsource/jetbrains-mono/700.css";
 @import "tailwindcss";
 
 :root {
   --background: #09090b;
   --foreground: #d1d5db;
+  
+  --card: #18181b;
+  --card-foreground: #d1d5db;
+  --popover: #18181b;
+  --popover-foreground: #d1d5db;
+  --primary: #50bfae;
+  --primary-foreground: #ffffff;
+  --secondary: #1f1f23;
+  --secondary-foreground: #d1d5db;
+  --muted: #1f1f23;
+  --muted-foreground: #9ca3af;
+  --accent: #1f1f23;
+  --accent-foreground: #d1d5db;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #374151;
+  --input: #374151;
+  --ring: #d946ef;
+  --radius: 0.5rem;
+  
   --color-fuchsia-400: oklch(0.736 0.104 181.65);
   --color-fuchsia-500: oklch(0.636 0.091 180.94);
   --color-fuchsia-600: oklch(0.533 0.075 182.04);
@@ -14,8 +38,26 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: 'JetBrains Mono', ui-monospace, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
 html {
@@ -25,35 +67,52 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
 }
 
-/* Navigation link styles */
-.nav-link {
-  @apply text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors;
+input[type='file']::file-selector-button {
+  background-color: var(--color-fuchsia-600);
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-right: 1rem;
+  transition-property: background-color;
+  transition-duration: 200ms;
 }
 
-.mobile-nav-link {
-  @apply text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors;
+input[type='file']::file-selector-button:hover {
+  background-color: var(--color-fuchsia-700);
 }
 
-/* Marker slanted style */
-.marker-slanted {
-  position: relative;
-  display: inline-block;
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-.marker-slanted::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 6px;
-  background: linear-gradient(
-    120deg,
-    var(--color-fuchsia-500),
-    var(--color-fuchsia-700)
-  );
-  z-index: -1;
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-fuchsia-600);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-fuchsia-700);
+}
+
+.sortable-ghost {
+  opacity: 0.4;
+  border: 2px dashed var(--color-fuchsia-600);
+}
+
+.page-thumbnail,
+#file-list > li {
+  cursor: grab;
+}
+
+.sortable-chosen {
+  cursor: grabbing;
 }
