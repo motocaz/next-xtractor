@@ -8,7 +8,6 @@ import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/nextjs';
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
@@ -47,7 +46,6 @@ export default function Navbar() {
     <nav className="bg-[#09090b] border-b border-gray-700 sticky top-0 z-30">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
           <div className="shrink-0 flex items-center cursor-pointer">
             <Link href="/" className="flex items-center">
               <Image
@@ -63,18 +61,29 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="nav-link">
+            <Link
+              href="/"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+            >
               Home
             </Link>
-            <Link href="/about" className="nav-link">
+            <Link
+              href="/about"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+            >
               About
             </Link>
-            <Link href="/contact" className="nav-link">
+            <Link
+              href="/contact"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+            >
               Contact
             </Link>
-            <Link href="/#tools-header" className="nav-link">
+            <Link
+              href="/#tools-header"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+            >
               All Tools
             </Link>
             <div className="flex items-center">
@@ -91,7 +100,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Hamburger Button */}
           <div className="md:hidden flex items-center">
             <button
               id="mobile-menu-button"
@@ -102,7 +110,6 @@ export default function Navbar() {
               aria-expanded={isMobileMenuOpen}
             >
               <span className="sr-only">Open main menu</span>
-              {/* Hamburger Icon */}
               <svg
                 className={`block h-6 w-6 ${isMobileMenuOpen ? 'hidden' : ''}`}
                 xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +125,6 @@ export default function Navbar() {
                   d="M4 6h16M4 12h16M4 18h16"
                 />
               </svg>
-              {/* Close Icon */}
               <svg
                 className={`block h-6 w-6 ${isMobileMenuOpen ? '' : 'hidden'}`}
                 xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +145,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       <div
         id="mobile-menu"
         className={`md:hidden bg-gray-800 border-t border-gray-700 ${
@@ -149,28 +154,28 @@ export default function Navbar() {
         <div className="px-2 pt-2 pb-3 space-y-1 text-center">
           <Link
             href="/"
-            className="mobile-nav-link"
+            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors"
             onClick={closeMobileMenu}
           >
             Home
           </Link>
           <Link
             href="/about"
-            className="mobile-nav-link"
+            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors"
             onClick={closeMobileMenu}
           >
             About
           </Link>
           <Link
             href="/contact"
-            className="mobile-nav-link"
+            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors"
             onClick={closeMobileMenu}
           >
             Contact
           </Link>
           <Link
             href="/#tools-header"
-            className="mobile-nav-link"
+            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors"
             onClick={closeMobileMenu}
           >
             All Tools

@@ -1,11 +1,12 @@
 import { FileText } from "lucide-react";
+import { MarkerSlanted } from "@/components/ui/marker-slanted";
 
 export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8 md:py-16">
       <div className="text-center">
         <h1 className="text-4xl md:text-7xl font-bold text-white mb-4">
-          The <span className="marker-slanted"> PDF Toolkit </span> built for
+          The <MarkerSlanted> PDF Toolkit </MarkerSlanted> built for
           privacy<span className="text-4xl md:text-6xl text-fuchsia-400">
             .
           </span>
