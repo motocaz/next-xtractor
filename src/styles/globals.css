@@ -3,10 +3,33 @@
 :root {
   --background: #09090b;
   --foreground: #d1d5db;
-  --color-fuchsia-400: oklch(0.736 0.104 181.65);
-  --color-fuchsia-500: oklch(0.636 0.091 180.94);
-  --color-fuchsia-600: oklch(0.533 0.075 182.04);
-  --color-fuchsia-700: oklch(0.431 0.061 182.71);
+  
+  --card: #18181b;
+  --card-foreground: #d1d5db;
+  --popover: #18181b;
+  --popover-foreground: #d1d5db;
+  --primary: #50bfae;
+  --primary-foreground: #ffffff;
+  --secondary: #1f1f23;
+  --secondary-foreground: #d1d5db;
+  --muted: #1f1f23;
+  --muted-foreground: #9ca3af;
+  --accent: #1f1f23;
+  --accent-foreground: #d1d5db;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #374151;
+  --input: #374151;
+  --ring: #d946ef;
+  --radius: 0.5rem;
+  
+  --color-fuchsia-300: oklch(79.6% .113 181.45);
+  --color-fuchsia-400: oklch(73.6% .104 181.65);
+  --color-fuchsia-500: oklch(63.6% .091 180.94);
+  --color-fuchsia-600: oklch(53.3% .075 182.04);
+  --color-fuchsia-700: oklch(43.1% .061 182.71);
+  --color-fuchsia-800: oklch(34% .048 180.56);
+  --color-fuchsia-900: oklch(23.8% .034 182.09);
   --color-tool-card: #18181b;
   --color-input-bg: #1f1f23;
 }
@@ -14,8 +37,28 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: 'JetBrains Mono', ui-monospace, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-tool-card: var(--color-tool-card);
+  --color-input-bg: var(--color-input-bg);
 }
 
 html {
@@ -56,4 +99,25 @@ body {
     var(--color-fuchsia-700)
   );
   z-index: -1;
+}
+
+.marker-slanted {
+  position: relative;
+  display: inline-block;
+}
+
+.marker-slanted::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  background: linear-gradient(
+    120deg,
+    var(--color-fuchsia-500),
+    var(--color-fuchsia-700)
+  );
+  z-index: -1;
+  transform: skewX(-20deg);
 }
