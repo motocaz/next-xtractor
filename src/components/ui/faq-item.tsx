@@ -18,6 +18,8 @@ function FAQItem({
   className,
 }: FAQItemProps) {
   const [isOpen, setIsOpen] = React.useState(defaultOpen);
+  const contentId = React.useId();
+  const labelId = `${contentId}-label`;
 
   return (
     <div
@@ -29,13 +31,15 @@ function FAQItem({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls={contentId}
         className={cn(
           "w-full flex justify-between items-center text-left p-6",
           "transition-colors",
           isOpen && "text-fuchsia-400"
         )}
       >
-        <span className="text-lg font-semibold text-white">{question}</span>
+        <span id={labelId} className="text-lg font-semibold text-white">{question}</span>
         <ChevronDown
           className={cn(
             "w-6 h-6 text-gray-400 transition-transform shrink-0",
@@ -44,6 +48,10 @@ function FAQItem({
         />
       </button>
       <div
+      id={contentId}
+      aria-labelledby={labelId}
+      role="region"
+      aria-hidden={!isOpen}
         className={cn(
           "overflow-hidden transition-all duration-300 ease-in-out",
           isOpen ? "max-h-96" : "max-h-0"

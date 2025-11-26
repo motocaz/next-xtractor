@@ -19,8 +19,12 @@ function Spinner({ className, size = "md", ...props }: SpinnerProps) {
         sizeClasses[size],
         className
       )}
+      role="status"
+      aria-label="Loading..."
       {...props}
-    />
+    >
+      <span className="sr-only">Loading...</span>
+    </div>
   );
 }
 
