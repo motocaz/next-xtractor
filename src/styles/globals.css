@@ -27,12 +27,15 @@
   --ring: #d946ef;
   --radius: 0.5rem;
   
-  --color-fuchsia-400: oklch(0.736 0.104 181.65);
-  --color-fuchsia-500: oklch(0.636 0.091 180.94);
-  --color-fuchsia-600: oklch(0.533 0.075 182.04);
-  --color-fuchsia-700: oklch(0.431 0.061 182.71);
-  --color-tool-card: #18181b;
-  --color-input-bg: #1f1f23;
+  --fuchsia-300: oklch(79.6% .113 181.45);
+  --fuchsia-400: oklch(73.6% .104 181.65);
+  --fuchsia-500: oklch(63.6% .091 180.94);
+  --fuchsia-600: oklch(53.3% .075 182.04);
+  --fuchsia-700: oklch(43.1% .061 182.71);
+  --fuchsia-800: oklch(34% .048 180.56);
+  --fuchsia-900: oklch(23.8% .034 182.09);
+  --tool-card: #18181b;
+  --input-bg: #1f1f23;
 }
 
 @theme inline {
@@ -58,6 +61,16 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-tool-card: var(--tool-card);
+  --color-input-bg: var(--input-bg);
+
+  --color-fuchsia-300: var(--fuchsia-300);
+  --color-fuchsia-400: var(--fuchsia-400);
+  --color-fuchsia-500: var(--fuchsia-500);
+  --color-fuchsia-600: var(--fuchsia-600);
+  --color-fuchsia-700: var(--fuchsia-700);
+  --color-fuchsia-800: var(--fuchsia-800);
+  --color-fuchsia-900: var(--fuchsia-900);
 }
 
 html {
@@ -115,4 +128,25 @@ input[type='file']::file-selector-button:hover {
 
 .sortable-chosen {
   cursor: grabbing;
+}
+
+.marker-slanted {
+  position: relative;
+  display: inline-block;
+}
+
+.marker-slanted::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  background: linear-gradient(
+    120deg,
+    var(--color-fuchsia-500),
+    var(--color-fuchsia-700)
+  );
+  z-index: -1;
+  transform: skewX(-20deg);
 }
