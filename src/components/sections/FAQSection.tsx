@@ -11,7 +11,7 @@ const faqs = [
   {
     question: "Are my files secure? Where are they processed?",
     answer:
-      "Your files are as secure as possible because they **never leave your computer**. All processing happens directly in your web browser (client-side). We never upload your files to a server, so you maintain complete privacy and control over your documents.",
+      "Your files are as secure as possible because they never leave your computer. All processing happens directly in your web browser (client-side). We never upload your files to a server, so you maintain complete privacy and control over your documents.",
   },
   {
     question: "Does it work on Mac, Windows, and Mobile?",

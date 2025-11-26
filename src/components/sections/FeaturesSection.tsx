@@ -1,4 +1,4 @@
-import { Shield, BadgeDollarSign, Infinity, Layers, Zap } from "lucide-react";
+import { Shield, BadgeDollarSign, Infinity as InfinityIcon, Layers, Zap } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { MarkerSlanted } from "@/components/ui/marker-slanted";
 
@@ -15,22 +15,22 @@ const features: Feature[] = [
     description: "100% client-side, your files never leave your device.",
   },
   {
-    icon: <BadgeDollarSign className="w-10 h-10 text-fuchsia-400 flex-shrink-0" />,
+    icon: <BadgeDollarSign className="w-10 h-10 text-fuchsia-400 shrink-0" />,
     title: "Professional Tools",
     description: "All tools, no trials, no paywalls.",
   },
   {
-    icon: <Infinity className="w-10 h-10 text-fuchsia-400 flex-shrink-0" />,
+    icon: <InfinityIcon className="w-10 h-10 text-fuchsia-400 shrink-0" />,
     title: "No Limits",
     description: "Use as much as you want, no hidden caps.",
   },
   {
-    icon: <Layers className="w-10 h-10 text-fuchsia-400 flex-shrink-0" />,
+    icon: <Layers className="w-10 h-10 text-fuchsia-400 shrink-0" />,
     title: "Batch Processing",
     description: "Handle unlimited PDFs in one go.",
   },
   {
-    icon: <Zap className="w-10 h-10 text-fuchsia-400 flex-shrink-0" />,
+    icon: <Zap className="w-10 h-10 text-fuchsia-400 shrink-0" />,
     title: "Lightning Fast",
     description: "Process PDFs instantly, without waiting or delays.",
   },

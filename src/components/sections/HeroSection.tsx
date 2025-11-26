@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle, Infinity } from "lucide-react";
+import { CheckCircle, Infinity as InfinityIcon } from "lucide-react";
 import { MarkerSlanted } from "@/components/ui/marker-slanted";
 
 export function HeroSection() {
@@ -7,7 +7,7 @@ export function HeroSection() {
     <section className="text-center py-20">
       <h1 className="text-4xl md:text-7xl font-bold text-white mb-4">
         The <MarkerSlanted> PDF Toolkit </MarkerSlanted> built for privacy
-        <span className="text-4xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r to-fuchsia-400 to-fuchsia-500">
+        <span className="text-4xl md:text-6xl text-transparent bg-clip-text bg-linear-to-r to-fuchsia-400 to-fuchsia-500">
           .
         </span>
       </h1>
@@ -18,7 +18,7 @@ export function HeroSection() {
           Unlimited Use
         </span>
         <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-tool-card/50 border border-fuchsia-500/30 text-fuchsia-300 text-sm font-medium backdrop-blur-sm">
-          <Infinity className="w-4 h-4" />
+          <InfinityIcon className="w-4 h-4" />
           Works Offline
         </span>
       </div>
