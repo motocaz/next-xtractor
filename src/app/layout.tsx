@@ -3,7 +3,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "@/styles/globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { JetBrains_Mono } from "next/font/google"
+import { JetBrains_Mono } from "next/font/google";
+import { clerkAppearance } from "@/lib/clerk-appearance";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -21,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={clerkAppearance}>
       <html lang="en">
         <body className={`${jetbrainsMono.className} antialiased`}>
           <Navbar />
