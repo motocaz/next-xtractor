@@ -1,7 +1,6 @@
 import type { Appearance } from "@clerk/types";
 
 export const clerkAppearance = {
-  baseTheme: "dark",
   variables: {
     colorBackground: "#09090b",
     colorInputBackground: "#1f1f23",
@@ -65,5 +64,5 @@ export const clerkAppearance = {
       },
     },
   },
-} as unknown as Appearance;
+} satisfies Appearance;
 

@@ -59,6 +59,7 @@ export function PricingSection() {
 
       if (!user) {
         clerk.openSignIn();
+        setProcessingProductId(null);
         return;
       }
 
@@ -208,4 +209,3 @@ export function PricingSection() {
     </section>
   );
 }
-
