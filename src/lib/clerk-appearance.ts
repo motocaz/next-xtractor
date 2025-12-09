@@ -63,6 +63,39 @@ export const clerkAppearance = {
         color: "oklch(79.6% .113 181.45)",
       },
     },
+
+    pricingTable: {
+      backgroundColor: "#09090b",
+    },
+    pricingTableRow: {
+      borderColor: "#374151",
+    },
+    pricingTableHeader: {
+      color: "#d1d5db",
+    },
+    pricingTableCell: {
+      color: "#d1d5db",
+      borderColor: "#374151",
+    },
+    pricingTableButton: {
+      backgroundColor: "oklch(53.3% .075 182.04)",
+      "&:hover": {
+        backgroundColor: "oklch(43.1% .061 182.71)",
+      },
+    },
+    userProfile: {
+      backgroundColor: "#09090b",
+    },
+    userProfileCard: {
+      backgroundColor: "#1f1f23",
+      borderColor: "#374151",
+    },
+    userProfileButton: {
+      backgroundColor: "oklch(53.3% .075 182.04)",
+      "&:hover": {
+        backgroundColor: "oklch(43.1% .061 182.71)",
+      },
+    },
   },
 } satisfies Appearance;
 
