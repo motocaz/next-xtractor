@@ -27,10 +27,12 @@ export default function AboutPage() {
             Our Mission
           </h2>
           <p className="text-lg text-gray-400 leading-relaxed">
-            To provide the most comprehensive PDF toolbox that respects your
-            privacy and never asks for payment. We believe essential document
-            tools should be accessible to everyone, everywhere, without
-            barriers.
+            <p className="text-lg text-gray-400 leading-relaxed">
+            To provide a comprehensive PDF toolbox that respects your
+            privacy. We believe essential document tools should be free and
+            accessible to everyone, with premium features available for those
+            who need advanced capabilities.
+            </p>
           </p>
         </div>
       </section>
