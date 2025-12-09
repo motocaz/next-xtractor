@@ -90,9 +90,9 @@ export default function AboutPage() {
               <div>
                 <h3 className="text-xl font-bold text-white">Professional Quality</h3>
                 <p className="text-gray-400 mt-2">
-                  No trials, no subscriptions, no hidden fees, and no "premium"
-                  features held hostage. We believe powerful PDF tools should be a
-                  public utility, not a profit center.
+                  Core tools are free forever. Premium features available for
+                  subscribers who need advanced capabilities. We believe essential
+                  PDF tools should be accessible to everyone.
                 </p>
               </div>
             </div>
