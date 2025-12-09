@@ -124,6 +124,14 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ received: true });
       }
 
+      const existingSubscription = await getSubscriptionByClerkId(
+        subscriptionId
+      );
+      if (existingSubscription) {
+        console.log(`Subscription already exists: ${subscriptionId}`);
+        return NextResponse.json({ received: true });
+      }
+
       const user = await getUserByClerkId(userId);
       if (!user) {
         console.error(`User not found for subscription: ${userId}`);
