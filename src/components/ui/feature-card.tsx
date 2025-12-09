@@ -9,7 +9,7 @@ function FeatureCard({ className, ...props }: FeatureCardProps) {
   return (
     <Card
       className={cn(
-        "bg-gray-800 p-6 rounded-lg text-center",
+        "bg-card p-6 rounded-lg text-center",
         className
       )}
       {...props}

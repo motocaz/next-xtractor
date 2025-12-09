@@ -11,14 +11,14 @@ export default async function ProtectedPage() {
     return (
       <div className="min-h-screen container mx-auto p-4 md:p-8">
         <div className="max-w-2xl mx-auto py-16 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Premium Content
           </h1>
-          <p className="text-gray-400 mb-8">
+          <p className="text-muted-foreground mb-8">
             This content is only available to Premium subscribers.
           </p>
           <Link href="/pricing">
-            <Button className="bg-fuchsia-600 hover:bg-fuchsia-700 text-white">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
               View Plans
             </Button>
           </Link>
@@ -30,11 +30,11 @@ export default async function ProtectedPage() {
   return (
     <div className="min-h-screen container mx-auto p-4 md:p-8">
       <div className="max-w-4xl mx-auto py-16">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-8">
           Premium Content
         </h1>
-        <div className="bg-tool-card rounded-lg border border-gray-700 p-8">
-          <p className="text-gray-300">
+        <div className="bg-card rounded-lg border border-border p-8">
+          <p className="text-foreground">
             This is exclusive content for Premium subscribers. You have access
             to all premium features!
           </p>

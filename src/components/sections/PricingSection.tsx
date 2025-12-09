@@ -9,10 +9,10 @@ import { Button } from "@/components/ui/button";
 export function PricingSection() {
   return (
     <section className="py-16">
-      <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
+      <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-12">
         Choose Your <MarkerSlanted>Plan</MarkerSlanted>
       </h2>
-      <p className="text-gray-400 text-center mb-8">
+      <p className="text-muted-foreground text-center mb-8">
         Select the perfect plan for your PDF processing needs
       </p>
       <div className="flex justify-center">
@@ -22,7 +22,7 @@ export function PricingSection() {
         <Link href="/pricing">
           <Button
             variant="outline"
-            className="border-gray-700 text-gray-300 hover:bg-gray-800"
+            className="border-border text-foreground hover:bg-accent"
           >
             View All Plans
           </Button>

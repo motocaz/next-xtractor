@@ -14,7 +14,7 @@ function MarkerSlanted({
       className={cn(
         "relative inline-block",
         "before:content-[''] before:absolute before:left-0 before:right-0 before:bottom-0 before:h-1.5",
-        "before:bg-gradient-to-br before:from-fuchsia-500 before:to-fuchsia-700",
+        "before:bg-gradient-to-br before:from-primary before:to-primary/90",
         "before:-z-10 before:skew-x-[-20deg]",
         className
       )}

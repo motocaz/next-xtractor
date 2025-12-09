@@ -11,7 +11,7 @@ function Pill({ className, variant = "secondary", ...props }: PillProps) {
   return (
     <Badge
       className={cn(
-        "bg-gray-700 text-gray-300",
+        "bg-muted text-muted-foreground",
         "px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm",
         "font-medium",
         className

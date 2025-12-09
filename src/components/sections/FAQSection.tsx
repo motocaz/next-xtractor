@@ -46,7 +46,7 @@ const faqs = [
         We use{" "}
         <Link
           href="https://simpleanalytics.com"
-          className="text-fuchsia-400 hover:underline"
+          className="text-primary hover:underline"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -63,7 +63,7 @@ const faqs = [
 export function FAQSection() {
   return (
     <section className="space-y-4">
-      <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12 mt-8">
+      <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-12 mt-8">
         Frequently Asked <MarkerSlanted>Questions</MarkerSlanted>
       </h2>
       {faqs.map((faq, index) => (
