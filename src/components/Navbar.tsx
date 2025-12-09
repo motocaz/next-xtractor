@@ -69,6 +69,12 @@ export default function Navbar() {
               Home
             </Link>
             <Link
+              href="/pricing"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+            >
+              Pricing
+            </Link>
+            <Link
               href="/about"
               className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
@@ -86,7 +92,7 @@ export default function Navbar() {
             >
               All Tools
             </Link>
-            <div className="flex items-center">
+            <div className="flex items-center gap-4">
               <SignedIn>
                 <UserButton />
               </SignedIn>
@@ -160,6 +166,13 @@ export default function Navbar() {
             Home
           </Link>
           <Link
+            href="/pricing"
+            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors"
+            onClick={closeMobileMenu}
+          >
+            Pricing
+          </Link>
+          <Link
             href="/about"
             className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors"
             onClick={closeMobileMenu}
@@ -180,7 +193,7 @@ export default function Navbar() {
           >
             All Tools
           </Link>
-          <div className="mt-4 flex justify-center">
+          <div className="mt-4 flex flex-col items-center gap-4">
             <SignedIn>
               <UserButton />
             </SignedIn>
