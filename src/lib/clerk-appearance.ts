@@ -96,6 +96,23 @@ export const clerkAppearance = {
         backgroundColor: "oklch(43.1% .061 182.71)",
       },
     },
+    userButtonPopoverCard: {
+      backgroundColor: "#1f1f23",
+      borderColor: "#374151",
+    },
+    userButtonPopoverActionButton: {
+      color: "#d1d5db",
+      "&:hover": {
+        backgroundColor: "#374151",
+        color: "#ffffff",
+      },
+    },
+    userButtonPopoverActionButtonText: {
+      color: "#d1d5db",
+    },
+    userButtonPopoverActionButtonIcon: {
+      color: "#d1d5db",
+    },
   },
 } satisfies Appearance;
 
