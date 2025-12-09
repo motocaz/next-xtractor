@@ -108,8 +108,9 @@ export default function AboutPage() {
                   Secure Authentication
                 </h3>
                 <p className="text-gray-400 mt-2">
-                  Sign in to access all tools securely. Your account ensures your
-                  work is saved and your privacy is protected.
+                  Sign in to access all tools securely. Your account saves
+                  preferences and subscription status while all file processing
+                  remains local and private.
                 </p>
               </div>
             </div>
