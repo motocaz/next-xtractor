@@ -12,10 +12,10 @@ function CTAButton({ className, ...props }: CTAButtonProps) {
   return (
     <Button
       className={cn(
-        "bg-fuchsia-600 text-white font-semibold",
+        "bg-primary text-primary-foreground font-semibold",
         "px-6 py-3 rounded-lg",
         "transition-colors duration-200",
-        "hover:bg-fuchsia-700",
+        "hover:bg-primary/90",
         className
       )}
       {...props}

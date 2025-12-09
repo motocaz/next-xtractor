@@ -2,116 +2,140 @@ import type { Appearance } from "@clerk/types";
 
 export const clerkAppearance = {
   variables: {
-    colorBackground: "#09090b",
-    colorInputBackground: "#1f1f23",
-    colorInputText: "#d1d5db",
-    colorPrimary: "oklch(53.3% .075 182.04)",
-    colorText: "#d1d5db",
-    colorTextSecondary: "#9ca3af",
-    colorDanger: "#ef4444",
-    colorSuccess: "#50bfae",
-    colorWarning: "#f59e0b",
-    colorNeutral: "#374151",
+    colorBackground: "var(--background)",
+    colorInputBackground: "var(--input)",
+    colorInputText: "var(--foreground)",
+    colorPrimary: "var(--primary)",
+    colorText: "var(--foreground)",
+    colorTextSecondary: "var(--muted-foreground)",
+    colorDanger: "var(--destructive)",
+    colorSuccess: "var(--chart-1)",
+    colorWarning: "oklch(0.8721 0.0864 68.5474)",
+    colorNeutral: "var(--muted)",
     fontFamily: "'JetBrains Mono', ui-monospace, monospace",
   },
   elements: {
     formButtonPrimary: {
-      backgroundColor: "oklch(53.3% .075 182.04)",
+      backgroundColor: "var(--primary)",
       "&:hover": {
-        backgroundColor: "oklch(43.1% .061 182.71)",
+        backgroundColor: "var(--primary)",
+        opacity: 0.9,
       },
     },
     formButtonSecondary: {
-      backgroundColor: "#1f1f23",
-      borderColor: "#374151",
+      backgroundColor: "var(--input)",
+      borderColor: "var(--border)",
       "&:hover": {
-        backgroundColor: "#374151",
+        backgroundColor: "var(--muted)",
       },
     },
     
     formFieldInput: {
-      backgroundColor: "#1f1f23",
-      borderColor: "#374151",
+      backgroundColor: "var(--input)",
+      borderColor: "var(--border)",
       "&:focus": {
-        borderColor: "oklch(53.3% .075 182.04)",
+        borderColor: "var(--primary)",
       },
     },
     
     formFieldAction: {
-      color: "oklch(73.6% .104 181.65)",
+      color: "var(--primary)",
       "&:hover": {
-        color: "oklch(79.6% .113 181.45)",
+        color: "var(--primary)",
+        opacity: 0.8,
       },
     },
     
     socialButtonsBlockButton: {
-      backgroundColor: "#1f1f23",
-      borderColor: "#374151",
+      backgroundColor: "var(--input)",
+      borderColor: "var(--border)",
       "&:hover": {
-        backgroundColor: "#374151",
+        backgroundColor: "var(--muted)",
       },
     },
     footerActionLink: {
-      color: "oklch(73.6% .104 181.65)",
+      color: "var(--primary)",
       "&:hover": {
-        color: "oklch(79.6% .113 181.45)",
+        color: "var(--primary)",
+        opacity: 0.8,
       },
     },
     identityPreviewEditButton: {
-      color: "oklch(73.6% .104 181.65)",
+      color: "var(--primary)",
       "&:hover": {
-        color: "oklch(79.6% .113 181.45)",
+        color: "var(--primary)",
+        opacity: 0.8,
       },
     },
 
     pricingTable: {
-      backgroundColor: "#09090b",
+      backgroundColor: "var(--background)",
     },
     pricingTableRow: {
-      borderColor: "#374151",
+      borderColor: "var(--border)",
     },
     pricingTableHeader: {
-      color: "#d1d5db",
+      color: "var(--foreground)",
     },
     pricingTableCell: {
-      color: "#d1d5db",
-      borderColor: "#374151",
+      color: "var(--foreground)",
+      borderColor: "var(--border)",
+    },
+    pricingTableCard: {
+      borderColor: "var(--border)",
+      borderWidth: "1px",
+      borderStyle: "solid",
+      borderRadius: "0.75rem",
+    },
+    pricingTablePlan: {
+      borderColor: "var(--border)",
+      borderWidth: "1px",
+      borderStyle: "solid",
+      borderRadius: "0.75rem",
+    },
+    pricingTableCheckmark: {
+      color: "var(--primary)",
+    },
+    pricingTableIcon: {
+      color: "var(--primary)",
     },
     pricingTableButton: {
-      backgroundColor: "oklch(53.3% .075 182.04)",
+      backgroundColor: "var(--primary)",
       "&:hover": {
-        backgroundColor: "oklch(43.1% .061 182.71)",
+        backgroundColor: "var(--primary)",
+        opacity: 0.9,
       },
     },
     userProfile: {
-      backgroundColor: "#09090b",
+      backgroundColor: "var(--background)",
     },
     userProfileCard: {
-      backgroundColor: "#1f1f23",
-      borderColor: "#374151",
+      backgroundColor: "var(--card)",
+      borderColor: "var(--border)",
     },
     userProfileButton: {
-      backgroundColor: "oklch(53.3% .075 182.04)",
+      backgroundColor: "var(--primary)",
       "&:hover": {
-        backgroundColor: "oklch(43.1% .061 182.71)",
+        backgroundColor: "var(--primary)",
+        opacity: 0.9,
       },
     },
     userButtonPopoverCard: {
-      backgroundColor: "#1f1f23",
-      borderColor: "#374151",
+      backgroundColor: "var(--card)",
+      borderColor: "var(--border)",
     },
     userButtonPopoverActionButton: {
-      color: "#d1d5db",
+      color: "var(--foreground)",
       "&:hover": {
-        backgroundColor: "#374151",
-        color: "#ffffff",
+        backgroundColor: "var(--muted)",
+        color: "var(--foreground)",
       },
     },
     userButtonPopoverActionButtonText: {
-      color: "#d1d5db",
+      color: "var(--foreground)",
     },
     userButtonPopoverActionButtonIcon: {
-      color: "#d1d5db",
+      color: "var(--foreground)",
     },
   },
 } satisfies Appearance;

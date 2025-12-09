@@ -9,7 +9,7 @@ function TestimonialCard({ className, ...props }: TestimonialCardProps) {
   return (
     <Card
       className={cn(
-        "bg-[#18181b] p-6 rounded-xl border-gray-700 flex flex-col",
+        "bg-card p-6 rounded-xl border-border flex flex-col",
         className
       )}
       {...props}

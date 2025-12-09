@@ -9,9 +9,9 @@ function ToolCard({ className, ...props }: ToolCardProps) {
   return (
     <Card
       className={cn(
-        "bg-[#18181b] border-gray-700",
+        "bg-card border-border",
         "transition-all duration-200",
-        "hover:-translate-y-1 hover:shadow-lg hover:border-fuchsia-600",
+        "hover:-translate-y-1 hover:shadow-lg hover:border-primary",
         className
       )}
       {...props}

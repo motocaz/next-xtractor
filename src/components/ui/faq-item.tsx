@@ -24,7 +24,7 @@ function FAQItem({
   return (
     <div
       className={cn(
-        "bg-[#18181b] rounded-lg border border-gray-700",
+        "bg-card rounded-lg border border-border",
         className
       )}
     >
@@ -36,13 +36,13 @@ function FAQItem({
         className={cn(
           "w-full flex justify-between items-center text-left p-6",
           "transition-colors",
-          isOpen && "text-fuchsia-400"
+          isOpen && "text-primary"
         )}
       >
-        <span id={labelId} className="text-lg font-semibold text-white">{question}</span>
+        <span id={labelId} className="text-lg font-semibold text-foreground">{question}</span>
         <ChevronDown
           className={cn(
-            "w-6 h-6 text-gray-400 transition-transform shrink-0",
+            "w-6 h-6 text-muted-foreground transition-transform shrink-0",
             isOpen && "rotate-180"
           )}
         />
@@ -57,7 +57,7 @@ function FAQItem({
           isOpen ? "max-h-96" : "max-h-0"
         )}
       >
-        <div className="p-6 pt-0 text-gray-400">{answer}</div>
+        <div className="p-6 pt-0 text-muted-foreground">{answer}</div>
       </div>
     </div>
   );
