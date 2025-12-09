@@ -39,11 +39,15 @@ export const createUserFromClerk = async (clerkUser: ClerkUser | null) => {
   }
   const userData: CreateUserData = {
     clerkId: clerkUser.id,
-    email: clerkUser.emailAddresses[0]?.emailAddress || '',
+    email: clerkUser.emailAddresses[0]?.emailAddress,
     firstName: clerkUser.firstName,
     lastName: clerkUser.lastName,
     imageUrl: clerkUser.imageUrl,
   };
+
+  if (!userData.email) {
+    throw new Error('User email is required');
+  }
 
   return prisma.user.create({
     data: userData,
