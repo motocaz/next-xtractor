@@ -93,12 +93,6 @@ export const clerkAppearance = {
       borderStyle: "solid",
       borderRadius: "0.75rem",
     },
-    pricingTableCard: {
-      borderColor: "var(--border)",
-      borderWidth: "1px",
-      borderStyle: "solid",
-      borderRadius: "0.75rem",
-    },
     pricingTableCheckmark: {
       color: "var(--primary)",
     },
