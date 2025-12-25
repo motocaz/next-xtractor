@@ -147,8 +147,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "add-blank-page",
     name: "Add Blank Page",
     subtitle: "Insert blank pages into your PDF.",
-    href: "#",
-    implemented: false,
+    href: "/add-blank-page",
+    implemented: true,
   },
   {
     id: "add-watermark",
