@@ -13,6 +13,7 @@ export const useAlternateMerge = (): UseAlternateMergeReturn => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [warning, setWarning] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   const loadPDFs = useCallback(async (files: File[]) => {
@@ -23,6 +24,7 @@ export const useAlternateMerge = (): UseAlternateMergeReturn => {
 
     setIsLoading(true);
     setError(null);
+    setWarning(null);
     setSuccess(null);
     setLoadingMessage('Loading PDF documents...');
 
@@ -68,14 +70,15 @@ export const useAlternateMerge = (): UseAlternateMergeReturn => {
       }
 
       if (encryptedFiles.length > 0) {
-        setError(
-          `The following PDFs are password-protected. Please use the Decrypt tool first:\n${encryptedFiles.join('\n')}`
+        setWarning(
+          `The following PDFs are password-protected and were skipped. Please use the Decrypt tool first:\n${encryptedFiles.join('\n')}`
         );
       }
 
       if (pdfInfos.length === 0) {
         setError('No valid PDF files were loaded.');
       } else {
+        setError(null);
         setPdfFiles((prev) => [...prev, ...pdfInfos]);
       }
     } catch (err) {
@@ -94,6 +97,7 @@ export const useAlternateMerge = (): UseAlternateMergeReturn => {
   const removePDF = useCallback((id: string) => {
     setPdfFiles((prev) => prev.filter((pdf) => pdf.id !== id));
     setError(null);
+    setWarning(null);
     setSuccess(null);
   }, []);
 
@@ -154,6 +158,7 @@ export const useAlternateMerge = (): UseAlternateMergeReturn => {
   const reset = useCallback(() => {
     setPdfFiles([]);
     setError(null);
+    setWarning(null);
     setSuccess(null);
     setLoadingMessage(null);
     setIsLoading(false);
@@ -166,6 +171,7 @@ export const useAlternateMerge = (): UseAlternateMergeReturn => {
     isProcessing,
     loadingMessage,
     error,
+    warning,
     success,
     loadPDFs,
     removePDF,

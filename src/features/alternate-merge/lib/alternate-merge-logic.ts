@@ -1,9 +1,13 @@
-import { PDFDocument } from 'pdf-lib';
-import type { PDFDocument as PDFLibDocument } from 'pdf-lib';
+import { PDFDocument } from "pdf-lib";
+import type { PDFDocument as PDFLibDocument } from "pdf-lib";
 
 export const alternateMergePDFs = async (
   pdfDocs: PDFLibDocument[]
 ): Promise<PDFDocument> => {
+  if (!pdfDocs || pdfDocs.length === 0) {
+    throw new Error("At least one PDF document is required for merging.");
+  }
+
   const newPdfDoc = await PDFDocument.create();
   const pageCounts = pdfDocs.map((doc) => doc.getPageCount());
   const maxPages = Math.max(...pageCounts);
@@ -19,4 +23,3 @@ export const alternateMergePDFs = async (
 
   return newPdfDoc;
 };
-

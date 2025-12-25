@@ -14,6 +14,7 @@ export interface UseAlternateMergeReturn {
   isProcessing: boolean;
   loadingMessage: string | null;
   error: string | null;
+  warning: string | null;
   success: string | null;
 
   loadPDFs: (files: File[]) => Promise<void>;

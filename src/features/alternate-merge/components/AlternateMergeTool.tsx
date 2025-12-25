@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import {
   CheckCircle2,
   AlertCircle,
+  AlertTriangle,
   ArrowLeft,
   X,
   GripVertical,
@@ -100,6 +101,7 @@ export const AlternateMergeTool = () => {
     isProcessing,
     loadingMessage,
     error,
+    warning,
     success,
     loadPDFs,
     removePDF,
@@ -170,6 +172,15 @@ export const AlternateMergeTool = () => {
           <AlertCircle className="h-5 w-5 text-destructive shrink-0" />
           <span className="text-sm text-destructive whitespace-pre-line">
             {error}
+          </span>
+        </div>
+      )}
+
+      {warning && (
+        <div className="flex items-center gap-2 p-3 bg-yellow-500/10 dark:bg-yellow-500/20 border border-yellow-500/30 dark:border-yellow-500/40 rounded-md mb-4">
+          <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-500 shrink-0" />
+          <span className="text-sm text-yellow-700 dark:text-yellow-400 whitespace-pre-line">
+            {warning}
           </span>
         </div>
       )}
