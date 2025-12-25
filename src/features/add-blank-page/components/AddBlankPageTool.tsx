@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useAddBlankPage } from '../hooks/useAddBlankPage';
-import { FileUploader } from '@/components/FileUploader';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
-import { CheckCircle2, AlertCircle, ArrowLeft, X } from 'lucide-react';
+import Link from "next/link";
+import { useAddBlankPage } from "../hooks/useAddBlankPage";
+import { FileUploader } from "@/components/FileUploader";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import { CheckCircle2, AlertCircle, ArrowLeft, X } from "lucide-react";
 
 export const AddBlankPageTool = () => {
   const {
@@ -38,7 +38,7 @@ export const AddBlankPageTool = () => {
         <ArrowLeft className="h-5 w-5" />
         <span>Back to Tools</span>
       </Link>
-      
+
       <h2 className="text-2xl font-bold text-foreground mb-4">
         Add Blank Pages
       </h2>
@@ -63,7 +63,9 @@ export const AddBlankPageTool = () => {
         {isLoadingPDF && (
           <div className="flex items-center gap-2 p-2 bg-input rounded-md">
             <Spinner size="sm" />
-            <span className="text-sm text-muted-foreground">Loading PDF...</span>
+            <span className="text-sm text-muted-foreground">
+              Loading PDF...
+            </span>
           </div>
         )}
 
@@ -78,7 +80,9 @@ export const AddBlankPageTool = () => {
           <div className="flex items-center justify-between gap-2 p-2 bg-input rounded-md">
             <div className="flex items-center gap-2 flex-1 min-w-0">
               <CheckCircle2 className="h-5 w-5 text-primary shrink-0" />
-              <span className="text-sm text-foreground truncate">{pdfFile.name}</span>
+              <span className="text-sm text-foreground truncate">
+                {pdfFile.name}
+              </span>
             </div>
             <button
               onClick={reset}
@@ -97,7 +101,7 @@ export const AddBlankPageTool = () => {
           <p className="mb-2 font-medium text-foreground">
             Total Pages: <span id="total-pages">{totalPages}</span>
           </p>
-          
+
           <label
             htmlFor="page-number"
             className="block mb-2 text-sm font-medium text-foreground"
@@ -115,7 +119,7 @@ export const AddBlankPageTool = () => {
             placeholder="Enter 0 to add to the beginning"
             disabled={isProcessing}
           />
-          
+
           <label
             htmlFor="page-count"
             className="block mb-2 text-sm font-medium text-foreground"
@@ -124,6 +128,7 @@ export const AddBlankPageTool = () => {
           </label>
           <input
             type="number"
+            inputMode="numeric"
             id="page-count"
             min="1"
             value={pageCount}
@@ -132,7 +137,7 @@ export const AddBlankPageTool = () => {
             placeholder="Enter number of pages"
             disabled={isProcessing}
           />
-          
+
           <Button
             id="process-btn"
             variant="gradient"
@@ -143,10 +148,10 @@ export const AddBlankPageTool = () => {
             {isProcessing ? (
               <span className="flex items-center gap-2">
                 <Spinner size="sm" />
-                {loadingMessage || 'Processing...'}
+                {loadingMessage || "Processing..."}
               </span>
             ) : (
-              'Add Pages & Download'
+              "Add Pages & Download"
             )}
           </Button>
 
@@ -177,4 +182,3 @@ export const AddBlankPageTool = () => {
     </div>
   );
 };
-
