@@ -88,6 +88,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: false,
   },
   {
+    id: "alternate-merge",
+    name: "Alternate Merge",
+    subtitle: "Alternate and mix pages from multiple PDF files.",
+    href: "/alternate-merge",
+    implemented: true,
+  },
+  {
     id: "split",
     name: "Split PDF",
     subtitle: "Extract a range of pages into a new PDF.",
@@ -221,6 +228,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "extract-attachments": "download",
     "edit-attachments": "file-edit",
     merge: "combine",
+    "alternate-merge": "combine",
     split: "scissors",
     compress: "zap",
     encrypt: "lock",
