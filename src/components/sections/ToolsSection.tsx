@@ -193,6 +193,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: false,
   },
   {
+    id: "bmp-to-pdf",
+    name: "BMP to PDF",
+    subtitle: "Create a PDF from one or more BMP images.",
+    href: "/bmp-to-pdf",
+    implemented: true,
+  },
+  {
     id: "pdf-to-jpg",
     name: "PDF to JPG",
     subtitle: "Convert PDF pages to JPG images.",
@@ -243,6 +250,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "add-page-numbers": "hash",
     "jpg-to-pdf": "image-up",
     "png-to-pdf": "image-up",
+    "bmp-to-pdf": "image-up",
     "pdf-to-jpg": "file-image",
     "pdf-to-png": "file-image",
     "sign-pdf": "pen-tool",
