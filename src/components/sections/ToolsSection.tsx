@@ -158,6 +158,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: false,
   },
   {
+    id: "add-header-footer",
+    name: "Add Header & Footer",
+    subtitle: "Add custom text to the top and bottom margins of every page.",
+    href: "/add-header-footer",
+    implemented: true,
+  },
+  {
     id: "add-page-numbers",
     name: "Add Page Numbers",
     subtitle: "Add page numbers to your PDF.",
@@ -223,6 +230,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "delete-pages": "trash-2",
     "extract-pages": "ungroup",
     "add-blank-page": "file-plus",
+    "add-header-footer": "file-edit",
     "add-watermark": "water",
     "add-page-numbers": "hash",
     "jpg-to-pdf": "image-up",
