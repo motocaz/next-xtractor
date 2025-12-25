@@ -1,5 +1,5 @@
-import { AddAttachmentsTool } from '@/features/add-attachments';
 import { ScrollToTop } from '@/components/ScrollToTop';
+import { AddAttachmentsTool } from '@/features/add-attachments';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
