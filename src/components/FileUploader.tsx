@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback } from "react";
 import { Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 export interface FileUploaderProps {
   accept?: string;
@@ -94,7 +95,7 @@ export const FileUploader = ({
           {multiple ? "Any file type, multiple files allowed" : "Select a file"}
         </span>
       </div>
-      <input
+      <Input
         ref={fileInputRef}
         type="file"
         accept={accept}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAddBlankPage } from "../hooks/useAddBlankPage";
 import { FileUploader } from "@/components/FileUploader";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { CheckCircle2, AlertCircle, ArrowLeft, X } from "lucide-react";
 
@@ -108,16 +109,16 @@ export const AddBlankPageTool = () => {
           >
             Insert blank pages after page number:
           </label>
-          <input
+          <Input
             type="number"
             id="page-number"
             min="0"
             max={totalPages}
             value={pageNumber}
             onChange={(e) => setPageNumber(e.target.value)}
-            className="w-full bg-input border border-border text-foreground rounded-lg p-2.5 mb-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
             placeholder="Enter 0 to add to the beginning"
             disabled={isProcessing}
+            className="mb-4"
           />
 
           <label
@@ -126,16 +127,16 @@ export const AddBlankPageTool = () => {
           >
             Number of blank pages to insert:
           </label>
-          <input
+          <Input
             type="number"
             inputMode="numeric"
             id="page-count"
             min="1"
             value={pageCount}
             onChange={(e) => setPageCount(e.target.value)}
-            className="w-full bg-input border border-border text-foreground rounded-lg p-2.5 mb-6 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
             placeholder="Enter number of pages"
             disabled={isProcessing}
+            className="mb-6"
           />
 
           <Button
