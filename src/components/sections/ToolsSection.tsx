@@ -168,8 +168,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "add-page-numbers",
     name: "Add Page Numbers",
     subtitle: "Add page numbers to your PDF.",
-    href: "#",
-    implemented: false,
+    href: "/add-page-numbers",
+    implemented: true,
   },
   {
     id: "jpg-to-pdf",
