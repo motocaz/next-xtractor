@@ -2,6 +2,12 @@
 
 import { PDFDocument } from 'pdf-lib';
 
+export interface BmpToPdfResult {
+  pdfDoc: PDFDocument;
+  successCount: number;
+  failedFiles: string[];
+}
+
 const convertImageToPngBytes = (file: File): Promise<ArrayBuffer> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -51,13 +57,13 @@ const convertImageToPngBytes = (file: File): Promise<ArrayBuffer> => {
   });
 };
 
-export const bmpToPdf = async (files: File[]): Promise<PDFDocument> => {
+export const bmpToPdf = async (files: File[]): Promise<BmpToPdfResult> => {
   if (files.length === 0) {
     throw new Error('Please select at least one BMP file.');
   }
 
   const pdfDoc = await PDFDocument.create();
-  const errors: string[] = [];
+  const failedFiles: string[] = [];
 
   for (const file of files) {
     try {
@@ -72,7 +78,7 @@ export const bmpToPdf = async (files: File[]): Promise<PDFDocument> => {
       });
     } catch (error) {
       console.warn(`Failed to process ${file.name}:`, error);
-      errors.push(file.name);
+      failedFiles.push(file.name);
     }
   }
 
@@ -82,12 +88,10 @@ export const bmpToPdf = async (files: File[]): Promise<PDFDocument> => {
     );
   }
 
-  if (errors.length > 0) {
-    console.warn(
-      `Some files could not be processed: ${errors.join(', ')}`
-    );
-  }
-
-  return pdfDoc;
+  return {
+    pdfDoc,
+    successCount: pdfDoc.getPageCount(),
+    failedFiles,
+  };
 };
 

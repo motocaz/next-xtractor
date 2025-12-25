@@ -12,6 +12,7 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
   const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [failedFiles, setFailedFiles] = useState<string[]>([]);
 
   const loadBmpFiles = useCallback(async (files: File[]) => {
     if (!files || files.length === 0) {
@@ -85,13 +86,14 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
+    setFailedFiles([]);
     setLoadingMessage('Converting BMP to PDF...');
 
     try {
       const files = bmpFiles.map((fileInfo) => fileInfo.file);
-      const pdfDoc = await bmpToPdf(files);
+      const result = await bmpToPdf(files);
 
-      const pdfBytes = await pdfDoc.save();
+      const pdfBytes = await result.pdfDoc.save();
       const arrayBuffer = new ArrayBuffer(pdfBytes.length);
       new Uint8Array(arrayBuffer).set(pdfBytes);
       const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
@@ -100,7 +102,15 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
       const baseName = firstFileName.replace(/\.bmp$/i, '');
       downloadFile(blob, baseName);
 
-      setSuccess('BMP files have been converted to PDF successfully!');
+      if (result.failedFiles.length > 0) {
+        setFailedFiles(result.failedFiles);
+      }
+
+      let successMessage = `Successfully converted ${result.successCount} image(s) to PDF.`;
+      if (result.failedFiles.length > 0) {
+        successMessage += ` ${result.failedFiles.length} file(s) could not be processed.`;
+      }
+      setSuccess(successMessage);
     } catch (err) {
       console.error('BMP to PDF conversion error:', err);
       setError(
@@ -118,6 +128,7 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
     setBmpFiles([]);
     setError(null);
     setSuccess(null);
+    setFailedFiles([]);
     setLoadingMessage(null);
     setIsLoading(false);
     setIsProcessing(false);
@@ -130,6 +141,7 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
     loadingMessage,
     error,
     success,
+    failedFiles,
     loadBmpFiles,
     removeBmpFile,
     processBmpToPdf,
