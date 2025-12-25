@@ -154,8 +154,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "add-watermark",
     name: "Add Watermark",
     subtitle: "Add text or image watermarks to your PDF.",
-    href: "#",
-    implemented: false,
+    href: "/add-watermark",
+    implemented: true,
   },
   {
     id: "add-header-footer",
