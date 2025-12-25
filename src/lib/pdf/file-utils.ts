@@ -87,4 +87,60 @@ export const downloadFile = (
   URL.revokeObjectURL(url);
 };
 
+export const hexToRgb = (hex: string): { r: number; g: number; b: number } => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16) / 255,
+        g: parseInt(result[2], 16) / 255,
+        b: parseInt(result[3], 16) / 255,
+      }
+    : { r: 0, g: 0, b: 0 };
+};
+
+export const parsePageRanges = (
+  rangeString: string,
+  totalPages: number
+): number[] => {
+  if (!rangeString || rangeString.trim() === '') {
+    return Array.from({ length: totalPages }, (_, i) => i);
+  }
+
+  const indices = new Set<number>();
+  const parts = rangeString.split(',');
+
+  for (const part of parts) {
+    const trimmedPart = part.trim();
+    if (!trimmedPart) continue;
+
+    if (trimmedPart.includes('-')) {
+      const [start, end] = trimmedPart.split('-').map(Number);
+      if (
+        isNaN(start) ||
+        isNaN(end) ||
+        start < 1 ||
+        end > totalPages ||
+        start > end
+      ) {
+        console.warn(`Invalid range skipped: ${trimmedPart}`);
+        continue;
+      }
+
+      for (let i = start; i <= end; i++) {
+        indices.add(i - 1);
+      }
+    } else {
+      const pageNum = Number(trimmedPart);
+
+      if (isNaN(pageNum) || pageNum < 1 || pageNum > totalPages) {
+        console.warn(`Invalid page number skipped: ${trimmedPart}`);
+        continue;
+      }
+      indices.add(pageNum - 1);
+    }
+  }
+
+  return Array.from(indices).sort((a, b) => a - b);
+};
+
 
