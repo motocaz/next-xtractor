@@ -161,7 +161,7 @@ export const AddWatermarkTool = () => {
 
           {watermarkType === 'text' && (
             <Card>
-              <CardContent className="pt-6 space-y-4">
+              <CardContent className="pt-6 pb-6 space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="watermark-text">Watermark Text</Label>
@@ -236,7 +236,7 @@ export const AddWatermarkTool = () => {
 
           {watermarkType === 'image' && (
             <Card>
-              <CardContent className="pt-6 space-y-4">
+              <CardContent className="pt-6 pb-6 space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="image-watermark-input">Upload Watermark Image</Label>
                   <Input
