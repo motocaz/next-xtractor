@@ -208,31 +208,31 @@ const allTools: Omit<Tool, 'icon'>[] = [
   },
 ];
 
-const toolsWithIcons: Tool[] = allTools.map((tool) => {
-  const iconNameMap: Record<string, string> = {
-    'add-attachments': 'paperclip',
-    'extract-attachments': 'download',
-    'edit-attachments': 'file-edit',
-    'merge': 'combine',
-    'split': 'scissors',
-    'compress': 'zap',
-    'encrypt': 'lock',
-    'decrypt': 'unlock',
-    'rotate': 'rotate-cw',
-    'organize': 'files',
-    'delete-pages': 'trash-2',
-    'extract-pages': 'ungroup',
-    'add-blank-page': 'file-plus',
-    'add-watermark': 'water',
-    'add-page-numbers': 'hash',
-    'jpg-to-pdf': 'image-up',
-    'png-to-pdf': 'image-up',
-    'pdf-to-jpg': 'file-image',
-    'pdf-to-png': 'file-image',
-    'sign-pdf': 'pen-tool',
-    'cropper': 'crop',
-  };
+const iconNameMap: Record<string, string> = {
+  'add-attachments': 'paperclip',
+  'extract-attachments': 'download',
+  'edit-attachments': 'file-edit',
+  'merge': 'combine',
+  'split': 'scissors',
+  'compress': 'zap',
+  'encrypt': 'lock',
+  'decrypt': 'unlock',
+  'rotate': 'rotate-cw',
+  'organize': 'files',
+  'delete-pages': 'trash-2',
+  'extract-pages': 'ungroup',
+  'add-blank-page': 'file-plus',
+  'add-watermark': 'water',
+  'add-page-numbers': 'hash',
+  'jpg-to-pdf': 'image-up',
+  'png-to-pdf': 'image-up',
+  'pdf-to-jpg': 'file-image',
+  'pdf-to-png': 'file-image',
+  'sign-pdf': 'pen-tool',
+  'cropper': 'crop',
+};
 
+const toolsWithIcons: Tool[] = allTools.map((tool) => {
   const iconName = iconNameMap[tool.id] || 'file';
   const Icon = iconMap[iconName] || File;
 
