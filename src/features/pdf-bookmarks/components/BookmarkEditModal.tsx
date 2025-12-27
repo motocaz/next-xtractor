@@ -74,7 +74,7 @@ export const BookmarkEditModal = ({
           bookmark.destY !== null ||
           bookmark.zoom !== null
       );
-      if (bookmark.color && bookmark.color.startsWith('#')) {
+      if (bookmark.color?.startsWith('#')) {
         setCustomColor(bookmark.color);
       }
     } else {
