@@ -1,25 +1,25 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Crosshair } from 'lucide-react';
-import type { BookmarkNode } from '../types';
+} from "@/components/ui/select";
+import { Crosshair } from "lucide-react";
+import type { BookmarkNode } from "../types";
 
 interface BookmarkEditModalProps {
   open: boolean;
@@ -50,57 +50,57 @@ export const BookmarkEditModal = ({
   onStartDestinationPicking,
   isPickingDestination,
 }: BookmarkEditModalProps) => {
-  const [title, setTitle] = useState('');
-  const [color, setColor] = useState<string>('');
-  const [style, setStyle] = useState<string>('');
+  const [title, setTitle] = useState("");
+  const [color, setColor] = useState<string>("");
+  const [style, setStyle] = useState<string>("");
   const [destPage, setDestPage] = useState(currentPage);
   const [destX, setDestX] = useState<number | null>(null);
   const [destY, setDestY] = useState<number | null>(null);
-  const [zoom, setZoom] = useState<string>('');
+  const [zoom, setZoom] = useState<string>("");
   const [useDestination, setUseDestination] = useState(false);
-  const [customColor, setCustomColor] = useState('#000000');
+  const [customColor, setCustomColor] = useState("#000000");
 
   useEffect(() => {
     if (bookmark) {
       setTitle(bookmark.title);
-      setColor(bookmark.color || 'none');
-      setStyle(bookmark.style || 'normal');
+      setColor(bookmark.color || "none");
+      setStyle(bookmark.style || "normal");
       setDestPage(bookmark.page);
       setDestX(bookmark.destX);
       setDestY(bookmark.destY);
-      setZoom(bookmark.zoom || 'inherit');
+      setZoom(bookmark.zoom || "inherit");
       setUseDestination(
         bookmark.destX !== null ||
           bookmark.destY !== null ||
           bookmark.zoom !== null
       );
-      if (bookmark.color?.startsWith('#')) {
+      if (bookmark.color?.startsWith("#")) {
         setCustomColor(bookmark.color);
       }
     } else {
-      setTitle('');
-      setColor('none');
-      setStyle('normal');
+      setTitle("");
+      setColor("none");
+      setStyle("normal");
       setDestPage(currentPage);
       setDestX(null);
       setDestY(null);
-      setZoom('inherit');
+      setZoom("inherit");
       setUseDestination(false);
-      setCustomColor('#000000');
+      setCustomColor("#000000");
     }
   }, [bookmark, currentPage]);
 
   const handleConfirm = () => {
+    let finalColor;
     if (!title.trim()) return;
+    if (color === "custom") {
+      finalColor = customColor;
+    } else {
+      finalColor = color === "none" ? (finalColor = null) : color || null;
+    }
 
-    const finalColor =
-      color === 'custom'
-        ? customColor
-        : color === 'none'
-          ? null
-          : color || null;
-    const finalStyle = style === 'normal' ? null : style || null;
-    const finalZoom = zoom === 'inherit' ? null : zoom || null;
+    const finalStyle = style === "normal" ? null : style || null;
+    const finalZoom = zoom === "inherit" ? null : zoom || null;
 
     onConfirm({
       title: title.trim(),
@@ -116,23 +116,23 @@ export const BookmarkEditModal = ({
 
   const getPreviewStyle = () => {
     let styleObj: React.CSSProperties = {};
-    if (color === 'custom') {
+    if (color === "custom") {
       styleObj.color = customColor;
-    } else if (color && color !== 'none') {
+    } else if (color && color !== "none") {
       const colorMap: Record<string, string> = {
-        red: '#dc2626',
-        blue: '#2563eb',
-        green: '#16a34a',
-        yellow: '#ca8a04',
-        purple: '#9333ea',
+        red: "#dc2626",
+        blue: "#2563eb",
+        green: "#16a34a",
+        yellow: "#ca8a04",
+        purple: "#9333ea",
       };
-      styleObj.color = colorMap[color] || '';
+      styleObj.color = colorMap[color] || "";
     }
-    if (style === 'bold' || style === 'bold-italic') {
-      styleObj.fontWeight = 'bold';
+    if (style === "bold" || style === "bold-italic") {
+      styleObj.fontWeight = "bold";
     }
-    if (style === 'italic' || style === 'bold-italic') {
-      styleObj.fontStyle = 'italic';
+    if (style === "italic" || style === "bold-italic") {
+      styleObj.fontStyle = "italic";
     }
     return styleObj;
   };
@@ -142,12 +142,12 @@ export const BookmarkEditModal = ({
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {bookmark ? 'Edit Bookmark' : 'Add Bookmark'}
+            {bookmark ? "Edit Bookmark" : "Add Bookmark"}
           </DialogTitle>
           <DialogDescription>
             {bookmark
-              ? 'Edit the bookmark title, color, style, and destination.'
-              : 'Create a new bookmark with a title, optional color, style, and destination.'}
+              ? "Edit the bookmark title, color, style, and destination."
+              : "Create a new bookmark with a title, optional color, style, and destination."}
           </DialogDescription>
         </DialogHeader>
 
@@ -178,7 +178,7 @@ export const BookmarkEditModal = ({
                 <SelectItem value="custom">Custom...</SelectItem>
               </SelectContent>
             </Select>
-            {color === 'custom' && (
+            {color === "custom" && (
               <Input
                 type="color"
                 value={customColor}
@@ -228,7 +228,12 @@ export const BookmarkEditModal = ({
                       max={maxPages}
                       value={destPage}
                       onChange={(e) =>
-                        setDestPage(Math.max(1, Math.min(maxPages, parseInt(e.target.value) || 1)))
+                        setDestPage(
+                          Math.max(
+                            1,
+                            Math.min(maxPages, Number.parseInt(e.target.value) || 1)
+                          )
+                        )
                       }
                       className="text-sm"
                     />
@@ -264,7 +269,9 @@ export const BookmarkEditModal = ({
                       type="number"
                       value={destX ?? 0}
                       onChange={(e) =>
-                        setDestX(e.target.value ? parseFloat(e.target.value) : null)
+                        setDestX(
+                          e.target.value ? Number.parseFloat(e.target.value) : null
+                        )
                       }
                       step={10}
                       className="text-sm"
@@ -279,7 +286,9 @@ export const BookmarkEditModal = ({
                       type="number"
                       value={destY ?? 0}
                       onChange={(e) =>
-                        setDestY(e.target.value ? parseFloat(e.target.value) : null)
+                        setDestY(
+                          e.target.value ? Number.parseFloat(e.target.value) : null
+                        )
                       }
                       step={10}
                       className="text-sm"
@@ -308,9 +317,7 @@ export const BookmarkEditModal = ({
           <div>
             <Label>Preview</Label>
             <div className="p-2 bg-muted rounded border border-border min-h-[2.5rem] flex items-center justify-center">
-              <span style={getPreviewStyle()}>
-                {title || 'Preview Text'}
-              </span>
+              <span style={getPreviewStyle()}>{title || "Preview Text"}</span>
             </div>
           </div>
 
@@ -327,4 +334,3 @@ export const BookmarkEditModal = ({
     </Dialog>
   );
 };
-

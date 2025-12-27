@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { PDFDocument } from 'pdf-lib';
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
-import { extractExistingBookmarks } from '../lib/bookmark-extract';
-import { savePDFWithBookmarks } from '../lib/bookmark-save';
-import { parseCSV, parseJSON } from '../lib/bookmark-import';
-import { exportToCSV, exportToJSON } from '../lib/bookmark-export';
-import { useBookmarkHistory } from './useBookmarkHistory';
-import { usePDFViewer } from './usePDFViewer';
-import type { BookmarkNode } from '../types';
+import { useState, useCallback, useRef, useEffect } from "react";
+import { PDFDocument } from "pdf-lib";
+import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
+import { extractExistingBookmarks } from "../lib/bookmark-extract";
+import { savePDFWithBookmarks } from "../lib/bookmark-save";
+import { parseCSV, parseJSON } from "../lib/bookmark-import";
+import { exportToCSV, exportToJSON } from "../lib/bookmark-export";
+import { useBookmarkHistory } from "./useBookmarkHistory";
+import { usePDFViewer } from "./usePDFViewer";
+import type { BookmarkNode } from "../types";
 
 export interface UseBookmarkToolReturn {
   bookmarkTree: BookmarkNode[];
@@ -25,7 +25,7 @@ export interface UseBookmarkToolReturn {
   isLoading: boolean;
   error: string | null;
   pendingImport: {
-    type: 'csv' | 'json';
+    type: "csv" | "json";
     fileName: string;
     bookmarks: BookmarkNode[];
   } | null;
@@ -37,20 +37,32 @@ export interface UseBookmarkToolReturn {
 
   loadPDF: (file: File, autoExtract?: boolean) => Promise<void>;
   addBookmark: (title: string, page: number) => void;
-  editBookmark: (id: string, data: {
-    title: string;
-    color: string | null;
-    style: string | null;
-    destPage: number;
-    destX: number | null;
-    destY: number | null;
-    zoom: string | null;
-  }) => void;
+  editBookmark: (
+    id: string,
+    data: {
+      title: string;
+      color: string | null;
+      style: string | null;
+      destPage: number;
+      destX: number | null;
+      destY: number | null;
+      zoom: string | null;
+    }
+  ) => void;
   deleteBookmark: (id: string) => void;
   deleteSelectedBookmarks: () => void;
   addChildBookmark: (parentId: string, title: string) => void;
-  reorderBookmarks: (activeId: string, overId: string, parentId: string | null) => void;
-  navigateToBookmark: (page: number, destX: number | null, destY: number | null, zoom: string | null) => void;
+  reorderBookmarks: (
+    activeId: string,
+    overId: string,
+    parentId: string | null
+  ) => void;
+  navigateToBookmark: (
+    page: number,
+    destX: number | null,
+    destY: number | null,
+    zoom: string | null
+  ) => void;
   setSearchQuery: (query: string) => void;
   toggleBatchMode: () => void;
   toggleSelectBookmark: (id: string) => void;
@@ -77,22 +89,67 @@ export interface UseBookmarkToolReturn {
   clearPendingImport: () => void;
 }
 
+const reorderNodeChildren = (
+  node: BookmarkNode,
+  activeId: string,
+  overId: string
+): BookmarkNode | null => {
+  const activeIndex = node.children.findIndex((c) => c.id === activeId);
+  const overIndex = node.children.findIndex((c) => c.id === overId);
+
+  if (activeIndex === -1 || overIndex === -1) {
+    return null;
+  }
+
+  const children = [...node.children];
+  const [moved] = children.splice(activeIndex, 1);
+  children.splice(overIndex, 0, moved);
+  return { ...node, children };
+};
+
+const findAndReorderInTree = (
+  nodes: BookmarkNode[],
+  parentId: string,
+  activeId: string,
+  overId: string
+): BookmarkNode[] => {
+  return nodes.map((node) => {
+    if (node.id === parentId) {
+      const reordered = reorderNodeChildren(node, activeId, overId);
+      if (reordered) {
+        return reordered;
+      }
+    }
+    return {
+      ...node,
+      children: findAndReorderInTree(node.children, parentId, activeId, overId),
+    };
+  });
+};
+
 export const useBookmarkTool = (): UseBookmarkToolReturn => {
   const [bookmarkTree, setBookmarkTree] = useState<BookmarkNode[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [batchMode, setBatchMode] = useState(false);
-  const [selectedBookmarks, setSelectedBookmarks] = useState<Set<string>>(new Set());
+  const [selectedBookmarks, setSelectedBookmarks] = useState<Set<string>>(
+    new Set()
+  );
   const [collapsedNodes, setCollapsedNodes] = useState<Set<string>>(new Set());
   const [isPickingDestination, setIsPickingDestination] = useState(false);
-  const [destinationMarker, setDestinationMarker] = useState<{ x: number; y: number } | null>(null);
+  const [destinationMarker, setDestinationMarker] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [originalFileName, setOriginalFileName] = useState('');
+  const [originalFileName, setOriginalFileName] = useState("");
   const [pdfLoaded, setPdfLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [pendingDestinationCallback, setPendingDestinationCallback] = useState<((x: number, y: number) => void) | null>(null);
+  const [pendingDestinationCallback, setPendingDestinationCallback] = useState<
+    ((x: number, y: number) => void) | null
+  >(null);
   const [pendingImport, setPendingImport] = useState<{
-    type: 'csv' | 'json';
+    type: "csv" | "json";
     fileName: string;
     bookmarks: BookmarkNode[];
   } | null>(null);
@@ -105,137 +162,161 @@ export const useBookmarkTool = (): UseBookmarkToolReturn => {
     history.saveState(bookmarkTree);
   }, [bookmarkTree, history]);
 
-  const loadPDF = useCallback(async (file: File, autoExtract = false) => {
-    setIsLoading(true);
-    setError(null);
+  const loadPDF = useCallback(
+    async (file: File, autoExtract = false) => {
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      const arrayBuffer = await readFileAsArrayBuffer(file);
-      const pdfLibDoc = await PDFDocument.load(arrayBuffer, {
-        ignoreEncryption: true,
-      });
+      try {
+        const arrayBuffer = await readFileAsArrayBuffer(file);
+        const pdfLibDoc = await PDFDocument.load(arrayBuffer, {
+          ignoreEncryption: true,
+        });
 
-      pdfLibDocRef.current = pdfLibDoc;
-      await pdfViewer.loadPDF(arrayBuffer);
+        pdfLibDocRef.current = pdfLibDoc;
+        await pdfViewer.loadPDF(arrayBuffer);
 
-      setOriginalFileName(file.name.replace('.pdf', ''));
-      setCurrentPage(1);
-      setBookmarkTree([]);
-      setSelectedBookmarks(new Set());
-      setCollapsedNodes(new Set());
-      setPdfLoaded(true);
+        setOriginalFileName(file.name.replace(".pdf", ""));
+        setCurrentPage(1);
+        setBookmarkTree([]);
+        setSelectedBookmarks(new Set());
+        setCollapsedNodes(new Set());
+        setPdfLoaded(true);
 
-      if (autoExtract) {
-        const extracted = await extractExistingBookmarks(pdfLibDoc);
-        if (extracted.length > 0) {
-          setBookmarkTree(extracted);
+        if (autoExtract) {
+          const extracted = await extractExistingBookmarks(pdfLibDoc);
+          if (extracted.length > 0) {
+            setBookmarkTree(extracted);
+            saveState();
+          }
+        } else if (pendingImport) {
+          setBookmarkTree(pendingImport.bookmarks);
           saveState();
+          setPendingImport(null);
         }
-      } else if (pendingImport) {
-        setBookmarkTree(pendingImport.bookmarks);
-        saveState();
-        setPendingImport(null);
+      } catch (err) {
+        console.error("Error loading PDF:", err);
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Failed to load PDF. It may be corrupted or password-protected."
+        );
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error('Error loading PDF:', err);
-      setError(
-        err instanceof Error
-          ? err.message
-          : 'Failed to load PDF. It may be corrupted or password-protected.'
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }, [pdfViewer, saveState, pendingImport]);
+    },
+    [pdfViewer, saveState, pendingImport]
+  );
 
-  const addBookmark = useCallback((title: string, page: number) => {
-    const newBookmark: BookmarkNode = {
-      id: Date.now().toString(),
-      title,
-      page,
-      children: [],
-      color: null,
-      style: null,
-      destX: null,
-      destY: null,
-      zoom: null,
-    };
-    setBookmarkTree((prev) => [...prev, newBookmark]);
-    saveState();
-  }, [saveState]);
+  const addBookmark = useCallback(
+    (title: string, page: number) => {
+      const newBookmark: BookmarkNode = {
+        id: Date.now().toString(),
+        title,
+        page,
+        children: [],
+        color: null,
+        style: null,
+        destX: null,
+        destY: null,
+        zoom: null,
+      };
+      setBookmarkTree((prev) => [...prev, newBookmark]);
+      saveState();
+    },
+    [saveState]
+  );
 
-  const findNodeById = useCallback((nodes: BookmarkNode[], id: string): BookmarkNode | null => {
-    for (const node of nodes) {
-      if (node.id === id) return node;
-      if (node.children.length > 0) {
-        const found = findNodeById(node.children, id);
-        if (found) return found;
+  const findNodeById = useCallback(
+    (nodes: BookmarkNode[], id: string): BookmarkNode | null => {
+      for (const node of nodes) {
+        if (node.id === id) return node;
+        if (node.children.length > 0) {
+          const found = findNodeById(node.children, id);
+          if (found) return found;
+        }
       }
-    }
-    return null;
-  }, []);
+      return null;
+    },
+    []
+  );
 
-  const updateNodeById = useCallback((
-    nodes: BookmarkNode[],
-    id: string,
-    updater: (node: BookmarkNode) => BookmarkNode
-  ): BookmarkNode[] => {
-    return nodes.map((node) => {
-      if (node.id === id) {
-        return updater(node);
-      }
-      if (node.children.length > 0) {
-        return {
+  const updateNodeById = useCallback(
+    (
+      nodes: BookmarkNode[],
+      id: string,
+      updater: (node: BookmarkNode) => BookmarkNode
+    ): BookmarkNode[] => {
+      return nodes.map((node) => {
+        if (node.id === id) {
+          return updater(node);
+        }
+        if (node.children.length > 0) {
+          return {
+            ...node,
+            children: updateNodeById(node.children, id, updater),
+          };
+        }
+        return node;
+      });
+    },
+    []
+  );
+
+  const removeNodeById = useCallback(
+    (nodes: BookmarkNode[], id: string): BookmarkNode[] => {
+      return nodes
+        .filter((node) => node.id !== id)
+        .map((node) => ({
           ...node,
-          children: updateNodeById(node.children, id, updater),
-        };
+          children: removeNodeById(node.children, id),
+        }));
+    },
+    []
+  );
+
+  const editBookmark = useCallback(
+    (
+      id: string,
+      data: {
+        title: string;
+        color: string | null;
+        style: string | null;
+        destPage: number;
+        destX: number | null;
+        destY: number | null;
+        zoom: string | null;
       }
-      return node;
-    });
-  }, []);
+    ) => {
+      setBookmarkTree((prev) =>
+        updateNodeById(prev, id, (node) => ({
+          ...node,
+          title: data.title,
+          color: data.color,
+          style: data.style,
+          page: data.destPage,
+          destX: data.destX,
+          destY: data.destY,
+          zoom: data.zoom,
+        }))
+      );
+      saveState();
+    },
+    [updateNodeById, saveState]
+  );
 
-  const removeNodeById = useCallback((nodes: BookmarkNode[], id: string): BookmarkNode[] => {
-    return nodes
-      .filter((node) => node.id !== id)
-      .map((node) => ({
-        ...node,
-        children: removeNodeById(node.children, id),
-      }));
-  }, []);
-
-  const editBookmark = useCallback((id: string, data: {
-    title: string;
-    color: string | null;
-    style: string | null;
-    destPage: number;
-    destX: number | null;
-    destY: number | null;
-    zoom: string | null;
-  }) => {
-    setBookmarkTree((prev) =>
-      updateNodeById(prev, id, (node) => ({
-        ...node,
-        title: data.title,
-        color: data.color,
-        style: data.style,
-        page: data.destPage,
-        destX: data.destX,
-        destY: data.destY,
-        zoom: data.zoom,
-      }))
-    );
-    saveState();
-  }, [updateNodeById, saveState]);
-
-  const deleteBookmark = useCallback((id: string) => {
-    setBookmarkTree((prev) => removeNodeById(prev, id));
-    setSelectedBookmarks((prev) => {
-      const newSet = new Set(prev);
-      newSet.delete(id);
-      return newSet;
-    });
-    saveState();
-  }, [removeNodeById, saveState]);
+  const deleteBookmark = useCallback(
+    (id: string) => {
+      setBookmarkTree((prev) => removeNodeById(prev, id));
+      setSelectedBookmarks((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(id);
+        return newSet;
+      });
+      saveState();
+    },
+    [removeNodeById, saveState]
+  );
 
   const deleteSelectedBookmarks = useCallback(() => {
     setBookmarkTree((prev) => {
@@ -249,90 +330,77 @@ export const useBookmarkTool = (): UseBookmarkToolReturn => {
     saveState();
   }, [selectedBookmarks, removeNodeById, saveState]);
 
-  const addChildBookmark = useCallback((parentId: string, title: string) => {
-    setBookmarkTree((prev) =>
-      updateNodeById(prev, parentId, (node) => ({
-        ...node,
-        children: [
-          ...node.children,
-          {
-            id: Date.now().toString(),
-            title,
-            page: currentPage,
-            children: [],
-            color: null,
-            style: null,
-            destX: null,
-            destY: null,
-            zoom: null,
-          },
-        ],
-      }))
-    );
-    setCollapsedNodes((prev) => {
-      const newSet = new Set(prev);
-      newSet.delete(parentId);
-      return newSet;
-    });
-    saveState();
-  }, [currentPage, updateNodeById, saveState]);
+  const addChildBookmark = useCallback(
+    (parentId: string, title: string) => {
+      setBookmarkTree((prev) =>
+        updateNodeById(prev, parentId, (node) => ({
+          ...node,
+          children: [
+            ...node.children,
+            {
+              id: Date.now().toString(),
+              title,
+              page: currentPage,
+              children: [],
+              color: null,
+              style: null,
+              destX: null,
+              destY: null,
+              zoom: null,
+            },
+          ],
+        }))
+      );
+      setCollapsedNodes((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(parentId);
+        return newSet;
+      });
+      saveState();
+    },
+    [currentPage, updateNodeById, saveState]
+  );
 
-  const reorderBookmarks = useCallback((
-    activeId: string,
-    overId: string,
-    parentId: string | null
-  ) => {
-    setBookmarkTree((prev) => {
-      const treeCopy = JSON.parse(JSON.stringify(prev));
+  const reorderBookmarks = useCallback(
+    (activeId: string, overId: string, parentId: string | null) => {
+      setBookmarkTree((prev) => {
+        const treeCopy = structuredClone(prev);
 
-      if (parentId === null) {
-        const activeIndex = treeCopy.findIndex((n: BookmarkNode) => n.id === activeId);
-        const overIndex = treeCopy.findIndex((n: BookmarkNode) => n.id === overId);
-        if (activeIndex !== -1 && overIndex !== -1) {
-          const [moved] = treeCopy.splice(activeIndex, 1);
-          treeCopy.splice(overIndex, 0, moved);
+        if (parentId === null) {
+          const activeIndex = treeCopy.findIndex(
+            (n: BookmarkNode) => n.id === activeId
+          );
+          const overIndex = treeCopy.findIndex(
+            (n: BookmarkNode) => n.id === overId
+          );
+          if (activeIndex !== -1 && overIndex !== -1) {
+            const [moved] = treeCopy.splice(activeIndex, 1);
+            treeCopy.splice(overIndex, 0, moved);
+          }
+        } else {
+          return findAndReorderInTree(treeCopy, parentId, activeId, overId);
         }
-      } else {
-        const findAndReorder = (nodes: BookmarkNode[]): BookmarkNode[] => {
-          return nodes.map((node) => {
-            if (node.id === parentId) {
-              const activeIndex = node.children.findIndex((c) => c.id === activeId);
-              const overIndex = node.children.findIndex((c) => c.id === overId);
-              if (activeIndex !== -1 && overIndex !== -1) {
-                const children = [...node.children];
-                const [moved] = children.splice(activeIndex, 1);
-                children.splice(overIndex, 0, moved);
-                return { ...node, children };
-              }
-            }
-            return {
-              ...node,
-              children: findAndReorder(node.children),
-            };
-          });
-        };
-        return findAndReorder(treeCopy);
+
+        return treeCopy;
+      });
+      saveState();
+    },
+    [saveState]
+  );
+
+  const navigateToBookmark = useCallback(
+    (page: number, destX: number | null, destY: number | null) => {
+      pdfViewer.goToPage(page);
+      setCurrentPage(page);
+      if (destX !== null && destY !== null) {
+        setDestinationMarker({ x: destX, y: destY });
+        setTimeout(() => {
+          setDestinationMarker(null);
+        }, 2000);
       }
-
-      return treeCopy;
-    });
-    saveState();
-  }, [saveState]);
-
-  const navigateToBookmark = useCallback((
-    page: number,
-    destX: number | null,
-    destY: number | null,
-  ) => {
-    pdfViewer.goToPage(page);
-    setCurrentPage(page);
-    if (destX !== null && destY !== null) {
-      setDestinationMarker({ x: destX, y: destY });
-      setTimeout(() => {
-        setDestinationMarker(null);
-      }, 2000);
-    }
-  }, [pdfViewer]);
+    },
+    [pdfViewer]
+  );
 
   const toggleBatchMode = useCallback(() => {
     setBatchMode((prev) => !prev);
@@ -371,39 +439,45 @@ export const useBookmarkTool = (): UseBookmarkToolReturn => {
     setSelectedBookmarks(new Set());
   }, []);
 
-  const applyBatchColor = useCallback((color: string | null) => {
-    setBookmarkTree((prev) =>
-      prev.map((node) => {
-        if (selectedBookmarks.has(node.id)) {
-          return { ...node, color };
-        }
-        return {
-          ...node,
-          children: node.children.map((child) =>
-            selectedBookmarks.has(child.id) ? { ...child, color } : child
-          ),
-        };
-      })
-    );
-    saveState();
-  }, [selectedBookmarks, saveState]);
+  const applyBatchColor = useCallback(
+    (color: string | null) => {
+      setBookmarkTree((prev) =>
+        prev.map((node) => {
+          if (selectedBookmarks.has(node.id)) {
+            return { ...node, color };
+          }
+          return {
+            ...node,
+            children: node.children.map((child) =>
+              selectedBookmarks.has(child.id) ? { ...child, color } : child
+            ),
+          };
+        })
+      );
+      saveState();
+    },
+    [selectedBookmarks, saveState]
+  );
 
-  const applyBatchStyle = useCallback((style: string | null) => {
-    setBookmarkTree((prev) =>
-      prev.map((node) => {
-        if (selectedBookmarks.has(node.id)) {
-          return { ...node, style };
-        }
-        return {
-          ...node,
-          children: node.children.map((child) =>
-            selectedBookmarks.has(child.id) ? { ...child, style } : child
-          ),
-        };
-      })
-    );
-    saveState();
-  }, [selectedBookmarks, saveState]);
+  const applyBatchStyle = useCallback(
+    (style: string | null) => {
+      setBookmarkTree((prev) =>
+        prev.map((node) => {
+          if (selectedBookmarks.has(node.id)) {
+            return { ...node, style };
+          }
+          return {
+            ...node,
+            children: node.children.map((child) =>
+              selectedBookmarks.has(child.id) ? { ...child, style } : child
+            ),
+          };
+        })
+      );
+      saveState();
+    },
+    [selectedBookmarks, saveState]
+  );
 
   const toggleCollapse = useCallback((id: string) => {
     setCollapsedNodes((prev) => {
@@ -435,47 +509,53 @@ export const useBookmarkTool = (): UseBookmarkToolReturn => {
     setCollapsedNodes(new Set(getAllIds(bookmarkTree)));
   }, [bookmarkTree]);
 
-  const importCSV = useCallback(async (file: File) => {
-    try {
-      const text = await file.text();
-      const imported = parseCSV(text);
-      if (imported.length > 0) {
+  const importCSV = useCallback(
+    async (file: File) => {
+      try {
+        const text = await file.text();
+        const imported = parseCSV(text);
+        if (imported.length > 0) {
+          if (pdfLoaded) {
+            setBookmarkTree(imported);
+            saveState();
+            setPendingImport(null);
+          } else {
+            setPendingImport({
+              type: "csv",
+              fileName: file.name,
+              bookmarks: imported,
+            });
+          }
+        }
+      } catch {
+        throw new Error("Failed to import CSV");
+      }
+    },
+    [saveState, pdfLoaded]
+  );
+
+  const importJSON = useCallback(
+    async (file: File) => {
+      try {
+        const text = await file.text();
+        const imported = parseJSON(text);
         if (pdfLoaded) {
           setBookmarkTree(imported);
           saveState();
           setPendingImport(null);
         } else {
           setPendingImport({
-            type: 'csv',
+            type: "json",
             fileName: file.name,
             bookmarks: imported,
           });
         }
+      } catch (err) {
+        throw new Error("Failed to import JSON");
       }
-    } catch {
-      throw new Error('Failed to import CSV');
-    }
-  }, [saveState, pdfLoaded]);
-
-  const importJSON = useCallback(async (file: File) => {
-    try {
-      const text = await file.text();
-      const imported = parseJSON(text);
-      if (pdfLoaded) {
-        setBookmarkTree(imported);
-        saveState();
-        setPendingImport(null);
-      } else {
-        setPendingImport({
-          type: 'json',
-          fileName: file.name,
-          bookmarks: imported,
-        });
-      }
-    } catch (err) {
-      throw new Error('Failed to import JSON');
-    }
-  }, [saveState, pdfLoaded]);
+    },
+    [saveState, pdfLoaded]
+  );
 
   const exportCSV = useCallback(() => {
     try {
@@ -504,7 +584,7 @@ export const useBookmarkTool = (): UseBookmarkToolReturn => {
 
   const savePDF = useCallback(async () => {
     if (!pdfLibDocRef.current) {
-      throw new Error('No PDF loaded');
+      throw new Error("No PDF loaded");
     }
     await savePDFWithBookmarks(
       pdfLibDocRef.current,
@@ -534,12 +614,12 @@ export const useBookmarkTool = (): UseBookmarkToolReturn => {
   const reset = useCallback(() => {
     pdfLibDocRef.current = null;
     setBookmarkTree([]);
-    setSearchQuery('');
+    setSearchQuery("");
     setBatchMode(false);
     setSelectedBookmarks(new Set());
     setCollapsedNodes(new Set());
     setCurrentPage(1);
-    setOriginalFileName('');
+    setOriginalFileName("");
     setPdfLoaded(false);
     setDestinationMarker(null);
     setIsPickingDestination(false);
@@ -558,17 +638,19 @@ export const useBookmarkTool = (): UseBookmarkToolReturn => {
     setDestinationMarker(null);
   }, []);
 
-  const setDestination = useCallback((x: number, y: number, page: number) => {
-    setDestinationMarker({ x, y });
-    if (pendingDestinationCallback) {
-      pendingDestinationCallback(x, y);
-      setPendingDestinationCallback(null);
-    }
-    // Don't automatically cancel picking - let the modal handle it
-    setTimeout(() => {
-      setDestinationMarker(null);
-    }, 500);
-  }, [pendingDestinationCallback]);
+  const setDestination = useCallback(
+    (x: number, y: number, page: number) => {
+      setDestinationMarker({ x, y });
+      if (pendingDestinationCallback) {
+        pendingDestinationCallback(x, y);
+        setPendingDestinationCallback(null);
+      }
+      setTimeout(() => {
+        setDestinationMarker(null);
+      }, 500);
+    },
+    [pendingDestinationCallback]
+  );
 
   const updateCurrentPage = useCallback((page: number) => {
     setCurrentPage(page);
@@ -634,4 +716,3 @@ export const useBookmarkTool = (): UseBookmarkToolReturn => {
     clearPendingImport,
   };
 };
-

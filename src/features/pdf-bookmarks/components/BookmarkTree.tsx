@@ -37,7 +37,6 @@ interface BookmarkTreeProps {
   onReorder: (activeId: string, overId: string, parentId: string | null) => void;
   onExpandAll: () => void;
   onCollapseAll: () => void;
-  currentPage: number;
 }
 
 const matchesSearch = (node: BookmarkNodeType, query: string): boolean => {

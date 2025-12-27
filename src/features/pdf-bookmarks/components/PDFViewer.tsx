@@ -60,7 +60,7 @@ export const PDFViewer = ({
 
   const handleGotoPage = () => {
     const value = inputRef.current?.value || gotoPageValue;
-    const page = parseInt(value);
+    const page = Number.parseInt(value);
     if (page >= 1 && page <= state.totalPages) {
       handlePageChange(page);
     }                            

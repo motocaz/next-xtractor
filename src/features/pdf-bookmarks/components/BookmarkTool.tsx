@@ -116,11 +116,9 @@ export const BookmarkTool = () => {
       if (window.innerWidth >= 1024) {
         setShowViewer(true);
         setShowBookmarks(true);
-      } else {
-        if (!showViewer && !showBookmarks) {
-          setShowViewer(true);
-          setShowBookmarks(false);
-        }
+      } else if (!showViewer && !showBookmarks) {
+        setShowViewer(true);
+        setShowBookmarks(false);
       }
     };
 

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Upload, Download, ChevronDown, FileText, Braces } from 'lucide-react';
-import type { MessageDialogState } from '../hooks/useBookmarkDialogs';
 
 interface ImportExportButtonsProps {
   onImportCSV: (file: File) => Promise<void>;

@@ -22,7 +22,7 @@ export const useBookmarkHistory = (): UseBookmarkHistoryReturn => {
     (bookmarkTree: BookmarkNode[]) => {
       setHistory((prev) => {
         const newHistory = prev.slice(0, historyIndex + 1);
-        const newState = JSON.parse(JSON.stringify(bookmarkTree));
+        const newState = structuredClone(bookmarkTree);
         newHistory.push(newState);
 
         let newIndex = newHistory.length - 1;
@@ -42,7 +42,7 @@ export const useBookmarkHistory = (): UseBookmarkHistoryReturn => {
     if (historyIndex > 0) {
       const newIndex = historyIndex - 1;
       setHistoryIndex(newIndex);
-      return JSON.parse(JSON.stringify(history[newIndex]));
+      return structuredClone(history[newIndex]);
     }
     return null;
   }, [history, historyIndex]);
@@ -51,7 +51,7 @@ export const useBookmarkHistory = (): UseBookmarkHistoryReturn => {
     if (historyIndex < history.length - 1) {
       const newIndex = historyIndex + 1;
       setHistoryIndex(newIndex);
-      return JSON.parse(JSON.stringify(history[newIndex]));
+      return structuredClone(history[newIndex]);
     }
     return null;
   }, [history, historyIndex]);

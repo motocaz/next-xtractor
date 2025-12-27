@@ -137,7 +137,7 @@ export const UploadSection = ({
                       {pendingImport.fileName}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      {pendingImport.type.toUpperCase()} file loaded ({pendingImport.bookmarks.length} bookmark{pendingImport.bookmarks.length !== 1 ? 's' : ''})
+                      {pendingImport.type.toUpperCase()} file loaded ({pendingImport.bookmarks.length} bookmark{pendingImport.bookmarks.length === 1 ? '' : 's'})
                       <span className="block mt-1 text-primary">Ready to apply when PDF is uploaded</span>
                     </div>
                   </div>
