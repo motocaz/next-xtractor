@@ -445,7 +445,6 @@ export const BookmarkTool = () => {
                 onReorder={reorderBookmarks}
                 onExpandAll={expandAll}
                 onCollapseAll={collapseAll}
-                currentPage={currentPage}
               />
 
               <BookmarkActions
