@@ -206,7 +206,7 @@ export const AddWatermarkTool = () => {
                      </Label>
                      <Slider
                        id="opacity-text"
-                       value={[parseFloat(opacityText)]}
+                       value={[Number.parseFloat(opacityText)]}
                        onValueChange={(values) => setOpacityText(values[0].toString())}
                        min={0}
                        max={1}
@@ -259,7 +259,7 @@ export const AddWatermarkTool = () => {
                    </Label>
                    <Slider
                      id="opacity-image"
-                     value={[parseFloat(opacityImage)]}
+                     value={[Number.parseFloat(opacityImage)]}
                      onValueChange={(values) => setOpacityImage(values[0].toString())}
                      min={0}
                      max={1}

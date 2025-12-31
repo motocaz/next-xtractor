@@ -44,7 +44,7 @@ export const savePDFWithBookmarks = async (
 
         let zoom = null;
         if (node.zoom !== null && node.zoom !== '' && node.zoom !== '0') {
-          zoom = PDFNumber.of(parseFloat(node.zoom) / 100);
+          zoom = PDFNumber.of(Number.parseFloat(node.zoom) / 100);
         }
 
         destArray = pdfDoc.context.obj([

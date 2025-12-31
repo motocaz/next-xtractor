@@ -63,7 +63,7 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
           return;
         }
 
-        const opacityNum = parseFloat(opacityText);
+        const opacityNum = Number.parseFloat(opacityText);
         if (isNaN(opacityNum) || opacityNum < 0 || opacityNum > 1) {
           setError("Please enter a valid opacity (0 to 1).");
           setIsProcessing(false);
@@ -117,7 +117,7 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
           return;
         }
 
-        const opacityNum = parseFloat(opacityImage);
+        const opacityNum = Number.parseFloat(opacityImage);
         if (isNaN(opacityNum) || opacityNum < 0 || opacityNum > 1) {
           setError("Please enter a valid opacity (0 to 1).");
           setIsProcessing(false);
