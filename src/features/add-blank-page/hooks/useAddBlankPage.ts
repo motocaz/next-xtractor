@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { addBlankPages } from '../lib/add-blank-page-logic';
 import { downloadFile } from '@/lib/pdf/file-utils';
-import { usePDFLoader } from '@/hooks/usePDFLoader';
+import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 
 export interface UseAddBlankPageReturn {
   pageNumber: string;
@@ -13,7 +13,7 @@ export interface UseAddBlankPageReturn {
   error: string | null;
   success: string | null;
   pdfFile: File | null;
-  pdfDoc: ReturnType<typeof usePDFLoader>['pdfDoc'];
+  pdfDoc: ReturnType<typeof usePDFProcessor>['pdfDoc'];
   isLoadingPDF: boolean;
   pdfError: string | null;
   totalPages: number;
@@ -28,21 +28,25 @@ export interface UseAddBlankPageReturn {
 export const useAddBlankPage = (): UseAddBlankPageReturn => {
   const [pageNumber, setPageNumber] = useState<string>('');
   const [pageCount, setPageCount] = useState<string>('1');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const {
+    isProcessing,
+    loadingMessage,
+    error,
+    success,
     pdfDoc,
     pdfFile,
-    isLoading: isLoadingPDF,
-    error: pdfError,
+    isLoadingPDF,
+    pdfError,
     loadPDF,
-    reset: resetPDF,
-  } = usePDFLoader();
-
-  const totalPages = pdfDoc ? pdfDoc.getPageCount() : 0;
+    resetPDF,
+    totalPages,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+    resetProcessing,
+  } = usePDFProcessor();
 
   const processBlankPages = useCallback(async () => {
     if (!pdfDoc) {
@@ -101,17 +105,14 @@ export const useAddBlankPage = (): UseAddBlankPageReturn => {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfDoc, pageNumber, pageCount, pdfFile]);
+  }, [pdfDoc, pageNumber, pageCount, pdfFile, setIsProcessing, setError, setSuccess, setLoadingMessage]);
 
   const reset = useCallback(() => {
     setPageNumber('');
     setPageCount('1');
-    setError(null);
-    setSuccess(null);
-    setLoadingMessage(null);
-    setIsProcessing(false);
+    resetProcessing();
     resetPDF();
-  }, [resetPDF]);
+  }, [resetProcessing, resetPDF]);
 
   return {
     pageNumber,
