@@ -77,11 +77,11 @@ export const savePDFWithBookmarks = async (
           rgb = [r, g, b];
         } else {
           const colorMap: Record<string, number[]> = {
-            red: [1.0, 0.0, 0.0],
-            blue: [0.0, 0.0, 1.0],
-            green: [0.0, 1.0, 0.0],
-            yellow: [1.0, 1.0, 0.0],
-            purple: [0.5, 0.0, 0.5],
+            red: [1, 0, 0],
+            blue: [0, 0, 1],
+            green: [0, 1, 0],
+            yellow: [1, 1, 0],
+            purple: [0.5, 0, 0.5],
           };
           rgb = colorMap[node.color];
         }
