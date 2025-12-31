@@ -55,7 +55,7 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
           return;
         }
 
-        const fontSizeNum = parseInt(fontSize, 10);
+        const fontSizeNum = Number.parseInt(fontSize, 10);
         if (isNaN(fontSizeNum) || fontSizeNum <= 0) {
           setError("Please enter a valid font size (greater than 0).");
           setIsProcessing(false);
@@ -71,7 +71,7 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
           return;
         }
 
-        const angleNum = parseInt(angleText, 10);
+        const angleNum = Number.parseInt(angleText, 10);
         if (isNaN(angleNum)) {
           setError("Please enter a valid angle.");
           setIsProcessing(false);
@@ -125,7 +125,7 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
           return;
         }
 
-        const angleNum = parseInt(angleImage, 10);
+        const angleNum = Number.parseInt(angleImage, 10);
         if (isNaN(angleNum)) {
           setError("Please enter a valid angle.");
           setIsProcessing(false);

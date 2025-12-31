@@ -222,7 +222,7 @@ export const AddWatermarkTool = () => {
                   </Label>
                   <Slider
                     id="angle-text"
-                    value={[parseInt(angleText, 10)]}
+                    value={[Number.parseInt(angleText, 10)]}
                     onValueChange={(values) => setAngleText(values[0].toString())}
                     min={-180}
                     max={180}
@@ -274,7 +274,7 @@ export const AddWatermarkTool = () => {
                   </Label>
                   <Slider
                     id="angle-image"
-                    value={[parseInt(angleImage, 10)]}
+                    value={[Number.parseInt(angleImage, 10)]}
                     onValueChange={(values) => setAngleImage(values[0].toString())}
                     min={-180}
                     max={180}

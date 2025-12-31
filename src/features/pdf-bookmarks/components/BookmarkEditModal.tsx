@@ -96,7 +96,7 @@ export const BookmarkEditModal = ({
     if (color === "custom") {
       finalColor = customColor;
     } else {
-      finalColor = color === "none" ? (finalColor = null) : color || null;
+      finalColor = color === "none" ? null : color || null;
     }
 
     const finalStyle = style === "normal" ? null : style || null;

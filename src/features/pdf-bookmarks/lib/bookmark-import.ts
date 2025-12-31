@@ -8,15 +8,16 @@ export const parseCSV = (text: string): BookmarkNode[] => {
   ];
 
   for (const line of lines) {
-    const match =
-      line.match(/^"(.+)",(\d+),(\d+)$/) || line.match(/^([^,]+),(\d+),(\d+)$/);
+    const pattern1 = /^"(.+)",(\d+),(\d+)$/;
+    const pattern2 = /^([^,]+),(\d+),(\d+)$/;
+    const match = pattern1.exec(line) || pattern2.exec(line);
     if (!match) continue;
 
     const [, title, page, level] = match;
     const bookmark: BookmarkNode = {
       id: String(Date.now() + Math.random()),
       title: title.replace(/""/g, '"'),
-      page: parseInt(page),
+      page: Number.parseInt(page),
       children: [],
       color: null,
       style: null,
@@ -25,7 +26,7 @@ export const parseCSV = (text: string): BookmarkNode[] => {
       zoom: null,
     };
 
-    const lvl = parseInt(level);
+    const lvl = Number.parseInt(level);
     while (stack[stack.length - 1].level >= lvl) stack.pop();
     stack[stack.length - 1].children.push(bookmark);
     stack.push({ ...bookmark, level: lvl });

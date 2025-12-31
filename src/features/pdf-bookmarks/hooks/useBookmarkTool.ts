@@ -127,6 +127,27 @@ const findAndReorderInTree = (
   });
 };
 
+const applyPropertyToSelectedNodes = (
+  nodes: BookmarkNode[],
+  selectedBookmarks: Set<string>,
+  property: "color" | "style",
+  value: string | null
+): BookmarkNode[] => {
+  return nodes.map((node) => {
+    if (selectedBookmarks.has(node.id)) {
+      return { ...node, [property]: value };
+    }
+    return {
+      ...node,
+      children: node.children.map((child) =>
+        selectedBookmarks.has(child.id)
+          ? { ...child, [property]: value }
+          : child
+      ),
+    };
+  });
+};
+
 export const useBookmarkTool = (): UseBookmarkToolReturn => {
   const [bookmarkTree, setBookmarkTree] = useState<BookmarkNode[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -442,17 +463,7 @@ export const useBookmarkTool = (): UseBookmarkToolReturn => {
   const applyBatchColor = useCallback(
     (color: string | null) => {
       setBookmarkTree((prev) =>
-        prev.map((node) => {
-          if (selectedBookmarks.has(node.id)) {
-            return { ...node, color };
-          }
-          return {
-            ...node,
-            children: node.children.map((child) =>
-              selectedBookmarks.has(child.id) ? { ...child, color } : child
-            ),
-          };
-        })
+        applyPropertyToSelectedNodes(prev, selectedBookmarks, "color", color)
       );
       saveState();
     },
@@ -462,17 +473,7 @@ export const useBookmarkTool = (): UseBookmarkToolReturn => {
   const applyBatchStyle = useCallback(
     (style: string | null) => {
       setBookmarkTree((prev) =>
-        prev.map((node) => {
-          if (selectedBookmarks.has(node.id)) {
-            return { ...node, style };
-          }
-          return {
-            ...node,
-            children: node.children.map((child) =>
-              selectedBookmarks.has(child.id) ? { ...child, style } : child
-            ),
-          };
-        })
+        applyPropertyToSelectedNodes(prev, selectedBookmarks, "style", style)
       );
       saveState();
     },
@@ -536,41 +537,29 @@ export const useBookmarkTool = (): UseBookmarkToolReturn => {
 
   const importJSON = useCallback(
     async (file: File) => {
-      try {
-        const text = await file.text();
-        const imported = parseJSON(text);
-        if (pdfLoaded) {
-          setBookmarkTree(imported);
-          saveState();
-          setPendingImport(null);
-        } else {
-          setPendingImport({
-            type: "json",
-            fileName: file.name,
-            bookmarks: imported,
-          });
-        }
-      } catch (err) {
-        throw new Error("Failed to import JSON");
+      const text = await file.text();
+      const imported = parseJSON(text);
+      if (pdfLoaded) {
+        setBookmarkTree(imported);
+        saveState();
+        setPendingImport(null);
+      } else {
+        setPendingImport({
+          type: "json",
+          fileName: file.name,
+          bookmarks: imported,
+        });
       }
     },
     [saveState, pdfLoaded]
   );
 
   const exportCSV = useCallback(() => {
-    try {
-      exportToCSV(bookmarkTree, originalFileName);
-    } catch (err) {
-      throw err;
-    }
+    exportToCSV(bookmarkTree, originalFileName);
   }, [bookmarkTree, originalFileName]);
 
   const exportJSON = useCallback(() => {
-    try {
-      exportToJSON(bookmarkTree, originalFileName);
-    } catch (err) {
-      throw err;
-    }
+    exportToJSON(bookmarkTree, originalFileName);
   }, [bookmarkTree, originalFileName]);
 
   const extractExisting = useCallback(async () => {

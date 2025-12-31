@@ -57,8 +57,8 @@ export const useAddBlankPage = (): UseAddBlankPageReturn => {
 
     const position = pageNumber.trim() === '' 
       ? 0 
-      : parseInt(pageNumber, 10);
-    const count = parseInt(pageCount, 10);
+      : Number.parseInt(pageNumber, 10);
+    const count = Number.parseInt(pageCount, 10);
     const total = pdfDoc.getPageCount();
 
     if (pageNumber.trim() !== '' && (isNaN(position) || position < 0 || position > total)) {

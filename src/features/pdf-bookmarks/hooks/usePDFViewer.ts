@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useRef } from 'react';
-import * as pdfjsLib from 'pdfjs-dist';
-import type { PDFDocumentProxy, PageViewport } from 'pdfjs-dist';
-import type { PDFViewerState } from '../types';
+import { useState, useCallback, useRef } from "react";
+import * as pdfjsLib from "pdfjs-dist";
+import type { PDFDocumentProxy, PageViewport } from "pdfjs-dist";
+import type { PDFViewerState } from "../types";
 
-if (typeof window !== 'undefined') {
+if (typeof globalThis.window !== "undefined") {
   pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.mjs',
+    "pdfjs-dist/build/pdf.worker.min.mjs",
     import.meta.url
   ).toString();
 }
@@ -37,7 +37,7 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
   const [state, setState] = useState<PDFViewerState>({
     currentPage: 1,
     totalPages: 0,
-    zoom: 1.0,
+    zoom: 1,
     viewport: null,
     isLoading: false,
   });
@@ -60,7 +60,7 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
         isLoading: false,
       }));
     } catch (error) {
-      console.error('Error loading PDF:', error);
+      console.error("Error loading PDF:", error);
       setState((prev) => ({ ...prev, isLoading: false }));
       throw error;
     }
@@ -77,9 +77,15 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
       if (!pdfJsDocRef.current) return;
 
       const page = await pdfJsDocRef.current.getPage(pageNum);
-      const zoomScale = zoom !== null && zoom !== 0
-        ? typeof zoom === 'number' ? zoom : parseFloat(String(zoom)) / 100
-        : state.zoom;
+      let zoomScale;
+      if (zoom !== null && zoom !== 0) {
+        zoomScale =
+          typeof zoom === "number"
+            ? zoom
+            : Number.parseFloat(String(zoom)) / 100;
+      } else {
+        zoomScale = state.zoom;
+      }
 
       const dpr = window.devicePixelRatio || 1;
       const viewport = page.getViewport({ scale: zoomScale });
@@ -88,15 +94,19 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
       canvas.height = viewport.height * dpr;
       canvas.width = viewport.width * dpr;
 
-      canvas.style.width = viewport.width + 'px';
-      canvas.style.height = viewport.height + 'px';
+      canvas.style.width = viewport.width + "px";
+      canvas.style.height = viewport.height + "px";
 
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
       ctx.scale(dpr, dpr);
 
-      await page.render({ canvasContext: ctx, viewport: viewport, canvas: canvas }).promise;
+      await page.render({
+        canvasContext: ctx,
+        viewport: viewport,
+        canvas: canvas,
+      }).promise;
 
       // Draw destination marker if coordinates are provided
       if (destX !== null && destY !== null) {
@@ -104,12 +114,12 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
         const canvasY = viewport.height - destY; // Flip Y axis
 
         ctx.save();
-        ctx.strokeStyle = '#3b82f6';
-        ctx.fillStyle = '#3b82f6';
+        ctx.strokeStyle = "#3b82f6";
+        ctx.fillStyle = "#3b82f6";
         ctx.lineWidth = 3;
 
         ctx.shadowBlur = 10;
-        ctx.shadowColor = 'rgba(59, 130, 246, 0.5)';
+        ctx.shadowColor = "rgba(59, 130, 246, 0.5)";
         ctx.beginPath();
         ctx.arc(canvasX, canvasY, 12, 0, 2 * Math.PI);
         ctx.fill();
@@ -131,15 +141,15 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
 
         // Draw coordinate text background
         const text = `X: ${Math.round(destX)}, Y: ${Math.round(destY)}`;
-        ctx.font = 'bold 12px monospace';
+        ctx.font = "bold 12px monospace";
         const textMetrics = ctx.measureText(text);
         const textWidth = textMetrics.width;
         const textHeight = 18;
 
-        ctx.fillStyle = 'rgba(59, 130, 246, 0.95)';
+        ctx.fillStyle = "rgba(59, 130, 246, 0.95)";
         ctx.fillRect(canvasX + 18, canvasY - 25, textWidth + 10, textHeight);
 
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = "white";
         ctx.fillText(text, canvasX + 23, canvasY - 10);
 
         ctx.restore();
@@ -183,7 +193,7 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
   const zoomIn = useCallback(() => {
     setState((prev) => ({
       ...prev,
-      zoom: Math.min(prev.zoom + 0.05, 2.0),
+      zoom: Math.min(prev.zoom + 0.05, 2),
     }));
   }, []);
 
@@ -195,7 +205,7 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
   }, []);
 
   const zoomFit = useCallback(() => {
-    setState((prev) => ({ ...prev, zoom: 1.0 }));
+    setState((prev) => ({ ...prev, zoom: 1 }));
   }, []);
 
   const getViewport = useCallback(() => {
@@ -225,4 +235,3 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
     getTotalPages,
   };
 };
-

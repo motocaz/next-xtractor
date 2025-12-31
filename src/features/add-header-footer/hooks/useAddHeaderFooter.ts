@@ -52,7 +52,7 @@ export const useAddHeaderFooter = (): UseAddHeaderFooterReturn => {
       return;
     }
 
-    const fontSizeNum = parseInt(fontSize, 10);
+    const fontSizeNum = Number.parseInt(fontSize, 10);
     if (isNaN(fontSizeNum) || fontSizeNum <= 0) {
       setError('Please enter a valid font size (greater than 0).');
       return;

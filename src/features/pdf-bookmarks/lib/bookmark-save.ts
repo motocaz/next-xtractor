@@ -71,9 +71,9 @@ export const savePDFWithBookmarks = async (
 
         if (node.color.startsWith('#')) {
           const hex = node.color.replace('#', '');
-          const r = parseInt(hex.substring(0, 2), 16) / 255;
-          const g = parseInt(hex.substring(2, 4), 16) / 255;
-          const b = parseInt(hex.substring(4, 6), 16) / 255;
+          const r = Number.parseInt(hex.substring(0, 2), 16) / 255;
+          const g = Number.parseInt(hex.substring(2, 4), 16) / 255;
+          const b = Number.parseInt(hex.substring(4, 6), 16) / 255;
           rgb = [r, g, b];
         } else {
           const colorMap: Record<string, number[]> = {
