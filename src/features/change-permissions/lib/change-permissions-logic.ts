@@ -42,7 +42,6 @@ export const changePermissions = async (
 
     const args = [inputPath];
 
-    // Add password if provided
     if (options.currentPassword) {
       args.push('--password=' + options.currentPassword);
     }

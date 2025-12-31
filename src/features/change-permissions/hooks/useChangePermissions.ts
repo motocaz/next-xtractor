@@ -35,7 +35,7 @@ export const useChangePermissions = (): UseChangePermissionsReturn => {
   const [pdfError, setPdfError] = useState<string | null>(null);
 
   const loadPDF = useCallback(async (file: File) => {
-    if (!file || file.type !== 'application/pdf') {
+    if (file?.type !== 'application/pdf') {
       setPdfError('Please select a valid PDF file.');
       return;
     }
