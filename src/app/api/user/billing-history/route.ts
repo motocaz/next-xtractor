@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     }
 
     const searchParams = request.nextUrl.searchParams;
-    const rawLimit = parseInt(searchParams.get('limit') || '50', 10);
+    const rawLimit = Number.parseInt(searchParams.get('limit') || '50', 10);
     const limit = Math.min(Math.max(rawLimit, 1), 100);
 
     const billingHistory = await getUserBillingHistory(user.id, limit);

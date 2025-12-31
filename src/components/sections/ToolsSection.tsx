@@ -23,6 +23,7 @@ import {
   Hash,
   Droplet,
   File,
+  Bookmark,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -56,6 +57,7 @@ const iconMap: Record<string, LucideIcon> = {
   hash: Hash,
   water: Droplet,
   file: File,
+  bookmark: Bookmark,
 };
 
 const allTools: Omit<Tool, "icon">[] = [
@@ -179,6 +181,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "bookmarks",
+    name: "Edit Bookmarks",
+    subtitle: "Add, edit, and organize PDF bookmarks with custom destinations.",
+    href: "/bookmarks",
+    implemented: true,
+  },
+  {
     id: "jpg-to-pdf",
     name: "JPG to PDF",
     subtitle: "Create a PDF from one or more JPG images.",
@@ -248,6 +257,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "add-header-footer": "file-edit",
     "add-watermark": "water",
     "add-page-numbers": "hash",
+    bookmarks: "bookmark",
     "jpg-to-pdf": "image-up",
     "png-to-pdf": "image-up",
     "bmp-to-pdf": "image-up",
