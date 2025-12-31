@@ -24,6 +24,7 @@ import {
   Droplet,
   File,
   Bookmark,
+  Palette,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -58,6 +59,7 @@ const iconMap: Record<string, LucideIcon> = {
   water: Droplet,
   file: File,
   bookmark: Bookmark,
+  palette: Palette,
 };
 
 const allTools: Omit<Tool, "icon">[] = [
@@ -236,6 +238,20 @@ const allTools: Omit<Tool, "icon">[] = [
     href: "#",
     implemented: false,
   },
+  {
+    id: "change-permissions",
+    name: "Change Permissions",
+    subtitle: "Modify passwords and permissions on your PDF documents.",
+    href: "/change-permissions",
+    implemented: true,
+  },
+  {
+    id: "change-background-color",
+    name: "Change Background Color",
+    subtitle: "Change the background color of every page in your PDF.",
+    href: "/change-background-color",
+    implemented: true,
+  },
 ];
 
 const toolsWithIcons: Tool[] = allTools.map((tool) => {
@@ -265,6 +281,8 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "pdf-to-png": "file-image",
     "sign-pdf": "pen-tool",
     cropper: "crop",
+    "change-permissions": "lock",
+    "change-background-color": "palette",
   };
 
   const iconName = iconNameMap[tool.id] || "file";

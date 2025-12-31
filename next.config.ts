@@ -1,7 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  turbopack: {
+    resolveAlias: {
+      fs: {
+        browser: './src/lib/empty-module.ts',
+      },
+      path: {
+        browser: './src/lib/empty-module.ts',
+      },
+      crypto: {
+        browser: './src/lib/empty-module.ts',
+      },
+    },
+  },
 };
 
 export default nextConfig;
