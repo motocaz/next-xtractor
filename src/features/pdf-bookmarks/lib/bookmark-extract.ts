@@ -192,11 +192,11 @@ const findPageIndex = (
     const resolved = resolveRefFn(doc, pageRef);
 
     if (hasNumberValue(pageRef)) {
-      const numericIndex = pageRef.numberValue | 0;
+      const numericIndex = Math.trunc(pageRef.numberValue);
       if (numericIndex >= 0 && numericIndex < pages.length) return numericIndex;
     }
 
-    if (hasObjectNumber(pageRef)) {
+  if (hasObjectNumber(pageRef)) {
       const idxByObjNum = pages.findIndex(
         (p) => p.ref.objectNumber === pageRef.objectNumber
       );
@@ -417,7 +417,7 @@ const traverseBookmarkTree = (
     }
   }
 
-  return bookmark;
+    return bookmark;
 };
 
 export const extractExistingBookmarks = async (

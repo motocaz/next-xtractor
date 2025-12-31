@@ -5,7 +5,7 @@ import * as pdfjsLib from "pdfjs-dist";
 import type { PDFDocumentProxy, PageViewport } from "pdfjs-dist";
 import type { PDFViewerState } from "../types";
 
-if (typeof globalThis.window !== "undefined") {
+if (globalThis.window === undefined) {
   pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
     "pdfjs-dist/build/pdf.worker.min.mjs",
     import.meta.url
