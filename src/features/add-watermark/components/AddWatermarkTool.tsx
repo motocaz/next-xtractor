@@ -3,14 +3,15 @@
 import Link from 'next/link';
 import { useAddWatermark } from '../hooks/useAddWatermark';
 import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { Button } from '@/components/ui/button';
+import { ProcessButton } from '@/components/common/ProcessButton';
+import { ProcessMessages } from '@/components/common/ProcessMessages';
+import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
 import { Input } from '@/components/ui/input';
-import { Spinner } from '@/components/ui/spinner';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export const AddWatermarkTool = () => {
   const {
@@ -250,47 +251,22 @@ export const AddWatermarkTool = () => {
             Total pages: <span id="total-pages">{totalPages}</span>
           </div>
 
-          <Button
-            id="process-btn"
-            variant="gradient"
-            className="w-full"
+          <ProcessButton
             onClick={processWatermark}
-            disabled={isProcessing}
+            isProcessing={isProcessing}
+            loadingMessage={loadingMessage}
           >
-            {isProcessing ? (
-              <span className="flex items-center gap-2">
-                <Spinner size="sm" />
-                {loadingMessage || 'Processing...'}
-              </span>
-            ) : (
-              'Add Watermark & Download'
-            )}
-          </Button>
+            Add Watermark & Download
+          </ProcessButton>
 
-          {success && (
-            <div className="flex items-center gap-2 p-3 bg-primary/10 border border-primary/20 rounded-md">
-              <CheckCircle2 className="h-5 w-5 text-primary" />
-              <span className="text-sm text-foreground">{success}</span>
-            </div>
-          )}
-
-          {error && (
-            <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-              <AlertCircle className="h-5 w-5 text-destructive" />
-              <span className="text-sm text-destructive">{error}</span>
-            </div>
-          )}
+          <ProcessMessages success={success} error={error} />
         </div>
       )}
 
-      {isProcessing && loadingMessage && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-card border border-border rounded-lg p-6 flex flex-col items-center gap-4">
-            <Spinner size="lg" />
-            <p className="text-foreground">{loadingMessage}</p>
-          </div>
-        </div>
-      )}
+      <ProcessLoadingModal
+        isProcessing={isProcessing}
+        loadingMessage={loadingMessage}
+      />
     </div>
   );
 };
