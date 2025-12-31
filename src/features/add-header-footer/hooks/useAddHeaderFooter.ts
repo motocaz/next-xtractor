@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { addHeaderFooter } from '../lib/add-header-footer-logic';
 import { downloadFile } from '@/lib/pdf/file-utils';
-import { usePDFLoader } from '@/hooks/usePDFLoader';
+import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import type { UseAddHeaderFooterReturn } from '../types';
 
 export const useAddHeaderFooter = (): UseAddHeaderFooterReturn => {
@@ -16,21 +16,25 @@ export const useAddHeaderFooter = (): UseAddHeaderFooterReturn => {
   const [footerLeft, setFooterLeft] = useState<string>('');
   const [footerCenter, setFooterCenter] = useState<string>('');
   const [footerRight, setFooterRight] = useState<string>('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const {
+    isProcessing,
+    loadingMessage,
+    error,
+    success,
     pdfDoc,
     pdfFile,
-    isLoading: isLoadingPDF,
-    error: pdfError,
+    isLoadingPDF,
+    pdfError,
     loadPDF,
-    reset: resetPDF,
-  } = usePDFLoader();
-
-  const totalPages = pdfDoc ? pdfDoc.getPageCount() : 0;
+    resetPDF,
+    totalPages,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+    resetProcessing,
+  } = usePDFProcessor();
 
   const processHeaderFooter = useCallback(async () => {
     if (!pdfDoc) {
@@ -108,6 +112,10 @@ export const useAddHeaderFooter = (): UseAddHeaderFooterReturn => {
     footerCenter,
     footerRight,
     pdfFile,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
   ]);
 
   const reset = useCallback(() => {
@@ -120,12 +128,9 @@ export const useAddHeaderFooter = (): UseAddHeaderFooterReturn => {
     setFooterLeft('');
     setFooterCenter('');
     setFooterRight('');
-    setError(null);
-    setSuccess(null);
-    setLoadingMessage(null);
-    setIsProcessing(false);
+    resetProcessing();
     resetPDF();
-  }, [resetPDF]);
+  }, [resetProcessing, resetPDF]);
 
   return {
     pageRange,

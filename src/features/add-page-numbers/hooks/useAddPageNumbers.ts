@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { addPageNumbers } from '../lib/add-page-numbers-logic';
 import { downloadFile } from '@/lib/pdf/file-utils';
-import { usePDFLoader } from '@/hooks/usePDFLoader';
+import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import type { UseAddPageNumbersReturn, PageNumbersOptions } from '../types';
 
 export const useAddPageNumbers = (): UseAddPageNumbersReturn => {
@@ -11,21 +11,25 @@ export const useAddPageNumbers = (): UseAddPageNumbersReturn => {
   const [fontSize, setFontSize] = useState<string>('12');
   const [format, setFormat] = useState<string>('default');
   const [textColor, setTextColor] = useState<string>('#000000');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const {
+    isProcessing,
+    loadingMessage,
+    error,
+    success,
     pdfDoc,
     pdfFile,
-    isLoading: isLoadingPDF,
-    error: pdfError,
+    isLoadingPDF,
+    pdfError,
     loadPDF,
-    reset: resetPDF,
-  } = usePDFLoader();
-
-  const totalPages = pdfDoc ? pdfDoc.getPageCount() : 0;
+    resetPDF,
+    totalPages,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+    resetProcessing,
+  } = usePDFProcessor();
 
   const processPageNumbers = useCallback(async () => {
     if (!pdfDoc) {
@@ -86,19 +90,16 @@ export const useAddPageNumbers = (): UseAddPageNumbersReturn => {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfDoc, position, fontSize, format, textColor, pdfFile]);
+  }, [pdfDoc, position, fontSize, format, textColor, pdfFile, setIsProcessing, setError, setSuccess, setLoadingMessage]);
 
   const reset = useCallback(() => {
     setPosition('bottom-center');
     setFontSize('12');
     setFormat('default');
     setTextColor('#000000');
-    setError(null);
-    setSuccess(null);
-    setLoadingMessage(null);
-    setIsProcessing(false);
+    resetProcessing();
     resetPDF();
-  }, [resetPDF]);
+  }, [resetProcessing, resetPDF]);
 
   return {
     position,

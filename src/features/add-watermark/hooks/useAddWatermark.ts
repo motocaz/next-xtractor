@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { addWatermark } from "../lib/add-watermark-logic";
 import { downloadFile } from "@/lib/pdf/file-utils";
-import { usePDFLoader } from "@/hooks/usePDFLoader";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
 import type { UseAddWatermarkReturn, WatermarkType } from "../types";
 
 export const useAddWatermark = (): UseAddWatermarkReturn => {
@@ -19,21 +19,24 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
   const [opacityImage, setOpacityImage] = useState<string>("0.3");
   const [angleImage, setAngleImage] = useState<string>("0");
 
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-
   const {
+    isProcessing,
+    loadingMessage,
+    error,
+    success,
     pdfDoc,
     pdfFile,
-    isLoading: isLoadingPDF,
-    error: pdfError,
+    isLoadingPDF,
+    pdfError,
     loadPDF,
-    reset: resetPDF,
-  } = usePDFLoader();
-
-  const totalPages = pdfDoc ? pdfDoc.getPageCount() : 0;
+    resetPDF,
+    totalPages,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+    resetProcessing,
+  } = usePDFProcessor();
 
   const processWatermark = useCallback(async () => {
     if (!pdfDoc) {
@@ -172,6 +175,10 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
     opacityImage,
     angleImage,
     pdfFile,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
   ]);
 
   const reset = useCallback(() => {
@@ -184,12 +191,9 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
     setImageFile(null);
     setOpacityImage("0.3");
     setAngleImage("0");
-    setError(null);
-    setSuccess(null);
-    setLoadingMessage(null);
-    setIsProcessing(false);
+    resetProcessing();
     resetPDF();
-  }, [resetPDF]);
+  }, [resetProcessing, resetPDF]);
 
   return {
     watermarkType,

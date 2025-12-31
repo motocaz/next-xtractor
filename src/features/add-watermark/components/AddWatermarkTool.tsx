@@ -2,15 +2,16 @@
 
 import Link from 'next/link';
 import { useAddWatermark } from '../hooks/useAddWatermark';
-import { FileUploader } from '@/components/FileUploader';
-import { Button } from '@/components/ui/button';
+import { PDFUploadSection } from '@/components/common/PDFUploadSection';
+import { ProcessButton } from '@/components/common/ProcessButton';
+import { ProcessMessages } from '@/components/common/ProcessMessages';
+import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
 import { Input } from '@/components/ui/input';
-import { Spinner } from '@/components/ui/spinner';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle2, AlertCircle, ArrowLeft, X } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export const AddWatermarkTool = () => {
   const {
@@ -70,55 +71,15 @@ export const AddWatermarkTool = () => {
         Apply a text or image watermark to every page of your PDF document.
       </p>
 
-      <div className="mb-4">
-        <FileUploader
-          accept="application/pdf"
-          multiple={false}
-          onFilesSelected={async (files) => {
-            if (files[0]) {
-              await loadPDF(files[0]);
-            }
-          }}
-          disabled={isLoadingPDF || isProcessing}
-        />
-      </div>
-
-      <div id="file-display-area" className="mt-4 space-y-2">
-        {isLoadingPDF && (
-          <div className="flex items-center gap-2 p-2 bg-input rounded-md">
-            <Spinner size="sm" />
-            <span className="text-sm text-muted-foreground">
-              Loading PDF...
-            </span>
-          </div>
-        )}
-
-        {pdfError && (
-          <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-            <AlertCircle className="h-5 w-5 text-destructive" />
-            <span className="text-sm text-destructive">{pdfError}</span>
-          </div>
-        )}
-
-        {pdfFile && pdfDoc && !pdfError && (
-          <div className="flex items-center justify-between gap-2 p-2 bg-input rounded-md">
-            <div className="flex items-center gap-2 flex-1 min-w-0">
-              <CheckCircle2 className="h-5 w-5 text-primary shrink-0" />
-              <span className="text-sm text-foreground truncate">
-                {pdfFile.name}
-              </span>
-            </div>
-            <button
-              onClick={reset}
-              className="text-muted-foreground hover:text-destructive transition-colors p-1 rounded"
-              aria-label="Remove PDF"
-              title="Remove PDF"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-        )}
-      </div>
+      <PDFUploadSection
+        pdfFile={pdfFile}
+        pdfDoc={pdfDoc}
+        isLoadingPDF={isLoadingPDF}
+        pdfError={pdfError}
+        loadPDF={loadPDF}
+        reset={reset}
+        disabled={isProcessing}
+      />
 
       {showWatermarkOptions && (
         <div id="watermark-options" className="mt-6 space-y-4">
@@ -290,47 +251,22 @@ export const AddWatermarkTool = () => {
             Total pages: <span id="total-pages">{totalPages}</span>
           </div>
 
-          <Button
-            id="process-btn"
-            variant="gradient"
-            className="w-full"
+          <ProcessButton
             onClick={processWatermark}
-            disabled={isProcessing}
+            isProcessing={isProcessing}
+            loadingMessage={loadingMessage}
           >
-            {isProcessing ? (
-              <span className="flex items-center gap-2">
-                <Spinner size="sm" />
-                {loadingMessage || 'Processing...'}
-              </span>
-            ) : (
-              'Add Watermark & Download'
-            )}
-          </Button>
+            Add Watermark & Download
+          </ProcessButton>
 
-          {success && (
-            <div className="flex items-center gap-2 p-3 bg-primary/10 border border-primary/20 rounded-md">
-              <CheckCircle2 className="h-5 w-5 text-primary" />
-              <span className="text-sm text-foreground">{success}</span>
-            </div>
-          )}
-
-          {error && (
-            <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-              <AlertCircle className="h-5 w-5 text-destructive" />
-              <span className="text-sm text-destructive">{error}</span>
-            </div>
-          )}
+          <ProcessMessages success={success} error={error} />
         </div>
       )}
 
-      {isProcessing && loadingMessage && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-card border border-border rounded-lg p-6 flex flex-col items-center gap-4">
-            <Spinner size="lg" />
-            <p className="text-foreground">{loadingMessage}</p>
-          </div>
-        </div>
-      )}
+      <ProcessLoadingModal
+        isProcessing={isProcessing}
+        loadingMessage={loadingMessage}
+      />
     </div>
   );
 };
