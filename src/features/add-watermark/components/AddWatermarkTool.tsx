@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useAddWatermark } from '../hooks/useAddWatermark';
-import { FileUploader } from '@/components/FileUploader';
+import { PDFUploadSection } from '@/components/common/PDFUploadSection';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle2, AlertCircle, ArrowLeft, X } from 'lucide-react';
+import { CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
 
 export const AddWatermarkTool = () => {
   const {
@@ -70,55 +70,15 @@ export const AddWatermarkTool = () => {
         Apply a text or image watermark to every page of your PDF document.
       </p>
 
-      <div className="mb-4">
-        <FileUploader
-          accept="application/pdf"
-          multiple={false}
-          onFilesSelected={async (files) => {
-            if (files[0]) {
-              await loadPDF(files[0]);
-            }
-          }}
-          disabled={isLoadingPDF || isProcessing}
-        />
-      </div>
-
-      <div id="file-display-area" className="mt-4 space-y-2">
-        {isLoadingPDF && (
-          <div className="flex items-center gap-2 p-2 bg-input rounded-md">
-            <Spinner size="sm" />
-            <span className="text-sm text-muted-foreground">
-              Loading PDF...
-            </span>
-          </div>
-        )}
-
-        {pdfError && (
-          <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-            <AlertCircle className="h-5 w-5 text-destructive" />
-            <span className="text-sm text-destructive">{pdfError}</span>
-          </div>
-        )}
-
-        {pdfFile && pdfDoc && !pdfError && (
-          <div className="flex items-center justify-between gap-2 p-2 bg-input rounded-md">
-            <div className="flex items-center gap-2 flex-1 min-w-0">
-              <CheckCircle2 className="h-5 w-5 text-primary shrink-0" />
-              <span className="text-sm text-foreground truncate">
-                {pdfFile.name}
-              </span>
-            </div>
-            <button
-              onClick={reset}
-              className="text-muted-foreground hover:text-destructive transition-colors p-1 rounded"
-              aria-label="Remove PDF"
-              title="Remove PDF"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-        )}
-      </div>
+      <PDFUploadSection
+        pdfFile={pdfFile}
+        pdfDoc={pdfDoc}
+        isLoadingPDF={isLoadingPDF}
+        pdfError={pdfError}
+        loadPDF={loadPDF}
+        reset={reset}
+        disabled={isProcessing}
+      />
 
       {showWatermarkOptions && (
         <div id="watermark-options" className="mt-6 space-y-4">
