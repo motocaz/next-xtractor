@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { combineToSinglePage } from '../lib/combine-single-page-logic';
 import { downloadFile } from '@/lib/pdf/file-utils';
+import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import type { UseCombineSinglePageReturn } from '../types';
 
 const DEFAULT_SPACING = 18;
@@ -10,7 +11,6 @@ const DEFAULT_BACKGROUND_COLOR = '#FFFFFF';
 const DEFAULT_ADD_SEPARATOR = false;
 
 export const useCombineSinglePage = (): UseCombineSinglePageReturn => {
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [spacing, setSpacing] = useState<number>(DEFAULT_SPACING);
   const [backgroundColorHex, setBackgroundColorHex] = useState<string>(
     DEFAULT_BACKGROUND_COLOR
@@ -18,37 +18,23 @@ export const useCombineSinglePage = (): UseCombineSinglePageReturn => {
   const [addSeparator, setAddSeparator] = useState<boolean>(
     DEFAULT_ADD_SEPARATOR
   );
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [isLoadingPDF, setIsLoadingPDF] = useState(false);
-  const [pdfError, setPdfError] = useState<string | null>(null);
 
-  const loadPDF = useCallback(async (file: File) => {
-    if (file?.type !== 'application/pdf') {
-      setPdfError('Please select a valid PDF file.');
-      return;
-    }
-
-    setIsLoadingPDF(true);
-    setPdfError(null);
-    setError(null);
-    setSuccess(null);
-
-    try {
-      setPdfFile(file);
-    } catch (err) {
-      console.error('Error loading PDF:', err);
-      setPdfError(
-        err instanceof Error
-          ? err.message
-          : 'Could not load PDF. It may be corrupted.'
-      );
-    } finally {
-      setIsLoadingPDF(false);
-    }
-  }, []);
+  const {
+    isProcessing,
+    loadingMessage,
+    error,
+    success,
+    pdfFile,
+    isLoadingPDF,
+    pdfError,
+    loadPDF,
+    resetPDF,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+    resetProcessing,
+  } = usePDFProcessor();
 
   const processCombine = useCallback(async () => {
     if (!pdfFile) {
@@ -94,7 +80,7 @@ export const useCombineSinglePage = (): UseCombineSinglePageReturn => {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfFile, spacing, backgroundColorHex, addSeparator]);
+  }, [pdfFile, spacing, backgroundColorHex, addSeparator, setIsProcessing, setError, setSuccess, setLoadingMessage]);
 
   const handleSetSpacing = useCallback((value: number) => {
     setSpacing(value);
@@ -109,17 +95,12 @@ export const useCombineSinglePage = (): UseCombineSinglePageReturn => {
   }, []);
 
   const reset = useCallback(() => {
-    setPdfFile(null);
     setSpacing(DEFAULT_SPACING);
     setBackgroundColorHex(DEFAULT_BACKGROUND_COLOR);
     setAddSeparator(DEFAULT_ADD_SEPARATOR);
-    setPdfError(null);
-    setError(null);
-    setSuccess(null);
-    setLoadingMessage(null);
-    setIsProcessing(false);
-    setIsLoadingPDF(false);
-  }, []);
+    resetProcessing();
+    resetPDF();
+  }, [resetProcessing, resetPDF]);
 
   return {
     pdfFile,

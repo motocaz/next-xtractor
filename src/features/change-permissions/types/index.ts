@@ -15,6 +15,8 @@ export interface ChangePermissionsOptions {
   permissions: PDFPermissions;
 }
 
+import type { PDFDocument } from 'pdf-lib';
+
 export interface UseChangePermissionsReturn {
   currentPassword: string;
   newUserPassword: string;
@@ -25,7 +27,7 @@ export interface UseChangePermissionsReturn {
   error: string | null;
   success: string | null;
   pdfFile: File | null;
-  pdfDoc: null;
+  pdfDoc: PDFDocument | null;
   isLoadingPDF: boolean;
   pdfError: string | null;
   totalPages: number;

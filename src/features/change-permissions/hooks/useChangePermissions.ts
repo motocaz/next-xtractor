@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { changePermissions } from '../lib/change-permissions-logic';
 import { downloadFile } from '@/lib/pdf/file-utils';
+import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import type {
   UseChangePermissionsReturn,
   PDFPermissions,
@@ -25,37 +26,24 @@ export const useChangePermissions = (): UseChangePermissionsReturn => {
   const [permissions, setPermissions] =
     useState<PDFPermissions>(defaultPermissions);
 
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
-  const [isLoadingPDF, setIsLoadingPDF] = useState(false);
-  const [pdfError, setPdfError] = useState<string | null>(null);
-
-  const loadPDF = useCallback(async (file: File) => {
-    if (file?.type !== 'application/pdf') {
-      setPdfError('Please select a valid PDF file.');
-      return;
-    }
-
-    setIsLoadingPDF(true);
-    setPdfError(null);
-
-    try {
-      setPdfFile(file);
-    } catch (err) {
-      console.error('Error loading PDF:', err);
-      setPdfError(
-        err instanceof Error
-          ? err.message
-          : 'Could not load PDF. It may be corrupted.'
-      );
-    } finally {
-      setIsLoadingPDF(false);
-    }
-  }, []);
+  const {
+    isProcessing,
+    loadingMessage,
+    error,
+    success,
+    pdfDoc,
+    pdfFile,
+    isLoadingPDF,
+    pdfError,
+    loadPDF,
+    resetPDF,
+    totalPages,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+    resetProcessing,
+  } = usePDFProcessor();
 
   const processPermissions = useCallback(async () => {
     if (!pdfFile) {
@@ -120,6 +108,10 @@ export const useChangePermissions = (): UseChangePermissionsReturn => {
     newUserPassword,
     newOwnerPassword,
     permissions,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
   ]);
 
   const setPermission = useCallback(
@@ -134,14 +126,9 @@ export const useChangePermissions = (): UseChangePermissionsReturn => {
     setNewUserPassword('');
     setNewOwnerPassword('');
     setPermissions(defaultPermissions);
-    setPdfFile(null);
-    setPdfError(null);
-    setError(null);
-    setSuccess(null);
-    setLoadingMessage(null);
-    setIsProcessing(false);
-    setIsLoadingPDF(false);
-  }, []);
+    resetProcessing();
+    resetPDF();
+  }, [resetProcessing, resetPDF]);
 
   return {
     currentPassword,
@@ -153,10 +140,10 @@ export const useChangePermissions = (): UseChangePermissionsReturn => {
     error,
     success,
     pdfFile,
-    pdfDoc: null,
+    pdfDoc,
     isLoadingPDF,
     pdfError,
-    totalPages: 0,
+    totalPages,
     setCurrentPassword,
     setNewUserPassword,
     setNewOwnerPassword,
