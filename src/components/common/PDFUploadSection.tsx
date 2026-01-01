@@ -7,7 +7,7 @@ import type { PDFDocument } from 'pdf-lib';
 
 export interface PDFUploadSectionProps {
   pdfFile: File | null;
-  pdfDoc: PDFDocument | null;
+  pdfDoc?: PDFDocument | null;
   isLoadingPDF: boolean;
   pdfError: string | null;
   loadPDF: (file: File) => Promise<void>;
@@ -56,7 +56,7 @@ export const PDFUploadSection = ({
           </div>
         )}
 
-        {pdfFile && pdfDoc && !pdfError && (
+        {pdfFile && !pdfError && (
           <div className="flex items-center justify-between gap-2 p-2 bg-input rounded-md">
             <div className="flex items-center gap-2 flex-1 min-w-0">
               <CheckCircle2 className="h-5 w-5 text-primary shrink-0" />
@@ -69,6 +69,7 @@ export const PDFUploadSection = ({
               className="text-muted-foreground hover:text-destructive transition-colors p-1 rounded"
               aria-label="Remove PDF"
               title="Remove PDF"
+              disabled={disabled}
             >
               <X className="h-4 w-4" />
             </button>
