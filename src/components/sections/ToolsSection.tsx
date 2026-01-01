@@ -252,6 +252,13 @@ const allTools: Omit<Tool, "icon">[] = [
     href: "/change-background-color",
     implemented: true,
   },
+  {
+    id: "change-text-color",
+    name: "Change Text Color",
+    subtitle: "Change the color of dark text in your PDF.",
+    href: "/change-text-color",
+    implemented: true,
+  },
 ];
 
 const toolsWithIcons: Tool[] = allTools.map((tool) => {
@@ -283,6 +290,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     cropper: "crop",
     "change-permissions": "lock",
     "change-background-color": "palette",
+    "change-text-color": "palette",
   };
 
   const iconName = iconNameMap[tool.id] || "file";
