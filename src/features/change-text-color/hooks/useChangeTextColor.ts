@@ -3,44 +3,30 @@
 import { useState, useCallback } from 'react';
 import { changeTextColor } from '../lib/change-text-color-logic';
 import { downloadFile } from '@/lib/pdf/file-utils';
+import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import type { UseChangeTextColorReturn } from '../types';
 
 const DEFAULT_COLOR = '#FF0000';
 
 export const useChangeTextColor = (): UseChangeTextColorReturn => {
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [colorHex, setColorHex] = useState<string>(DEFAULT_COLOR);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [isLoadingPDF, setIsLoadingPDF] = useState(false);
-  const [pdfError, setPdfError] = useState<string | null>(null);
 
-  const loadPDF = useCallback(async (file: File) => {
-    if (file?.type !== 'application/pdf') {
-      setPdfError('Please select a valid PDF file.');
-      return;
-    }
-
-    setIsLoadingPDF(true);
-    setPdfError(null);
-    setError(null);
-    setSuccess(null);
-
-    try {
-      setPdfFile(file);
-    } catch (err) {
-      console.error('Error loading PDF:', err);
-      setPdfError(
-        err instanceof Error
-          ? err.message
-          : 'Could not load PDF. It may be corrupted.'
-      );
-    } finally {
-      setIsLoadingPDF(false);
-    }
-  }, []);
+  const {
+    isProcessing,
+    loadingMessage,
+    error,
+    success,
+    pdfFile,
+    isLoadingPDF,
+    pdfError,
+    loadPDF,
+    resetPDF,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+    resetProcessing,
+  } = usePDFProcessor();
 
   const processTextColor = useCallback(async () => {
     if (!pdfFile) {
@@ -78,22 +64,17 @@ export const useChangeTextColor = (): UseChangeTextColorReturn => {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfFile, colorHex]);
+  }, [pdfFile, colorHex, setIsProcessing, setError, setSuccess, setLoadingMessage]);
 
   const handleSetColorHex = useCallback((color: string) => {
     setColorHex(color);
   }, []);
 
   const reset = useCallback(() => {
-    setPdfFile(null);
     setColorHex(DEFAULT_COLOR);
-    setPdfError(null);
-    setError(null);
-    setSuccess(null);
-    setLoadingMessage(null);
-    setIsProcessing(false);
-    setIsLoadingPDF(false);
-  }, []);
+    resetProcessing();
+    resetPDF();
+  }, [resetProcessing, resetPDF]);
 
   return {
     pdfFile,

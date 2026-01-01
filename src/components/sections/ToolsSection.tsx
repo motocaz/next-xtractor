@@ -25,6 +25,7 @@ import {
   File,
   Bookmark,
   Palette,
+  Layers,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -60,6 +61,7 @@ const iconMap: Record<string, LucideIcon> = {
   file: File,
   bookmark: Bookmark,
   palette: Palette,
+  layers: Layers,
 };
 
 const allTools: Omit<Tool, "icon">[] = [
@@ -259,6 +261,13 @@ const allTools: Omit<Tool, "icon">[] = [
     href: "/change-text-color",
     implemented: true,
   },
+  {
+    id: "combine-single-page",
+    name: "Combine to Single Page",
+    subtitle: "Stitch all pages into one continuous scroll.",
+    href: "/combine-single-page",
+    implemented: true,
+  },
 ];
 
 const toolsWithIcons: Tool[] = allTools.map((tool) => {
@@ -291,6 +300,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "change-permissions": "lock",
     "change-background-color": "palette",
     "change-text-color": "palette",
+    "combine-single-page": "layers",
   };
 
   const iconName = iconNameMap[tool.id] || "file";
