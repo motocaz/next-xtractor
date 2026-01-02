@@ -18,9 +18,224 @@ const dataUrlToBytes = (dataUrl: string): Uint8Array => {
   const len = binaryString.length;
   const bytes = new Uint8Array(len);
   for (let i = 0; i < len; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
+    bytes[i] = binaryString.codePointAt(i) ?? 0;
   }
   return bytes;
+};
+
+const removePDFMetadata = (pdfDoc: PDFDocument): void => {
+  try {
+    pdfDoc.setTitle('');
+    pdfDoc.setAuthor('');
+    pdfDoc.setSubject('');
+    pdfDoc.setKeywords([]);
+    pdfDoc.setCreator('');
+    pdfDoc.setProducer('');
+  } catch (e) {
+    console.warn('Could not remove metadata:', e);
+  }
+};
+
+const getImageDimensions = (
+  stream: PDFStream
+): { width: number; height: number } => {
+  const width =
+    stream.dict.get(PDFName.of('Width')) instanceof PDFNumber
+      ? (stream.dict.get(PDFName.of('Width')) as PDFNumber).asNumber()
+      : 0;
+  const height =
+    stream.dict.get(PDFName.of('Height')) instanceof PDFNumber
+      ? (stream.dict.get(PDFName.of('Height')) as PDFNumber).asNumber()
+      : 0;
+  return { width, height };
+};
+
+const calculateNewDimensions = (
+  width: number,
+  height: number,
+  settings: SmartCompressionSettings
+): { newWidth: number; newHeight: number } | null => {
+  const scaleFactor = settings.scaleFactor || 1;
+  let newWidth = Math.floor(width * scaleFactor);
+  let newHeight = Math.floor(height * scaleFactor);
+
+  if (newWidth > settings.maxWidth || newHeight > settings.maxHeight) {
+    const aspectRatio = newWidth / newHeight;
+    if (newWidth > newHeight) {
+      newWidth = Math.min(newWidth, settings.maxWidth);
+      newHeight = newWidth / aspectRatio;
+    } else {
+      newHeight = Math.min(newHeight, settings.maxHeight);
+      newWidth = newHeight * aspectRatio;
+    }
+  }
+
+  const minDim = settings.minDimension || 50;
+  if (newWidth < minDim || newHeight < minDim) {
+    return null;
+  }
+
+  return {
+    newWidth: Math.floor(newWidth),
+    newHeight: Math.floor(newHeight),
+  };
+};
+
+const loadImageFromBytes = (imageBytes: Uint8Array): Promise<HTMLImageElement> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const arrayBuffer = new ArrayBuffer(imageBytes.length);
+    new Uint8Array(arrayBuffer).set(imageBytes);
+    const imageUrl = URL.createObjectURL(new Blob([arrayBuffer]));
+
+    img.onload = () => {
+      URL.revokeObjectURL(imageUrl);
+      resolve(img);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(imageUrl);
+      reject(new Error('Failed to load image'));
+    };
+    img.src = imageUrl;
+  });
+};
+
+const configureCanvasContext = (
+  ctx: CanvasRenderingContext2D,
+  settings: SmartCompressionSettings
+): void => {
+  ctx.imageSmoothingEnabled = settings.smoothing !== false;
+  const smoothingQualityMap: Record<string, ImageSmoothingQuality> = {
+    low: 'low',
+    medium: 'medium',
+    high: 'high',
+  };
+  ctx.imageSmoothingQuality =
+    smoothingQualityMap[settings.smoothingQuality || 'medium'] || 'medium';
+
+  if (settings.grayscale) {
+    ctx.filter = 'grayscale(100%)';
+  } else if (settings.contrast) {
+    ctx.filter = `contrast(${settings.contrast}) brightness(${settings.brightness || 1})`;
+  }
+};
+
+const compressImageOnCanvas = (
+  canvas: HTMLCanvasElement,
+  settings: SmartCompressionSettings
+): { bestBytes: Uint8Array; bestSize: number } => {
+  const jpegDataUrl = canvas.toDataURL('image/jpeg', settings.quality);
+  const jpegBytes = dataUrlToBytes(jpegDataUrl);
+  let bestBytes = jpegBytes;
+  let bestSize = jpegBytes.length;
+
+  if (settings.tryWebP) {
+    try {
+      const webpDataUrl = canvas.toDataURL('image/webp', settings.quality);
+      const webpBytes = dataUrlToBytes(webpDataUrl);
+      if (webpBytes.length < bestSize) {
+        bestBytes = webpBytes;
+        bestSize = webpBytes.length;
+      }
+    } catch {
+      /* WebP not supported */
+    }
+  }
+
+  return { bestBytes, bestSize };
+};
+
+const updateStreamWithCompressedImage = (
+  stream: PDFStream,
+  bestBytes: Uint8Array,
+  bestSize: number,
+  canvas: HTMLCanvasElement,
+  settings: SmartCompressionSettings
+): void => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (stream as any).contents = bestBytes;
+  stream.dict.set(PDFName.of('Length'), PDFNumber.of(bestSize));
+  stream.dict.set(PDFName.of('Width'), PDFNumber.of(canvas.width));
+  stream.dict.set(PDFName.of('Height'), PDFNumber.of(canvas.height));
+  stream.dict.set(PDFName.of('Filter'), PDFName.of('DCTDecode'));
+  stream.dict.delete(PDFName.of('DecodeParms'));
+  stream.dict.set(PDFName.of('BitsPerComponent'), PDFNumber.of(8));
+
+  if (settings.grayscale) {
+    stream.dict.set(PDFName.of('ColorSpace'), PDFName.of('DeviceGray'));
+  }
+};
+
+const processImageInStream = async (
+  stream: PDFStream,
+  pdfDoc: PDFDocument,
+  settings: SmartCompressionSettings
+): Promise<void> => {
+  const imageBytes = stream.getContents();
+  if (imageBytes.length < settings.skipSize) {
+    return;
+  }
+
+  const { width, height } = getImageDimensions(stream);
+  if (width <= 0 || height <= 0) {
+    return;
+  }
+
+  const dimensions = calculateNewDimensions(width, height, settings);
+  if (!dimensions) {
+    return;
+  }
+
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) {
+    return;
+  }
+
+  canvas.width = dimensions.newWidth;
+  canvas.height = dimensions.newHeight;
+
+  const img = await loadImageFromBytes(new Uint8Array(imageBytes));
+  configureCanvasContext(ctx, settings);
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  const { bestBytes, bestSize } = compressImageOnCanvas(canvas, settings);
+
+  if (bestSize < imageBytes.length * settings.threshold) {
+    updateStreamWithCompressedImage(stream, bestBytes, bestSize, canvas, settings);
+  }
+};
+
+const processPageImages = async (
+  page: ReturnType<PDFDocument['getPages']>[0],
+  pdfDoc: PDFDocument,
+  settings: SmartCompressionSettings
+): Promise<void> => {
+  const resources = page.node.Resources();
+  if (!resources) {
+    return;
+  }
+
+  const xobjects = resources.lookup(PDFName.of('XObject'));
+  if (!(xobjects instanceof PDFDict)) {
+    return;
+  }
+
+  for (const [, value] of xobjects.entries()) {
+    const stream = pdfDoc.context.lookup(value);
+    if (
+      !(stream instanceof PDFStream) ||
+      stream.dict.get(PDFName.of('Subtype')) !== PDFName.of('Image')
+    ) {
+      continue;
+    }
+
+    try {
+      await processImageInStream(stream, pdfDoc, settings);
+    } catch (error) {
+      console.warn('Skipping an uncompressible image in smart mode:', error);
+    }
+  }
 };
 
 const performSmartCompression = async (
@@ -30,156 +245,14 @@ const performSmartCompression = async (
   const pdfDoc = await PDFDocument.load(arrayBuffer, {
     ignoreEncryption: true,
   });
-  const pages = pdfDoc.getPages();
 
   if (settings.removeMetadata) {
-    try {
-      pdfDoc.setTitle('');
-      pdfDoc.setAuthor('');
-      pdfDoc.setSubject('');
-      pdfDoc.setKeywords([]);
-      pdfDoc.setCreator('');
-      pdfDoc.setProducer('');
-    } catch (e) {
-      console.warn('Could not remove metadata:', e);
-    }
+    removePDFMetadata(pdfDoc);
   }
 
-  for (let i = 0; i < pages.length; i++) {
-    const page = pages[i];
-    const resources = page.node.Resources();
-    if (!resources) continue;
-
-    const xobjects = resources.lookup(PDFName.of('XObject'));
-    if (!(xobjects instanceof PDFDict)) continue;
-
-    for (const [, value] of xobjects.entries()) {
-      const stream = pdfDoc.context.lookup(value);
-      if (
-        !(stream instanceof PDFStream) ||
-        stream.dict.get(PDFName.of('Subtype')) !== PDFName.of('Image')
-      )
-        continue;
-
-      try {
-        const imageBytes = stream.getContents();
-        if (imageBytes.length < settings.skipSize) continue;
-
-        const width =
-          stream.dict.get(PDFName.of('Width')) instanceof PDFNumber
-            ? (stream.dict.get(PDFName.of('Width')) as PDFNumber).asNumber()
-            : 0;
-        const height =
-          stream.dict.get(PDFName.of('Height')) instanceof PDFNumber
-            ? (stream.dict.get(PDFName.of('Height')) as PDFNumber).asNumber()
-            : 0;
-
-        if (width > 0 && height > 0) {
-          let newWidth = width;
-          let newHeight = height;
-
-          const scaleFactor = settings.scaleFactor || 1.0;
-          newWidth = Math.floor(width * scaleFactor);
-          newHeight = Math.floor(height * scaleFactor);
-
-          if (newWidth > settings.maxWidth || newHeight > settings.maxHeight) {
-            const aspectRatio = newWidth / newHeight;
-            if (newWidth > newHeight) {
-              newWidth = Math.min(newWidth, settings.maxWidth);
-              newHeight = newWidth / aspectRatio;
-            } else {
-              newHeight = Math.min(newHeight, settings.maxHeight);
-              newWidth = newHeight * aspectRatio;
-            }
-          }
-
-          const minDim = settings.minDimension || 50;
-          if (newWidth < minDim || newHeight < minDim) continue;
-
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          if (!ctx) continue;
-
-          canvas.width = Math.floor(newWidth);
-          canvas.height = Math.floor(newHeight);
-
-          const img = new Image();
-          const imageUrl = URL.createObjectURL(
-            new Blob([new Uint8Array(imageBytes)])
-          );
-
-          await new Promise<void>((resolve, reject) => {
-            img.onload = () => resolve();
-            img.onerror = reject;
-            img.src = imageUrl;
-          });
-
-          ctx.imageSmoothingEnabled = settings.smoothing !== false;
-          const smoothingQualityMap: Record<string, ImageSmoothingQuality> = {
-            low: 'low',
-            medium: 'medium',
-            high: 'high',
-          };
-          ctx.imageSmoothingQuality =
-            smoothingQualityMap[settings.smoothingQuality || 'medium'] || 'medium';
-
-          if (settings.grayscale) {
-            ctx.filter = 'grayscale(100%)';
-          } else if (settings.contrast) {
-            ctx.filter = `contrast(${settings.contrast}) brightness(${settings.brightness || 1})`;
-          }
-
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-          let bestBytes: Uint8Array | null = null;
-          let bestSize = imageBytes.length;
-
-          const jpegDataUrl = canvas.toDataURL('image/jpeg', settings.quality);
-          const jpegBytes = dataUrlToBytes(jpegDataUrl);
-          if (jpegBytes.length < bestSize) {
-            bestBytes = jpegBytes;
-            bestSize = jpegBytes.length;
-          }
-
-          if (settings.tryWebP) {
-            try {
-              const webpDataUrl = canvas.toDataURL(
-                'image/webp',
-                settings.quality
-              );
-              const webpBytes = dataUrlToBytes(webpDataUrl);
-              if (webpBytes.length < bestSize) {
-                bestBytes = webpBytes;
-                bestSize = webpBytes.length;
-              }
-            } catch {
-              /* WebP not supported */
-            }
-          }
-
-          if (bestBytes && bestSize < imageBytes.length * settings.threshold) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (stream as any).contents = bestBytes;
-            stream.dict.set(PDFName.of('Length'), PDFNumber.of(bestSize));
-            stream.dict.set(PDFName.of('Width'), PDFNumber.of(canvas.width));
-            stream.dict.set(PDFName.of('Height'), PDFNumber.of(canvas.height));
-            stream.dict.set(PDFName.of('Filter'), PDFName.of('DCTDecode'));
-            stream.dict.delete(PDFName.of('DecodeParms'));
-            stream.dict.set(PDFName.of('BitsPerComponent'), PDFNumber.of(8));
-
-            if (settings.grayscale) {
-              stream.dict.set(
-                PDFName.of('ColorSpace'),
-                PDFName.of('DeviceGray')
-              );
-            }
-          }
-          URL.revokeObjectURL(imageUrl);
-        }
-      } catch (error) {
-        console.warn('Skipping an uncompressible image in smart mode:', error);
-      }
-    }
+  const pages = pdfDoc.getPages();
+  for (const page of pages) {
+    await processPageImages(page, pdfDoc, settings);
   }
 
   const saveOptions = {
@@ -252,7 +325,7 @@ const getCompressionSettings = (
         maxHeight: 2500,
         skipSize: 5000,
       },
-      legacy: { scale: 2.0, quality: 0.9 },
+      legacy: { scale: 2, quality: 0.9 },
     },
     'small-size': {
       smart: {
@@ -272,7 +345,7 @@ const getCompressionSettings = (
         maxHeight: 1000,
         skipSize: 1000,
       },
-      legacy: { scale: 1.0, quality: 0.2 },
+      legacy: { scale: 1, quality: 0.2 },
     },
   };
 
@@ -305,7 +378,6 @@ export const compressPDF = async (
     resultBytes = await performLegacyCompression(arrayBuffer, legacySettings);
     usedMethod = 'Photon';
   } else {
-    // automatic
     onProgress?.('Running Automatic (Vector first)...');
     const vectorResultBytes = await performSmartCompression(
       arrayBuffer,
