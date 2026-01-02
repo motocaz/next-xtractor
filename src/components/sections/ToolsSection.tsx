@@ -113,8 +113,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "compress",
     name: "Compress PDF",
     subtitle: "Reduce the file size of your PDF.",
-    href: "#",
-    implemented: false,
+    href: "/compress",
+    implemented: true,
   },
   {
     id: "encrypt",
