@@ -125,7 +125,7 @@ export const ComparePDFsTool = () => {
 
   const handleFlicker = () => {
     if (!canvas2Ref.current || viewMode !== 'overlay') return;
-    const currentOpacity = parseFloat(canvas2Ref.current.style.opacity || String(opacity));
+    const currentOpacity = Number.parseFloat(canvas2Ref.current.style.opacity || String(opacity));
     const newOpacity = currentOpacity === 0 ? opacity : 0;
     canvas2Ref.current.style.transition = 'opacity 150ms ease-in-out';
     canvas2Ref.current.style.opacity = String(newOpacity);

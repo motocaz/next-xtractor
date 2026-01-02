@@ -13,7 +13,7 @@ export const renderPage = async (
   const page = await pdfDoc.getPage(pageNum);
 
   const containerWidth = container.clientWidth - 2;
-  const viewport = page.getViewport({ scale: 1.0 });
+  const viewport = page.getViewport({ scale: 1 });
   const scale = containerWidth / viewport.width;
   const scaledViewport = page.getViewport({ scale });
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback } from 'react';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { loadPDFWithPDFJS as loadPDFDocument } from '@/lib/pdf/pdfjs-loader';
 import { renderPage } from '../lib/pdf-renderer';
@@ -21,7 +21,7 @@ export const useComparePDFs = (): UseComparePDFsReturn => {
   const [isSyncScroll, setIsSyncScroll] = useState(true);
 
   const loadPDF1 = useCallback(async (file: File) => {
-    if (!file || file.type !== 'application/pdf') {
+    if (file?.type !== 'application/pdf') {
       setError1('Please select a valid PDF file.');
       return;
     }
@@ -47,7 +47,7 @@ export const useComparePDFs = (): UseComparePDFsReturn => {
   }, []);
 
   const loadPDF2 = useCallback(async (file: File) => {
-    if (!file || file.type !== 'application/pdf') {
+    if (file?.type !== 'application/pdf') {
       setError2('Please select a valid PDF file.');
       return;
     }
