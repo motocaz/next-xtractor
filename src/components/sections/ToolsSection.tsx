@@ -26,6 +26,7 @@ import {
   Bookmark,
   Palette,
   Layers,
+  GitCompare,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -62,6 +63,7 @@ const iconMap: Record<string, LucideIcon> = {
   bookmark: Bookmark,
   palette: Palette,
   layers: Layers,
+  "git-compare": GitCompare,
 };
 
 const allTools: Omit<Tool, "icon">[] = [
@@ -268,6 +270,13 @@ const allTools: Omit<Tool, "icon">[] = [
     href: "/combine-single-page",
     implemented: true,
   },
+  {
+    id: "compare-pdfs",
+    name: "Compare PDFs",
+    subtitle: "Compare two PDFs side by side or in overlay mode.",
+    href: "/compare-pdfs",
+    implemented: true,
+  },
 ];
 
 const toolsWithIcons: Tool[] = allTools.map((tool) => {
@@ -301,6 +310,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "change-background-color": "palette",
     "change-text-color": "palette",
     "combine-single-page": "layers",
+    "compare-pdfs": "git-compare",
   };
 
   const iconName = iconNameMap[tool.id] || "file";

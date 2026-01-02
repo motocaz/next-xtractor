@@ -1,16 +1,9 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import * as pdfjsLib from "pdfjs-dist";
 import type { PDFDocumentProxy, PageViewport } from "pdfjs-dist";
 import type { PDFViewerState } from "../types";
-
-if (globalThis.window === undefined) {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-    "pdfjs-dist/build/pdf.worker.min.mjs",
-    import.meta.url
-  ).toString();
-}
+import { loadPDFWithPDFJSFromBuffer } from "@/lib/pdf/pdfjs-loader";
 
 export interface UsePDFViewerReturn {
   state: PDFViewerState;
@@ -48,10 +41,7 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
   const loadPDF = useCallback(async (arrayBuffer: ArrayBuffer) => {
     setState((prev) => ({ ...prev, isLoading: true }));
     try {
-      const loadingTask = pdfjsLib.getDocument({
-        data: new Uint8Array(arrayBuffer),
-      });
-      const pdfDoc = await loadingTask.promise;
+      const pdfDoc = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
       pdfJsDocRef.current = pdfDoc;
       setState((prev) => ({
         ...prev,
@@ -108,10 +98,9 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
         canvas: canvas,
       }).promise;
 
-      // Draw destination marker if coordinates are provided
       if (destX !== null && destY !== null) {
         const canvasX = destX;
-        const canvasY = viewport.height - destY; // Flip Y axis
+        const canvasY = viewport.height - destY;
 
         ctx.save();
         ctx.strokeStyle = "#3b82f6";
@@ -125,7 +114,6 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Draw crosshair
         ctx.beginPath();
         ctx.moveTo(canvasX - 15, canvasY);
         ctx.lineTo(canvasX + 15, canvasY);
@@ -133,13 +121,11 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
         ctx.lineTo(canvasX, canvasY + 15);
         ctx.stroke();
 
-        // Draw inner circle
         ctx.beginPath();
         ctx.arc(canvasX, canvasY, 6, 0, 2 * Math.PI);
         ctx.fill();
         ctx.stroke();
 
-        // Draw coordinate text background
         const text = `X: ${Math.round(destX)}, Y: ${Math.round(destY)}`;
         ctx.font = "bold 12px monospace";
         const textMetrics = ctx.measureText(text);

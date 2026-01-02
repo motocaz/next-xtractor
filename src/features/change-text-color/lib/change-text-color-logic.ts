@@ -1,15 +1,8 @@
 'use client';
 
-import * as pdfjsLib from 'pdfjs-dist';
 import { PDFDocument as PDFLibDocument } from 'pdf-lib';
 import { readFileAsArrayBuffer, hexToRgb } from '@/lib/pdf/file-utils';
-
-if (typeof window !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.mjs',
-    import.meta.url
-  ).toString();
-}
+import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
 
 const DARKNESS_THRESHOLD = 120;
 const PREVIEW_SCALE = 0.8;
@@ -23,10 +16,7 @@ export const updateTextColorPreview = async (
 ): Promise<void> => {
   try {
     const arrayBuffer = await readFileAsArrayBuffer(file);
-    const loadingTask = pdfjsLib.getDocument({
-      data: new Uint8Array(arrayBuffer),
-    });
-    const pdf = await loadingTask.promise;
+    const pdf = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
     const page = await pdf.getPage(1); // Preview first page
     const viewport = page.getViewport({ scale: PREVIEW_SCALE });
 
@@ -86,10 +76,7 @@ export const changeTextColor = async (
 ): Promise<Blob> => {
   const { r, g, b } = hexToRgb(colorHex);
   const arrayBuffer = await readFileAsArrayBuffer(file);
-  const loadingTask = pdfjsLib.getDocument({
-    data: new Uint8Array(arrayBuffer),
-  });
-  const pdf = await loadingTask.promise;
+  const pdf = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
   const newPdfDoc = await PDFLibDocument.create();
 
   for (let i = 1; i <= pdf.numPages; i++) {
