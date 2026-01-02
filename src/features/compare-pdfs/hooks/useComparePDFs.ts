@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
-import { loadPDFWithPDFJS as loadPDFDocument } from '@/lib/pdf/pdfjs-loader';
-import { renderPage } from '../lib/pdf-renderer';
-import type { UseComparePDFsReturn, ViewMode } from '../types';
+import { useState, useCallback } from "react";
+import type { PDFDocumentProxy } from "pdfjs-dist";
+import { loadPDFWithPDFJS as loadPDFDocument } from "@/lib/pdf/pdfjs-loader";
+import { renderPage } from "../lib/pdf-renderer";
+import type { UseComparePDFsReturn, ViewMode } from "../types";
 
 export const useComparePDFs = (): UseComparePDFsReturn => {
   const [pdfDoc1, setPdfDoc1] = useState<PDFDocumentProxy | null>(null);
@@ -16,61 +16,56 @@ export const useComparePDFs = (): UseComparePDFsReturn => {
   const [error1, setError1] = useState<string | null>(null);
   const [error2, setError2] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<ViewMode>('overlay');
+  const [viewMode, setViewMode] = useState<ViewMode>("overlay");
   const [opacity, setOpacity] = useState(0.5);
   const [isSyncScroll, setIsSyncScroll] = useState(true);
 
-  const loadPDF1 = useCallback(async (file: File) => {
-    if (file?.type !== 'application/pdf') {
-      setError1('Please select a valid PDF file.');
-      return;
-    }
+  const createPDFLoader = useCallback(
+    (
+      setDoc: React.Dispatch<React.SetStateAction<PDFDocumentProxy | null>>,
+      setFile: React.Dispatch<React.SetStateAction<File | null>>,
+      setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+      setError: React.Dispatch<React.SetStateAction<string | null>>,
+      pdfLabel: string
+    ) => {
+      return async (file: File) => {
+        if (file?.type !== "application/pdf") {
+          setError("Please select a valid PDF file.");
+          return;
+        }
 
-    setIsLoading1(true);
-    setError1(null);
+        setLoading(true);
+        setError(null);
 
-    try {
-      const doc = await loadPDFDocument(file);
-      setPdfDoc1(doc);
-      setPdfFile1(file);
-      setCurrentPage(1);
-    } catch (err) {
-      console.error('Error loading PDF 1:', err);
-      setError1(
-        err instanceof Error
-          ? err.message
-          : 'Could not load PDF. It may be corrupt or password-protected.'
-      );
-    } finally {
-      setIsLoading1(false);
-    }
-  }, []);
+        try {
+          const doc = await loadPDFDocument(file);
+          setDoc(doc);
+          setFile(file);
+          setCurrentPage(1);
+        } catch (err) {
+          console.error(`Error loading ${pdfLabel}:`, err);
+          setError(
+            err instanceof Error
+              ? err.message
+              : "Could not load PDF. It may be corrupt or password-protected."
+          );
+        } finally {
+          setLoading(false);
+        }
+      };
+    },
+    []
+  );
 
-  const loadPDF2 = useCallback(async (file: File) => {
-    if (file?.type !== 'application/pdf') {
-      setError2('Please select a valid PDF file.');
-      return;
-    }
+  const loadPDF1 = useCallback(
+    createPDFLoader(setPdfDoc1, setPdfFile1, setIsLoading1, setError1, "PDF 1"),
+    [createPDFLoader]
+  );
 
-    setIsLoading2(true);
-    setError2(null);
-
-    try {
-      const doc = await loadPDFDocument(file);
-      setPdfDoc2(doc);
-      setPdfFile2(file);
-      setCurrentPage(1);
-    } catch (err) {
-      console.error('Error loading PDF 2:', err);
-      setError2(
-        err instanceof Error
-          ? err.message
-          : 'Could not load PDF. It may be corrupt or password-protected.'
-      );
-    } finally {
-      setIsLoading2(false);
-    }
-  }, []);
+  const loadPDF2 = useCallback(
+    createPDFLoader(setPdfDoc2, setPdfFile2, setIsLoading2, setError2, "PDF 2"),
+    [createPDFLoader]
+  );
 
   const resetPDF1 = useCallback(() => {
     setPdfDoc1(null);
@@ -88,7 +83,7 @@ export const useComparePDFs = (): UseComparePDFsReturn => {
 
   const handleSetViewMode = useCallback((mode: ViewMode) => {
     setViewMode(mode);
-    if (mode === 'side-by-side') {
+    if (mode === "side-by-side") {
       setOpacity(1);
     }
   }, []);
@@ -168,4 +163,3 @@ export const useComparePDFs = (): UseComparePDFsReturn => {
     renderPage: handleRenderPage,
   };
 };
-
