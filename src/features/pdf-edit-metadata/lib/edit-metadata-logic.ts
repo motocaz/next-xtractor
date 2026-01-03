@@ -2,6 +2,46 @@ import { PDFName, PDFString } from "pdf-lib";
 import type { PDFDocument } from "pdf-lib";
 import type { PDFMetadata, CustomMetadataField } from "../types";
 
+export const extractCustomMetadataFields = (
+  pdfDoc: PDFDocument
+): Map<string, string> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const infoDict = (pdfDoc as any).getInfoDict();
+  const standardKeys = new Set([
+    "Title",
+    "Author",
+    "Subject",
+    "Keywords",
+    "Creator",
+    "Producer",
+    "CreationDate",
+    "ModDate",
+  ]);
+
+  const customFields = new Map<string, string>();
+  const allKeys = infoDict
+    .keys()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .map((key: any) => key.asString().substring(1));
+
+  allKeys.forEach((key: string) => {
+    if (!standardKeys.has(key)) {
+      const value = infoDict.get(PDFName.of(key));
+      if (value) {
+        try {
+          const valueString = value.asString();
+          const cleanValue = valueString.startsWith("/")
+            ? valueString.substring(1)
+            : valueString;
+          customFields.set(key, cleanValue);
+        } catch {}
+      }
+    }
+  });
+
+  return customFields;
+};
+
 export const editPDFMetadata = async (
   pdfDoc: PDFDocument,
   metadata: PDFMetadata,
@@ -52,29 +92,9 @@ export const editPDFMetadata = async (
     "ModDate",
   ]);
 
-  const existingCustomFields = new Map<string, string>();
-
-  if (preserveExistingCustomFields) {
-    const allKeys = infoDict
-      .keys()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .map((key: any) => key.asString().substring(1));
-
-    allKeys.forEach((key: string) => {
-      if (!standardKeys.has(key)) {
-        const value = infoDict.get(PDFName.of(key));
-        if (value) {
-          try {
-            const valueString = value.asString();
-            const cleanValue = valueString.startsWith("/")
-              ? valueString.substring(1)
-              : valueString;
-            existingCustomFields.set(key, cleanValue);
-          } catch {}
-        }
-      }
-    });
-  }
+  const existingCustomFields = preserveExistingCustomFields
+    ? extractCustomMetadataFields(pdfDoc)
+    : new Map<string, string>();
 
   const allKeys = infoDict
     .keys()

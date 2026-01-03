@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { PDFName } from "pdf-lib";
-import { editPDFMetadata } from "../lib/edit-metadata-logic";
+import {
+  editPDFMetadata,
+  extractCustomMetadataFields,
+} from "../lib/edit-metadata-logic";
 import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
 import { usePDFProcessor } from "@/hooks/usePDFProcessor";
 import type {
@@ -79,42 +81,10 @@ export const useEditMetadata = (): UseEditMetadataReturn => {
         modificationDate: formatDateForInput(modificationDate),
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const infoDict = (pdfDoc as any).getInfoDict();
-      const standardKeys = new Set([
-        "Title",
-        "Author",
-        "Subject",
-        "Keywords",
-        "Creator",
-        "Producer",
-        "CreationDate",
-        "ModDate",
-      ]);
-
-      const customFieldsList: CustomMetadataField[] = [];
-      const allKeys = infoDict
-        .keys()
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .map((key: any) => key.asString().substring(1));
-
-      allKeys.forEach((key: string) => {
-        if (!standardKeys.has(key)) {
-          const value = infoDict.get(PDFName.of(key));
-          if (value) {
-            try {
-              const valueString = value.asString();
-              const cleanValue = valueString.startsWith("/")
-                ? valueString.substring(1)
-                : valueString;
-              customFieldsList.push({
-                key,
-                value: cleanValue,
-              });
-            } catch {}
-          }
-        }
-      });
+      const customFieldsMap = extractCustomMetadataFields(pdfDoc);
+      const customFieldsList: CustomMetadataField[] = Array.from(
+        customFieldsMap.entries()
+      ).map(([key, value]) => ({ key, value }));
 
       setCustomFields(customFieldsList);
     } catch (err) {
