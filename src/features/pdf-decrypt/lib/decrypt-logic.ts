@@ -1,27 +1,11 @@
 "use client";
 
-import createModule from "@neslinesli93/qpdf-wasm";
-import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let qpdfInstance: any = null;
-
-const initializeQpdf = async () => {
-  if (qpdfInstance) return qpdfInstance;
-
-  try {
-    qpdfInstance = await createModule({
-      locateFile: () => "/qpdf.wasm",
-    });
-  } catch (error) {
-    console.error("Failed to initialize qpdf-wasm:", error);
-    throw new Error(
-      "Could not load the PDF engine. Please refresh the page and try again."
-    );
-  }
-
-  return qpdfInstance;
-};
+import {
+  initializeQpdf,
+  prepareQpdfFile,
+  readQpdfOutput,
+  cleanupQpdfFiles,
+} from "@/lib/pdf/qpdf-utils";
 
 export const decryptPDF = async (
   file: File,
@@ -35,9 +19,8 @@ export const decryptPDF = async (
   try {
     qpdf = await initializeQpdf();
 
-    const fileBuffer = await readFileAsArrayBuffer(file);
-    const uint8Array = new Uint8Array(fileBuffer as ArrayBuffer);
-    qpdf.FS.writeFile(inputPath, uint8Array);
+    await prepareQpdfFile(qpdf, file, inputPath);
+
     const args = [inputPath, "--password=" + password, "--decrypt", outputPath];
 
     try {
@@ -61,30 +44,17 @@ export const decryptPDF = async (
       throw new Error("Decryption failed: " + (errorMsg || "Unknown error"));
     }
 
-    const outputFile = qpdf.FS.readFile(outputPath, { encoding: "binary" });
-
-    if (!outputFile || outputFile.length === 0) {
-      throw new Error("Decryption resulted in an empty file.");
-    }
-
-    const blob = new Blob([outputFile], { type: "application/pdf" });
+    const blob = readQpdfOutput(
+      qpdf,
+      outputPath,
+      "Decryption resulted in an empty file."
+    );
     return blob;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Error during PDF decryption:", error);
     throw error;
   } finally {
-    try {
-      if (qpdf?.FS) {
-        try {
-          qpdf.FS.unlink(inputPath);
-        } catch {}
-        try {
-          qpdf.FS.unlink(outputPath);
-        } catch {}
-      }
-    } catch (cleanupError) {
-      console.warn("Failed to cleanup WASM FS:", cleanupError);
-    }
+    cleanupQpdfFiles(qpdf, inputPath, outputPath);
   }
 };
