@@ -148,8 +148,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "delete-pages",
     name: "Delete Pages",
     subtitle: "Remove specific pages from your document.",
-    href: "#",
-    implemented: false,
+    href: "/delete-pages",
+    implemented: true,
   },
   {
     id: "extract-pages",
