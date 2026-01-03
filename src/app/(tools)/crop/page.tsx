@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { ScrollToTop } from '@/components/ScrollToTop';
 
 const CropPDFTool = dynamic(
   () =>
@@ -19,7 +20,14 @@ const CropPDFTool = dynamic(
   }
 );
 
-export default CropPDFTool;
+export default function CropPage() {
+  return (
+    <>
+      <ScrollToTop />
+      <CropPDFTool />
+    </>
+  );
+}
 
 
 
