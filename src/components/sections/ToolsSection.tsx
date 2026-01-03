@@ -145,6 +145,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: false,
   },
   {
+    id: "organize-pages",
+    name: "Organize Pages",
+    subtitle: "Reorder, duplicate, or delete pages with drag-and-drop.",
+    href: "/organize-pages",
+    implemented: true,
+  },
+  {
     id: "delete-pages",
     name: "Delete Pages",
     subtitle: "Remove specific pages from your document.",
@@ -292,6 +299,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     decrypt: "unlock",
     rotate: "rotate-cw",
     organize: "files",
+    "organize-pages": "files",
     "delete-pages": "trash-2",
     "extract-pages": "ungroup",
     "add-blank-page": "file-plus",
