@@ -162,8 +162,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "extract-pages",
     name: "Extract Pages",
     subtitle: "Save a selection of pages as new files.",
-    href: "#",
-    implemented: false,
+    href: "/extract-pages",
+    implemented: true,
   },
   {
     id: "add-blank-page",
