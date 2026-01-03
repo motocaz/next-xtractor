@@ -1,7 +1,7 @@
 "use client";
 
-import type { PDFDocument } from "pdf-lib";
 import {
+  PDFDocument,
   PDFTextField,
   PDFCheckBox,
   PDFRadioGroup,
