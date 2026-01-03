@@ -1,7 +1,7 @@
 'use client';
 
 import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
-import { renderPageAsImage } from '@/features/pdf-crop/lib/page-renderer';
+import { renderPageAsImage } from '@/lib/pdf/canvas-utils';
 import type { PageThumbnail } from '../types';
 
 export const renderAllPagesAsThumbnails = async (
