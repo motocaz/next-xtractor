@@ -13,10 +13,10 @@ export const fixDimensions = async (
   let targetHeight: number;
 
   if (options.targetSize === 'Custom') {
-    const width = parseFloat(options.customWidth || '8.5');
-    const height = parseFloat(options.customHeight || '11');
+    const width = Number.parseFloat(options.customWidth || '8.5');
+    const height = Number.parseFloat(options.customHeight || '11');
 
-    if (isNaN(width) || isNaN(height) || width <= 0 || height <= 0) {
+    if (Number.isNaN(width) || Number.isNaN(height) || width <= 0 || height <= 0) {
       throw new Error('Invalid custom dimensions. Please enter valid numbers.');
     }
 
@@ -35,9 +35,11 @@ export const fixDimensions = async (
     [targetWidth, targetHeight] = pageSize;
   }
 
-  if (options.orientation === 'landscape' && targetWidth < targetHeight) {
-    [targetWidth, targetHeight] = [targetHeight, targetWidth];
-  } else if (options.orientation === 'portrait' && targetWidth > targetHeight) {
+  const needsSwap =
+    (options.orientation === 'landscape' && targetWidth < targetHeight) ||
+    (options.orientation === 'portrait' && targetWidth > targetHeight);
+
+  if (needsSwap) {
     [targetWidth, targetHeight] = [targetHeight, targetWidth];
   }
 

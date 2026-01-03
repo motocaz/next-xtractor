@@ -46,10 +46,10 @@ export const useFixDimensions = (): UseFixDimensionsReturn => {
     }
 
     if (targetSize === 'Custom') {
-      const width = parseFloat(customWidth);
-      const height = parseFloat(customHeight);
+      const width = Number.parseFloat(customWidth);
+      const height = Number.parseFloat(customHeight);
 
-      if (isNaN(width) || isNaN(height) || width <= 0 || height <= 0) {
+      if (Number.isNaN(width) || Number.isNaN(height) || width <= 0 || height <= 0) {
         setError('Please enter valid custom dimensions (width and height must be positive numbers).');
         return;
       }
