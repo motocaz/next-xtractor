@@ -1,6 +1,6 @@
 'use client';
 
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument, PDFImage } from 'pdf-lib';
 import { saveAndDownloadPDF } from './file-utils';
 
 export interface ImageToPdfResult {
@@ -19,6 +19,36 @@ export interface HandleImageToPdfResultOptions {
   };
 }
 
+export const addImageAsPage = (
+  pdfDoc: PDFDocument,
+  embeddedImage: PDFImage
+): void => {
+  const page = pdfDoc.addPage([embeddedImage.width, embeddedImage.height]);
+  page.drawImage(embeddedImage, {
+    x: 0,
+    y: 0,
+    width: embeddedImage.width,
+    height: embeddedImage.height,
+  });
+};
+
+export const createImageToPdfResult = (
+  pdfDoc: PDFDocument,
+  failedFiles: string[]
+): ImageToPdfResult => {
+  if (pdfDoc.getPageCount() === 0) {
+    throw new Error(
+      'No valid images could be processed. Please check your files.'
+    );
+  }
+
+  return {
+    pdfDoc,
+    successCount: pdfDoc.getPageCount(),
+    failedFiles,
+  };
+};
+
 export const convertImagesToPdf = async (
   files: File[],
   convertToPngBytes: (file: File) => Promise<ArrayBuffer>,
@@ -35,30 +65,14 @@ export const convertImagesToPdf = async (
     try {
       const pngBytes = await convertToPngBytes(file);
       const pngImage = await pdfDoc.embedPng(pngBytes);
-      const page = pdfDoc.addPage([pngImage.width, pngImage.height]);
-      page.drawImage(pngImage, {
-        x: 0,
-        y: 0,
-        width: pngImage.width,
-        height: pngImage.height,
-      });
+      addImageAsPage(pdfDoc, pngImage);
     } catch (error) {
       console.warn(`Failed to process ${file.name}:`, error);
       failedFiles.push(file.name);
     }
   }
 
-  if (pdfDoc.getPageCount() === 0) {
-    throw new Error(
-      'No valid images could be processed. Please check your files.'
-    );
-  }
-
-  return {
-    pdfDoc,
-    successCount: pdfDoc.getPageCount(),
-    failedFiles,
-  };
+  return createImageToPdfResult(pdfDoc, failedFiles);
 };
 
 export const handleImageToPdfResult = async (
