@@ -1,5 +1,5 @@
 import { ScrollToTop } from '@/components/ScrollToTop';
-import { FormFillerTool } from '@/features/pdf-form-filler';
+import FormFillerToolClient from './FormFillerToolClient';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export default function FormFillerPage() {
   return (
     <>
       <ScrollToTop />
-      <FormFillerTool />
+      <FormFillerToolClient />
     </>
   );
 }
