@@ -7,9 +7,9 @@ import {
   handleWorkerErrorResponse,
 } from '@/lib/pdf/worker-utils';
 import type {
-  ExtractAttachmentsMessage,
-  ExtractAttachmentResponse,
-  AttachmentData,
+  JsonToPdfMessage,
+  JsonToPdfResponse,
+  PdfFileData,
 } from '../types';
 
 let workerInstance: Worker | null = null;
@@ -17,16 +17,16 @@ let workerInstance: Worker | null = null;
 const getWorker = (): Worker => {
   workerInstance ??= new Worker(
     new URL(
-      '/workers/extract-attachments.worker.js',
+      '/workers/json-to-pdf.worker.js',
       globalThis.location.origin
     )
   );
   return workerInstance;
 };
 
-export const extractAttachmentsFromPDFs = async (
+export const convertJSONsToPDFs = async (
   files: File[]
-): Promise<AttachmentData[]> => {
+): Promise<PdfFileData[]> => {
   return new Promise((resolve, reject) => {
     if (files.length === 0) {
       reject(new Error('No files provided'));
@@ -40,19 +40,19 @@ export const extractAttachmentsFromPDFs = async (
     );
 
     const messageHandler = (
-      e: MessageEvent<ExtractAttachmentResponse>
+      e: MessageEvent<JsonToPdfResponse>
     ): void => {
       const data = e.data;
 
       if (data.status === 'success') {
         cleanupWorkerListeners(worker, messageHandler, errorHandler);
 
-        const attachments: AttachmentData[] = data.attachments.map((att) => ({
-          name: att.name,
-          data: att.data,
+        const pdfFiles: PdfFileData[] = data.pdfFiles.map((pdf) => ({
+          name: pdf.name,
+          data: pdf.data,
         }));
 
-        resolve(attachments);
+        resolve(pdfFiles);
       } else if (handleWorkerErrorResponse(worker, messageHandler, errorHandler, data, reject)) {
         return;
       }
@@ -67,8 +67,8 @@ export const extractAttachmentsFromPDFs = async (
       .then((fileBuffers) => {
         const fileNames = files.map((file) => file.name);
 
-        const message: ExtractAttachmentsMessage = {
-          command: 'extract-attachments',
+        const message: JsonToPdfMessage = {
+          command: 'convert',
           fileBuffers,
           fileNames,
         };

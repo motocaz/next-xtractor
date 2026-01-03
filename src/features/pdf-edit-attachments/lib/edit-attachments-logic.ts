@@ -1,6 +1,7 @@
 "use client";
 
 import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
+import { createWorkerErrorHandler } from "@/lib/pdf/worker-utils";
 import type {
   AttachmentInfo,
   WorkerGetAttachmentsMessage,
@@ -15,23 +16,6 @@ const getWorker = (): Worker => {
     new URL("/workers/edit-attachments.worker.js", globalThis.location.origin)
   );
   return workerInstance;
-};
-
-const createErrorHandler = (
-  worker: Worker,
-  messageHandler: (e: MessageEvent<WorkerResponse>) => void,
-  reject: (error: Error) => void
-): ((error: ErrorEvent) => void) => {
-  const errorHandler = (error: ErrorEvent) => {
-    worker.removeEventListener('message', messageHandler);
-    worker.removeEventListener('error', errorHandler);
-    reject(
-      new Error(
-        error.message || 'Worker error occurred. Check console for details.'
-      )
-    );
-  };
-  return errorHandler;
 };
 
 export const getAttachmentsFromPDF = async (
@@ -61,7 +45,7 @@ export const getAttachmentsFromPDF = async (
       }
     };
 
-    const errorHandler = createErrorHandler(worker, messageHandler, reject);
+    const errorHandler = createWorkerErrorHandler(worker, messageHandler, reject);
 
     worker.addEventListener("message", messageHandler);
     worker.addEventListener("error", errorHandler);
@@ -110,7 +94,7 @@ export const editAttachmentsInPDF = async (
       }
     };
 
-    const errorHandler = createErrorHandler(worker, messageHandler, reject);
+    const errorHandler = createWorkerErrorHandler(worker, messageHandler, reject);
 
     worker.addEventListener("message", messageHandler);
     worker.addEventListener("error", errorHandler);
