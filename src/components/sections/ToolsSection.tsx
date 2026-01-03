@@ -239,8 +239,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "cropper",
     name: "Crop PDF",
     subtitle: "Trim the margins of every page in your PDF.",
-    href: "#",
-    implemented: false,
+    href: "/crop",
+    implemented: true,
   },
   {
     id: "change-permissions",
