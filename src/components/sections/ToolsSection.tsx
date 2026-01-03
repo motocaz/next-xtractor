@@ -85,8 +85,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "edit-attachments",
     name: "Edit Attachments",
     subtitle: "View or remove attachments in your PDF.",
-    href: "#",
-    implemented: false,
+    href: "/edit-attachments",
+    implemented: true,
   },
   {
     id: "merge",
