@@ -56,12 +56,14 @@ export const PageThumbnail = ({
         {pageData.displayNumber}
       </div>
 
-      <div className="w-full h-36 bg-background rounded-lg flex items-center justify-center overflow-hidden border-2 border-border hover:border-primary transition-colors">
+      <div className="relative w-full h-36 bg-background rounded-lg flex items-center justify-center overflow-hidden border-2 border-border hover:border-primary transition-colors">
         {thumbnailUrl ? (
           <Image
             src={thumbnailUrl}
             alt={`Page ${pageData.displayNumber}`}
-            className="max-w-full max-h-full object-contain"
+            className="object-contain"
+            fill
+            unoptimized
           />
         ) : (
           <div className="flex items-center justify-center h-full text-muted-foreground">
