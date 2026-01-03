@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { addWatermark } from "../lib/add-watermark-logic";
-import { downloadFile } from "@/lib/pdf/file-utils";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
 import { usePDFProcessor } from "@/hooks/usePDFProcessor";
 import type { UseAddWatermarkReturn, WatermarkType } from "../types";
 
@@ -93,11 +93,7 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
 
         const newPdf = await addWatermark(pdfDoc, options);
         const pdfBytes = await newPdf.save();
-        const arrayBuffer = new ArrayBuffer(pdfBytes.length);
-        new Uint8Array(arrayBuffer).set(pdfBytes);
-        const blob = new Blob([arrayBuffer], { type: "application/pdf" });
-
-        downloadFile(blob, pdfFile?.name);
+        saveAndDownloadPDF(pdfBytes, pdfFile?.name);
         setSuccess("Watermark added successfully!");
       } else {
         if (!imageFile) {
@@ -145,11 +141,7 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
 
         const newPdf = await addWatermark(pdfDoc, options);
         const pdfBytes = await newPdf.save();
-        const arrayBuffer = new ArrayBuffer(pdfBytes.length);
-        new Uint8Array(arrayBuffer).set(pdfBytes);
-        const blob = new Blob([arrayBuffer], { type: "application/pdf" });
-
-        downloadFile(blob, pdfFile?.name);
+        saveAndDownloadPDF(pdfBytes, pdfFile?.name);
         setSuccess("Watermark added successfully!");
       }
     } catch (err) {

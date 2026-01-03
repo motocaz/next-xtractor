@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { addBlankPages } from '../lib/add-blank-page-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
+import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
 import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 
 export interface UseAddBlankPageReturn {
@@ -85,11 +85,7 @@ export const useAddBlankPage = (): UseAddBlankPageReturn => {
     try {
       const newPdf = await addBlankPages(pdfDoc, position, count);
       const pdfBytes = await newPdf.save();
-      const arrayBuffer = new ArrayBuffer(pdfBytes.length);
-      new Uint8Array(arrayBuffer).set(pdfBytes);
-      const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-
-      downloadFile(blob, pdfFile?.name);
+      saveAndDownloadPDF(pdfBytes, pdfFile?.name);
 
       setSuccess(
         `Successfully added ${count} blank page${count > 1 ? 's' : ''}.`

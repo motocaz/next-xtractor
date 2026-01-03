@@ -2,8 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { PDFDocument } from 'pdf-lib';
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
-import { downloadFile } from '@/lib/pdf/file-utils';
+import { readFileAsArrayBuffer, saveAndDownloadPDF } from '@/lib/pdf/file-utils';
 import { alternateMergePDFs } from '../lib/alternate-merge-logic';
 import type { PDFFileInfo, UseAlternateMergeReturn } from '../types';
 
@@ -134,12 +133,8 @@ export const useAlternateMerge = (): UseAlternateMergeReturn => {
       const newPdfDoc = await alternateMergePDFs(pdfDocs);
 
       const mergedPdfBytes = await newPdfDoc.save();
-      const arrayBuffer = new ArrayBuffer(mergedPdfBytes.length);
-      new Uint8Array(arrayBuffer).set(mergedPdfBytes);
-      const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-
       const firstFileName = pdfFiles[0]?.fileName || 'merged';
-      downloadFile(blob, firstFileName);
+      saveAndDownloadPDF(mergedPdfBytes, firstFileName);
 
       setSuccess('PDFs have been mixed successfully!');
     } catch (err) {

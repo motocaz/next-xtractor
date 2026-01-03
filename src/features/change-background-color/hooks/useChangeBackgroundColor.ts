@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { changeBackgroundColor } from '../lib/change-background-color-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
+import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
 import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import type { UseChangeBackgroundColorReturn } from '../types';
 
@@ -47,11 +47,7 @@ export const useChangeBackgroundColor = (): UseChangeBackgroundColorReturn => {
     try {
       const newPdf = await changeBackgroundColor(pdfDoc, backgroundColor);
       const pdfBytes = await newPdf.save();
-      const arrayBuffer = new ArrayBuffer(pdfBytes.length);
-      new Uint8Array(arrayBuffer).set(pdfBytes);
-      const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-
-      downloadFile(blob, pdfFile?.name);
+      saveAndDownloadPDF(pdfBytes, pdfFile?.name);
       setSuccess('Background color changed successfully!');
     } catch (err) {
       console.error('Error changing background color:', err);

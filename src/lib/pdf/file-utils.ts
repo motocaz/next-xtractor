@@ -143,4 +143,15 @@ export const parsePageRanges = (
   return Array.from(indices).sort((a, b) => a - b);
 };
 
+export const saveAndDownloadPDF = (
+  pdfBytes: Uint8Array,
+  originalFileName?: string,
+  customFilename?: string
+): void => {
+  const arrayBuffer = new ArrayBuffer(pdfBytes.length);
+  new Uint8Array(arrayBuffer).set(pdfBytes);
+  const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+  downloadFile(blob, originalFileName, customFilename);
+};
+
 

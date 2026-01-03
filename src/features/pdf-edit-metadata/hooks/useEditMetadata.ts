@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { PDFName } from "pdf-lib";
 import { editPDFMetadata } from "../lib/edit-metadata-logic";
-import { downloadFile } from "@/lib/pdf/file-utils";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
 import { usePDFProcessor } from "@/hooks/usePDFProcessor";
 import type {
   UseEditMetadataReturn,
@@ -171,11 +171,7 @@ export const useEditMetadata = (): UseEditMetadataReturn => {
         customFields
       );
       const pdfBytes = await updatedPdfDoc.save();
-      const arrayBuffer = new ArrayBuffer(pdfBytes.length);
-      new Uint8Array(arrayBuffer).set(pdfBytes);
-      const blob = new Blob([arrayBuffer], { type: "application/pdf" });
-
-      downloadFile(blob, pdfFile?.name);
+      saveAndDownloadPDF(pdfBytes, pdfFile?.name);
       setSuccess("Metadata updated successfully!");
     } catch (err) {
       console.error("Error updating metadata:", err);
