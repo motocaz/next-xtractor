@@ -11,6 +11,10 @@ export const decryptPDF = async (
   file: File,
   password: string
 ): Promise<Blob> => {
+  if (!password || password.trim().length === 0) {
+    throw new Error("Password is required");
+  }
+  
   const inputPath = "/input.pdf";
   const outputPath = "/output.pdf";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
