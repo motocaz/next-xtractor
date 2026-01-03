@@ -127,8 +127,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "decrypt",
     name: "Decrypt PDF",
     subtitle: "Remove password protection from your PDF.",
-    href: "#",
-    implemented: false,
+    href: "/decrypt",
+    implemented: true,
   },
   {
     id: "rotate",
