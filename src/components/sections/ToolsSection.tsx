@@ -291,6 +291,13 @@ const allTools: Omit<Tool, "icon">[] = [
     href: "/compare-pdfs",
     implemented: true,
   },
+  {
+    id: "fix-dimensions",
+    name: "Fix Page Dimensions",
+    subtitle: "Standardize all pages to a uniform size.",
+    href: "/fix-dimensions",
+    implemented: true,
+  },
 ];
 
 const toolsWithIcons: Tool[] = allTools.map((tool) => {
@@ -327,6 +334,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "change-text-color": "palette",
     "combine-single-page": "layers",
     "compare-pdfs": "git-compare",
+    "fix-dimensions": "layers",
   };
 
   const iconName = iconNameMap[tool.id] || "file";
