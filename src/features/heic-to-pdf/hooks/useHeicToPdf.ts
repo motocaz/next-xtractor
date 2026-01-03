@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { bmpToPdf } from '../lib/bmp-to-pdf-logic';
+import { heicToPdf } from '../lib/heic-to-pdf-logic';
 import { handleImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
-import type { BmpFileInfo, UseBmpToPdfReturn } from '../types';
+import type { HeicFileInfo, UseHeicToPdfReturn } from '../types';
 
-export const useBmpToPdf = (): UseBmpToPdfReturn => {
-  const [bmpFiles, setBmpFiles] = useState<BmpFileInfo[]>([]);
+export const useHeicToPdf = (): UseHeicToPdfReturn => {
+  const [heicFiles, setHeicFiles] = useState<HeicFileInfo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
@@ -14,23 +14,30 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
   const [success, setSuccess] = useState<string | null>(null);
   const [failedFiles, setFailedFiles] = useState<string[]>([]);
 
-  const loadBmpFiles = useCallback(async (files: File[]) => {
+  const loadHeicFiles = useCallback(async (files: File[]) => {
     if (!files || files.length === 0) {
-      setError('Please select at least one BMP file.');
+      setError('Please select at least one HEIC file.');
       return;
     }
 
     setIsLoading(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Validating BMP files...');
+    setLoadingMessage('Validating HEIC files...');
 
     try {
-      const validFiles: BmpFileInfo[] = [];
+      const validFiles: HeicFileInfo[] = [];
       const invalidFiles: string[] = [];
 
       for (const file of files) {
-        if (file.type !== 'image/bmp' && !file.name.toLowerCase().endsWith('.bmp')) {
+        const fileNameLower = file.name.toLowerCase();
+        const isHeic =
+          file.type === 'image/heic' ||
+          file.type === 'image/heif' ||
+          fileNameLower.endsWith('.heic') ||
+          fileNameLower.endsWith('.heif');
+
+        if (!isHeic) {
           invalidFiles.push(file.name);
           continue;
         }
@@ -46,24 +53,24 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
 
       if (invalidFiles.length > 0) {
         setError(
-          `The following files are not valid BMP images: ${invalidFiles.join(', ')}`
+          `The following files are not valid HEIC images: ${invalidFiles.join(', ')}`
         );
       }
 
       if (validFiles.length === 0) {
-        setError('No valid BMP files were found. Please select BMP image files.');
+        setError('No valid HEIC files were found. Please select HEIC or HEIF image files.');
       } else {
-        setBmpFiles((prev) => [...prev, ...validFiles]);
+        setHeicFiles((prev) => [...prev, ...validFiles]);
         if (validFiles.length > 0 && invalidFiles.length === 0) {
-          setSuccess(`${validFiles.length} BMP file(s) loaded successfully.`);
+          setSuccess(`${validFiles.length} HEIC file(s) loaded successfully.`);
         }
       }
     } catch (err) {
-      console.error('Error loading BMP files:', err);
+      console.error('Error loading HEIC files:', err);
       setError(
         err instanceof Error
-          ? `Failed to load BMP files: ${err.message}`
-          : 'Failed to load BMP files. Please check your files.'
+          ? `Failed to load HEIC files: ${err.message}`
+          : 'Failed to load HEIC files. Please check your files.'
       );
     } finally {
       setIsLoading(false);
@@ -71,15 +78,15 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
     }
   }, []);
 
-  const removeBmpFile = useCallback((id: string) => {
-    setBmpFiles((prev) => prev.filter((file) => file.id !== id));
+  const removeHeicFile = useCallback((id: string) => {
+    setHeicFiles((prev) => prev.filter((file) => file.id !== id));
     setError(null);
     setSuccess(null);
   }, []);
 
-  const processBmpToPdf = useCallback(async () => {
-    if (bmpFiles.length === 0) {
-      setError('Please upload at least one BMP file.');
+  const processHeicToPdf = useCallback(async () => {
+    if (heicFiles.length === 0) {
+      setError('Please upload at least one HEIC file.');
       return;
     }
 
@@ -87,36 +94,36 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
     setError(null);
     setSuccess(null);
     setFailedFiles([]);
-    setLoadingMessage('Converting BMP to PDF...');
+    setLoadingMessage('Converting HEIC to PDF...');
 
     try {
-      const files = bmpFiles.map((fileInfo) => fileInfo.file);
-      const result = await bmpToPdf(files);
+      const files = heicFiles.map((fileInfo) => fileInfo.file);
+      const result = await heicToPdf(files);
 
       await handleImageToPdfResult({
         result,
-        firstFileName: bmpFiles[0]?.fileName || 'converted',
-        extensionPattern: /\.bmp$/i,
+        firstFileName: heicFiles[0]?.fileName || 'converted',
+        extensionPattern: /\.(heic|heif)$/i,
         stateSetters: {
           setFailedFiles,
           setSuccess,
         },
       });
     } catch (err) {
-      console.error('BMP to PDF conversion error:', err);
+      console.error('HEIC to PDF conversion error:', err);
       setError(
         err instanceof Error
           ? `An error occurred while converting: ${err.message}`
-          : 'An error occurred while converting BMP to PDF. One of the files may be invalid.'
+          : 'An error occurred while converting HEIC to PDF. One of the files may be invalid or unsupported.'
       );
     } finally {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [bmpFiles]);
+  }, [heicFiles]);
 
   const reset = useCallback(() => {
-    setBmpFiles([]);
+    setHeicFiles([]);
     setError(null);
     setSuccess(null);
     setFailedFiles([]);
@@ -126,16 +133,16 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
   }, []);
 
   return {
-    bmpFiles,
+    heicFiles,
     isLoading,
     isProcessing,
     loadingMessage,
     error,
     success,
     failedFiles,
-    loadBmpFiles,
-    removeBmpFile,
-    processBmpToPdf,
+    loadHeicFiles,
+    removeHeicFile,
+    processHeicToPdf,
     reset,
   };
 };

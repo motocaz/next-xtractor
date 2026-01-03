@@ -40,6 +40,7 @@ export const useFormFiller = (): UseFormFillerReturn => {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const renderTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isRenderingRef = useRef(false);
 
   const setCanvasRef = useCallback((canvas: HTMLCanvasElement | null) => {
     canvasRef.current = canvas;
@@ -85,8 +86,9 @@ export const useFormFiller = (): UseFormFillerReturn => {
   }, [pdfDoc, setLoadingMessage, setError]);
 
   const renderCurrentPage = useCallback(async () => {
-    if (!pdfDoc || !pdfJsDoc || !canvasRef.current || isRendering) return;
+    if (!pdfDoc || !pdfJsDoc || !canvasRef.current || isRenderingRef.current) return;
 
+    isRenderingRef.current = true;
     setIsRendering(true);
 
     try {
@@ -102,12 +104,13 @@ export const useFormFiller = (): UseFormFillerReturn => {
     } catch (err) {
       console.error("Error rendering page:", err);
     } finally {
+      isRenderingRef.current = false;
       setIsRendering(false);
     }
-  }, [pdfDoc, pdfJsDoc, fieldValues, currentPage, zoom, isRendering]);
+  }, [pdfDoc, pdfJsDoc, fieldValues, currentPage, zoom]);
 
   useEffect(() => {
-    if (!pdfDoc || !pdfJsDoc) return;
+    if (!pdfDoc || !pdfJsDoc || !canvasRef.current) return;
 
     if (renderTimeoutRef.current) {
       clearTimeout(renderTimeoutRef.current);
@@ -125,10 +128,13 @@ export const useFormFiller = (): UseFormFillerReturn => {
   }, [fieldValues, currentPage, zoom, pdfDoc, pdfJsDoc, renderCurrentPage]);
 
   useEffect(() => {
-    if (pdfJsDoc && canvasRef.current) {
-      renderCurrentPage();
+    if (pdfJsDoc && canvasRef.current && pdfDoc) {
+      const timer = setTimeout(() => {
+        renderCurrentPage();
+      }, 100);
+      return () => clearTimeout(timer);
     }
-  }, [pdfJsDoc, renderCurrentPage]);
+  }, [pdfJsDoc, pdfDoc, renderCurrentPage]);
 
   const updateFieldValue = useCallback(
     (name: string, value: FormFieldValue) => {

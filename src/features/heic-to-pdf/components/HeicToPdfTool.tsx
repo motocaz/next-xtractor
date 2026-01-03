@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useBmpToPdf } from '../hooks/useBmpToPdf';
+import { useHeicToPdf } from '../hooks/useHeicToPdf';
 import { FileUploader } from '@/components/FileUploader';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle2, ArrowLeft, X } from 'lucide-react';
@@ -10,21 +10,21 @@ import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMe
 import { ProcessButton } from '@/components/common/ProcessButton';
 import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
 
-export const BmpToPdfTool = () => {
+export const HeicToPdfTool = () => {
   const {
-    bmpFiles,
+    heicFiles,
     isLoading,
     isProcessing,
     loadingMessage,
     error,
     success,
     failedFiles,
-    loadBmpFiles,
-    removeBmpFile,
-    processBmpToPdf,
-  } = useBmpToPdf();
+    loadHeicFiles,
+    removeHeicFile,
+    processHeicToPdf,
+  } = useHeicToPdf();
 
-  const canProcess = bmpFiles.length > 0 && !isProcessing && !isLoading;
+  const canProcess = heicFiles.length > 0 && !isProcessing && !isLoading;
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-8">
@@ -37,19 +37,19 @@ export const BmpToPdfTool = () => {
       </Link>
 
       <h2 className="text-2xl font-bold text-foreground mb-4">
-        BMP to PDF
+        HEIC to PDF
       </h2>
       <p className="mb-6 text-muted-foreground">
-        Convert one or more BMP images into a single PDF file.
+        Convert one or more HEIC (High Efficiency) images from your iPhone or camera into a single PDF file.
       </p>
 
       <div className="mb-4">
         <FileUploader
-          accept="image/bmp"
+          accept=".heic,.heif"
           multiple={true}
           onFilesSelected={async (files) => {
             if (files.length > 0) {
-              await loadBmpFiles(files);
+              await loadHeicFiles(files);
             }
           }}
           disabled={isLoading || isProcessing}
@@ -59,19 +59,19 @@ export const BmpToPdfTool = () => {
       <FileUploadStatusMessages
         isLoading={isLoading}
         loadingMessage={loadingMessage}
-        defaultLoadingText="Loading BMP files..."
+        defaultLoadingText="Loading HEIC files..."
         error={error}
         success={success}
         failedFiles={failedFiles}
       />
 
-      {bmpFiles.length > 0 && (
+      {heicFiles.length > 0 && (
         <div className="mb-4">
           <h3 className="text-lg font-semibold text-foreground mb-3">
-            BMP Files ({bmpFiles.length})
+            HEIC Files ({heicFiles.length})
           </h3>
           <div className="space-y-2">
-            {bmpFiles.map((fileInfo) => (
+            {heicFiles.map((fileInfo) => (
               <Card
                 key={fileInfo.id}
                 className="bg-input border-border"
@@ -89,10 +89,10 @@ export const BmpToPdfTool = () => {
                     </div>
                   </div>
                   <button
-                    onClick={() => removeBmpFile(fileInfo.id)}
+                    onClick={() => removeHeicFile(fileInfo.id)}
                     className="text-muted-foreground hover:text-destructive transition-colors p-1 rounded"
                     aria-label={`Remove ${fileInfo.fileName}`}
-                    title="Remove BMP file"
+                    title="Remove HEIC file"
                     disabled={isProcessing}
                   >
                     <X className="h-4 w-4" />
@@ -104,9 +104,9 @@ export const BmpToPdfTool = () => {
         </div>
       )}
 
-      {bmpFiles.length > 0 && (
+      {heicFiles.length > 0 && (
         <ProcessButton
-          onClick={processBmpToPdf}
+          onClick={processHeicToPdf}
           disabled={!canProcess}
           isProcessing={isProcessing}
           loadingMessage={loadingMessage}

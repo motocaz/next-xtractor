@@ -222,6 +222,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "heic-to-pdf",
+    name: "HEIC to PDF",
+    subtitle: "Convert one or more HEIC images from your iPhone or camera into a single PDF file.",
+    href: "/heic-to-pdf",
+    implemented: true,
+  },
+  {
     id: "pdf-to-jpg",
     name: "PDF to JPG",
     subtitle: "Convert PDF pages to JPG images.",
@@ -338,6 +345,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "jpg-to-pdf": "image-up",
     "png-to-pdf": "image-up",
     "bmp-to-pdf": "image-up",
+    "heic-to-pdf": "image-up",
     "pdf-to-jpg": "file-image",
     "pdf-to-png": "file-image",
     "sign-pdf": "pen-tool",

@@ -1,9 +1,9 @@
 'use client';
 
-import { PDFDocument } from 'pdf-lib';
+import { convertImagesToPdf, type ImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
 
 export interface BmpToPdfResult {
-  pdfDoc: PDFDocument;
+  pdfDoc: ImageToPdfResult['pdfDoc'];
   successCount: number;
   failedFiles: string[];
 }
@@ -58,40 +58,11 @@ const convertImageToPngBytes = (file: File): Promise<ArrayBuffer> => {
 };
 
 export const bmpToPdf = async (files: File[]): Promise<BmpToPdfResult> => {
-  if (files.length === 0) {
-    throw new Error('Please select at least one BMP file.');
-  }
-
-  const pdfDoc = await PDFDocument.create();
-  const failedFiles: string[] = [];
-
-  for (const file of files) {
-    try {
-      const pngBytes = await convertImageToPngBytes(file);
-      const pngImage = await pdfDoc.embedPng(pngBytes);
-      const page = pdfDoc.addPage([pngImage.width, pngImage.height]);
-      page.drawImage(pngImage, {
-        x: 0,
-        y: 0,
-        width: pngImage.width,
-        height: pngImage.height,
-      });
-    } catch (error) {
-      console.warn(`Failed to process ${file.name}:`, error);
-      failedFiles.push(file.name);
-    }
-  }
-
-  if (pdfDoc.getPageCount() === 0) {
-    throw new Error(
-      'No valid images could be processed. Please check your files.'
-    );
-  }
-
-  return {
-    pdfDoc,
-    successCount: pdfDoc.getPageCount(),
-    failedFiles,
-  };
+  const result = await convertImagesToPdf(
+    files,
+    convertImageToPngBytes,
+    'Please select at least one BMP file.'
+  );
+  return result;
 };
 
