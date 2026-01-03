@@ -31,7 +31,7 @@ export const prepareQpdfFile = async (
   inputPath: string
 ): Promise<void> => {
   const fileBuffer = await readFileAsArrayBuffer(file);
-  const uint8Array = new Uint8Array(fileBuffer as ArrayBuffer);
+  const uint8Array = new Uint8Array(fileBuffer);
   qpdf.FS.writeFile(inputPath, uint8Array);
 };
 
