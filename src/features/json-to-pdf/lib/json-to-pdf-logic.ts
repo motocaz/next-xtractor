@@ -1,7 +1,11 @@
 'use client';
 
 import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
-import { createWorkerErrorHandler } from '@/lib/pdf/worker-utils';
+import {
+  createWorkerErrorHandler,
+  cleanupWorkerListeners,
+  handleWorkerErrorResponse,
+} from '@/lib/pdf/worker-utils';
 import type {
   JsonToPdfMessage,
   JsonToPdfResponse,
@@ -41,8 +45,7 @@ export const convertJSONsToPDFs = async (
       const data = e.data;
 
       if (data.status === 'success') {
-        worker.removeEventListener('message', messageHandler);
-        worker.removeEventListener('error', errorHandler);
+        cleanupWorkerListeners(worker, messageHandler, errorHandler);
 
         const pdfFiles: PdfFileData[] = data.pdfFiles.map((pdf) => ({
           name: pdf.name,
@@ -50,10 +53,8 @@ export const convertJSONsToPDFs = async (
         }));
 
         resolve(pdfFiles);
-      } else if (data.status === 'error') {
-        worker.removeEventListener('message', messageHandler);
-        worker.removeEventListener('error', errorHandler);
-        reject(new Error(data.message || 'Unknown error occurred.'));
+      } else if (handleWorkerErrorResponse(worker, messageHandler, errorHandler, data, reject)) {
+        return;
       }
     };
 
@@ -76,8 +77,7 @@ export const convertJSONsToPDFs = async (
         worker.postMessage(message, transferables);
       })
       .catch((error) => {
-        worker.removeEventListener('message', messageHandler);
-        worker.removeEventListener('error', errorHandler);
+        cleanupWorkerListeners(worker, messageHandler, errorHandler);
         reject(error);
       });
   });

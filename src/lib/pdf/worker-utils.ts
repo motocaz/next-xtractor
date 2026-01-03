@@ -17,3 +17,27 @@ export const createWorkerErrorHandler = <TResponse>(
   return errorHandler;
 };
 
+export const cleanupWorkerListeners = <TResponse>(
+  worker: Worker,
+  messageHandler: (e: MessageEvent<TResponse>) => void,
+  errorHandler: (error: ErrorEvent) => void
+): void => {
+  worker.removeEventListener('message', messageHandler);
+  worker.removeEventListener('error', errorHandler);
+};
+
+export const handleWorkerErrorResponse = <TResponse extends { status: string; message?: string }>(
+  worker: Worker,
+  messageHandler: (e: MessageEvent<TResponse>) => void,
+  errorHandler: (error: ErrorEvent) => void,
+  data: TResponse,
+  reject: (error: Error) => void
+): boolean => {
+  if (data.status === 'error') {
+    cleanupWorkerListeners(worker, messageHandler, errorHandler);
+    reject(new Error(data.message || 'Unknown error occurred.'));
+    return true;
+  }
+  return false;
+};
+
