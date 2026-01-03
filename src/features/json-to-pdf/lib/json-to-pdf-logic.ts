@@ -1,6 +1,7 @@
 'use client';
 
 import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
+import { createWorkerErrorHandler } from '@/lib/pdf/worker-utils';
 import type {
   JsonToPdfMessage,
   JsonToPdfResponse,
@@ -17,23 +18,6 @@ const getWorker = (): Worker => {
     )
   );
   return workerInstance;
-};
-
-const createErrorHandler = (
-  worker: Worker,
-  messageHandler: (e: MessageEvent<JsonToPdfResponse>) => void,
-  reject: (error: Error) => void
-): ((error: ErrorEvent) => void) => {
-  const errorHandler = (error: ErrorEvent) => {
-    worker.removeEventListener('message', messageHandler);
-    worker.removeEventListener('error', errorHandler);
-    reject(
-      new Error(
-        error.message || 'Worker error occurred. Check console for details.'
-      )
-    );
-  };
-  return errorHandler;
 };
 
 export const convertJSONsToPDFs = async (
@@ -73,7 +57,7 @@ export const convertJSONsToPDFs = async (
       }
     };
 
-    const errorHandler = createErrorHandler(worker, messageHandler, reject);
+    const errorHandler = createWorkerErrorHandler(worker, messageHandler, reject);
 
     worker.addEventListener('message', messageHandler);
     worker.addEventListener('error', errorHandler);
