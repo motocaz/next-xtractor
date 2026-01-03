@@ -45,14 +45,14 @@ export const CropPDFTool = () => {
   const isCropperReadyRef = useRef<boolean>(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (globalThis.window !== undefined) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
       link.href =
         "https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css";
       document.head.appendChild(link);
 
-      // Minimal custom styles - let Cropper.js handle its own styling
+      
       const style = document.createElement("style");
       style.id = "cropper-custom-styles";
       style.textContent = `
@@ -68,11 +68,11 @@ export const CropPDFTool = () => {
           'link[href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css"]'
         );
         if (existingLink) {
-          document.head.removeChild(existingLink);
+          existingLink.remove();
         }
         const existingStyle = document.getElementById("cropper-custom-styles");
         if (existingStyle) {
-          document.head.removeChild(existingStyle);
+          existingStyle.remove();
         }
       };
     }
@@ -131,7 +131,7 @@ export const CropPDFTool = () => {
               responsive: true,
               rotatable: false,
               zoomable: false,
-              aspectRatio: NaN,
+              aspectRatio: Number.NaN,
               ready: () => {
                 isCropperReadyRef.current = true;
               },
@@ -282,11 +282,10 @@ export const CropPDFTool = () => {
 
     
     if (
-      !imageData ||
-      !imageData.naturalWidth ||
-      !imageData.naturalHeight ||
-      imageData.naturalWidth === 0 ||
-      imageData.naturalHeight === 0
+      !imageData?.naturalWidth ||
+      !imageData?.naturalHeight ||
+      imageData?.naturalWidth === 0 ||
+      imageData?.naturalHeight === 0
     ) {
       setError("Unable to get image data. Please try again.");
       return;

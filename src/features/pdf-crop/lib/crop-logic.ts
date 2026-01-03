@@ -2,18 +2,8 @@
 
 import { PDFDocument } from 'pdf-lib';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
-import type { CropData, PageCrops } from '../types';
-import { renderPageToCanvas } from './page-renderer';
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
+import type { PageCrops } from '../types';
 
-/**
- * Performs a non-destructive crop by updating the page's crop box.
- * This preserves vector graphics and text.
- * 
- * @param pdfDoc - PDF document from pdf-lib
- * @param cropData - Map of page numbers to crop data (percentages)
- * @returns Modified PDF document
- */
 export const performMetadataCrop = async (
   pdfDoc: PDFDocument,
   cropData: PageCrops
@@ -31,13 +21,11 @@ export const performMetadataCrop = async (
     const rotation = page.getRotation().angle;
     const crop = cropData[pageNum];
 
-    // Convert percentages to actual dimensions
     const visualPdfWidth = pageWidth * crop.width;
     const visualPdfHeight = pageHeight * crop.height;
     const visualPdfX = pageWidth * crop.x;
     const visualPdfY = pageHeight * crop.y;
 
-    // Calculate crop box coordinates based on page rotation
     let finalX: number;
     let finalY: number;
     let finalWidth: number;
@@ -63,7 +51,6 @@ export const performMetadataCrop = async (
         finalHeight = visualPdfWidth;
         break;
       default:
-        // 0 degrees or no rotation
         finalX = visualPdfX;
         finalY = pageHeight - visualPdfY - visualPdfHeight;
         finalWidth = visualPdfWidth;
@@ -77,16 +64,6 @@ export const performMetadataCrop = async (
   return pdfDoc;
 };
 
-/**
- * Performs a destructive crop by flattening the selected area to an image.
- * This converts the cropped area to a raster image, losing vector graphics.
- * 
- * @param pdfJsDoc - PDF document from PDF.js (for rendering)
- * @param cropData - Map of page numbers to crop data (percentages)
- * @param originalPdfBytes - Original PDF bytes (for copying uncropped pages)
- * @param onProgress - Optional progress callback
- * @returns New PDF document with cropped pages
- */
 export const performFlatteningCrop = async (
   pdfJsDoc: PDFDocumentProxy,
   cropData: PageCrops,
@@ -104,7 +81,6 @@ export const performFlatteningCrop = async (
     onProgress?.(`Processing page ${pageNum} of ${totalPages}...`);
 
     if (cropData[pageNum]) {
-      // Render the page to a canvas
       const page = await pdfJsDoc.getPage(pageNum);
       const viewport = page.getViewport({ scale: 2.5 });
 
@@ -123,7 +99,6 @@ export const performFlatteningCrop = async (
         canvas: tempCanvas,
       }).promise;
 
-      // Extract the cropped area
       const crop = cropData[pageNum];
       const finalWidth = tempCanvas.width * crop.width;
       const finalHeight = tempCanvas.height * crop.height;
@@ -137,7 +112,6 @@ export const performFlatteningCrop = async (
       finalCanvas.width = finalWidth;
       finalCanvas.height = finalHeight;
 
-      // Draw the cropped portion
       finalCtx.drawImage(
         tempCanvas,
         tempCanvas.width * crop.x,
@@ -150,7 +124,6 @@ export const performFlatteningCrop = async (
         finalHeight
       );
 
-      // Convert to PNG and embed in PDF
       const pngBytes = await new Promise<ArrayBuffer>((resolve, reject) => {
         finalCanvas.toBlob(
           (blob) => {
@@ -173,7 +146,6 @@ export const performFlatteningCrop = async (
         height: finalHeight,
       });
     } else {
-      // Copy the page without modification
       const [copiedPage] = await newPdfDoc.copyPages(sourcePdfDocForCopying, [i]);
       newPdfDoc.addPage(copiedPage);
     }
