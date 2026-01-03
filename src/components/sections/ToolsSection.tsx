@@ -78,8 +78,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "extract-attachments",
     name: "Extract Attachments",
     subtitle: "Extract all embedded files from PDF(s) as a ZIP.",
-    href: "#",
-    implemented: false,
+    href: "/extract-attachments",
+    implemented: true,
   },
   {
     id: "edit-attachments",
