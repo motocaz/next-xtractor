@@ -21,7 +21,7 @@ export const decryptPDF = async (
 
     await prepareQpdfFile(qpdf, file, inputPath);
 
-    const args = [inputPath, "--password=" + password, "--decrypt", outputPath];
+    const args = [inputPath, `--password=${password}`, "--decrypt", outputPath];
 
     try {
       const varr = qpdf.callMain(args);
