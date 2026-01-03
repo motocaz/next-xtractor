@@ -1,5 +1,5 @@
 import { ScrollToTop } from '@/components/ScrollToTop';
-import { InvertColorsTool } from '@/features/invert-colors';
+import InvertColorsToolClient from './InvertColorsToolClient';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export default function InvertColorsPage() {
   return (
     <>
       <ScrollToTop />
-      <InvertColorsTool />
+      <InvertColorsToolClient />
     </>
   );
 }
