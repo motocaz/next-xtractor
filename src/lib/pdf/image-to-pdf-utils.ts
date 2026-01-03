@@ -82,3 +82,82 @@ export const handleImageToPdfResult = async (
   setSuccess(successMessage);
 };
 
+export const convertImageToPngBytes = async (
+  file: File
+): Promise<ArrayBuffer> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      if (!e.target?.result || typeof e.target.result !== 'string') {
+        reject(new Error('Failed to read file.'));
+        return;
+      }
+
+      img.onload = async () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+
+          if (!ctx) {
+            reject(new Error('Failed to get canvas context.'));
+            return;
+          }
+
+          ctx.drawImage(img, 0, 0);
+          const pngBlob = await new Promise<Blob | null>((res) =>
+            canvas.toBlob(res, 'image/png')
+          );
+
+          if (!pngBlob) {
+            reject(new Error('Failed to convert image to PNG.'));
+            return;
+          }
+
+          const pngBytes = await pngBlob.arrayBuffer();
+          resolve(pngBytes);
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      img.onerror = () => reject(new Error('Failed to load image.'));
+      img.src = e.target.result;
+    };
+
+    reader.onerror = () => reject(new Error('Failed to read file.'));
+    reader.readAsDataURL(file);
+  });
+};
+
+export const convertHeicToPngBytes = async (
+  file: File
+): Promise<ArrayBuffer> => {
+  const heic2any = (await import('heic2any')).default;
+
+  try {
+    const conversionResult = await heic2any({
+      blob: file,
+      toType: 'image/png',
+    });
+
+    const pngBlob = Array.isArray(conversionResult)
+      ? conversionResult[0]
+      : conversionResult;
+
+    if (!pngBlob) {
+      throw new Error('Failed to convert HEIC to PNG.');
+    }
+
+    const pngBytes = await pngBlob.arrayBuffer();
+    return pngBytes;
+  } catch (error) {
+    throw new Error(
+      `Failed to convert HEIC to PNG: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
+  }
+};
+

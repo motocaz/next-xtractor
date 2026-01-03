@@ -229,6 +229,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "image-to-pdf",
+    name: "Image to PDF",
+    subtitle: "Convert JPG, PNG, WebP, SVG, BMP, HEIC, and TIFF images to PDF.",
+    href: "/image-to-pdf",
+    implemented: true,
+  },
+  {
     id: "pdf-to-jpg",
     name: "PDF to JPG",
     subtitle: "Convert PDF pages to JPG images.",
@@ -346,6 +353,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "png-to-pdf": "image-up",
     "bmp-to-pdf": "image-up",
     "heic-to-pdf": "image-up",
+    "image-to-pdf": "image-up",
     "pdf-to-jpg": "file-image",
     "pdf-to-png": "file-image",
     "sign-pdf": "pen-tool",
