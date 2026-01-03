@@ -1,22 +1,37 @@
-'use client';
+"use client";
 
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
+import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
 import type {
   AttachmentInfo,
   WorkerGetAttachmentsMessage,
   WorkerEditAttachmentsMessage,
   WorkerResponse,
-} from '../types';
+} from "../types";
 
 let workerInstance: Worker | null = null;
 
 const getWorker = (): Worker => {
-  if (!workerInstance) {
-    workerInstance = new Worker(
-      new URL('/workers/edit-attachments.worker.js', window.location.origin)
-    );
-  }
+  workerInstance ??= new Worker(
+    new URL("/workers/edit-attachments.worker.js", globalThis.location.origin)
+  );
   return workerInstance;
+};
+
+const createErrorHandler = (
+  worker: Worker,
+  messageHandler: (e: MessageEvent<WorkerResponse>) => void,
+  reject: (error: Error) => void
+): ((error: ErrorEvent) => void) => {
+  const errorHandler = (error: ErrorEvent) => {
+    worker.removeEventListener('message', messageHandler);
+    worker.removeEventListener('error', errorHandler);
+    reject(
+      new Error(
+        error.message || 'Worker error occurred. Check console for details.'
+      )
+    );
+  };
+  return errorHandler;
 };
 
 export const getAttachmentsFromPDF = async (
@@ -29,9 +44,9 @@ export const getAttachmentsFromPDF = async (
     const messageHandler = (e: MessageEvent<WorkerResponse>) => {
       const data = e.data;
 
-      if (data.status === 'success' && data.attachments !== undefined) {
-        worker.removeEventListener('message', messageHandler);
-        worker.removeEventListener('error', errorHandler);
+      if (data.status === "success" && data.attachments !== undefined) {
+        worker.removeEventListener("message", messageHandler);
+        worker.removeEventListener("error", errorHandler);
 
         const attachments: AttachmentInfo[] = data.attachments.map((att) => ({
           ...att,
@@ -39,30 +54,22 @@ export const getAttachmentsFromPDF = async (
         }));
 
         resolve(attachments);
-      } else if (data.status === 'error') {
-        worker.removeEventListener('message', messageHandler);
-        worker.removeEventListener('error', errorHandler);
-        reject(new Error(data.message || 'Unknown error occurred.'));
+      } else if (data.status === "error") {
+        worker.removeEventListener("message", messageHandler);
+        worker.removeEventListener("error", errorHandler);
+        reject(new Error(data.message || "Unknown error occurred."));
       }
     };
 
-    const errorHandler = (error: ErrorEvent) => {
-      worker.removeEventListener('message', messageHandler);
-      worker.removeEventListener('error', errorHandler);
-      reject(
-        new Error(
-          error.message || 'Worker error occurred. Check console for details.'
-        )
-      );
-    };
+    const errorHandler = createErrorHandler(worker, messageHandler, reject);
 
-    worker.addEventListener('message', messageHandler);
-    worker.addEventListener('error', errorHandler);
+    worker.addEventListener("message", messageHandler);
+    worker.addEventListener("error", errorHandler);
 
     fileBufferPromise
       .then((fileBuffer) => {
         const message: WorkerGetAttachmentsMessage = {
-          command: 'get-attachments',
+          command: "get-attachments",
           fileBuffer: fileBuffer,
           fileName: file.name,
         };
@@ -70,8 +77,8 @@ export const getAttachmentsFromPDF = async (
         worker.postMessage(message, [fileBuffer]);
       })
       .catch((error) => {
-        worker.removeEventListener('message', messageHandler);
-        worker.removeEventListener('error', errorHandler);
+        worker.removeEventListener("message", messageHandler);
+        worker.removeEventListener("error", errorHandler);
         reject(error);
       });
   });
@@ -88,38 +95,30 @@ export const editAttachmentsInPDF = async (
     const messageHandler = (e: MessageEvent<WorkerResponse>) => {
       const data = e.data;
 
-      if (data.status === 'success' && data.modifiedPDF !== undefined) {
-        worker.removeEventListener('message', messageHandler);
-        worker.removeEventListener('error', errorHandler);
+      if (data.status === "success" && data.modifiedPDF !== undefined) {
+        worker.removeEventListener("message", messageHandler);
+        worker.removeEventListener("error", errorHandler);
 
         const blob = new Blob([new Uint8Array(data.modifiedPDF)], {
-          type: 'application/pdf',
+          type: "application/pdf",
         });
         resolve(blob);
-      } else if (data.status === 'error') {
-        worker.removeEventListener('message', messageHandler);
-        worker.removeEventListener('error', errorHandler);
-        reject(new Error(data.message || 'Unknown error occurred.'));
+      } else if (data.status === "error") {
+        worker.removeEventListener("message", messageHandler);
+        worker.removeEventListener("error", errorHandler);
+        reject(new Error(data.message || "Unknown error occurred."));
       }
     };
 
-    const errorHandler = (error: ErrorEvent) => {
-      worker.removeEventListener('message', messageHandler);
-      worker.removeEventListener('error', errorHandler);
-      reject(
-        new Error(
-          error.message || 'Worker error occurred. Check console for details.'
-        )
-      );
-    };
+    const errorHandler = createErrorHandler(worker, messageHandler, reject);
 
-    worker.addEventListener('message', messageHandler);
-    worker.addEventListener('error', errorHandler);
+    worker.addEventListener("message", messageHandler);
+    worker.addEventListener("error", errorHandler);
 
     fileBufferPromise
       .then((fileBuffer) => {
         const message: WorkerEditAttachmentsMessage = {
-          command: 'edit-attachments',
+          command: "edit-attachments",
           fileBuffer: fileBuffer,
           fileName: file.name,
           attachmentsToRemove: indicesToRemove,
@@ -128,10 +127,9 @@ export const editAttachmentsInPDF = async (
         worker.postMessage(message, [fileBuffer]);
       })
       .catch((error) => {
-        worker.removeEventListener('message', messageHandler);
-        worker.removeEventListener('error', errorHandler);
+        worker.removeEventListener("message", messageHandler);
+        worker.removeEventListener("error", errorHandler);
         reject(error);
       });
   });
 };
-
