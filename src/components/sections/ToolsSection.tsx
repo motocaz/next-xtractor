@@ -305,6 +305,13 @@ const allTools: Omit<Tool, "icon">[] = [
     href: "/flatten",
     implemented: true,
   },
+  {
+    id: "form-filler",
+    name: "PDF Form Filler",
+    subtitle: "Fill in PDF forms directly in your browser with live preview.",
+    href: "/form-filler",
+    implemented: true,
+  },
 ];
 
 const toolsWithIcons: Tool[] = allTools.map((tool) => {
@@ -343,6 +350,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "compare-pdfs": "git-compare",
     "fix-dimensions": "layers",
     flatten: "layers",
+    "form-filler": "file-edit",
   };
 
   const iconName = iconNameMap[tool.id] || "file";
