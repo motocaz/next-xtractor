@@ -13,7 +13,7 @@ export interface UsePDFLoaderReturn {
   reset: () => void;
 }
 
-export const usePDFLoader = (): UsePDFLoaderReturn => {
+export const usePDFLoader = (allowEncrypted = false): UsePDFLoaderReturn => {
   const [pdfDoc, setPdfDoc] = useState<PDFDocument | null>(null);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +31,7 @@ export const usePDFLoader = (): UsePDFLoaderReturn => {
     try {
       const result = await loadPDFDocument(file);
       
-      if (result.isEncrypted) {
+      if (result.isEncrypted && !allowEncrypted) {
         setError(
           'This PDF is password-protected. Please use the Decrypt tool first.'
         );
@@ -51,7 +51,7 @@ export const usePDFLoader = (): UsePDFLoaderReturn => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [allowEncrypted]);
 
   const reset = useCallback(() => {
     setPdfDoc(null);

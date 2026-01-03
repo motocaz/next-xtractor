@@ -26,7 +26,7 @@ export interface UsePDFProcessorReturn {
   resetProcessing: () => void;
 }
 
-export const usePDFProcessor = (): UsePDFProcessorReturn => {
+export const usePDFProcessor = (allowEncrypted = false): UsePDFProcessorReturn => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +39,7 @@ export const usePDFProcessor = (): UsePDFProcessorReturn => {
     error: pdfError,
     loadPDF,
     reset: resetPDF,
-  } = usePDFLoader();
+  } = usePDFLoader(allowEncrypted);
 
   const totalPages = pdfDoc ? pdfDoc.getPageCount() : 0;
 
