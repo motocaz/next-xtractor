@@ -298,6 +298,13 @@ const allTools: Omit<Tool, "icon">[] = [
     href: "/fix-dimensions",
     implemented: true,
   },
+  {
+    id: "flatten",
+    name: "Flatten PDF",
+    subtitle: "Make form fields and annotations non-editable.",
+    href: "/flatten",
+    implemented: true,
+  },
 ];
 
 const toolsWithIcons: Tool[] = allTools.map((tool) => {
@@ -335,6 +342,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "combine-single-page": "layers",
     "compare-pdfs": "git-compare",
     "fix-dimensions": "layers",
+    flatten: "layers",
   };
 
   const iconName = iconNameMap[tool.id] || "file";
