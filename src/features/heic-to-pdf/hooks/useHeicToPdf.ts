@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { heicToPdf } from '../lib/heic-to-pdf-logic';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
+import { handleImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
 import type { HeicFileInfo, UseHeicToPdfReturn } from '../types';
 
 export const useHeicToPdf = (): UseHeicToPdfReturn => {
@@ -100,20 +100,15 @@ export const useHeicToPdf = (): UseHeicToPdfReturn => {
       const files = heicFiles.map((fileInfo) => fileInfo.file);
       const result = await heicToPdf(files);
 
-      const pdfBytes = await result.pdfDoc.save();
-      const firstFileName = heicFiles[0]?.fileName || 'converted';
-      const baseName = firstFileName.replace(/\.(heic|heif)$/i, '');
-      saveAndDownloadPDF(pdfBytes, baseName);
-
-      if (result.failedFiles.length > 0) {
-        setFailedFiles(result.failedFiles);
-      }
-
-      let successMessage = `Successfully converted ${result.successCount} image(s) to PDF.`;
-      if (result.failedFiles.length > 0) {
-        successMessage += ` ${result.failedFiles.length} file(s) could not be processed.`;
-      }
-      setSuccess(successMessage);
+      await handleImageToPdfResult({
+        result,
+        firstFileName: heicFiles[0]?.fileName || 'converted',
+        extensionPattern: /\.(heic|heif)$/i,
+        stateSetters: {
+          setFailedFiles,
+          setSuccess,
+        },
+      });
     } catch (err) {
       console.error('HEIC to PDF conversion error:', err);
       setError(

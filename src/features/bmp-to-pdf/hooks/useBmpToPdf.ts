@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { bmpToPdf } from '../lib/bmp-to-pdf-logic';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
+import { handleImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
 import type { BmpFileInfo, UseBmpToPdfReturn } from '../types';
 
 export const useBmpToPdf = (): UseBmpToPdfReturn => {
@@ -93,20 +93,15 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
       const files = bmpFiles.map((fileInfo) => fileInfo.file);
       const result = await bmpToPdf(files);
 
-      const pdfBytes = await result.pdfDoc.save();
-      const firstFileName = bmpFiles[0]?.fileName || 'converted';
-      const baseName = firstFileName.replace(/\.bmp$/i, '');
-      saveAndDownloadPDF(pdfBytes, baseName);
-
-      if (result.failedFiles.length > 0) {
-        setFailedFiles(result.failedFiles);
-      }
-
-      let successMessage = `Successfully converted ${result.successCount} image(s) to PDF.`;
-      if (result.failedFiles.length > 0) {
-        successMessage += ` ${result.failedFiles.length} file(s) could not be processed.`;
-      }
-      setSuccess(successMessage);
+      await handleImageToPdfResult({
+        result,
+        firstFileName: bmpFiles[0]?.fileName || 'converted',
+        extensionPattern: /\.bmp$/i,
+        stateSetters: {
+          setFailedFiles,
+          setSuccess,
+        },
+      });
     } catch (err) {
       console.error('BMP to PDF conversion error:', err);
       setError(
