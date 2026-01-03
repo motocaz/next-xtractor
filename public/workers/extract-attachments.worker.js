@@ -1,4 +1,4 @@
-self.importScripts('/coherentpdf.browser.min.js');
+globalThis.importScripts('/coherentpdf.browser.min.js');
 
 function extractAttachmentsFromPDFsInWorker(fileBuffers, fileNames) {
   try {
@@ -103,7 +103,7 @@ function extractAttachmentsFromPDFsInWorker(fileBuffers, fileNames) {
   }
 }
 
-self.onmessage = (e) => {
+globalThis.onmessage = (e) => {
   if (e.data.command === 'extract-attachments') {
     extractAttachmentsFromPDFsInWorker(e.data.fileBuffers, e.data.fileNames);
   }
