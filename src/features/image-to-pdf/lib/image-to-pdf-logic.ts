@@ -5,6 +5,8 @@ import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
 import {
   convertImageToPngBytes,
   convertHeicToPngBytes,
+  addImageAsPage,
+  createImageToPdfResult,
 } from "@/lib/pdf/image-to-pdf-utils";
 
 export interface ImageToPdfResult {
@@ -120,57 +122,27 @@ export const convertSingleTypeImages = async (
         const jpgBytes = await readFileAsArrayBuffer(file);
         try {
           const jpgImage = await pdfDoc.embedJpg(new Uint8Array(jpgBytes));
-          const page = pdfDoc.addPage([jpgImage.width, jpgImage.height]);
-          page.drawImage(jpgImage, {
-            x: 0,
-            y: 0,
-            width: jpgImage.width,
-            height: jpgImage.height,
-          });
+          addImageAsPage(pdfDoc, jpgImage);
         } catch {
           console.warn(
             `Direct JPG embedding failed for ${file.name}, using canvas conversion...`
           );
           const jpegBytes = await convertImageToJpegBytes(file, 0.9);
           const jpgImage = await pdfDoc.embedJpg(jpegBytes);
-          const page = pdfDoc.addPage([jpgImage.width, jpgImage.height]);
-          page.drawImage(jpgImage, {
-            x: 0,
-            y: 0,
-            width: jpgImage.width,
-            height: jpgImage.height,
-          });
+          addImageAsPage(pdfDoc, jpgImage);
         }
       } else if (type === "image/png") {
         const pngBytes = await readFileAsArrayBuffer(file);
         const pngImage = await pdfDoc.embedPng(pngBytes);
-        const page = pdfDoc.addPage([pngImage.width, pngImage.height]);
-        page.drawImage(pngImage, {
-          x: 0,
-          y: 0,
-          width: pngImage.width,
-          height: pngImage.height,
-        });
+        addImageAsPage(pdfDoc, pngImage);
       } else if (type === "image/heic") {
         const pngBytes = await convertHeicToPngBytes(file);
         const pngImage = await pdfDoc.embedPng(pngBytes);
-        const page = pdfDoc.addPage([pngImage.width, pngImage.height]);
-        page.drawImage(pngImage, {
-          x: 0,
-          y: 0,
-          width: pngImage.width,
-          height: pngImage.height,
-        });
+        addImageAsPage(pdfDoc, pngImage);
       } else {
         const pngBytes = await convertImageToPngBytes(file);
         const pngImage = await pdfDoc.embedPng(pngBytes);
-        const page = pdfDoc.addPage([pngImage.width, pngImage.height]);
-        page.drawImage(pngImage, {
-          x: 0,
-          y: 0,
-          width: pngImage.width,
-          height: pngImage.height,
-        });
+        addImageAsPage(pdfDoc, pngImage);
       }
     } catch (error) {
       console.warn(`Failed to process ${file.name}:`, error);
@@ -178,17 +150,7 @@ export const convertSingleTypeImages = async (
     }
   }
 
-  if (pdfDoc.getPageCount() === 0) {
-    throw new Error(
-      "No valid images could be processed. Please check your files."
-    );
-  }
-
-  return {
-    pdfDoc,
-    successCount: pdfDoc.getPageCount(),
-    failedFiles,
-  };
+  return createImageToPdfResult(pdfDoc, failedFiles);
 };
 
 export const convertMixedTypeImages = async (
@@ -232,28 +194,12 @@ export const convertMixedTypeImages = async (
       }
 
       const jpgImage = await pdfDoc.embedJpg(jpegBytes);
-      const page = pdfDoc.addPage([jpgImage.width, jpgImage.height]);
-      page.drawImage(jpgImage, {
-        x: 0,
-        y: 0,
-        width: jpgImage.width,
-        height: jpgImage.height,
-      });
+      addImageAsPage(pdfDoc, jpgImage);
     } catch (error) {
       console.warn(`Failed to process ${file.name}:`, error);
       failedFiles.push(file.name);
     }
   }
 
-  if (pdfDoc.getPageCount() === 0) {
-    throw new Error(
-      "No valid images could be processed. Please check your files."
-    );
-  }
-
-  return {
-    pdfDoc,
-    successCount: pdfDoc.getPageCount(),
-    failedFiles,
-  };
+  return createImageToPdfResult(pdfDoc, failedFiles);
 };

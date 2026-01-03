@@ -3,7 +3,11 @@
 import { PDFDocument } from 'pdf-lib';
 import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
 import { convertImageToJpegBytes } from '@/features/image-to-pdf/lib/image-to-pdf-logic';
-import type { ImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
+import {
+  addImageAsPage,
+  createImageToPdfResult,
+  type ImageToPdfResult,
+} from '@/lib/pdf/image-to-pdf-utils';
 
 export interface JpgToPdfResult {
   pdfDoc: ImageToPdfResult['pdfDoc'];
@@ -44,29 +48,13 @@ export const jpgToPdf = async (files: File[]): Promise<JpgToPdfResult> => {
         }
       }
 
-      const page = pdfDoc.addPage([jpgImage.width, jpgImage.height]);
-      page.drawImage(jpgImage, {
-        x: 0,
-        y: 0,
-        width: jpgImage.width,
-        height: jpgImage.height,
-      });
+      addImageAsPage(pdfDoc, jpgImage);
     } catch (error) {
       console.warn(`Failed to process ${file.name}:`, error);
       failedFiles.push(file.name);
     }
   }
 
-  if (pdfDoc.getPageCount() === 0) {
-    throw new Error(
-      'No valid images could be processed. Please check your files.'
-    );
-  }
-
-  return {
-    pdfDoc,
-    successCount: pdfDoc.getPageCount(),
-    failedFiles,
-  };
+  return createImageToPdfResult(pdfDoc, failedFiles);
 };
 
