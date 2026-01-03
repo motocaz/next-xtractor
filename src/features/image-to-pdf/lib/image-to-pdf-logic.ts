@@ -53,7 +53,7 @@ export const detectImageTypes = (files: File[]): Map<string, File[]> => {
   return filesByType;
 };
 
-const convertImageToJpegBytes = async (
+export const convertImageToJpegBytes = async (
   file: File,
   quality: number
 ): Promise<Uint8Array> => {
