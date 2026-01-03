@@ -39,14 +39,12 @@ export const useCropPDF = (): UseCropPDFReturn => {
     resetProcessing,
   } = usePDFProcessor();
 
-  // Sync pdfDoc to ref
   useEffect(() => {
     pdfDocRef.current = pdfDoc;
   }, [pdfDoc]);
 
   const loadPDF = useCallback(
     async (file: File) => {
-      // Reset crop state
       setPageCrops({});
       setCurrentPageNum(1);
       setCurrentPageImageUrl(null);
@@ -59,18 +57,14 @@ export const useCropPDF = (): UseCropPDFReturn => {
       setSuccess(null);
 
       try {
-        // Load PDF file as array buffer
         const arrayBuffer = await readFileAsArrayBuffer(file);
         setOriginalPdfBytes(arrayBuffer);
 
-        // Load with PDF.js for rendering
         const pdfJsDoc = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
         pdfJsDocRef.current = pdfJsDoc;
 
-        // Load with pdf-lib (via base hook)
         await baseLoadPDF(file);
 
-        // Render first page
         if (pdfJsDoc.numPages > 0) {
           setCurrentPageNum(1);
           const imageUrl = await renderPageAsImage(pdfJsDoc, 1);
@@ -139,21 +133,17 @@ export const useCropPDF = (): UseCropPDFReturn => {
     let finalCropData: PageCrops;
 
     if (applyToAll) {
-      // Use passed currentPageCrop if provided, otherwise fall back to state
       const currentCrop = currentPageCrop || pageCrops[currentPageNum];
       if (!currentCrop) {
         setError('Please select an area to crop first.');
         return;
       }
-      // Apply current crop to all pages
       finalCropData = {};
       for (let i = 1; i <= pdfJsDocRef.current.numPages; i++) {
         finalCropData[i] = currentCrop;
       }
     } else {
-      // Only process pages with saved crops
       finalCropData = { ...pageCrops };
-      // If currentPageCrop is provided and not already in pageCrops, add it
       if (currentPageCrop && !finalCropData[currentPageNum]) {
         finalCropData[currentPageNum] = currentPageCrop;
       }
@@ -181,7 +171,6 @@ export const useCropPDF = (): UseCropPDFReturn => {
         );
         finalPdfBytes = await newPdfDoc.save();
       } else {
-        // Metadata crop
         const modifiedPdfDoc = await performMetadataCrop(
           pdfDocRef.current,
           finalCropData
@@ -189,8 +178,6 @@ export const useCropPDF = (): UseCropPDFReturn => {
         finalPdfBytes = await modifiedPdfDoc.save();
       }
 
-      // Convert Uint8Array to ArrayBuffer for Blob compatibility
-      // Create a new ArrayBuffer to ensure type compatibility
       const arrayBuffer = new ArrayBuffer(finalPdfBytes.length);
       new Uint8Array(arrayBuffer).set(finalPdfBytes);
       const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
@@ -236,11 +223,9 @@ export const useCropPDF = (): UseCropPDFReturn => {
     resetProcessing();
   }, [baseResetPDF, resetProcessing]);
 
-  // Get total pages from PDF.js doc if available
   const effectiveTotalPages = pdfJsDocRef.current?.numPages || totalPages || 0;
 
   return {
-    // PDF loading states
     pdfFile,
     isLoadingPDF: isLoadingPDF || isProcessing,
     pdfError: pdfError || error,
@@ -248,20 +233,17 @@ export const useCropPDF = (): UseCropPDFReturn => {
     resetPDF: reset,
     totalPages: effectiveTotalPages,
 
-    // Processing states
     isProcessing,
     loadingMessage,
     error,
     success,
 
-    // Crop-specific states
     currentPageNum,
     pageCrops,
     cropMode,
     applyToAll,
     currentPageImageUrl,
 
-    // Crop-specific actions
     setCropMode,
     setApplyToAll,
     changePage,

@@ -3,13 +3,6 @@
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
 
-/**
- * Renders a PDF page to a canvas and returns it as a data URL (PNG)
- * @param pdfJsDoc - PDF document loaded with PDF.js
- * @param pageNum - Page number (1-indexed)
- * @param scale - Scale factor for rendering (default: 2.5 for quality)
- * @returns Data URL of the rendered page as PNG image
- */
 export const renderPageAsImage = async (
   pdfJsDoc: PDFDocumentProxy,
   pageNum: number,
@@ -36,13 +29,6 @@ export const renderPageAsImage = async (
   return tempCanvas.toDataURL('image/png');
 };
 
-/**
- * Renders a PDF page to a canvas element
- * @param pdfJsDoc - PDF document loaded with PDF.js
- * @param pageNum - Page number (1-indexed)
- * @param canvas - Canvas element to render to
- * @param scale - Scale factor for rendering (default: 2.5)
- */
 export const renderPageToCanvas = async (
   pdfJsDoc: PDFDocumentProxy,
   pageNum: number,
@@ -67,13 +53,6 @@ export const renderPageToCanvas = async (
   }).promise;
 };
 
-/**
- * Loads a PDF file and renders a specific page as an image
- * @param file - PDF file
- * @param pageNum - Page number (1-indexed)
- * @param scale - Scale factor for rendering (default: 2.5)
- * @returns Data URL of the rendered page as PNG image
- */
 export const renderPDFPageAsImage = async (
   file: File,
   pageNum: number,
