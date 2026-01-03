@@ -120,8 +120,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "encrypt",
     name: "Encrypt PDF",
     subtitle: "Add password protection to your PDF.",
-    href: "#",
-    implemented: false,
+    href: "/encrypt",
+    implemented: true,
   },
   {
     id: "decrypt",
