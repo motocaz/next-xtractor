@@ -3,12 +3,12 @@
 import Link from 'next/link';
 import { useHeicToPdf } from '../hooks/useHeicToPdf';
 import { FileUploader } from '@/components/FileUploader';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle2, ArrowLeft, X } from 'lucide-react';
 import { formatBytes } from '@/lib/pdf/file-utils';
 import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
+import { ProcessButton } from '@/components/common/ProcessButton';
+import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
 
 export const HeicToPdfTool = () => {
   const {
@@ -105,31 +105,20 @@ export const HeicToPdfTool = () => {
       )}
 
       {heicFiles.length > 0 && (
-        <Button
-          variant="gradient"
-          className="w-full"
+        <ProcessButton
           onClick={processHeicToPdf}
           disabled={!canProcess}
+          isProcessing={isProcessing}
+          loadingMessage={loadingMessage}
         >
-          {isProcessing ? (
-            <span className="flex items-center gap-2">
-              <Spinner size="sm" />
-              {loadingMessage || 'Processing...'}
-            </span>
-          ) : (
-            'Convert & Download'
-          )}
-        </Button>
+          Convert & Download
+        </ProcessButton>
       )}
 
-      {isProcessing && loadingMessage && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-card border border-border rounded-lg p-6 flex flex-col items-center gap-4">
-            <Spinner size="lg" />
-            <p className="text-foreground">{loadingMessage}</p>
-          </div>
-        </div>
-      )}
+      <ProcessLoadingModal
+        isProcessing={isProcessing}
+        loadingMessage={loadingMessage}
+      />
     </div>
   );
 };

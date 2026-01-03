@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import { useAlternateMerge } from '../hooks/useAlternateMerge';
 import { FileUploader } from '@/components/FileUploader';
-import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { Card, CardContent } from '@/components/ui/card';
+import { ProcessButton } from '@/components/common/ProcessButton';
+import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
 import {
   CheckCircle2,
   AlertCircle,
@@ -225,31 +226,20 @@ export const AlternateMergeTool = () => {
       )}
 
       {pdfFiles.length > 0 && (
-        <Button
-          variant="gradient"
-          className="w-full"
+        <ProcessButton
           onClick={processAlternateMerge}
           disabled={!canProcess}
+          isProcessing={isProcessing}
+          loadingMessage={loadingMessage}
         >
-          {isProcessing ? (
-            <span className="flex items-center gap-2">
-              <Spinner size="sm" />
-              {loadingMessage || 'Processing...'}
-            </span>
-          ) : (
-            'Process & Download'
-          )}
-        </Button>
+          Process & Download
+        </ProcessButton>
       )}
 
-      {isProcessing && loadingMessage && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-card border border-border rounded-lg p-6 flex flex-col items-center gap-4">
-            <Spinner size="lg" />
-            <p className="text-foreground">{loadingMessage}</p>
-          </div>
-        </div>
-      )}
+      <ProcessLoadingModal
+        isProcessing={isProcessing}
+        loadingMessage={loadingMessage}
+      />
     </div>
   );
 };
