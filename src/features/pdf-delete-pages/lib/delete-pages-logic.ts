@@ -22,8 +22,8 @@ const parsePagesToDelete = (
     if (trimmedRange.includes("-")) {
       const [start, end] = trimmedRange.split("-").map(Number);
       if (
-        isNaN(start) ||
-        isNaN(end) ||
+        Number.isNaN(start) ||
+        Number.isNaN(end) ||
         start < 1 ||
         end > totalPages ||
         start > end
@@ -35,7 +35,7 @@ const parsePagesToDelete = (
       }
     } else {
       const pageNum = Number(trimmedRange);
-      if (isNaN(pageNum) || pageNum < 1 || pageNum > totalPages) continue;
+      if (Number.isNaN(pageNum) || pageNum < 1 || pageNum > totalPages) continue;
       indicesToDelete.add(pageNum - 1);
     }
   }
