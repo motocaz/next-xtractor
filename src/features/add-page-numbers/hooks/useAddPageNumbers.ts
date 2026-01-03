@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { addPageNumbers } from '../lib/add-page-numbers-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
+import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
 import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import type { UseAddPageNumbersReturn, PageNumbersOptions } from '../types';
 
@@ -72,11 +72,7 @@ export const useAddPageNumbers = (): UseAddPageNumbersReturn => {
 
       const newPdf = await addPageNumbers(pdfDoc, options);
       const pdfBytes = await newPdf.save();
-      const arrayBuffer = new ArrayBuffer(pdfBytes.length);
-      new Uint8Array(arrayBuffer).set(pdfBytes);
-      const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-
-      downloadFile(blob, pdfFile?.name);
+      saveAndDownloadPDF(pdfBytes, pdfFile?.name);
 
       setSuccess('Page numbers added successfully!');
     } catch (err) {

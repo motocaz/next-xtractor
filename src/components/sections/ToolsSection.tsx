@@ -257,6 +257,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "edit-metadata",
+    name: "Edit Metadata",
+    subtitle: "View and modify PDF metadata (author, title, keywords, etc.).",
+    href: "/edit-metadata",
+    implemented: true,
+  },
+  {
     id: "change-background-color",
     name: "Change Background Color",
     subtitle: "Change the background color of every page in your PDF.",
@@ -315,6 +322,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "sign-pdf": "pen-tool",
     cropper: "crop",
     "change-permissions": "lock",
+    "edit-metadata": "file-edit",
     "change-background-color": "palette",
     "change-text-color": "palette",
     "combine-single-page": "layers",

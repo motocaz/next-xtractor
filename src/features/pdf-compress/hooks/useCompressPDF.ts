@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { compressPDF, compressMultiplePDFs } from '../lib/compress-logic';
-import { downloadFile, formatBytes } from '@/lib/pdf/file-utils';
+import { saveAndDownloadPDF, downloadFile, formatBytes } from '@/lib/pdf/file-utils';
 import type {
   CompressionLevel,
   CompressionAlgorithm,
@@ -110,10 +110,7 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
           (message) => setLoadingMessage(message)
         );
 
-        const arrayBuffer = new ArrayBuffer(result.bytes.length);
-        new Uint8Array(arrayBuffer).set(result.bytes);
-        const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-        downloadFile(blob, fileInfo.fileName);
+        saveAndDownloadPDF(result.bytes, fileInfo.fileName);
 
         setCompressionStats({
           originalSize: result.originalSize,

@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { bmpToPdf } from '../lib/bmp-to-pdf-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
+import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
 import type { BmpFileInfo, UseBmpToPdfReturn } from '../types';
 
 export const useBmpToPdf = (): UseBmpToPdfReturn => {
@@ -94,13 +94,9 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
       const result = await bmpToPdf(files);
 
       const pdfBytes = await result.pdfDoc.save();
-      const arrayBuffer = new ArrayBuffer(pdfBytes.length);
-      new Uint8Array(arrayBuffer).set(pdfBytes);
-      const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-
       const firstFileName = bmpFiles[0]?.fileName || 'converted';
       const baseName = firstFileName.replace(/\.bmp$/i, '');
-      downloadFile(blob, baseName);
+      saveAndDownloadPDF(pdfBytes, baseName);
 
       if (result.failedFiles.length > 0) {
         setFailedFiles(result.failedFiles);

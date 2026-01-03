@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { addHeaderFooter } from '../lib/add-header-footer-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
+import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
 import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import type { UseAddHeaderFooterReturn } from '../types';
 
@@ -82,11 +82,7 @@ export const useAddHeaderFooter = (): UseAddHeaderFooterReturn => {
 
       const newPdf = await addHeaderFooter(pdfDoc, options);
       const pdfBytes = await newPdf.save();
-      const arrayBuffer = new ArrayBuffer(pdfBytes.length);
-      new Uint8Array(arrayBuffer).set(pdfBytes);
-      const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-
-      downloadFile(blob, pdfFile?.name);
+      saveAndDownloadPDF(pdfBytes, pdfFile?.name);
 
       setSuccess('Header and footer added successfully!');
     } catch (err) {

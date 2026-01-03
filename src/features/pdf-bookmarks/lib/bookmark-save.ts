@@ -1,7 +1,7 @@
 import { PDFDocument, PDFName, PDFString, PDFNumber } from "pdf-lib";
 import type { PDFRef, PDFDict } from "pdf-lib";
 import type { BookmarkNode } from "../types";
-import { downloadFile } from "@/lib/pdf/file-utils";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
 
 export const savePDFWithBookmarks = async (
   pdfDoc: PDFDocument,
@@ -140,13 +140,8 @@ export const savePDFWithBookmarks = async (
     pdfDoc.catalog.set(PDFName.of("Outlines"), outlinesRef);
 
     const pdfBytes = await pdfDoc.save();
-    const arrayBuffer = pdfBytes.buffer.slice(
-      pdfBytes.byteOffset,
-      pdfBytes.byteOffset + pdfBytes.byteLength
-    ) as ArrayBuffer;
-    const blob = new Blob([arrayBuffer], { type: "application/pdf" });
     const now = new Date().toISOString();
-    downloadFile(blob, originalFileName, `${now}_${originalFileName}.pdf`);
+    saveAndDownloadPDF(pdfBytes, originalFileName, `${now}_${originalFileName}.pdf`);
   } catch (err) {
     console.error("Error saving PDF:", err);
     throw new Error("Error saving PDF. Check console for details.");

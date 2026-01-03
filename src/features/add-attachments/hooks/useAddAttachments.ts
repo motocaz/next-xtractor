@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import type { AttachmentFile } from '../types';
 import { addAttachmentsToPDF } from '../lib/add-attachments-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
+import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
 import { usePDFLoader } from '@/hooks/usePDFLoader';
 
 export interface UseAddAttachmentsReturn {
@@ -97,11 +97,7 @@ export const useAddAttachments = (): UseAddAttachmentsReturn => {
       );
 
       const pdfBytes = await pdfDoc.save();
-      const arrayBuffer = new ArrayBuffer(pdfBytes.length);
-      new Uint8Array(arrayBuffer).set(pdfBytes);
-      const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-
-      downloadFile(blob, pdfFile?.name);
+      saveAndDownloadPDF(pdfBytes, pdfFile?.name);
 
       setSuccess(`${attachments.length} file(s) attached successfully.`);
       clearAttachments();

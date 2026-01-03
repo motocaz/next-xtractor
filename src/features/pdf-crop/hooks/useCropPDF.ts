@@ -5,7 +5,7 @@ import type { PDFDocumentProxy } from 'pdfjs-dist';
 import type { PDFDocument } from 'pdf-lib';
 import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
-import { readFileAsArrayBuffer, downloadFile } from '@/lib/pdf/file-utils';
+import { readFileAsArrayBuffer, saveAndDownloadPDF } from '@/lib/pdf/file-utils';
 import { renderPageAsImage } from '../lib/page-renderer';
 import { performMetadataCrop, performFlatteningCrop } from '../lib/crop-logic';
 import type { CropData, CropMode, PageCrops, UseCropPDFReturn } from '../types';
@@ -178,11 +178,8 @@ export const useCropPDF = (): UseCropPDFReturn => {
         finalPdfBytes = await modifiedPdfDoc.save();
       }
 
-      const arrayBuffer = new ArrayBuffer(finalPdfBytes.length);
-      new Uint8Array(arrayBuffer).set(finalPdfBytes);
-      const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
       const fileName = pdfFile?.name || 'cropped.pdf';
-      downloadFile(blob, fileName);
+      saveAndDownloadPDF(finalPdfBytes, fileName);
 
       setSuccess('Crop complete! Your download has started.');
     } catch (err) {
