@@ -41,7 +41,7 @@ export const getAttachmentsFromPDF = async (
     const worker = getWorker();
     const fileBufferPromise = readFileAsArrayBuffer(file);
 
-    const messageHandler = (e: MessageEvent<WorkerResponse>) => {
+    const messageHandler: (e: MessageEvent<WorkerResponse>) => void = (e: MessageEvent<WorkerResponse>) => {
       const data = e.data;
 
       if (data.status === "success" && data.attachments !== undefined) {
@@ -92,7 +92,7 @@ export const editAttachmentsInPDF = async (
     const worker = getWorker();
     const fileBufferPromise = readFileAsArrayBuffer(file);
 
-    const messageHandler = (e: MessageEvent<WorkerResponse>) => {
+    const messageHandler: (e: MessageEvent<WorkerResponse>) => void = (e: MessageEvent<WorkerResponse>) => {
       const data = e.data;
 
       if (data.status === "success" && data.modifiedPDF !== undefined) {

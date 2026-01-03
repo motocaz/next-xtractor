@@ -1,4 +1,4 @@
-self.importScripts('/coherentpdf.browser.min.js');
+globalThis.importScripts('/coherentpdf.browser.min.js');
 
 function getAttachmentsFromPDFInWorker(fileBuffer, fileName) {
   try {
@@ -74,6 +74,48 @@ function getAttachmentsFromPDFInWorker(fileBuffer, fileName) {
   }
 }
 
+function collectAttachmentsToKeep(pdf, attachmentCount, attachmentsToRemove) {
+  const attachmentsToKeep = [];
+
+  for (let i = 0; i < attachmentCount; i++) {
+    if (!attachmentsToRemove.includes(i)) {
+      const name = coherentpdf.getAttachmentName(i);
+      const page = coherentpdf.getAttachmentPage(i);
+      const data = coherentpdf.getAttachmentData(i);
+
+      const dataCopy = new Uint8Array(data.length);
+      dataCopy.set(new Uint8Array(data));
+
+      attachmentsToKeep.push({
+        name: String(name),
+        page: Number(page),
+        data: dataCopy,
+      });
+    }
+  }
+
+  return attachmentsToKeep;
+}
+
+function reattachFiles(pdf, attachmentsToKeep) {
+  for (const attachment of attachmentsToKeep) {
+    if (attachment.page === 0) {
+      coherentpdf.attachFileFromMemory(
+        attachment.data,
+        attachment.name,
+        pdf
+      );
+    } else {
+      coherentpdf.attachFileToPageFromMemory(
+        attachment.data,
+        attachment.name,
+        pdf,
+        attachment.page
+      );
+    }
+  }
+}
+
 function editAttachmentsInPDFInWorker(
   fileBuffer,
   fileName,
@@ -96,45 +138,15 @@ function editAttachmentsInPDFInWorker(
     if (attachmentsToRemove && attachmentsToRemove.length > 0) {
       coherentpdf.startGetAttachments(pdf);
       const attachmentCount = coherentpdf.numberGetAttachments();
-      const attachmentsToKeep = [];
-
-      for (let i = 0; i < attachmentCount; i++) {
-        if (!attachmentsToRemove.includes(i)) {
-          const name = coherentpdf.getAttachmentName(i);
-          const page = coherentpdf.getAttachmentPage(i);
-          const data = coherentpdf.getAttachmentData(i);
-
-          const dataCopy = new Uint8Array(data.length);
-          dataCopy.set(new Uint8Array(data));
-
-          attachmentsToKeep.push({
-            name: String(name),
-            page: Number(page),
-            data: dataCopy,
-          });
-        }
-      }
+      const attachmentsToKeep = collectAttachmentsToKeep(
+        pdf,
+        attachmentCount,
+        attachmentsToRemove
+      );
 
       coherentpdf.endGetAttachments();
-
       coherentpdf.removeAttachedFiles(pdf);
-
-      for (const attachment of attachmentsToKeep) {
-        if (attachment.page === 0) {
-          coherentpdf.attachFileFromMemory(
-            attachment.data,
-            attachment.name,
-            pdf
-          );
-        } else {
-          coherentpdf.attachFileToPageFromMemory(
-            attachment.data,
-            attachment.name,
-            pdf,
-            attachment.page
-          );
-        }
-      }
+      reattachFiles(pdf, attachmentsToKeep);
     }
 
     const modifiedBytes = coherentpdf.toMemory(pdf, false, true);
@@ -163,7 +175,7 @@ function editAttachmentsInPDFInWorker(
   }
 }
 
-self.onmessage = (e) => {
+globalThis.onmessage = (e) => {
   if (e.data.command === 'get-attachments') {
     getAttachmentsFromPDFInWorker(e.data.fileBuffer, e.data.fileName);
   } else if (e.data.command === 'edit-attachments') {
