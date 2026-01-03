@@ -178,7 +178,10 @@ export const ImageToPdfTool = () => {
       {imageFiles.length > 0 && hasMixedTypes && (
         <div className="mb-4 p-4 bg-input rounded-md border border-border">
           <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-medium text-foreground">
+            <label
+              htmlFor="jpeg-quality-slider"
+              className="text-sm font-medium text-foreground"
+            >
               JPEG Quality (for mixed image types)
             </label>
             <span className="text-sm text-muted-foreground">
@@ -186,13 +189,15 @@ export const ImageToPdfTool = () => {
             </span>
           </div>
           <Slider
+            id="jpeg-quality-slider"
             value={[quality]}
             onValueChange={(values) => setQuality(values[0])}
             min={0.3}
-            max={1.0}
+            max={1}
             step={0.1}
             className="w-full"
             disabled={isProcessing}
+            aria-label="JPEG Quality for mixed image types"
           />
           <p className="text-xs text-muted-foreground mt-2">
             Adjust quality for mixed image type conversions. Lower values

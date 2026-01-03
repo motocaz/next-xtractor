@@ -13,7 +13,7 @@ export interface ImageToPdfResult {
   failedFiles: string[];
 }
 
-const ACCEPTED_TYPES = [
+const ACCEPTED_TYPES = new Set([
   "image/jpeg",
   "image/jpg",
   "image/png",
@@ -22,7 +22,7 @@ const ACCEPTED_TYPES = [
   "image/tiff",
   "image/tif",
   "image/svg+xml",
-];
+]);
 const ACCEPTED_EXTENSIONS = [".heic", ".heif"];
 
 export const detectImageTypes = (files: File[]): Map<string, File[]> => {
@@ -33,7 +33,7 @@ export const detectImageTypes = (files: File[]): Map<string, File[]> => {
 
     if (
       !type ||
-      (!ACCEPTED_TYPES.includes(type) &&
+      (!ACCEPTED_TYPES.has(type) &&
         ACCEPTED_EXTENSIONS.some((ext) =>
           file.name.toLowerCase().endsWith(ext)
         ))

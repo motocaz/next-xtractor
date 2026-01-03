@@ -9,7 +9,7 @@ import {
 import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
 import type { ImageFileInfo, UseImageToPdfReturn } from "../types";
 
-const ACCEPTED_TYPES = [
+const ACCEPTED_TYPES = new Set([
   "image/jpeg",
   "image/jpg",
   "image/png",
@@ -18,14 +18,14 @@ const ACCEPTED_TYPES = [
   "image/tiff",
   "image/tif",
   "image/svg+xml",
-];
+]);
 const ACCEPTED_EXTENSIONS = [".heic", ".heif"];
 
 const isValidImageFile = (file: File): boolean => {
   const type = file.type || "";
   const lowerName = file.name.toLowerCase();
 
-  if (ACCEPTED_TYPES.includes(type)) {
+  if (ACCEPTED_TYPES.has(type)) {
     return true;
   }
 
@@ -34,6 +34,20 @@ const isValidImageFile = (file: File): boolean => {
   }
 
   return false;
+};
+
+const determineImageType = (file: File): string => {
+  const type = file.type || "";
+  const lowerName = file.name.toLowerCase();
+
+  if (
+    (!type || !ACCEPTED_TYPES.has(type)) &&
+    (lowerName.endsWith(".heic") || lowerName.endsWith(".heif"))
+  ) {
+    return "image/heic";
+  }
+
+  return type;
 };
 
 export const useImageToPdf = (): UseImageToPdfReturn => {
@@ -68,16 +82,7 @@ export const useImageToPdf = (): UseImageToPdfReturn => {
         }
 
         const id = `${file.name}-${Date.now()}-${Math.random()}`;
-        const type = file.type || "";
-        const lowerName = file.name.toLowerCase();
-
-        let actualType = type;
-        if (
-          (!type || !ACCEPTED_TYPES.includes(type)) &&
-          (lowerName.endsWith(".heic") || lowerName.endsWith(".heif"))
-        ) {
-          actualType = "image/heic";
-        }
+        const actualType = determineImageType(file);
 
         validFiles.push({
           id,
