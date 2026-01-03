@@ -6,7 +6,7 @@ import type { PDFDocument } from 'pdf-lib';
 import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
 import { readFileAsArrayBuffer, saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { renderPageAsImage } from '../lib/page-renderer';
+import { renderPageAsImage } from '@/lib/pdf/canvas-utils';
 import { performMetadataCrop, performFlatteningCrop } from '../lib/crop-logic';
 import type { CropData, CropMode, PageCrops, UseCropPDFReturn } from '../types';
 

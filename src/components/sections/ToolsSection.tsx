@@ -292,6 +292,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "invert-colors",
+    name: "Invert Colors",
+    subtitle: "Create a 'dark mode' version of your PDF.",
+    href: "/invert-colors",
+    implemented: true,
+  },
+  {
     id: "combine-single-page",
     name: "Combine to Single Page",
     subtitle: "Stitch all pages into one continuous scroll.",
@@ -362,6 +369,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "edit-metadata": "file-edit",
     "change-background-color": "palette",
     "change-text-color": "palette",
+    "invert-colors": "palette",
     "combine-single-page": "layers",
     "compare-pdfs": "git-compare",
     "fix-dimensions": "layers",
