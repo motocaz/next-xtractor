@@ -4,6 +4,7 @@ import { marked } from 'marked';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import type { MdToPdfOptions } from '../types';
+import { processCSS, processInlineStyle, convertMultipleColorValues } from './color-converter';
 
 export const mdToPdf = async (
   markdownContent: string,
@@ -17,10 +18,9 @@ export const mdToPdf = async (
 
   const tempContainer = document.createElement('div');
   tempContainer.style.cssText =
-    'position: absolute; top: -9999px; left: -9999px; width: 800px; padding: 40px; background: white; color: black;';
+    'position: absolute; top: -9999px; left: -9999px; width: 800px; padding: 40px; background-color: rgb(255, 255, 255) !important; color: rgb(0, 0, 0) !important;';
   
-  const styleSheet = document.createElement('style');
-  styleSheet.textContent = `
+  const rawCss = `
     body { font-family: Helvetica, Arial, sans-serif; line-height: 1.6; font-size: 12px; }
     h1, h2, h3 { margin: 20px 0 10px 0; font-weight: 600; border-bottom: 1px solid #eaecef; padding-bottom: .3em; }
     h1 { font-size: 2em; } 
@@ -34,11 +34,113 @@ export const mdToPdf = async (
     img { max-width: 100%; }
   `;
   
+  const processedCss = processCSS(rawCss);
+  
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = processedCss;
+  
   tempContainer.appendChild(styleSheet);
+  
+  let processedHtml = htmlContent.replace(/style\s*=\s*["']([^"']+)["']/gi, (match, styleValue) => {
+    const processedStyle = processInlineStyle(styleValue);
+    return `style="${processedStyle}"`;
+  });
+  
+  processedHtml = convertMultipleColorValues(processedHtml);
+  
   const contentDiv = document.createElement('div');
-  contentDiv.innerHTML = htmlContent;
+  contentDiv.innerHTML = processedHtml;
+  
+  const processElementStyles = (element: Element) => {
+    if (element instanceof HTMLElement && element.style.cssText) {
+      const originalStyle = element.style.cssText;
+      const processedStyle = processInlineStyle(originalStyle);
+      if (processedStyle !== originalStyle) {
+        element.style.cssText = processedStyle;
+      }
+    }
+    Array.from(element.children).forEach(processElementStyles);
+  };
+  
+  processElementStyles(contentDiv);
+  
   tempContainer.appendChild(contentDiv);
   document.body.appendChild(tempContainer);
+
+  await new Promise(resolve => setTimeout(resolve, 0));
+  
+  const processComputedStyles = (element: Element) => {
+    if (element instanceof HTMLElement) {
+      const computedStyle = window.getComputedStyle(element);
+      const colorProperties = [
+        'color',
+        'backgroundColor',
+        'borderColor',
+        'borderTopColor',
+        'borderRightColor',
+        'borderBottomColor',
+        'borderLeftColor',
+        'outlineColor',
+        'textDecorationColor',
+        'columnRuleColor',
+        'caretColor',
+        'fill',
+        'stroke',
+      ];
+      
+      const stylesToUpdate: string[] = [];
+      
+      colorProperties.forEach(prop => {
+        const kebabProp = prop.replace(/([A-Z])/g, '-$1').toLowerCase();
+        const value = computedStyle.getPropertyValue(kebabProp);
+        if (value && (value.includes('lab(') || value.includes('oklab(') || value.includes('lch(') || value.includes('oklch('))) {
+          const converted = convertMultipleColorValues(value);
+          if (converted !== value) {
+            element.style.setProperty(kebabProp, converted, 'important');
+            stylesToUpdate.push(`${kebabProp}: ${converted}`);
+          }
+        }
+      });
+    }
+    Array.from(element.children).forEach(processComputedStyles);
+  };
+  
+  processComputedStyles(tempContainer);
+  
+  if (document.body) {
+    const bodyComputedStyle = window.getComputedStyle(document.body);
+    const bodyBgColor = bodyComputedStyle.getPropertyValue('background-color');
+    if (bodyBgColor && (bodyBgColor.includes('lab(') || bodyBgColor.includes('oklab(') || bodyBgColor.includes('lch(') || bodyBgColor.includes('oklch('))) {
+      const converted = convertMultipleColorValues(bodyBgColor);
+      if (converted !== bodyBgColor) {
+        document.body.style.setProperty('background-color', converted, 'important');
+      }
+    }
+  }
+
+  const verifyNoLabColors = (element: Element): boolean => {
+    if (element instanceof HTMLElement) {
+      const computedStyle = window.getComputedStyle(element);
+      const allColorProps = [
+        'color', 'background-color', 'border-color', 'border-top-color',
+        'border-right-color', 'border-bottom-color', 'border-left-color',
+        'outline-color', 'text-decoration-color', 'column-rule-color',
+        'caret-color', 'fill', 'stroke'
+      ];
+      
+      for (const prop of allColorProps) {
+        const value = computedStyle.getPropertyValue(prop);
+        if (value && (value.includes('lab(') || value.includes('oklab(') || value.includes('lch(') || value.includes('oklch('))) {
+          const converted = convertMultipleColorValues(value);
+          element.style.setProperty(prop, converted, 'important');
+          return false;
+        }
+      }
+    }
+    return Array.from(element.children).every(verifyNoLabColors);
+  };
+  
+  verifyNoLabColors(tempContainer);
 
   try {
     const canvas = await html2canvas(tempContainer, {
