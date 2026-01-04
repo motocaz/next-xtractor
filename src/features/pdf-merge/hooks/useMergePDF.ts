@@ -5,11 +5,11 @@ import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
 import { mergePDFsFileMode, mergePDFsPageMode } from '../lib/merge-logic';
 import { renderAllPagesAsThumbnails } from '../lib/thumbnail-renderer';
 import { useMultiPDFLoader } from '@/hooks/useMultiPDFLoader';
-import type { UseMergePDFReturn, PageThumbnailData, MergeMode } from '../types';
+import type { UseMergePDFReturn, MergePageThumbnailData, MergeMode } from '../types';
 
 export const useMergePDF = (): UseMergePDFReturn => {
   const [activeMode, setActiveModeState] = useState<MergeMode>('file');
-  const [pageThumbnails, setPageThumbnails] = useState<PageThumbnailData[]>([]);
+  const [pageThumbnails, setPageThumbnails] = useState<MergePageThumbnailData[]>([]);
   const [thumbnailImages, setThumbnailImages] = useState<Map<string, string>>(new Map());
   const [pageRanges, setPageRanges] = useState<Map<string, string>>(new Map());
 
@@ -83,7 +83,7 @@ export const useMergePDF = (): UseMergePDFReturn => {
     setProcessingLoadingMessage('Rendering page previews...');
 
     try {
-      const thumbnailsData: PageThumbnailData[] = [];
+      const thumbnailsData: MergePageThumbnailData[] = [];
       pdfFiles.forEach((pdfInfo) => {
         for (let i = 0; i < pdfInfo.pageCount; i++) {
           const pageId = `${pdfInfo.id}-${i}`;

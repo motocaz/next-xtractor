@@ -2,11 +2,11 @@
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import type { PageThumbnailData } from '../types';
+import type { MergePageThumbnailData } from '../types';
 import Image from 'next/image';
 
 interface SortablePageThumbnailProps {
-  pageData: PageThumbnailData;
+  pageData: MergePageThumbnailData;
   thumbnailUrl?: string;
 }
 

@@ -1,9 +1,5 @@
-import type {
-  PageThumbnailData,
-  PageThumbnail,
-  UsePageOrganizerWithDuplicateReturn,
-} from '@/types/pdf-organize';
+import type { UsePageOrganizerWithDuplicateReturn } from '@/types/pdf-organize';
 
-export type { PageThumbnailData, PageThumbnail };
+export type { PageThumbnailData, PageThumbnail } from '@/types/pdf-organize';
 
 export type UseOrganizePagesReturn = UsePageOrganizerWithDuplicateReturn;

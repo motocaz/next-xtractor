@@ -1,8 +1,9 @@
 import type { PDFDocument } from 'pdf-lib';
-import type { PageThumbnail } from '@/lib/pdf/thumbnail-renderer';
 import type { PageThumbnailData } from '@/lib/pdf/organize-pages-utils';
+import type { PageThumbnail } from '@/lib/pdf/thumbnail-renderer';
 
-export type { PageThumbnailData, PageThumbnail };
+export type { PageThumbnailData } from '@/lib/pdf/organize-pages-utils';
+export type { PageThumbnail } from '@/lib/pdf/thumbnail-renderer';
 
 export interface UsePageOrganizerReturn {
   pdfFile: File | null;

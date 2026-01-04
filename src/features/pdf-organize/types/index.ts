@@ -1,10 +1,6 @@
-import type {
-  PageThumbnailData,
-  PageThumbnail,
-  UsePageOrganizerReturn,
-} from '@/types/pdf-organize';
+import type { UsePageOrganizerReturn } from '@/types/pdf-organize';
 
-export type { PageThumbnailData, PageThumbnail };
+export type { PageThumbnailData, PageThumbnail } from '@/types/pdf-organize';
 
 export type UseOrganizeReturn = UsePageOrganizerReturn;
 

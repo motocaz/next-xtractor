@@ -2,7 +2,7 @@ export type MergeMode = 'file' | 'page';
 
 import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
 
-export interface PageThumbnailData {
+export interface MergePageThumbnailData {
   id: string;
   fileName: string;
   pageIndex: number;
@@ -18,7 +18,7 @@ export interface PageThumbnail {
 export interface UseMergePDFReturn {
   pdfFiles: PDFFileInfo[];
   activeMode: MergeMode;
-  pageThumbnails: PageThumbnailData[];
+  pageThumbnails: MergePageThumbnailData[];
   thumbnailImages: Map<string, string>;
   
   isLoading: boolean;

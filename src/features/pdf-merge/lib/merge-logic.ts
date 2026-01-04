@@ -1,7 +1,7 @@
 import { PDFDocument } from 'pdf-lib';
 import { parsePageRanges } from '@/lib/pdf/file-utils';
 import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
-import type { PageThumbnailData } from '../types';
+import type { MergePageThumbnailData } from '../types';
 
 export const mergePDFsFileMode = async (
   pdfFiles: PDFFileInfo[],
@@ -34,7 +34,7 @@ export const mergePDFsFileMode = async (
 
 export const mergePDFsPageMode = async (
   pdfFiles: PDFFileInfo[],
-  pageOrder: PageThumbnailData[]
+  pageOrder: MergePageThumbnailData[]
 ): Promise<PDFDocument> => {
   if (!pdfFiles || pdfFiles.length === 0) {
     throw new Error('At least one PDF file is required for merging.');

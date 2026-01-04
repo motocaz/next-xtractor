@@ -15,10 +15,10 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { SortablePageThumbnail } from './SortablePageThumbnail';
-import type { PageThumbnailData } from '../types';
+import type { MergePageThumbnailData } from '../types';
 
 interface PageModePanelProps {
-  pageThumbnails: PageThumbnailData[];
+  pageThumbnails: MergePageThumbnailData[];
   thumbnailImages: Map<string, string>;
   isRendering: boolean;
   onReorder: (activeId: string, overId: string) => void;
