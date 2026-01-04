@@ -152,8 +152,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "organize",
     name: "Organize PDF",
     subtitle: "Reorder and organize pages in your PDF.",
-    href: "#",
-    implemented: false,
+    href: "/organize",
+    implemented: true,
   },
   {
     id: "organize-pages",
