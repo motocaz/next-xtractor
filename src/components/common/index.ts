@@ -9,4 +9,6 @@ export { ProcessMessages } from './ProcessMessages';
 
 export { FileUploadStatusMessages } from './FileUploadStatusMessages';
 export type { FileUploadStatusMessagesProps } from './FileUploadStatusMessages';
+export { PageThumbnail } from './PageThumbnail';
+export { PageOrganizerTool } from './PageOrganizerTool';
 

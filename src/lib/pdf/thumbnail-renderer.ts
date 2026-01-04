@@ -1,8 +1,12 @@
 'use client';
 
-import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
-import { renderPageAsImage } from '@/lib/pdf/canvas-utils';
-import type { PageThumbnail } from '../types';
+import { loadPDFWithPDFJSFromBuffer } from './pdfjs-loader';
+import { renderPageAsImage } from './canvas-utils';
+
+export interface PageThumbnail {
+  pageNum: number;
+  imageUrl: string;
+}
 
 export const renderAllPagesAsThumbnails = async (
   pdfBytes: ArrayBuffer,

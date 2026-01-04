@@ -2,7 +2,12 @@
 
 import type { PDFDocument } from 'pdf-lib';
 import { PDFDocument as PDFLibDocument } from 'pdf-lib';
-import type { PageThumbnailData } from '../types';
+
+export interface PageThumbnailData {
+  id: string;
+  originalPageIndex: number;
+  displayNumber: number;
+}
 
 export const buildPageOrder = (pages: PageThumbnailData[]): number[] => {
   return pages.map((page) => page.originalPageIndex);
@@ -11,7 +16,7 @@ export const buildPageOrder = (pages: PageThumbnailData[]): number[] => {
 export const processOrganizedPages = async (
   pdfDoc: PDFDocument,
   pageIndices: number[]
-): Promise<Blob> => {
+): Promise<Uint8Array> => {
   if (!pageIndices || pageIndices.length === 0) {
     throw new Error('No pages to process.');
   }
@@ -29,6 +34,6 @@ export const processOrganizedPages = async (
   copiedPages.forEach((page) => newPdf.addPage(page));
 
   const newPdfBytes = await newPdf.save();
-  return new Blob([new Uint8Array(newPdfBytes)], { type: 'application/pdf' });
+  return newPdfBytes;
 };
 
