@@ -54,7 +54,7 @@ export const processOCR = async ({
     },
   };
 
-  if (typeof window !== "undefined") {
+  if (globalThis.window !== undefined) {
     try {
       const workerPath = new URL(
         "tesseract.js/dist/worker.min.js",
