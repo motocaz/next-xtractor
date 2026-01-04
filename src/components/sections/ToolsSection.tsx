@@ -329,6 +329,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "n-up",
+    name: "N-Up PDF",
+    subtitle: "Combine multiple pages onto a single sheet.",
+    href: "/n-up",
+    implemented: true,
+  },
+  {
     id: "compare-pdfs",
     name: "Compare PDFs",
     subtitle: "Compare two PDFs side by side or in overlay mode.",
@@ -397,6 +404,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "change-text-color": "palette",
     "invert-colors": "palette",
     "combine-single-page": "layers",
+    "n-up": "layers",
     "compare-pdfs": "git-compare",
     "fix-dimensions": "layers",
     flatten: "layers",
