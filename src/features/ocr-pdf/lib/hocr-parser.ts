@@ -13,8 +13,10 @@ export const parseHOCR = (hocrText: string): HOCRWord[] => {
 
     if (!titleAttr || !text) return;
 
-    const bboxMatch = titleAttr.match(/bbox (\d+) (\d+) (\d+) (\d+)/);
-    const confMatch = titleAttr.match(/x_wconf (\d+)/);
+    const bboxRegex = /bbox (\d+) (\d+) (\d+) (\d+)/;
+    const confRegex = /x_wconf (\d+)/;
+    const bboxMatch = bboxRegex.exec(titleAttr);
+    const confMatch = confRegex.exec(titleAttr);
 
     if (bboxMatch) {
       words.push({

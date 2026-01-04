@@ -1,42 +1,48 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState, useMemo } from 'react';
-import { useOCR } from '../hooks/useOCR';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
+import Link from "next/link";
+import { useState, useMemo } from "react";
+import { useOCR } from "../hooks/useOCR";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, ClipboardCopy, Check, Download, FileScan } from 'lucide-react';
-import { tesseractLanguages } from '../lib/tesseract-languages';
-import type { TesseractLanguageCode } from '../lib/tesseract-languages';
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import {
+  ArrowLeft,
+  ClipboardCopy,
+  Check,
+  Download,
+  FileScan,
+} from "lucide-react";
+import { tesseractLanguages } from "../lib/tesseract-languages";
+import type { TesseractLanguageCode } from "../lib/tesseract-languages";
 
 const whitelistPresets: Record<string, string> = {
   alphanumeric:
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?-\'"',
-  'numbers-currency': '0123456789$€£¥.,- ',
-  'letters-only': 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ',
-  'numbers-only': '0123456789',
-  invoice: '0123456789$.,/-#: ',
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,!?-'\"",
+  "numbers-currency": "0123456789$€£¥.,- ",
+  "letters-only": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ",
+  "numbers-only": "0123456789",
+  invoice: "0123456789$.,/-#: ",
   forms:
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,()-_/@#:',
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,()-_/@#:",
 };
 
 export const OCRTool = () => {
-  const [langSearch, setLangSearch] = useState('');
+  const [langSearch, setLangSearch] = useState("");
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
 
@@ -75,8 +81,10 @@ export const OCRTool = () => {
 
   const filteredLanguages = useMemo(() => {
     const searchLower = langSearch.toLowerCase();
-    return Object.entries(tesseractLanguages).filter(([code, name]) =>
-      name.toLowerCase().includes(searchLower) || code.toLowerCase().includes(searchLower)
+    return Object.entries(tesseractLanguages).filter(
+      ([code, name]) =>
+        name.toLowerCase().includes(searchLower) ||
+        code.toLowerCase().includes(searchLower)
     );
   }, [langSearch]);
 
@@ -89,18 +97,17 @@ export const OCRTool = () => {
   };
 
   const handleWhitelistPresetChange = (preset: string) => {
-    if (preset === 'none') {
-      setWhitelistPreset('');
-      setWhitelist('');
-    } else if (preset && preset !== 'custom') {
+    if (preset === "none") {
+      setWhitelistPreset("");
+      setWhitelist("");
+    } else if (preset && preset !== "custom") {
       setWhitelistPreset(preset as typeof whitelistPreset);
-      setWhitelist(whitelistPresets[preset] || '');
+      setWhitelist(whitelistPresets[preset] || "");
     } else {
-      setWhitelistPreset(preset === 'custom' ? 'custom' : '');
-      if (preset === 'custom') {
-        // Keep current whitelist value when switching to custom
+      setWhitelistPreset(preset === "custom" ? "custom" : "");
+      if (preset === "custom") {
       } else {
-        setWhitelist('');
+        setWhitelist("");
       }
     }
   };
@@ -115,7 +122,7 @@ export const OCRTool = () => {
 
   const selectedLanguagesNames = selectedLanguages
     .map((code) => tesseractLanguages[code as TesseractLanguageCode])
-    .join(', ');
+    .join(", ");
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-8">
@@ -129,8 +136,8 @@ export const OCRTool = () => {
 
       <h2 className="text-2xl font-bold text-foreground mb-4">OCR PDF</h2>
       <p className="mb-6 text-muted-foreground">
-        Extract text from scanned PDFs and make them searchable. Select the languages
-        in your document and process it with OCR.
+        Extract text from scanned PDFs and make them searchable. Select the
+        languages in your document and process it with OCR.
       </p>
 
       <PDFUploadSection
@@ -165,7 +172,9 @@ export const OCRTool = () => {
                     >
                       <Checkbox
                         checked={selectedLanguages.includes(code)}
-                        onCheckedChange={() => handleLanguageToggle(code as TesseractLanguageCode)}
+                        onCheckedChange={() =>
+                          handleLanguageToggle(code as TesseractLanguageCode)
+                        }
                         disabled={isProcessing}
                       />
                       <span className="text-sm">{name}</span>
@@ -173,7 +182,10 @@ export const OCRTool = () => {
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Selected: <span className="font-semibold">{selectedLanguagesNames || 'None'}</span>
+                  Selected:{" "}
+                  <span className="font-semibold">
+                    {selectedLanguagesNames || "None"}
+                  </span>
                 </p>
               </div>
 
@@ -183,9 +195,13 @@ export const OCRTool = () => {
                 onToggle={(e) => setShowAdvanced(e.currentTarget.open)}
               >
                 <summary className="text-sm font-medium text-foreground cursor-pointer flex items-center justify-between">
-                  <span>Advanced Settings (Recommended to improve accuracy)</span>
+                  <span>
+                    Advanced Settings (Recommended to improve accuracy)
+                  </span>
                   <span
-                    className={`transition-transform ${showAdvanced ? 'rotate-180' : ''}`}
+                    className={`transition-transform ${
+                      showAdvanced ? "rotate-180" : ""
+                    }`}
                   >
                     ▼
                   </span>
@@ -197,7 +213,9 @@ export const OCRTool = () => {
                     </Label>
                     <Select
                       value={resolution}
-                      onValueChange={(value) => setResolution(value as typeof resolution)}
+                      onValueChange={(value) =>
+                        setResolution(value as typeof resolution)
+                      }
                       disabled={isProcessing}
                     >
                       <SelectTrigger id="ocr-resolution" className="w-full">
@@ -215,7 +233,9 @@ export const OCRTool = () => {
                     <Checkbox
                       id="ocr-binarize"
                       checked={binarize}
-                      onCheckedChange={(checked) => setBinarize(checked === true)}
+                      onCheckedChange={(checked) =>
+                        setBinarize(checked === true)
+                      }
                       disabled={isProcessing}
                     />
                     <Label
@@ -231,7 +251,7 @@ export const OCRTool = () => {
                       Character Whitelist Preset
                     </Label>
                     <Select
-                      value={whitelistPreset || 'none'}
+                      value={whitelistPreset || "none"}
                       onValueChange={handleWhitelistPresetChange}
                       disabled={isProcessing}
                     >
@@ -239,14 +259,24 @@ export const OCRTool = () => {
                         <SelectValue placeholder="None (All characters)" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">None (All characters)</SelectItem>
+                        <SelectItem value="none">
+                          None (All characters)
+                        </SelectItem>
                         <SelectItem value="alphanumeric">
                           Alphanumeric + Basic Punctuation
                         </SelectItem>
-                        <SelectItem value="numbers-currency">Numbers + Currency Symbols</SelectItem>
-                        <SelectItem value="letters-only">Letters Only (A-Z, a-z)</SelectItem>
-                        <SelectItem value="numbers-only">Numbers Only (0-9)</SelectItem>
-                        <SelectItem value="invoice">Invoice/Receipt (Numbers, $, ., -, /)</SelectItem>
+                        <SelectItem value="numbers-currency">
+                          Numbers + Currency Symbols
+                        </SelectItem>
+                        <SelectItem value="letters-only">
+                          Letters Only (A-Z, a-z)
+                        </SelectItem>
+                        <SelectItem value="numbers-only">
+                          Numbers Only (0-9)
+                        </SelectItem>
+                        <SelectItem value="invoice">
+                          Invoice/Receipt (Numbers, $, ., -, /)
+                        </SelectItem>
                         <SelectItem value="forms">
                           Forms (Alphanumeric + Common Symbols)
                         </SelectItem>
@@ -254,7 +284,8 @@ export const OCRTool = () => {
                       </SelectContent>
                     </Select>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Only these characters will be recognized. Leave empty for all characters.
+                      Only these characters will be recognized. Leave empty for
+                      all characters.
                     </p>
                   </div>
 
@@ -268,11 +299,15 @@ export const OCRTool = () => {
                       value={whitelist}
                       onChange={(e) => setWhitelist(e.target.value)}
                       placeholder="e.g., abcdefghijklmnopqrstuvwxyz0123456789$.,"
-                      disabled={isProcessing || (whitelistPreset !== '' && whitelistPreset !== 'custom')}
+                      disabled={
+                        isProcessing ||
+                        (whitelistPreset !== "" && whitelistPreset !== "custom")
+                      }
                       className="w-full"
                     />
                     <p className="text-xs text-muted-foreground mt-1">
-                      Only these characters will be recognized. Leave empty for all characters.
+                      Only these characters will be recognized. Leave empty for
+                      all characters.
                     </p>
                   </div>
                 </div>
@@ -298,7 +333,7 @@ export const OCRTool = () => {
                   <Label>Progress Log</Label>
                   <div className="max-h-32 overflow-y-auto bg-background p-2 rounded-md border border-border text-xs font-mono">
                     {progressLog.map((log, index) => (
-                      <div key={index}>{log}</div>
+                      <div key={`${log}-${index}`}>{log}</div>
                     ))}
                   </div>
                 </div>
@@ -312,10 +347,12 @@ export const OCRTool = () => {
         <div className="mt-6 space-y-4">
           <Card>
             <CardContent className="pt-6 pb-6 space-y-4">
-              <h3 className="text-xl font-bold text-foreground">OCR Complete</h3>
+              <h3 className="text-xl font-bold text-foreground">
+                OCR Complete
+              </h3>
               <p className="text-muted-foreground">
-                Your searchable PDF is ready. You can also copy or download the extracted text
-                below.
+                Your searchable PDF is ready. You can also copy or download the
+                extracted text below.
               </p>
 
               <div className="relative">
@@ -367,8 +404,10 @@ export const OCRTool = () => {
         </div>
       )}
 
-      <ProcessLoadingModal isProcessing={isProcessing} loadingMessage={loadingMessage} />
+      <ProcessLoadingModal
+        isProcessing={isProcessing}
+        loadingMessage={loadingMessage}
+      />
     </div>
   );
 };
-

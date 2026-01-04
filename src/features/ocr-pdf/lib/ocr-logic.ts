@@ -37,71 +37,34 @@ export const processOCR = async ({
   const langString = selectedLanguages.join("+");
   const scale = Number.parseFloat(resolution);
 
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/f762071c-732c-417a-b25c-e99ab42743d6',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ocr-logic.ts:37',message:'Before Tesseract worker creation',data:{langString,selectedLanguages,scale,resolution,tesseractVersion:typeof Tesseract !== 'undefined' ? 'loaded' : 'not loaded'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C,D,E'})}).catch(()=>{});
-  // #endregion
-
   const { loadPDFWithPDFJSFromBuffer } = await import("@/lib/pdf/pdfjs-loader");
   const arrayBuffer = await readFileAsArrayBuffer(file);
   const pdf = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
 
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/f762071c-732c-417a-b25c-e99ab42743d6',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ocr-logic.ts:44',message:'About to create Tesseract worker',data:{langString,workerOptions:{logger:'present'},hasTesseractCreateWorker:typeof Tesseract?.createWorker === 'function'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C,D,E'})}).catch(()=>{});
-  // #endregion
+  const workerOptions: {
+    logger?: (m: { status?: string; progress?: number }) => void;
+    workerPath?: string;
+  } = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    logger: (m: any) => {
+      onProgress({
+        status: m.status || "Processing...",
+        progress: m.progress || 0,
+      });
+    },
+  };
 
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/f762071c-732c-417a-b25c-e99ab42743d6',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ocr-logic.ts:52',message:'Checking Tesseract options',data:{hasTesseract:typeof Tesseract !== 'undefined',tesseractKeys:typeof Tesseract !== 'undefined' ? Object.keys(Tesseract) : [],createWorkerType:typeof Tesseract?.createWorker},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B,C'})}).catch(()=>{});
-  // #endregion
-
-  let worker;
-  try {
-    // Configure worker to use local path instead of CDN
-    const workerOptions: {
-      logger?: (m: { status?: string; progress?: number }) => void;
-      workerPath?: string;
-    } = {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      logger: (m: any) => {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f762071c-732c-417a-b25c-e99ab42743d6',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ocr-logic.ts:60',message:'Tesseract logger callback',data:{status:m?.status,progress:m?.progress,workerProgress:m},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C,D,E'})}).catch(()=>{});
-        // #endregion
-        onProgress({
-          status: m.status || "Processing...",
-          progress: m.progress || 0,
-        });
-      },
-    };
-
-    // Try to configure worker path to use local bundle instead of CDN
-    if (typeof window !== 'undefined') {
-      // Use worker from node_modules instead of CDN
-      try {
-        const workerPath = new URL('tesseract.js/dist/worker.min.js', import.meta.url).href;
-        workerOptions.workerPath = workerPath;
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f762071c-732c-417a-b25c-e99ab42743d6',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ocr-logic.ts:72',message:'Setting worker path',data:{workerPath,hasWorkerPath:!!workerOptions.workerPath},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B,C'})}).catch(()=>{});
-        // #endregion
-      } catch (pathError) {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f762071c-732c-417a-b25c-e99ab42743d6',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ocr-logic.ts:77',message:'Failed to set worker path, will use default',data:{error:pathError instanceof Error ? pathError.message : String(pathError)},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B,C'})}).catch(()=>{});
-        // #endregion
-      }
-    }
-
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/f762071c-732c-417a-b25c-e99ab42743d6',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ocr-logic.ts:82',message:'Creating worker with options',data:{langString,workerOptionsKeys:Object.keys(workerOptions),hasWorkerPath:!!workerOptions.workerPath},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C,D,E'})}).catch(()=>{});
-    // #endregion
-
-    worker = await Tesseract.createWorker(langString, 1, workerOptions);
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/f762071c-732c-417a-b25c-e99ab42743d6',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ocr-logic.ts:60',message:'Tesseract worker created successfully',data:{hasWorker:!!worker,workerType:typeof worker},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C,D,E'})}).catch(()=>{});
-    // #endregion
-  } catch (workerError) {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/f762071c-732c-417a-b25c-e99ab42743d6',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ocr-logic.ts:64',message:'Tesseract worker creation failed',data:{error:workerError instanceof Error ? workerError.message : String(workerError),errorStack:workerError instanceof Error ? workerError.stack : undefined,errorName:workerError instanceof Error ? workerError.name : undefined},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C,D,E'})}).catch(()=>{});
-    // #endregion
-    throw workerError;
+  if (typeof window !== "undefined") {
+    try {
+      const workerPath = new URL(
+        "tesseract.js/dist/worker.min.js",
+        import.meta.url
+      ).href;
+      workerOptions.workerPath = workerPath;
+    } catch {}
   }
+
+  const worker = await Tesseract.createWorker(langString, 1, workerOptions);
 
   try {
     await worker.setParameters({
