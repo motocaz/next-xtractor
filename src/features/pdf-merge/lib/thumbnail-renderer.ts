@@ -2,7 +2,7 @@
 
 import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
 import { renderPageAsImage } from '@/lib/pdf/canvas-utils';
-import type { PDFFileInfo } from '../types';
+import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
 
 export const renderAllPagesAsThumbnails = async (
   pdfFiles: PDFFileInfo[],

@@ -40,12 +40,9 @@ export interface CompressionResult {
   savingsPercent: number;
 }
 
-export interface PDFFileInfo {
-  id: string;
-  file: File;
-  fileName: string;
-  fileSize: number;
-}
+import type { FileInfo } from '@/hooks/useFileInfoLoader';
+
+export type PDFFileInfo = FileInfo;
 
 export interface UseCompressPDFReturn {
   pdfFiles: PDFFileInfo[];

@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { GripVertical, X } from 'lucide-react';
-import type { PDFFileInfo } from '../types';
+import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
 
 interface SortableFileItemProps {
   pdfInfo: PDFFileInfo;

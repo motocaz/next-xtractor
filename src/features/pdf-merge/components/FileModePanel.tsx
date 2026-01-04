@@ -15,7 +15,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { SortableFileItem } from './SortableFileItem';
-import type { PDFFileInfo } from '../types';
+import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
 
 interface FileModePanelProps {
   pdfFiles: PDFFileInfo[];

@@ -1,6 +1,7 @@
 import { PDFDocument } from 'pdf-lib';
 import { parsePageRanges } from '@/lib/pdf/file-utils';
-import type { PDFFileInfo, PageThumbnailData } from '../types';
+import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
+import type { PageThumbnailData } from '../types';
 
 export const mergePDFsFileMode = async (
   pdfFiles: PDFFileInfo[],

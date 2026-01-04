@@ -31,7 +31,7 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import type { PDFFileInfo } from '../types';
+import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
 
 interface SortablePDFItemProps {
   pdfInfo: PDFFileInfo;

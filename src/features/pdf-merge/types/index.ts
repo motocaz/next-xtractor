@@ -1,14 +1,6 @@
-import type { PDFDocument } from 'pdf-lib';
-
 export type MergeMode = 'file' | 'page';
 
-export interface PDFFileInfo {
-  id: string;
-  file: File;
-  pdfDoc: PDFDocument;
-  pageCount: number;
-  fileName: string;
-}
+import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
 
 export interface PageThumbnailData {
   id: string;
