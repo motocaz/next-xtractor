@@ -1,9 +1,10 @@
 import type { PDFDocument } from 'pdf-lib';
-import type { PageThumbnailData, PageThumbnail } from '@/types/pdf-organize';
+import type { PageThumbnail } from '@/lib/pdf/thumbnail-renderer';
+import type { PageThumbnailData } from '@/lib/pdf/organize-pages-utils';
 
 export type { PageThumbnailData, PageThumbnail };
 
-export interface UseOrganizeReturn {
+export interface UsePageOrganizerReturn {
   pdfFile: File | null;
   pdfDoc: PDFDocument | null;
   isLoadingPDF: boolean;
@@ -24,5 +25,9 @@ export interface UseOrganizeReturn {
   deletePage: (pageId: string) => void;
   processAndSave: () => Promise<void>;
   reset: () => void;
+}
+
+export interface UsePageOrganizerWithDuplicateReturn extends UsePageOrganizerReturn {
+  duplicatePage: (pageId: string) => void;
 }
 

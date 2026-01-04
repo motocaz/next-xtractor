@@ -1,15 +1,7 @@
-import type { PDFDocument } from "pdf-lib";
+import type { PDFDocument } from 'pdf-lib';
+import type { PageThumbnailData, PageThumbnail } from '@/types/pdf-organize';
 
-export interface PageThumbnailData {
-  id: string;
-  originalPageIndex: number;
-  displayNumber: number;
-}
-
-export interface PageThumbnail {
-  pageNum: number;
-  imageUrl: string;
-}
+export type { PageThumbnailData, PageThumbnail };
 
 export interface UseOrganizePagesReturn {
   pdfFile: File | null;

@@ -21,7 +21,7 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
-import { PageThumbnail } from './PageThumbnail';
+import { PageThumbnail } from '@/components/common/PageThumbnail';
 
 export const OrganizePagesTool = () => {
   const {

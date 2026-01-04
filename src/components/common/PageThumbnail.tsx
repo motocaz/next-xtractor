@@ -4,23 +4,23 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, CopyPlus, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import type { PageThumbnailData } from '../types';
+import type { PageThumbnailData } from '@/lib/pdf/organize-pages-utils';
 import Image from 'next/image';
 
 interface PageThumbnailProps {
   pageData: PageThumbnailData;
   thumbnailUrl?: string;
-  onDuplicate: () => void;
   onDelete: () => void;
   canDelete: boolean;
+  onDuplicate?: () => void;
 }
 
 export const PageThumbnail = ({
   pageData,
   thumbnailUrl,
-  onDuplicate,
   onDelete,
   canDelete,
+  onDuplicate,
 }: PageThumbnailProps) => {
   const {
     attributes,
@@ -85,20 +85,22 @@ export const PageThumbnail = ({
         role="group"
         aria-label="Page actions"
       >
-        <Button
-          type="button"
-          size="icon"
-          variant="default"
-          className="h-8 w-8 rounded-full bg-green-600 hover:bg-green-700 text-white"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDuplicate();
-          }}
-          aria-label={`Duplicate page ${pageData.displayNumber}`}
-          title="Duplicate Page"
-        >
-          <CopyPlus className="h-4 w-4" />
-        </Button>
+        {onDuplicate && (
+          <Button
+            type="button"
+            size="icon"
+            variant="default"
+            className="h-8 w-8 rounded-full bg-green-600 hover:bg-green-700 text-white"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDuplicate();
+            }}
+            aria-label={`Duplicate page ${pageData.displayNumber}`}
+            title="Duplicate Page"
+          >
+            <CopyPlus className="h-4 w-4" />
+          </Button>
+        )}
         <Button
           type="button"
           size="icon"
