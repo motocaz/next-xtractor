@@ -3,6 +3,7 @@
 import { marked } from 'marked';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import DOMPurify from 'dompurify';
 import type { MdToPdfOptions } from '../types';
 import { processCSS, processInlineStyle, convertMultipleColorValues } from './color-converter';
 
@@ -15,6 +16,25 @@ export const mdToPdf = async (
   }
 
   const htmlContent = marked.parse(markdownContent) as string;
+  
+  const sanitizedHtml = DOMPurify.sanitize(htmlContent, {
+    ALLOWED_TAGS: [
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'p', 'br', 'hr',
+      'ul', 'ol', 'li',
+      'blockquote', 'pre', 'code',
+      'strong', 'em', 'b', 'i', 'u', 's',
+      'a', 'img',
+      'table', 'thead', 'tbody', 'tr', 'th', 'td',
+      'div', 'span'
+    ],
+    ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'id', 'style'],
+    ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+    KEEP_CONTENT: true,
+    RETURN_DOM: false,
+    RETURN_DOM_FRAGMENT: false,
+    RETURN_TRUSTED_TYPE: false
+  });
 
   const tempContainer = document.createElement('div');
   tempContainer.style.cssText =
@@ -41,7 +61,7 @@ export const mdToPdf = async (
   
   tempContainer.appendChild(styleSheet);
   
-  let processedHtml = htmlContent.replace(/style\s*=\s*["']([^"']+)["']/gi, (match, styleValue) => {
+  let processedHtml = sanitizedHtml.replace(/style\s*=\s*["']([^"']+)["']/gi, (match, styleValue) => {
     const processedStyle = processInlineStyle(styleValue);
     return `style="${processedStyle}"`;
   });
