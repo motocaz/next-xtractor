@@ -1,37 +1,27 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import JSZip from 'jszip';
+import { useMultiPDFProcessor } from '@/hooks/useMultiPDFProcessor';
 import { linearizePDFs } from '../lib/linearize-logic';
 import { downloadFile } from '@/lib/pdf/file-utils';
 import type { UseLinearizePDFReturn } from '../types';
 
 export const useLinearizePDF = (): UseLinearizePDFReturn => {
-  const [pdfFiles, setPdfFiles] = useState<File[]>([]);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-
-  const loadPDFs = useCallback((files: File[]) => {
-    setPdfFiles((prev) => {
-      const newFiles = [...prev];
-      for (const file of files) {
-        if (!newFiles.some((f) => f.name === file.name && f.size === file.size)) {
-          newFiles.push(file);
-        }
-      }
-      return newFiles;
-    });
-    setError(null);
-    setSuccess(null);
-  }, []);
-
-  const removePDF = useCallback((index: number) => {
-    setPdfFiles((prev) => prev.filter((_, i) => i !== index));
-    setError(null);
-    setSuccess(null);
-  }, []);
+  const {
+    pdfFiles,
+    isProcessing,
+    loadingMessage,
+    error,
+    success,
+    loadPDFs,
+    removePDF,
+    reset,
+    setIsProcessing,
+    setLoadingMessage,
+    setError,
+    setSuccess,
+  } = useMultiPDFProcessor();
 
   const linearizePDFsHandler = useCallback(async () => {
     if (pdfFiles.length === 0) {
@@ -83,7 +73,7 @@ export const useLinearizePDF = (): UseLinearizePDFReturn => {
       }
 
       setSuccess(successMessage);
-      setPdfFiles([]);
+      reset();
     } catch (err) {
       console.error('Error linearizing PDFs:', err);
       setError(
@@ -95,15 +85,7 @@ export const useLinearizePDF = (): UseLinearizePDFReturn => {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfFiles]);
-
-  const reset = useCallback(() => {
-    setPdfFiles([]);
-    setIsProcessing(false);
-    setLoadingMessage(null);
-    setError(null);
-    setSuccess(null);
-  }, []);
+  }, [pdfFiles, setIsProcessing, setError, setSuccess, setLoadingMessage, reset]);
 
   return {
     pdfFiles,

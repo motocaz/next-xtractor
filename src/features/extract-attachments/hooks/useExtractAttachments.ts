@@ -1,37 +1,27 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import JSZip from 'jszip';
+import { useMultiPDFProcessor } from '@/hooks/useMultiPDFProcessor';
 import { extractAttachmentsFromPDFs } from '../lib/extract-attachments-logic';
 import { downloadFile, formatBytes } from '@/lib/pdf/file-utils';
 import type { UseExtractAttachmentsReturn } from '../types';
 
 export const useExtractAttachments = (): UseExtractAttachmentsReturn => {
-  const [pdfFiles, setPdfFiles] = useState<File[]>([]);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-
-  const loadPDFs = useCallback((files: File[]) => {
-    setPdfFiles((prev) => {
-      const newFiles = [...prev];
-      for (const file of files) {
-        if (!newFiles.some((f) => f.name === file.name && f.size === file.size)) {
-          newFiles.push(file);
-        }
-      }
-      return newFiles;
-    });
-    setError(null);
-    setSuccess(null);
-  }, []);
-
-  const removePDF = useCallback((index: number) => {
-    setPdfFiles((prev) => prev.filter((_, i) => i !== index));
-    setError(null);
-    setSuccess(null);
-  }, []);
+  const {
+    pdfFiles,
+    isProcessing,
+    loadingMessage,
+    error,
+    success,
+    loadPDFs,
+    removePDF,
+    reset,
+    setIsProcessing,
+    setLoadingMessage,
+    setError,
+    setSuccess,
+  } = useMultiPDFProcessor();
 
   const extractAttachments = useCallback(async () => {
     if (pdfFiles.length === 0) {
@@ -79,7 +69,7 @@ export const useExtractAttachments = (): UseExtractAttachmentsReturn => {
       const successMessage = `Extraction completed! ${attachments.length} attachment(s) in zip file (${formatBytes(totalSize)}). Download started.`;
       setSuccess(successMessage);
 
-      setPdfFiles([]);
+      reset();
     } catch (err) {
       console.error('Error extracting attachments:', err);
       setError(
@@ -91,15 +81,7 @@ export const useExtractAttachments = (): UseExtractAttachmentsReturn => {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfFiles]);
-
-  const reset = useCallback(() => {
-    setPdfFiles([]);
-    setIsProcessing(false);
-    setLoadingMessage(null);
-    setError(null);
-    setSuccess(null);
-  }, []);
+  }, [pdfFiles, setIsProcessing, setError, setSuccess, setLoadingMessage, reset]);
 
   return {
     pdfFiles,
