@@ -16,7 +16,7 @@ export const useMdToPdf = (): UseMdToPdfReturn => {
   const [success, setSuccess] = useState<string | null>(null);
 
   const processMdToPdf = useCallback(async () => {
-    if (!markdownContent || !markdownContent.trim()) {
+    if (!markdownContent?.trim()) {
       setError('Please enter some Markdown text.');
       return;
     }

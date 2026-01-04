@@ -10,7 +10,7 @@ const labToRgb = (l: number, a: number, b: number): string => {
   const z3 = z * z * z;
 
   const xn = 0.95047;
-  const yn = 1.0;
+  const yn = 1;
   const zn = 1.08883;
 
   const fx = x3 > 0.008856 ? x3 : (x - 16 / 116) / 7.787;
@@ -75,10 +75,10 @@ const parseColorFunction = (
   functionName: string
 ): number[] | null => {
   const regex = new RegExp(
-    `${functionName}\\(\\s*([^)]+)\\s*\\)`,
+    String.raw`${functionName}\(\s*([^)]+)\s*\)`,
     'i'
   );
-  const match = str.match(regex);
+  const match = regex.exec(str);
   if (!match) return null;
 
   const content = match[1].trim();
@@ -88,9 +88,9 @@ const parseColorFunction = (
   const parts = rawParts.filter((p) => p.trim().length > 0);
   const values = parts.map((v) => {
     const trimmed = v.trim();
-    const parsed = parseFloat(trimmed);
+    const parsed = Number.parseFloat(trimmed);
     return parsed;
-  }).filter((v) => !isNaN(v));
+  }).filter((v) => !Number.isNaN(v));
 
   return values.length > 0 ? values : null;
 };
@@ -220,6 +220,6 @@ export const processInlineStyle = (styleValue: string): string => {
     return prop;
   });
 
-  return processed.filter((p) => p).join('; ');
+  return processed.filter(Boolean).join('; ');
 };
 

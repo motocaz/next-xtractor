@@ -11,7 +11,7 @@ export const mdToPdf = async (
   markdownContent: string,
   options: MdToPdfOptions
 ): Promise<Blob> => {
-  if (!markdownContent || !markdownContent.trim()) {
+  if (!markdownContent?.trim()) {
     throw new Error('Please enter some Markdown text.');
   }
 
@@ -91,7 +91,7 @@ export const mdToPdf = async (
   
   const processComputedStyles = (element: Element) => {
     if (element instanceof HTMLElement) {
-      const computedStyle = window.getComputedStyle(element);
+      const computedStyle = globalThis.getComputedStyle(element);
       const colorProperties = [
         'color',
         'backgroundColor',
@@ -128,7 +128,7 @@ export const mdToPdf = async (
   processComputedStyles(tempContainer);
   
   if (document.body) {
-    const bodyComputedStyle = window.getComputedStyle(document.body);
+    const bodyComputedStyle = globalThis.getComputedStyle(document.body);
     const bodyBgColor = bodyComputedStyle.getPropertyValue('background-color');
     if (bodyBgColor && (bodyBgColor.includes('lab(') || bodyBgColor.includes('oklab(') || bodyBgColor.includes('lch(') || bodyBgColor.includes('oklch('))) {
       const converted = convertMultipleColorValues(bodyBgColor);
@@ -140,7 +140,7 @@ export const mdToPdf = async (
 
   const verifyNoLabColors = (element: Element): boolean => {
     if (element instanceof HTMLElement) {
-      const computedStyle = window.getComputedStyle(element);
+      const computedStyle = globalThis.getComputedStyle(element);
       const allColorProps = [
         'color', 'background-color', 'border-color', 'border-top-color',
         'border-right-color', 'border-bottom-color', 'border-left-color',
@@ -169,7 +169,7 @@ export const mdToPdf = async (
       logging: false,
     });
 
-    document.body.removeChild(tempContainer);
+    tempContainer.remove();
 
     const pdf = new jsPDF({
       orientation: options.orientation,
@@ -216,7 +216,7 @@ export const mdToPdf = async (
     return pdfBlob;
   } catch (error) {
     if (document.body.contains(tempContainer)) {
-      document.body.removeChild(tempContainer);
+      tempContainer.remove();
     }
     throw error;
   }
