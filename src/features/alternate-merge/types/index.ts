@@ -1,12 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
-
-export interface PDFFileInfo {
-  id: string;
-  file: File;
-  pdfDoc: PDFDocument;
-  pageCount: number;
-  fileName: string;
-}
+import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
 
 export interface UseAlternateMergeReturn {
   pdfFiles: PDFFileInfo[];

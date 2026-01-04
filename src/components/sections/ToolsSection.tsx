@@ -94,8 +94,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "merge",
     name: "Merge PDF",
     subtitle: "Combine multiple PDFs into one file.",
-    href: "#",
-    implemented: false,
+    href: "/merge",
+    implemented: true,
   },
   {
     id: "alternate-merge",
