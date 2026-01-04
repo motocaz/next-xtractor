@@ -3,11 +3,11 @@
 import { useCallback } from 'react';
 import JSZip from 'jszip';
 import { useMultiPDFProcessor } from '@/hooks/useMultiPDFProcessor';
-import { extractAttachmentsFromPDFs } from '../lib/extract-attachments-logic';
-import { downloadFile, formatBytes } from '@/lib/pdf/file-utils';
-import type { UseExtractAttachmentsReturn } from '../types';
+import { linearizePDFs } from '../lib/linearize-logic';
+import { downloadFile } from '@/lib/pdf/file-utils';
+import type { UseLinearizePDFReturn } from '../types';
 
-export const useExtractAttachments = (): UseExtractAttachmentsReturn => {
+export const useLinearizePDF = (): UseLinearizePDFReturn => {
   const {
     pdfFiles,
     isProcessing,
@@ -23,7 +23,7 @@ export const useExtractAttachments = (): UseExtractAttachmentsReturn => {
     setSuccess,
   } = useMultiPDFProcessor();
 
-  const extractAttachments = useCallback(async () => {
+  const linearizePDFsHandler = useCallback(async () => {
     if (pdfFiles.length === 0) {
       setError('Please upload at least one PDF file.');
       return;
@@ -32,50 +32,54 @@ export const useExtractAttachments = (): UseExtractAttachmentsReturn => {
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Reading files...');
+    setLoadingMessage('Initializing optimization engine...');
 
     try {
-      setLoadingMessage('Extracting attachments from PDF(s)...');
+      const results = await linearizePDFs(pdfFiles, (current, total, fileName) => {
+        setLoadingMessage(`Optimizing ${fileName} (${current}/${total})...`);
+      });
 
-      const attachments = await extractAttachmentsFromPDFs(pdfFiles);
-
-      if (attachments.length === 0) {
-        setError('No attachments were found in the selected PDF(s).');
+      if (results.length === 0) {
+        setError('No PDF files could be linearized.');
         setIsProcessing(false);
         setLoadingMessage(null);
         return;
       }
 
-      setLoadingMessage('Creating ZIP file...');
+      setLoadingMessage('Generating ZIP file...');
 
       const zip = new JSZip();
-      let totalSize = 0;
-
-      for (const attachment of attachments) {
-        zip.file(attachment.name, new Uint8Array(attachment.data));
-        totalSize += attachment.data.byteLength;
+      for (const result of results) {
+        const arrayBuffer = await result.blob.arrayBuffer();
+        zip.file(result.fileName, arrayBuffer);
       }
 
       setLoadingMessage('Preparing download...');
 
       const zipBlob = await zip.generateAsync({ type: 'blob' });
 
-      const baseName = pdfFiles[0].name.replace(/\.pdf$/i, '');
+      const baseName =
+        pdfFiles[0]?.name.replace(/\.pdf$/i, '') || 'linearized-pdfs';
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const zipFileName = `${timestamp}_${baseName}.zip`;
 
       downloadFile(zipBlob, undefined, zipFileName);
 
-      const successMessage = `Extraction completed! ${attachments.length} attachment(s) in zip file (${formatBytes(totalSize)}). Download started.`;
-      setSuccess(successMessage);
+      const successCount = results.length;
+      const errorCount = pdfFiles.length - successCount;
+      let successMessage = `${successCount} PDF(s) linearized successfully.`;
+      if (errorCount > 0) {
+        successMessage += ` ${errorCount} file(s) failed.`;
+      }
 
+      setSuccess(successMessage);
       reset();
     } catch (err) {
-      console.error('Error extracting attachments:', err);
+      console.error('Error linearizing PDFs:', err);
       setError(
         err instanceof Error
           ? err.message
-          : 'An error occurred while extracting attachments.'
+          : 'An error occurred while linearizing PDFs.'
       );
     } finally {
       setIsProcessing(false);
@@ -91,7 +95,7 @@ export const useExtractAttachments = (): UseExtractAttachmentsReturn => {
     success,
     loadPDFs,
     removePDF,
-    extractAttachments,
+    linearizePDFs: linearizePDFsHandler,
     reset,
   };
 };

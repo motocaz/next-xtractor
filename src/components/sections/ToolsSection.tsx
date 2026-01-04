@@ -117,6 +117,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "linearize",
+    name: "Linearize PDF",
+    subtitle: "Optimize PDFs for fast web view.",
+    href: "/linearize",
+    implemented: true,
+  },
+  {
     id: "encrypt",
     name: "Encrypt PDF",
     subtitle: "Add password protection to your PDF.",
@@ -351,6 +358,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "alternate-merge": "combine",
     split: "scissors",
     compress: "zap",
+    linearize: "zap",
     encrypt: "lock",
     decrypt: "unlock",
     rotate: "rotate-cw",
