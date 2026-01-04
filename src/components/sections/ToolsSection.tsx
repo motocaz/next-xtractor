@@ -28,6 +28,7 @@ import {
   Palette,
   Layers,
   GitCompare,
+  FileScan,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -66,6 +67,7 @@ const iconMap: Record<string, LucideIcon> = {
   palette: Palette,
   layers: Layers,
   "git-compare": GitCompare,
+  "file-scan": FileScan,
 };
 
 const allTools: Omit<Tool, "icon">[] = [
@@ -363,6 +365,13 @@ const allTools: Omit<Tool, "icon">[] = [
     href: "/form-filler",
     implemented: true,
   },
+  {
+    id: "ocr",
+    name: "OCR PDF",
+    subtitle: "Extract text from scanned PDFs and make them searchable.",
+    href: "/ocr",
+    implemented: true,
+  },
 ];
 
 const toolsWithIcons: Tool[] = allTools.map((tool) => {
@@ -409,6 +418,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "fix-dimensions": "layers",
     flatten: "layers",
     "form-filler": "file-edit",
+    ocr: "file-scan",
   };
 
   const iconName = iconNameMap[tool.id] || "file";
