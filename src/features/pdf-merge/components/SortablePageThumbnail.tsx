@@ -41,15 +41,17 @@ export const SortablePageThumbnail = ({
       {...attributes}
       {...listeners}
     >
-      <div className="relative w-full">
+      <div className="relative w-full h-32 bg-muted rounded-md overflow-hidden">
         {thumbnailUrl ? (
           <Image
             src={thumbnailUrl}
             alt={`Page ${pageData.pageNumber} from ${pageData.fileName}`}
-            className="rounded-md shadow-md max-w-full h-auto"
+            fill
+            className="rounded-md shadow-md object-contain"
+            unoptimized
           />
         ) : (
-          <div className="w-full h-32 bg-muted rounded-md flex items-center justify-center">
+          <div className="w-full h-full flex items-center justify-center">
             <span className="text-xs text-muted-foreground">Loading...</span>
           </div>
         )}
