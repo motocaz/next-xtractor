@@ -347,6 +347,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "remove-annotations",
+    name: "Remove Annotations",
+    subtitle: "Remove annotations (highlights, comments, drawings, etc.) from your PDF.",
+    href: "/remove-annotations",
+    implemented: true,
+  },
+  {
     id: "change-permissions",
     name: "Change Permissions",
     subtitle: "Modify passwords and permissions on your PDF documents.",
@@ -493,6 +500,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "sign-pdf": "pen-tool",
     cropper: "crop",
     redact: "pen-tool",
+    "remove-annotations": "pen-tool",
     "change-permissions": "lock",
     "edit-metadata": "file-edit",
     "change-background-color": "palette",
