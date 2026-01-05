@@ -25,7 +25,12 @@ export const getUserSubscription = async (userId: string) => {
   return prisma.subscription.findFirst({
     where: {
       userId,
-      status: 'ACTIVE',
+      status: {
+        in: ['ACTIVE', 'TRIALING'],
+      },
+      currentPeriodEnd: {
+        gte: new Date(),
+      },
     },
     orderBy: {
       createdAt: 'desc',
@@ -86,5 +91,24 @@ export const getSubscriptionByClerkId = async (
       user: true,
     },
   });
+};
+
+export const hasActiveSubscription = async (userId: string): Promise<boolean> => {
+  const subscription = await prisma.subscription.findFirst({
+    where: {
+      userId,
+      status: {
+        in: ['ACTIVE', 'TRIALING'],
+      },
+      currentPeriodEnd: {
+        gte: new Date(),
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return !!subscription;
 };
 

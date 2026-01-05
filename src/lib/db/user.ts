@@ -22,7 +22,12 @@ export const getUserByClerkId = async (clerkId: string) => {
     include: {
       subscriptions: {
         where: {
-          status: 'ACTIVE',
+          status: {
+            in: ['ACTIVE', 'TRIALING'],
+          },
+          currentPeriodEnd: {
+            gte: new Date(),
+          },
         },
         orderBy: {
           createdAt: 'desc',
