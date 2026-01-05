@@ -263,6 +263,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "pdf-to-markdown",
+    name: "PDF to Markdown",
+    subtitle: "Convert a PDF's text content into a structured Markdown file.",
+    href: "/pdf-to-markdown",
+    implemented: true,
+  },
+  {
     id: "pdf-to-bmp",
     name: "PDF to BMP",
     subtitle: "Convert each page of a PDF file into a BMP image.",
