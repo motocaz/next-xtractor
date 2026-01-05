@@ -301,8 +301,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "pdf-to-png",
     name: "PDF to PNG",
     subtitle: "Convert PDF pages to PNG images.",
-    href: "#",
-    implemented: false,
+    href: "/pdf-to-png",
+    implemented: true,
   },
   {
     id: "sign-pdf",
