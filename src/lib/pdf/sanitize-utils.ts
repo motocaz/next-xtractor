@@ -3,6 +3,73 @@
 import type { PDFDocument, PDFDict } from "pdf-lib";
 import { PDFName } from "pdf-lib";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getCatalogDict = (pdfDoc: PDFDocument): any => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (pdfDoc.catalog as any).dict;
+};
+
+const safeLookupAsDict = (
+  pdfDoc: PDFDocument,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ref: any
+): PDFDict | null => {
+  try {
+    const obj = pdfDoc.context.lookup(ref);
+    if (obj && "has" in obj) {
+      return obj as PDFDict;
+    }
+  } catch {}
+  return null;
+};
+
+const deleteFromNamesDict = (
+  pdfDoc: PDFDocument,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  catalogDict: any,
+  keyName: string,
+  errorMessage: string
+): boolean => {
+  const namesRef = catalogDict.get(PDFName.of("Names"));
+  if (!namesRef) return false;
+
+  try {
+    const namesDict = safeLookupAsDict(pdfDoc, namesRef);
+    if (namesDict && namesDict.has(PDFName.of(keyName))) {
+      namesDict.delete(PDFName.of(keyName));
+      return true;
+    }
+  } catch (e) {
+    const error = e instanceof Error ? e.message : String(e);
+    console.warn(errorMessage, error);
+  }
+  return false;
+};
+
+const deleteFromCatalogDict = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  catalogDict: any,
+  keyName: string
+): boolean => {
+  if (catalogDict.has(PDFName.of(keyName))) {
+    catalogDict.delete(PDFName.of(keyName));
+    return true;
+  }
+  return false;
+};
+
+const deleteFromPageDict = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  pageDict: any,
+  keyName: string
+): boolean => {
+  if (pageDict.has(PDFName.of(keyName))) {
+    pageDict.delete(PDFName.of(keyName));
+    return true;
+  }
+  return false;
+};
+
 export const removeJavaScriptFromDoc = (pdfDoc: PDFDocument): boolean => {
   let changesMade = false;
 
@@ -14,33 +81,24 @@ export const removeJavaScriptFromDoc = (pdfDoc: PDFDocument): boolean => {
       changesMade = true;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const catalogDict = (pdfDoc.catalog as any).dict;
+    const catalogDict = getCatalogDict(pdfDoc);
 
-    const namesRef = catalogDict.get(PDFName.of("Names"));
-    if (namesRef) {
-      try {
-        const namesDict = pdfDoc.context.lookup(namesRef);
-        if (namesDict && "has" in namesDict) {
-          const namesDictTyped = namesDict as PDFDict;
-          if (namesDictTyped.has(PDFName.of("JavaScript"))) {
-            namesDictTyped.delete(PDFName.of("JavaScript"));
-            changesMade = true;
-          }
-        }
-      } catch (e) {
-        const error = e instanceof Error ? e.message : String(e);
-        console.warn("Could not access Names/JavaScript:", error);
-      }
-    }
-
-    if (catalogDict.has(PDFName.of("OpenAction"))) {
-      catalogDict.delete(PDFName.of("OpenAction"));
+    if (
+      deleteFromNamesDict(
+        pdfDoc,
+        catalogDict,
+        "JavaScript",
+        "Could not access Names/JavaScript:"
+      )
+    ) {
       changesMade = true;
     }
 
-    if (catalogDict.has(PDFName.of("AA"))) {
-      catalogDict.delete(PDFName.of("AA"));
+    if (deleteFromCatalogDict(catalogDict, "OpenAction")) {
+      changesMade = true;
+    }
+
+    if (deleteFromCatalogDict(catalogDict, "AA")) {
       changesMade = true;
     }
 
@@ -49,28 +107,24 @@ export const removeJavaScriptFromDoc = (pdfDoc: PDFDocument): boolean => {
       try {
         const pageDict = page.node;
 
-        if (pageDict.has(PDFName.of("AA"))) {
-          pageDict.delete(PDFName.of("AA"));
+        if (deleteFromPageDict(pageDict, "AA")) {
           changesMade = true;
         }
 
         const annotRefs = pageDict.Annots()?.asArray() || [];
         for (const annotRef of annotRefs) {
           try {
-            const annot = pdfDoc.context.lookup(annotRef);
-            if (!annot || !("has" in annot)) {
+            const annotDict = safeLookupAsDict(pdfDoc, annotRef);
+            if (!annotDict) {
               continue;
             }
-
-            const annotDict = annot as PDFDict;
 
             if (annotDict.has(PDFName.of("A"))) {
               const actionRef = annotDict.get(PDFName.of("A"));
               try {
-                const actionDict = pdfDoc.context.lookup(actionRef);
-                if (actionDict && "get" in actionDict) {
-                  const actionDictTyped = actionDict as PDFDict;
-                  const actionType = actionDictTyped
+                const actionDict = safeLookupAsDict(pdfDoc, actionRef);
+                if (actionDict) {
+                  const actionType = actionDict
                     .get(PDFName.of("S"))
                     ?.toString()
                     .substring(1);
@@ -104,10 +158,9 @@ export const removeJavaScriptFromDoc = (pdfDoc: PDFDocument): boolean => {
     try {
       const acroFormRef = catalogDict.get(PDFName.of("AcroForm"));
       if (acroFormRef) {
-        const acroFormDict = pdfDoc.context.lookup(acroFormRef);
-        if (acroFormDict && "get" in acroFormDict) {
-          const acroFormDictTyped = acroFormDict as PDFDict;
-          const fieldsRef = acroFormDictTyped.get(PDFName.of("Fields"));
+        const acroFormDict = safeLookupAsDict(pdfDoc, acroFormRef);
+        if (acroFormDict) {
+          const fieldsRef = acroFormDict.get(PDFName.of("Fields"));
 
           if (fieldsRef) {
             const fieldsArray = pdfDoc.context.lookup(fieldsRef);
@@ -117,10 +170,8 @@ export const removeJavaScriptFromDoc = (pdfDoc: PDFDocument): boolean => {
 
               for (const fieldRef of fields) {
                 try {
-                  const field = pdfDoc.context.lookup(fieldRef);
-                  if (field && "has" in field) {
-                    const fieldDict = field as PDFDict;
-
+                  const fieldDict = safeLookupAsDict(pdfDoc, fieldRef);
+                  if (fieldDict) {
                     if (fieldDict.has(PDFName.of("A"))) {
                       fieldDict.delete(PDFName.of("A"));
                       changesMade = true;
@@ -156,28 +207,20 @@ export const removeEmbeddedFilesFromDoc = (pdfDoc: PDFDocument): boolean => {
   let changesMade = false;
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const catalogDict = (pdfDoc.catalog as any).dict;
+    const catalogDict = getCatalogDict(pdfDoc);
 
-    const namesRef = catalogDict.get(PDFName.of("Names"));
-    if (namesRef) {
-      try {
-        const namesDict = pdfDoc.context.lookup(namesRef);
-        if (namesDict && "has" in namesDict) {
-          const namesDictTyped = namesDict as PDFDict;
-          if (namesDictTyped.has(PDFName.of("EmbeddedFiles"))) {
-            namesDictTyped.delete(PDFName.of("EmbeddedFiles"));
-            changesMade = true;
-          }
-        }
-      } catch (e) {
-        const error = e instanceof Error ? e.message : String(e);
-        console.warn("Could not access Names/EmbeddedFiles:", error);
-      }
+    if (
+      deleteFromNamesDict(
+        pdfDoc,
+        catalogDict,
+        "EmbeddedFiles",
+        "Could not access Names/EmbeddedFiles:"
+      )
+    ) {
+      changesMade = true;
     }
 
-    if (catalogDict.has(PDFName.of("EmbeddedFiles"))) {
-      catalogDict.delete(PDFName.of("EmbeddedFiles"));
+    if (deleteFromCatalogDict(catalogDict, "EmbeddedFiles")) {
       changesMade = true;
     }
 
@@ -206,7 +249,7 @@ export const removeEmbeddedFilesFromDoc = (pdfDoc: PDFDocument): boolean => {
             } else {
               changesMade = true;
             }
-          } catch (e) {
+          } catch {
             annotsToKeep.push(ref);
           }
         }
@@ -233,8 +276,7 @@ export const removeEmbeddedFilesFromDoc = (pdfDoc: PDFDocument): boolean => {
       changesMade = true;
     }
 
-    if (catalogDict.has(PDFName.of("Collection"))) {
-      catalogDict.delete(PDFName.of("Collection"));
+    if (deleteFromCatalogDict(catalogDict, "Collection")) {
       changesMade = true;
     }
   } catch (e) {
@@ -249,11 +291,9 @@ export const removeLayersFromDoc = (pdfDoc: PDFDocument): boolean => {
   let changesMade = false;
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const catalogDict = (pdfDoc.catalog as any).dict;
+    const catalogDict = getCatalogDict(pdfDoc);
 
-    if (catalogDict.has(PDFName.of("OCProperties"))) {
-      catalogDict.delete(PDFName.of("OCProperties"));
+    if (deleteFromCatalogDict(catalogDict, "OCProperties")) {
       changesMade = true;
     }
 
@@ -262,21 +302,17 @@ export const removeLayersFromDoc = (pdfDoc: PDFDocument): boolean => {
       try {
         const pageDict = page.node;
 
-        if (pageDict.has(PDFName.of("OCProperties"))) {
-          pageDict.delete(PDFName.of("OCProperties"));
+        if (deleteFromPageDict(pageDict, "OCProperties")) {
           changesMade = true;
         }
 
         const resourcesRef = pageDict.get(PDFName.of("Resources"));
         if (resourcesRef) {
           try {
-            const resourcesDict = pdfDoc.context.lookup(resourcesRef);
-            if (resourcesDict && "has" in resourcesDict) {
-              const resourcesDictTyped = resourcesDict as PDFDict;
-              if (resourcesDictTyped.has(PDFName.of("Properties"))) {
-                resourcesDictTyped.delete(PDFName.of("Properties"));
-                changesMade = true;
-              }
+            const resourcesDict = safeLookupAsDict(pdfDoc, resourcesRef);
+            if (resourcesDict && resourcesDict.has(PDFName.of("Properties"))) {
+              resourcesDict.delete(PDFName.of("Properties"));
+              changesMade = true;
             }
           } catch (e) {
             const error = e instanceof Error ? e.message : String(e);
@@ -344,10 +380,9 @@ export const removeLinksFromDoc = (pdfDoc: PDFDocument): boolean => {
               const actionRef = annotDict.get(PDFName.of("A"));
               if (actionRef) {
                 try {
-                  const actionDict = pdfDoc.context.lookup(actionRef);
-                  if (actionDict && "get" in actionDict) {
-                    const actionDictTyped = actionDict as PDFDict;
-                    const actionType = actionDictTyped
+                  const actionDict = safeLookupAsDict(pdfDoc, actionRef);
+                  if (actionDict) {
+                    const actionType = actionDict
                       .get(PDFName.of("S"))
                       ?.toString()
                       .substring(1);
@@ -404,27 +439,19 @@ export const removeLinksFromDoc = (pdfDoc: PDFDocument): boolean => {
     }
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const catalogDict = (pdfDoc.catalog as any).dict;
-      const namesRef = catalogDict.get(PDFName.of("Names"));
-      if (namesRef) {
-        try {
-          const namesDict = pdfDoc.context.lookup(namesRef);
-          if (namesDict && "has" in namesDict) {
-            const namesDictTyped = namesDict as PDFDict;
-            if (namesDictTyped.has(PDFName.of("Dests"))) {
-              namesDictTyped.delete(PDFName.of("Dests"));
-              changesMade = true;
-            }
-          }
-        } catch (e) {
-          const error = e instanceof Error ? e.message : String(e);
-          console.warn("Could not access Names/Dests:", error);
-        }
+      const catalogDict = getCatalogDict(pdfDoc);
+      if (
+        deleteFromNamesDict(
+          pdfDoc,
+          catalogDict,
+          "Dests",
+          "Could not access Names/Dests:"
+        )
+      ) {
+        changesMade = true;
       }
 
-      if (catalogDict.has(PDFName.of("Dests"))) {
-        catalogDict.delete(PDFName.of("Dests"));
+      if (deleteFromCatalogDict(catalogDict, "Dests")) {
         changesMade = true;
       }
     } catch (e) {
@@ -443,11 +470,9 @@ export const removeStructureTreeFromDoc = (pdfDoc: PDFDocument): boolean => {
   let changesMade = false;
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const catalogDict = (pdfDoc.catalog as any).dict;
+    const catalogDict = getCatalogDict(pdfDoc);
 
-    if (catalogDict.has(PDFName.of("StructTreeRoot"))) {
-      catalogDict.delete(PDFName.of("StructTreeRoot"));
+    if (deleteFromCatalogDict(catalogDict, "StructTreeRoot")) {
       changesMade = true;
     }
 
@@ -455,8 +480,7 @@ export const removeStructureTreeFromDoc = (pdfDoc: PDFDocument): boolean => {
     for (const page of pages) {
       try {
         const pageDict = page.node;
-        if (pageDict.has(PDFName.of("StructParents"))) {
-          pageDict.delete(PDFName.of("StructParents"));
+        if (deleteFromPageDict(pageDict, "StructParents")) {
           changesMade = true;
         }
       } catch (e) {
@@ -465,8 +489,7 @@ export const removeStructureTreeFromDoc = (pdfDoc: PDFDocument): boolean => {
       }
     }
 
-    if (catalogDict.has(PDFName.of("ParentTree"))) {
-      catalogDict.delete(PDFName.of("ParentTree"));
+    if (deleteFromCatalogDict(catalogDict, "ParentTree")) {
       changesMade = true;
     }
   } catch (e) {
@@ -481,16 +504,13 @@ export const removeMarkInfoFromDoc = (pdfDoc: PDFDocument): boolean => {
   let changesMade = false;
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const catalogDict = (pdfDoc.catalog as any).dict;
+    const catalogDict = getCatalogDict(pdfDoc);
 
-    if (catalogDict.has(PDFName.of("MarkInfo"))) {
-      catalogDict.delete(PDFName.of("MarkInfo"));
+    if (deleteFromCatalogDict(catalogDict, "MarkInfo")) {
       changesMade = true;
     }
 
-    if (catalogDict.has(PDFName.of("Marked"))) {
-      catalogDict.delete(PDFName.of("Marked"));
+    if (deleteFromCatalogDict(catalogDict, "Marked")) {
       changesMade = true;
     }
   } catch (e) {

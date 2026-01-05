@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { PDFDocument } from 'pdf-lib';
 import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import { sanitizePDF } from '../lib/sanitize-pdf-logic';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
+import { saveAndDownloadPDF, readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
 import type { UseSanitizePDFReturn, SanitizeOptions } from '../types';
 
 const DEFAULT_OPTIONS: SanitizeOptions = {
@@ -69,10 +70,16 @@ export const useSanitizePDF = (): UseSanitizePDFReturn => {
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Sanitizing PDF...');
+    setLoadingMessage('Loading fresh PDF copy...');
 
     try {
-      const changesMade = await sanitizePDF(pdfDoc, options);
+      const arrayBuffer = await readFileAsArrayBuffer(pdfFile);
+      const pdfDocCopy = await PDFDocument.load(arrayBuffer, {
+        ignoreEncryption: true,
+      });
+
+      setLoadingMessage('Sanitizing PDF...');
+      const changesMade = await sanitizePDF(pdfDocCopy, options);
 
       if (!changesMade) {
         setError(
@@ -84,8 +91,11 @@ export const useSanitizePDF = (): UseSanitizePDFReturn => {
       }
 
       setLoadingMessage('Saving PDF...');
-      const pdfBytes = await pdfDoc.save();
+      const pdfBytes = await pdfDocCopy.save();
       saveAndDownloadPDF(pdfBytes, pdfFile.name);
+
+      setLoadingMessage('Reloading PDF...');
+      await loadPDF(pdfFile);
 
       setSuccess('PDF has been sanitized and downloaded successfully!');
     } catch (err) {
@@ -103,6 +113,7 @@ export const useSanitizePDF = (): UseSanitizePDFReturn => {
     pdfFile,
     pdfDoc,
     options,
+    loadPDF,
     setIsProcessing,
     setError,
     setSuccess,
