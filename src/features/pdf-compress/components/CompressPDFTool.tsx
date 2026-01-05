@@ -15,9 +15,10 @@ import {
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, X } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { formatBytes } from '@/lib/pdf/file-utils';
 import type { CompressionLevel, CompressionAlgorithm } from '../types';
+import { FileListSection } from '@/components/common/FileListSection';
 
 export const CompressPDFTool = () => {
   const {
@@ -70,41 +71,14 @@ export const CompressPDFTool = () => {
       </div>
 
       {pdfFiles.length > 0 && (
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold text-foreground mb-3">
-            PDF Files ({pdfFiles.length})
-          </h3>
-          <div className="space-y-2">
-            {pdfFiles.map((fileInfo) => (
-              <Card
-                key={fileInfo.id}
-                className="bg-input border-border"
-              >
-                <CardContent className="p-3 flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="flex-1 min-w-0">
-                      <div className="truncate font-medium text-foreground text-sm">
-                        {fileInfo.fileName}
-                      </div>
-                      <span className="text-xs text-muted-foreground">
-                        {formatBytes(fileInfo.fileSize)}
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => removePDFFile(fileInfo.id)}
-                    className="text-muted-foreground hover:text-destructive transition-colors p-1 rounded"
-                    aria-label={`Remove ${fileInfo.fileName}`}
-                    title="Remove PDF file"
-                    disabled={isProcessing}
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+        <FileListSection
+          title="PDF Files"
+          files={pdfFiles}
+          onRemove={removePDFFile}
+          disabled={isProcessing}
+          showIcon={false}
+          className="mb-6"
+        />
       )}
 
       {pdfFiles.length > 0 && (

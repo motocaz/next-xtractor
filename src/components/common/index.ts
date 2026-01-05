@@ -15,3 +15,8 @@ export { PageOrganizerTool } from './PageOrganizerTool';
 export { PdfFileCard } from './PdfFileCard';
 export type { PdfFileCardProps } from './PdfFileCard';
 
+export { FileCard } from './FileCard';
+export type { FileCardProps } from './FileCard';
+export { FileListSection } from './FileListSection';
+export type { FileListSectionProps } from './FileListSection';
+
