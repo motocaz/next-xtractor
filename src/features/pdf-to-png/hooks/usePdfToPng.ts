@@ -7,7 +7,7 @@ import { downloadFile } from '@/lib/pdf/file-utils';
 import type { UsePdfToPngReturn } from '../types';
 
 export const usePdfToPng = (): UsePdfToPngReturn => {
-  const [scale, setScale] = useState<number>(2.0);
+  const [scale, setScale] = useState<number>(2);
   
   const {
     pdfFile,
@@ -66,7 +66,7 @@ export const usePdfToPng = (): UsePdfToPngReturn => {
   }, [pdfFile, scale, setIsProcessing, setLoadingMessage, setError, setSuccess]);
 
   const reset = useCallback(() => {
-    setScale(2.0);
+    setScale(2);
     resetPDF();
     resetProcessing();
   }, [resetPDF, resetProcessing]);

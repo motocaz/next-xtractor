@@ -95,7 +95,7 @@ export const PdfToPngTool = () => {
             value={[scale]}
             onValueChange={(values) => setScale(values[0])}
             min={0.5}
-            max={4.0}
+            max={4}
             step={0.1}
             className="w-full"
             disabled={isProcessing}
