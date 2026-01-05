@@ -319,6 +319,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "pdf-to-zip",
+    name: "PDF to ZIP",
+    subtitle: "Combine multiple PDF files into a single ZIP archive.",
+    href: "/pdf-to-zip",
+    implemented: true,
+  },
+  {
     id: "sign-pdf",
     name: "Sign PDF",
     subtitle: "Draw, type, or upload your signature.",
@@ -468,6 +475,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "pdf-to-png": "file-image",
     "pdf-to-tiff": "file-image",
     "pdf-to-webp": "file-image",
+    "pdf-to-zip": "file",
     "sign-pdf": "pen-tool",
     cropper: "crop",
     "change-permissions": "lock",
