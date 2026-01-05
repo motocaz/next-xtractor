@@ -29,6 +29,7 @@ import {
   Layers,
   GitCompare,
   FileScan,
+  Maximize2,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -68,6 +69,7 @@ const iconMap: Record<string, LucideIcon> = {
   layers: Layers,
   "git-compare": GitCompare,
   "file-scan": FileScan,
+  "maximize-2": Maximize2,
 };
 
 const allTools: Omit<Tool, "icon">[] = [
@@ -352,6 +354,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "page-dimensions",
+    name: "Page Dimensions",
+    subtitle: "Analyze the dimensions, standard size, and orientation of every page.",
+    href: "/page-dimensions",
+    implemented: true,
+  },
+  {
     id: "flatten",
     name: "Flatten PDF",
     subtitle: "Make form fields and annotations non-editable.",
@@ -416,6 +425,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "n-up": "layers",
     "compare-pdfs": "git-compare",
     "fix-dimensions": "layers",
+    "page-dimensions": "maximize-2",
     flatten: "layers",
     "form-filler": "file-edit",
     ocr: "file-scan",
