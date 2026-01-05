@@ -1,6 +1,6 @@
-'use client';
-
+import { ScrollToTop } from '@/components/ScrollToTop';
 import dynamic from 'next/dynamic';
+import type { Metadata } from 'next';
 
 const CompressPDFTool = dynamic(
   () =>
@@ -19,5 +19,17 @@ const CompressPDFTool = dynamic(
   }
 );
 
-export default CompressPDFTool;
+export const metadata: Metadata = {
+  title: 'Compress PDF | Xtractor',
+  description: 'Reduce the file size of your PDF documents while maintaining quality.',
+};
+
+export default function CompressPDFPage() {
+  return (
+    <>
+      <ScrollToTop />
+      <CompressPDFTool />
+    </>
+  );
+}
 
