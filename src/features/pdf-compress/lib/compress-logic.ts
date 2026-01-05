@@ -3,6 +3,7 @@
 import { PDFDocument, PDFName, PDFDict, PDFStream, PDFNumber } from 'pdf-lib';
 import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
 import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
+import { removeMetadataFromDoc } from '@/lib/pdf/metadata-utils';
 import type {
   CompressionLevel,
   CompressionAlgorithm,
@@ -21,19 +22,6 @@ const dataUrlToBytes = (dataUrl: string): Uint8Array => {
     bytes[i] = binaryString.codePointAt(i) ?? 0;
   }
   return bytes;
-};
-
-const removePDFMetadata = (pdfDoc: PDFDocument): void => {
-  try {
-    pdfDoc.setTitle('');
-    pdfDoc.setAuthor('');
-    pdfDoc.setSubject('');
-    pdfDoc.setKeywords([]);
-    pdfDoc.setCreator('');
-    pdfDoc.setProducer('');
-  } catch (e) {
-    console.warn('Could not remove metadata:', e);
-  }
 };
 
 const getImageDimensions = (
@@ -247,7 +235,7 @@ const performSmartCompression = async (
   });
 
   if (settings.removeMetadata) {
-    removePDFMetadata(pdfDoc);
+    removeMetadataFromDoc(pdfDoc);
   }
 
   const pages = pdfDoc.getPages();
