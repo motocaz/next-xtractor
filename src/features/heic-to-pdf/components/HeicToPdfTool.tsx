@@ -3,12 +3,11 @@
 import Link from 'next/link';
 import { useHeicToPdf } from '../hooks/useHeicToPdf';
 import { FileUploader } from '@/components/FileUploader';
-import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle2, ArrowLeft, X } from 'lucide-react';
-import { formatBytes } from '@/lib/pdf/file-utils';
+import { ArrowLeft } from 'lucide-react';
 import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
 import { ProcessButton } from '@/components/common/ProcessButton';
 import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
+import { FileListSection } from '@/components/common/FileListSection';
 
 export const HeicToPdfTool = () => {
   const {
@@ -66,42 +65,14 @@ export const HeicToPdfTool = () => {
       />
 
       {heicFiles.length > 0 && (
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold text-foreground mb-3">
-            HEIC Files ({heicFiles.length})
-          </h3>
-          <div className="space-y-2">
-            {heicFiles.map((fileInfo) => (
-              <Card
-                key={fileInfo.id}
-                className="bg-input border-border"
-              >
-                <CardContent className="p-3 flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <div className="truncate font-medium text-foreground text-sm">
-                        {fileInfo.fileName}
-                      </div>
-                      <span className="text-xs text-muted-foreground">
-                        {formatBytes(fileInfo.fileSize)}
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => removeHeicFile(fileInfo.id)}
-                    className="text-muted-foreground hover:text-destructive transition-colors p-1 rounded"
-                    aria-label={`Remove ${fileInfo.fileName}`}
-                    title="Remove HEIC file"
-                    disabled={isProcessing}
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+        <FileListSection
+          title="HEIC Files"
+          files={heicFiles}
+          onRemove={removeHeicFile}
+          disabled={isProcessing}
+          showIcon={true}
+          className="mb-4"
+        />
       )}
 
       {heicFiles.length > 0 && (
