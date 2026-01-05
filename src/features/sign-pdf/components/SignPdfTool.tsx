@@ -92,12 +92,21 @@ export const SignPdfTool = () => {
                     hook.savedSignatures.map((img, index) => (
                       <div
                         key={index}
+                        role="button"
+                        tabIndex={0}
                         className={`p-1 bg-background rounded-md cursor-pointer border-2 h-16 flex items-center justify-center transition-colors relative min-w-[80px] ${
                           hook.activeSignature?.index === index
                             ? 'border-primary'
                             : 'border-transparent hover:border-primary/50'
                         }`}
                         onClick={() => hook.selectSignature(index)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            hook.selectSignature(index);
+                          }
+                        }}
+                        aria-label={`Select signature ${index + 1}`}
                       >
                         <img
                           src={img.src}
