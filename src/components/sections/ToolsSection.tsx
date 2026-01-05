@@ -340,6 +340,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "redact",
+    name: "Redact PDF",
+    subtitle: "Permanently black out sensitive content from your PDFs.",
+    href: "/redact",
+    implemented: true,
+  },
+  {
     id: "change-permissions",
     name: "Change Permissions",
     subtitle: "Modify passwords and permissions on your PDF documents.",
@@ -485,6 +492,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "pdf-to-zip": "file",
     "sign-pdf": "pen-tool",
     cropper: "crop",
+    redact: "pen-tool",
     "change-permissions": "lock",
     "edit-metadata": "file-edit",
     "change-background-color": "palette",
