@@ -256,6 +256,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "pdf-to-json",
+    name: "PDF to JSON",
+    subtitle: "Convert PDF files to JSON format.",
+    href: "/pdf-to-json",
+    implemented: true,
+  },
+  {
     id: "md-to-pdf",
     name: "Markdown to PDF",
     subtitle: "Convert Markdown text to a high-quality PDF document.",
@@ -432,6 +439,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "heic-to-pdf": "image-up",
     "image-to-pdf": "image-up",
     "json-to-pdf": "file",
+    "pdf-to-json": "file-text",
     "md-to-pdf": "file-text",
     "pdf-to-bmp": "file-image",
     "pdf-to-greyscale": "palette",
