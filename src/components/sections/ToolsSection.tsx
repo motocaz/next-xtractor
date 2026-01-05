@@ -270,6 +270,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "pdf-to-greyscale",
+    name: "PDF to Greyscale",
+    subtitle: "Convert a color PDF into a black-and-white version.",
+    href: "/pdf-to-greyscale",
+    implemented: true,
+  },
+  {
     id: "pdf-to-jpg",
     name: "PDF to JPG",
     subtitle: "Convert PDF pages to JPG images.",
@@ -427,6 +434,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "json-to-pdf": "file",
     "md-to-pdf": "file-text",
     "pdf-to-bmp": "file-image",
+    "pdf-to-greyscale": "palette",
     "pdf-to-jpg": "file-image",
     "pdf-to-png": "file-image",
     "sign-pdf": "pen-tool",
