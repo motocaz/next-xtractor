@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import type { PDFDocument, PDFDict } from 'pdf-lib';
-import { PDFName } from 'pdf-lib';
+import type { PDFDocument, PDFDict } from "pdf-lib";
+import { PDFName } from "pdf-lib";
 
 export const removeAnnotationsFromDoc = (
   pdfDoc: PDFDocument,
@@ -16,24 +16,18 @@ export const removeAnnotationsFromDoc = (
     const page = pages[pageIndex];
     const annotRefs = page.node.Annots()?.asArray() || [];
 
-    if (!annotationTypes) {
-      if (annotRefs.length > 0) {
-        page.node.delete(PDFName.of('Annots'));
-      }
-    } else {
-      const annotsToKeep: typeof annotRefs[number][] = [];
+    if (annotationTypes) {
+      const annotsToKeep: (typeof annotRefs)[number][] = [];
 
       for (const ref of annotRefs) {
         const annot = pdfDoc.context.lookup(ref);
-        if (!annot || !('get' in annot)) {
+        if (!annot || !("get" in annot)) {
           continue;
         }
 
         const annotDict = annot as PDFDict;
-        const subtypeObj = annotDict.get(PDFName.of('Subtype'));
-        const subtype = subtypeObj
-          ?.toString()
-          .substring(1);
+        const subtypeObj = annotDict.get(PDFName.of("Subtype"));
+        const subtype = subtypeObj?.toString().substring(1);
 
         if (!subtype || !annotationTypes.has(subtype)) {
           annotsToKeep.push(ref);
@@ -42,11 +36,14 @@ export const removeAnnotationsFromDoc = (
 
       if (annotsToKeep.length > 0) {
         const newAnnotsArray = pdfDoc.context.obj(annotsToKeep);
-        page.node.set(PDFName.of('Annots'), newAnnotsArray);
+        page.node.set(PDFName.of("Annots"), newAnnotsArray);
       } else {
-        page.node.delete(PDFName.of('Annots'));
+        page.node.delete(PDFName.of("Annots"));
+      }
+    } else {
+      if (annotRefs.length > 0) {
+        page.node.delete(PDFName.of("Annots"));
       }
     }
   }
 };
-

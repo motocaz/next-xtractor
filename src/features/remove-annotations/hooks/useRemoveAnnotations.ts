@@ -1,39 +1,38 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import { parsePageRanges } from '@/lib/pdf/file-utils';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { removeAnnotationsFromDoc } from '../lib/remove-annotations-logic';
+import { useState, useCallback } from "react";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import { saveAndDownloadPDF, parsePageRanges } from "@/lib/pdf/file-utils";
+import { removeAnnotationsFromDoc } from "../lib/remove-annotations-logic";
 import type {
   UseRemoveAnnotationsReturn,
   AnnotationType,
   PageScope,
-} from '../types';
+} from "../types";
 
 const ALL_ANNOTATION_TYPES: AnnotationType[] = [
-  'Highlight',
-  'StrikeOut',
-  'Underline',
-  'Ink',
-  'Polygon',
-  'Square',
-  'Circle',
-  'Line',
-  'PolyLine',
-  'Link',
-  'Text',
-  'FreeText',
-  'Popup',
-  'Squiggly',
-  'Stamp',
-  'Caret',
-  'FileAttachment',
+  "Highlight",
+  "StrikeOut",
+  "Underline",
+  "Ink",
+  "Polygon",
+  "Square",
+  "Circle",
+  "Line",
+  "PolyLine",
+  "Link",
+  "Text",
+  "FreeText",
+  "Popup",
+  "Squiggly",
+  "Stamp",
+  "Caret",
+  "FileAttachment",
 ];
 
 export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
-  const [pageScope, setPageScope] = useState<PageScope>('all');
-  const [pageRange, setPageRange] = useState<string>('');
+  const [pageScope, setPageScope] = useState<PageScope>("all");
+  const [pageRange, setPageRange] = useState<string>("");
   const [selectedTypes, setSelectedTypes] = useState<Set<AnnotationType>>(
     new Set()
   );
@@ -59,8 +58,8 @@ export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
 
   const loadPDF = useCallback(
     async (file: File) => {
-      setPageScope('all');
-      setPageRange('');
+      setPageScope("all");
+      setPageRange("");
       setSelectedTypes(new Set());
       await baseLoadPDF(file);
     },
@@ -89,33 +88,33 @@ export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
 
   const removeAnnotations = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     if (!pdfDoc) {
-      setError('PDF document is not loaded. Please try uploading again.');
+      setError("PDF document is not loaded. Please try uploading again.");
       return;
     }
 
     if (selectedTypes.size === 0) {
-      setError('Please select at least one annotation type to remove.');
+      setError("Please select at least one annotation type to remove.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Removing annotations...');
+    setLoadingMessage("Removing annotations...");
 
     try {
       let targetPageIndices: number[];
 
-      if (pageScope === 'all') {
+      if (pageScope === "all") {
         targetPageIndices = Array.from({ length: totalPages }, (_, i) => i);
       } else {
-        if (!pageRange || pageRange.trim() === '') {
-          setError('Please enter a page range.');
+        if (!pageRange || pageRange.trim() === "") {
+          setError("Please enter a page range.");
           setIsProcessing(false);
           setLoadingMessage(null);
           return;
@@ -124,7 +123,9 @@ export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
         targetPageIndices = parsePageRanges(pageRange, totalPages);
 
         if (targetPageIndices.length === 0) {
-          setError('No valid pages were selected. Please check your page range.');
+          setError(
+            "No valid pages were selected. Please check your page range."
+          );
           setIsProcessing(false);
           setLoadingMessage(null);
           return;
@@ -137,17 +138,19 @@ export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
 
       removeAnnotationsFromDoc(pdfDoc, targetPageIndices, annotationTypesSet);
 
-      setLoadingMessage('Saving PDF...');
+      setLoadingMessage("Saving PDF...");
       const pdfBytes = await pdfDoc.save();
       saveAndDownloadPDF(pdfBytes, pdfFile.name);
 
-      setSuccess('Annotations removed successfully! Your download has started.');
+      setSuccess(
+        "Annotations removed successfully! Your download has started."
+      );
     } catch (err) {
-      console.error('Error removing annotations:', err);
+      console.error("Error removing annotations:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'Could not remove annotations. Please check your page range and try again.'
+          : "Could not remove annotations. Please check your page range and try again."
       );
     } finally {
       setIsProcessing(false);
@@ -167,8 +170,8 @@ export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
   ]);
 
   const reset = useCallback(() => {
-    setPageScope('all');
-    setPageRange('');
+    setPageScope("all");
+    setPageRange("");
     setSelectedTypes(new Set());
     resetProcessing();
     resetPDF();
@@ -197,4 +200,3 @@ export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
     reset,
   };
 };
-
