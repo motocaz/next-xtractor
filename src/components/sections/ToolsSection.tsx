@@ -172,6 +172,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "remove-blank-pages",
+    name: "Remove Blank Pages",
+    subtitle: "Automatically detect and remove blank or nearly blank pages from your PDF.",
+    href: "/remove-blank-pages",
+    implemented: true,
+  },
+  {
     id: "extract-pages",
     name: "Extract Pages",
     subtitle: "Save a selection of pages as new files.",
@@ -476,6 +483,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     organize: "files",
     "organize-pages": "files",
     "delete-pages": "trash-2",
+    "remove-blank-pages": "trash-2",
     "extract-pages": "ungroup",
     "add-blank-page": "file-plus",
     "add-header-footer": "file-edit",
