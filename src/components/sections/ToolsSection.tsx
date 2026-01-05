@@ -312,6 +312,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "pdf-to-webp",
+    name: "PDF to WebP",
+    subtitle: "Convert each page of a PDF file into a WebP image.",
+    href: "/pdf-to-webp",
+    implemented: true,
+  },
+  {
     id: "sign-pdf",
     name: "Sign PDF",
     subtitle: "Draw, type, or upload your signature.",
@@ -460,6 +467,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "pdf-to-jpg": "file-image",
     "pdf-to-png": "file-image",
     "pdf-to-tiff": "file-image",
+    "pdf-to-webp": "file-image",
     "sign-pdf": "pen-tool",
     cropper: "crop",
     "change-permissions": "lock",
