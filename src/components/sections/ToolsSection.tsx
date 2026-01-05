@@ -30,6 +30,7 @@ import {
   GitCompare,
   FileScan,
   Maximize2,
+  Camera,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -70,6 +71,7 @@ const iconMap: Record<string, LucideIcon> = {
   "git-compare": GitCompare,
   "file-scan": FileScan,
   "maximize-2": Maximize2,
+  camera: Camera,
 };
 
 const allTools: Omit<Tool, "icon">[] = [
@@ -267,6 +269,13 @@ const allTools: Omit<Tool, "icon">[] = [
     name: "Image to PDF",
     subtitle: "Convert JPG, PNG, WebP, SVG, BMP, HEIC, and TIFF images to PDF.",
     href: "/image-to-pdf",
+    implemented: true,
+  },
+  {
+    id: "scan-to-pdf",
+    name: "Scan to PDF",
+    subtitle: "Use your device's camera to scan documents and save them as a PDF.",
+    href: "/scan-to-pdf",
     implemented: true,
   },
   {
@@ -525,6 +534,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "bmp-to-pdf": "image-up",
     "heic-to-pdf": "image-up",
     "image-to-pdf": "image-up",
+    "scan-to-pdf": "camera",
     "json-to-pdf": "file",
     "pdf-to-json": "file-text",
     "md-to-pdf": "file-text",
