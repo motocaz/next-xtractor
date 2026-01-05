@@ -361,6 +361,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "multi-tool",
+    name: "PDF Multi-Tool",
+    subtitle: "Advanced page management: rotate, duplicate, split, and organize pages from multiple PDFs.",
+    href: "/multi-tool",
+    implemented: true,
+  },
+  {
     id: "flatten",
     name: "Flatten PDF",
     subtitle: "Make form fields and annotations non-editable.",
@@ -426,6 +433,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "compare-pdfs": "git-compare",
     "fix-dimensions": "layers",
     "page-dimensions": "maximize-2",
+    "multi-tool": "maximize-2",
     flatten: "layers",
     "form-filler": "file-edit",
     ocr: "file-scan",
