@@ -8,6 +8,10 @@ import {
   addImageAsPage,
   createImageToPdfResult,
 } from "@/lib/pdf/image-to-pdf-utils";
+import {
+  decodeTiffToImageData,
+  imageDataToPngBytes,
+} from "@/lib/pdf/tiff-utils";
 
 export interface ImageToPdfResult {
   pdfDoc: PDFDocument;
@@ -139,6 +143,19 @@ export const convertSingleTypeImages = async (
         const pngBytes = await convertHeicToPngBytes(file);
         const pngImage = await pdfDoc.embedPng(pngBytes);
         addImageAsPage(pdfDoc, pngImage);
+      } else if (type === "image/tiff" || type === "image/tif") {
+        const tiffBytes = await readFileAsArrayBuffer(file);
+        const imageDataArray = await decodeTiffToImageData(tiffBytes);
+
+        for (const imageData of imageDataArray) {
+          try {
+            const pngBytes = await imageDataToPngBytes(imageData);
+            const pngImage = await pdfDoc.embedPng(pngBytes);
+            addImageAsPage(pdfDoc, pngImage);
+          } catch (error) {
+            console.warn(`Failed to process page from ${file.name}:`, error);
+          }
+        }
       } else {
         const pngBytes = await convertImageToPngBytes(file);
         const pngImage = await pdfDoc.embedPng(pngBytes);
@@ -189,12 +206,49 @@ export const convertMixedTypeImages = async (
           throw new Error("Failed to convert to JPEG.");
         }
         jpegBytes = new Uint8Array(await jpegBlob.arrayBuffer());
+        const jpgImage = await pdfDoc.embedJpg(jpegBytes);
+        addImageAsPage(pdfDoc, jpgImage);
+      } else if (
+        lowerName.endsWith(".tiff") ||
+        lowerName.endsWith(".tif") ||
+        file.type === "image/tiff" ||
+        file.type === "image/tif"
+      ) {
+        const tiffBytes = await readFileAsArrayBuffer(file);
+        const imageDataArray = await decodeTiffToImageData(tiffBytes);
+
+        for (const imageData of imageDataArray) {
+          try {
+            const pngBytes = await imageDataToPngBytes(imageData);
+            const pngBlob = new Blob([pngBytes], { type: "image/png" });
+            const imageBitmap = await createImageBitmap(pngBlob);
+            const canvas = document.createElement("canvas");
+            canvas.width = imageBitmap.width;
+            canvas.height = imageBitmap.height;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) {
+              throw new Error("Failed to get canvas context.");
+            }
+            ctx.drawImage(imageBitmap, 0, 0);
+            imageBitmap.close();
+            const jpegBlob = await new Promise<Blob | null>((res) =>
+              canvas.toBlob(res, "image/jpeg", quality)
+            );
+            if (!jpegBlob) {
+              throw new Error("Failed to convert to JPEG.");
+            }
+            const pageJpegBytes = new Uint8Array(await jpegBlob.arrayBuffer());
+            const jpgImage = await pdfDoc.embedJpg(pageJpegBytes);
+            addImageAsPage(pdfDoc, jpgImage);
+          } catch (error) {
+            console.warn(`Failed to process page from ${file.name}:`, error);
+          }
+        }
       } else {
         jpegBytes = await convertImageToJpegBytes(file, quality);
+        const jpgImage = await pdfDoc.embedJpg(jpegBytes);
+        addImageAsPage(pdfDoc, jpgImage);
       }
-
-      const jpgImage = await pdfDoc.embedJpg(jpegBytes);
-      addImageAsPage(pdfDoc, jpgImage);
     } catch (error) {
       console.warn(`Failed to process ${file.name}:`, error);
       failedFiles.push(file.name);
