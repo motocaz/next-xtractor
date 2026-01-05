@@ -305,6 +305,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "pdf-to-tiff",
+    name: "PDF to TIFF",
+    subtitle: "Convert each page of a PDF file into a TIFF image.",
+    href: "/pdf-to-tiff",
+    implemented: true,
+  },
+  {
     id: "sign-pdf",
     name: "Sign PDF",
     subtitle: "Draw, type, or upload your signature.",
@@ -452,6 +459,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "pdf-to-greyscale": "palette",
     "pdf-to-jpg": "file-image",
     "pdf-to-png": "file-image",
+    "pdf-to-tiff": "file-image",
     "sign-pdf": "pen-tool",
     cropper: "crop",
     "change-permissions": "lock",

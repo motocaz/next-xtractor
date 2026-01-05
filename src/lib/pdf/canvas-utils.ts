@@ -5,6 +5,7 @@ import type { PDFDocument } from 'pdf-lib';
 import { PDFDocument as PDFLibDocument } from 'pdf-lib';
 import { readFileAsArrayBuffer } from './file-utils';
 import { loadPDFWithPDFJSFromBuffer } from './pdfjs-loader';
+import UTIF from 'utif';
 
 export const renderPageToCanvas = async (
   pdfJsDoc: PDFDocumentProxy,
@@ -124,6 +125,25 @@ export const canvasToPngBlob = async (
       'image/png'
     );
   });
+};
+
+export const canvasToTiffBlob = async (
+  canvas: HTMLCanvasElement
+): Promise<Blob> => {
+  const context = canvas.getContext('2d');
+  if (!context) {
+    throw new Error('Failed to get canvas context');
+  }
+
+  const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  const rgba = imageData.data;
+  const tiffBuffer = UTIF.encodeImage(
+    new Uint8Array(rgba),
+    canvas.width,
+    canvas.height
+  );
+
+  return new Blob([tiffBuffer], { type: 'image/tiff' });
 };
 
 export const embedCanvasAsPage = async (
