@@ -224,8 +224,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "png-to-pdf",
     name: "PNG to PDF",
     subtitle: "Create a PDF from one or more PNG images.",
-    href: "#",
-    implemented: false,
+    href: "/png-to-pdf",
+    implemented: true,
   },
   {
     id: "bmp-to-pdf",
