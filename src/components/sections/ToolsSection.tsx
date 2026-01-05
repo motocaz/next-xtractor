@@ -151,6 +151,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "reverse-pages",
+    name: "Reverse Pages",
+    subtitle: "Reverse the page order of your PDF files.",
+    href: "/reverse-pages",
+    implemented: true,
+  },
+  {
     id: "rotate",
     name: "Rotate PDF",
     subtitle: "Rotate pages in your PDF document.",
@@ -494,6 +501,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     encrypt: "lock",
     decrypt: "unlock",
     "remove-restrictions": "unlock",
+    "reverse-pages": "rotate-cw",
     rotate: "rotate-cw",
     organize: "files",
     "organize-pages": "files",
