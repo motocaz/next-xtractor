@@ -359,8 +359,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "sign-pdf",
     name: "Sign PDF",
     subtitle: "Draw, type, or upload your signature.",
-    href: "#",
-    implemented: false,
+    href: "/sign-pdf",
+    implemented: true,
   },
   {
     id: "cropper",
