@@ -286,6 +286,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "webp-to-pdf",
+    name: "WebP to PDF",
+    subtitle: "Convert one or more WebP images into a single PDF file.",
+    href: "/webp-to-pdf",
+    implemented: true,
+  },
+  {
     id: "svg-to-pdf",
     name: "SVG to PDF",
     subtitle: "Create a PDF from one or more SVG images.",
@@ -578,6 +585,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "bmp-to-pdf": "image-up",
     "tiff-to-pdf": "image-up",
     "heic-to-pdf": "image-up",
+    "webp-to-pdf": "image-up",
     "svg-to-pdf": "image-up",
     "image-to-pdf": "image-up",
     "scan-to-pdf": "camera",
