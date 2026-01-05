@@ -111,6 +111,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "split-in-half",
+    name: "Split Pages in Half",
+    subtitle: "Choose a method to divide every page of your document into two separate pages.",
+    href: "/split-in-half",
+    implemented: true,
+  },
+  {
     id: "split",
     name: "Split PDF",
     subtitle: "Extract a range of pages into a new PDF.",
@@ -511,6 +518,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "edit-attachments": "file-edit",
     merge: "combine",
     "alternate-merge": "combine",
+    "split-in-half": "scissors",
     split: "scissors",
     compress: "zap",
     linearize: "zap",
