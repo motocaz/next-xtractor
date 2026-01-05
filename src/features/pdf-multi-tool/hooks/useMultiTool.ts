@@ -82,11 +82,17 @@ export const useMultiTool = (): UseMultiToolReturn => {
       selectedPages: string[];
       splitMarkers: string[];
     }) => {
+      const currentPagesMap = new Map(pages.map((p) => [p.id, p]));
+      
       const restoredPages: MultiToolPageData[] = snapshot.pages.map((p) => {
         const pdfFile = pdfFiles[p.pdfIndex];
         if (!pdfFile && !p.isBlankPage) {
           console.warn(`PDF file at index ${p.pdfIndex} not found when restoring snapshot`);
         }
+        
+        const currentPage = currentPagesMap.get(p.id);
+        const preservedThumbnail = currentPage?.thumbnailUrl;
+        
         return {
           id: p.id,
           pdfIndex: p.pdfIndex,
@@ -96,20 +102,50 @@ export const useMultiTool = (): UseMultiToolReturn => {
           visualRotation: p.visualRotation,
           pdfDoc: pdfFile?.pdfDoc || ({} as PDFDocument), 
           fileName: p.fileName,
-          thumbnailUrl: undefined,
+          thumbnailUrl: preservedThumbnail,
           isBlankPage: p.isBlankPage,
         };
       }).filter((p) => p.pdfDoc || p.isBlankPage);
+
+      if (restoredPages.length === 0) {
+        setPages([]);
+        setSelectedPages(new Set());
+        setSplitMarkers(new Set());
+        setIsRendering(false);
+        setIsProcessing(false);
+        setLoadingMessage(null);
+        setError(null);
+        setSuccess(null);
+        return;
+      }
 
       setPages(restoredPages);
       setSelectedPages(new Set(snapshot.selectedPages));
       setSplitMarkers(new Set(snapshot.splitMarkers));
     },
-    [pdfFiles]
+    [pdfFiles, pages]
   );
 
-  const saveState = useCallback(() => {
-    const snapshot = createSnapshot();
+  const saveState = useCallback((customSnapshot?: {
+    pages: Array<{
+      id: string;
+      pdfIndex: number;
+      pageIndex: number;
+      originalPageIndex: number;
+      rotation: number;
+      visualRotation: number;
+      fileName: string;
+      isBlankPage: boolean;
+    }>;
+    selectedPages: string[];
+    splitMarkers: string[];
+  }) => {
+    const snapshot = customSnapshot || createSnapshot();
+    
+    if (snapshot.pages.length === 0 && !customSnapshot) {
+      return;
+    }
+    
     history.saveState(snapshot);
   }, [createSnapshot, history]);
 
@@ -194,8 +230,24 @@ export const useMultiTool = (): UseMultiToolReturn => {
           }
         }
 
-        setPages((prev) => [...prev, ...newPages]);
-        saveState();
+        const updatedPages = [...pages, ...newPages];
+        setPages(updatedPages);
+        
+        const snapshot = {
+          pages: updatedPages.map((p) => ({
+            id: p.id,
+            pdfIndex: p.pdfIndex,
+            pageIndex: p.pageIndex,
+            originalPageIndex: p.originalPageIndex,
+            rotation: p.rotation,
+            visualRotation: p.visualRotation,
+            fileName: p.fileName,
+            isBlankPage: p.isBlankPage,
+          })),
+          selectedPages: Array.from(selectedPages),
+          splitMarkers: Array.from(splitMarkers),
+        };
+        saveState(snapshot);
       } catch (err) {
         console.error('Error loading PDFs:', err);
         setError(
@@ -212,7 +264,9 @@ export const useMultiTool = (): UseMultiToolReturn => {
       isRendering,
       loadPDFsBase,
       pdfFiles,
-      pages.length,
+      pages,
+      selectedPages,
+      splitMarkers,
       saveState,
     ]
   );
