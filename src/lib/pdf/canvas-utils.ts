@@ -90,6 +90,25 @@ export const canvasToPngBytes = async (
   });
 };
 
+export const canvasToJpgBlob = async (
+  canvas: HTMLCanvasElement,
+  quality: number
+): Promise<Blob> => {
+  return new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          reject(new Error('Failed to convert canvas to JPG blob'));
+          return;
+        }
+        resolve(blob);
+      },
+      'image/jpeg',
+      quality
+    );
+  });
+};
+
 export const embedCanvasAsPage = async (
   canvas: HTMLCanvasElement,
   pdfDoc: PDFDocument,
