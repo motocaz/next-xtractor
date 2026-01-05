@@ -280,8 +280,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "pdf-to-jpg",
     name: "PDF to JPG",
     subtitle: "Convert PDF pages to JPG images.",
-    href: "#",
-    implemented: false,
+    href: "/pdf-to-jpg",
+    implemented: true,
   },
   {
     id: "pdf-to-png",
