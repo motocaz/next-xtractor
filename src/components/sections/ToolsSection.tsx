@@ -389,6 +389,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "posterize",
+    name: "Posterize PDF",
+    subtitle: "Split pages into multiple smaller sheets to print as a poster.",
+    href: "/posterize",
+    implemented: true,
+  },
+  {
     id: "compare-pdfs",
     name: "Compare PDFs",
     subtitle: "Compare two PDFs side by side or in overlay mode.",
@@ -485,6 +492,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "invert-colors": "palette",
     "combine-single-page": "layers",
     "n-up": "layers",
+    posterize: "maximize-2",
     "compare-pdfs": "git-compare",
     "fix-dimensions": "layers",
     "page-dimensions": "maximize-2",
