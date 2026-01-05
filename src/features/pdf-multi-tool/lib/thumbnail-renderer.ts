@@ -19,8 +19,7 @@ export const renderMultiplePDFsAsThumbnails = async (
 
   const bufferCopies = pdfBuffers.map((buffer) => buffer.slice(0));
   
-  for (let i = 0; i < bufferCopies.length; i++) {
-    const bufferCopy = bufferCopies[i];
+  for (const bufferCopy of bufferCopies) {
     const freshCopy = bufferCopy.slice(0);
     const pdfJsDoc = await loadPDFWithPDFJSFromBuffer(freshCopy);
     totalPages += pdfJsDoc.numPages;

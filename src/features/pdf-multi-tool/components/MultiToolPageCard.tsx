@@ -137,6 +137,9 @@ export const MultiToolPageCard = ({
       </p>
 
       <div
+        role="toolbar"
+        aria-label="Page actions"
+        tabIndex={-1}
         className="flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
         onClick={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}

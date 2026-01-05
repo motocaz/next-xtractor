@@ -26,6 +26,7 @@ export const createPDFFromPages = async (
 
   for (const pageData of pages) {
     if (pageData.isBlankPage) {
+      newPdf.addPage([595, 842]);
     } else if (pageData.pdfDoc && pageData.originalPageIndex >= 0) {
       const [copiedPage] = await newPdf.copyPages(pageData.pdfDoc, [
         pageData.originalPageIndex,
@@ -49,8 +50,7 @@ export const createSplitPDFs = async (
   const segments: MultiToolPageData[][] = [];
   let currentSegment: MultiToolPageData[] = [];
 
-  for (let i = 0; i < pages.length; i++) {
-    const page = pages[i];
+  for (const page of pages) {
     currentSegment.push(page);
 
     if (splitMarkers.has(page.id)) {
@@ -101,10 +101,7 @@ export const downloadAllPages = async (
   }
 
   if (splitMarkers.size > 0) {
-    const zipBlob = await createSplitPDFs(
-      pages,
-      splitMarkers
-    );
+    const zipBlob = await createSplitPDFs(pages, splitMarkers);
     const timestamp = new Date().toISOString();
     const baseName = originalFileName
       ? originalFileName.replace(/\.pdf$/i, "")
