@@ -244,6 +244,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "table-of-contents",
+    name: "Table of Contents",
+    subtitle: "Generate a table of contents page from PDF bookmarks.",
+    href: "/table-of-contents",
+    implemented: true,
+  },
+  {
     id: "jpg-to-pdf",
     name: "JPG to PDF",
     subtitle: "Create a PDF from one or more JPG images.",
@@ -544,6 +551,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "add-watermark": "water",
     "add-page-numbers": "hash",
     bookmarks: "bookmark",
+    "table-of-contents": "bookmark",
     "jpg-to-pdf": "image-up",
     "png-to-pdf": "image-up",
     "bmp-to-pdf": "image-up",
