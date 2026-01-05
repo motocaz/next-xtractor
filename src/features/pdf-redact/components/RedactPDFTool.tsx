@@ -324,7 +324,7 @@ export const RedactPDFTool = () => {
 
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>
-                {currentRedactions.length} redaction{currentRedactions.length !== 1 ? 's' : ''} on this page
+                {currentRedactions.length} redaction{currentRedactions.length === 1 ? '' : 's'} on this page
               </span>
               {currentRedactions.length > 0 && (
                 <Button
@@ -372,7 +372,7 @@ export const RedactPDFTool = () => {
                 <div className="space-y-2">
                   {currentRedactions.map((rect, index) => (
                     <div
-                      key={index}
+                      key={`${index}-${rect.height}-${rect.width}-${rect.x}-${rect.y}`}
                       className="flex items-center justify-between p-2 bg-input rounded border border-border"
                     >
                       <span className="text-sm text-muted-foreground">
