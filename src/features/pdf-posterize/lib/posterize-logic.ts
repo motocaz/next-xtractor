@@ -47,7 +47,7 @@ export const posterizePDF = async (
 
   for (const pageIndex of pageIndicesToProcess) {
     const page = await pdfJsDoc.getPage(Number(pageIndex) + 1);
-    const viewport = page.getViewport({ scale: 2.0 });
+    const viewport = page.getViewport({ scale: 2 });
     tempCanvas.width = viewport.width;
     tempCanvas.height = viewport.height;
     await page.render({ canvasContext: tempCtx, viewport, canvas: tempCanvas }).promise;
