@@ -263,6 +263,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "pdf-to-bmp",
+    name: "PDF to BMP",
+    subtitle: "Convert each page of a PDF file into a BMP image.",
+    href: "/pdf-to-bmp",
+    implemented: true,
+  },
+  {
     id: "pdf-to-jpg",
     name: "PDF to JPG",
     subtitle: "Convert PDF pages to JPG images.",
@@ -419,6 +426,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "image-to-pdf": "image-up",
     "json-to-pdf": "file",
     "md-to-pdf": "file-text",
+    "pdf-to-bmp": "file-image",
     "pdf-to-jpg": "file-image",
     "pdf-to-png": "file-image",
     "sign-pdf": "pen-tool",
