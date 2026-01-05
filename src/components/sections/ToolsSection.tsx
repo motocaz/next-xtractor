@@ -361,6 +361,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "remove-metadata",
+    name: "Remove Metadata",
+    subtitle: "Completely remove identifying metadata from your PDF.",
+    href: "/remove-metadata",
+    implemented: true,
+  },
+  {
     id: "change-permissions",
     name: "Change Permissions",
     subtitle: "Modify passwords and permissions on your PDF documents.",
@@ -509,6 +516,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     cropper: "crop",
     redact: "pen-tool",
     "remove-annotations": "pen-tool",
+    "remove-metadata": "file-edit",
     "change-permissions": "lock",
     "edit-metadata": "file-edit",
     "change-background-color": "palette",
