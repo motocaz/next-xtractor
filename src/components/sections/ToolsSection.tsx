@@ -447,6 +447,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "view-metadata",
+    name: "View Metadata",
+    subtitle: "View comprehensive PDF metadata including XMP and form fields.",
+    href: "/view-metadata",
+    implemented: true,
+  },
+  {
     id: "change-background-color",
     name: "Change Background Color",
     subtitle: "Change the background color of every page in your PDF.",
@@ -593,6 +600,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "sanitize-pdf": "file-scan",
     "change-permissions": "lock",
     "edit-metadata": "file-edit",
+    "view-metadata": "file-scan",
     "change-background-color": "palette",
     "change-text-color": "palette",
     "invert-colors": "palette",
