@@ -95,7 +95,7 @@ export const PdfToWebpTool = () => {
             value={[quality]}
             onValueChange={(values) => setQuality(values[0])}
             min={0.1}
-            max={1.0}
+            max={1}
             step={0.1}
             className="w-full"
             disabled={isProcessing}

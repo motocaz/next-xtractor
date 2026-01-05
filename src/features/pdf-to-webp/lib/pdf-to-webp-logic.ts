@@ -3,7 +3,7 @@
 import { pdfToImageZip } from '@/lib/pdf/pdf-to-image-utils';
 import { canvasToWebpBlob } from '@/lib/pdf/canvas-utils';
 
-const PROCESSING_SCALE = 2.0;
+const PROCESSING_SCALE = 2;
 
 export const pdfToWebp = async (
   pdfFile: File,
