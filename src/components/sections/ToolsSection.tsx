@@ -144,6 +144,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "remove-restrictions",
+    name: "Remove Restrictions",
+    subtitle: "Remove security restrictions and unlock PDF permissions for editing and printing.",
+    href: "/remove-restrictions",
+    implemented: true,
+  },
+  {
     id: "rotate",
     name: "Rotate PDF",
     subtitle: "Rotate pages in your PDF document.",
@@ -486,6 +493,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     linearize: "zap",
     encrypt: "lock",
     decrypt: "unlock",
+    "remove-restrictions": "unlock",
     rotate: "rotate-cw",
     organize: "files",
     "organize-pages": "files",
