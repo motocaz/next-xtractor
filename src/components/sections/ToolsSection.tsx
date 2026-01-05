@@ -120,9 +120,9 @@ const allTools: Omit<Tool, "icon">[] = [
   {
     id: "split",
     name: "Split PDF",
-    subtitle: "Extract a range of pages into a new PDF.",
-    href: "#",
-    implemented: false,
+    subtitle: "Extract pages using range, visual selection, bookmarks, or other methods.",
+    href: "/split",
+    implemented: true,
   },
   {
     id: "compress",
