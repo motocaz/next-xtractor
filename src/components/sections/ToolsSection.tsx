@@ -382,6 +382,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "sanitize-pdf",
+    name: "Sanitize PDF",
+    subtitle: "Remove potentially sensitive or unnecessary information from your PDF before sharing.",
+    href: "/sanitize",
+    implemented: true,
+  },
+  {
     id: "change-permissions",
     name: "Change Permissions",
     subtitle: "Modify passwords and permissions on your PDF documents.",
@@ -533,6 +540,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     redact: "pen-tool",
     "remove-annotations": "pen-tool",
     "remove-metadata": "file-edit",
+    "sanitize-pdf": "file-scan",
     "change-permissions": "lock",
     "edit-metadata": "file-edit",
     "change-background-color": "palette",
