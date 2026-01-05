@@ -4,8 +4,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
+import { saveAndDownloadPDF, readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
 import { applySignaturesToPDF } from '../lib/sign-pdf-logic';
 import type { UseSignPdfReturn, PlacedSignature, SavedSignature, InteractionMode, ResizeHandle } from '../types';
 import { getHandleAtPos } from '../lib/signature-canvas';
@@ -33,7 +32,7 @@ export const useSignPdf = (): UseSignPdfReturn => {
   const [pdfJsDoc, setPdfJsDoc] = useState<PDFDocumentProxy | null>(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [scale, setScale] = useState(1.0);
+  const [scale, setScale] = useState(1);
   const [pageSnapshot, setPageSnapshot] = useState<ImageData | null>(null);
   const [isRendering, setIsRendering] = useState(false);
 
@@ -59,7 +58,7 @@ export const useSignPdf = (): UseSignPdfReturn => {
         const pdfJsDocument = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
         setPdfJsDoc(pdfJsDocument);
         setCurrentPage(1);
-        setScale(1.0);
+        setScale(1);
         setPlacedSignatures([]);
         setActiveSignature(null);
       } catch (err) {
@@ -272,7 +271,7 @@ export const useSignPdf = (): UseSignPdfReturn => {
     resetProcessing();
     setPdfJsDoc(null);
     setCurrentPage(1);
-    setScale(1.0);
+    setScale(1);
     setPageSnapshot(null);
     setSavedSignatures([]);
     setPlacedSignatures([]);
