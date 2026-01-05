@@ -161,8 +161,8 @@ const allTools: Omit<Tool, "icon">[] = [
     id: "rotate",
     name: "Rotate PDF",
     subtitle: "Rotate pages in your PDF document.",
-    href: "#",
-    implemented: false,
+    href: "/rotate-pages",
+    implemented: true,
   },
   {
     id: "organize",
