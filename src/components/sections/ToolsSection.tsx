@@ -335,6 +335,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "txt-to-pdf",
+    name: "Text to PDF",
+    subtitle: "Convert text files or typed text to PDF with custom formatting.",
+    href: "/txt-to-pdf",
+    implemented: true,
+  },
+  {
     id: "pdf-to-bmp",
     name: "PDF to BMP",
     subtitle: "Convert each page of a PDF file into a BMP image.",
@@ -570,6 +577,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "json-to-pdf": "file",
     "pdf-to-json": "file-text",
     "md-to-pdf": "file-text",
+    "txt-to-pdf": "file-text",
     "pdf-to-bmp": "file-image",
     "pdf-to-greyscale": "palette",
     "pdf-to-jpg": "file-image",
