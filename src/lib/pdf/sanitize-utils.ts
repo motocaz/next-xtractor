@@ -35,7 +35,7 @@ const deleteFromNamesDict = (
 
   try {
     const namesDict = safeLookupAsDict(pdfDoc, namesRef);
-    if (namesDict && namesDict.has(PDFName.of(keyName))) {
+    if (namesDict?.has(PDFName.of(keyName))) {
       namesDict.delete(PDFName.of(keyName));
       return true;
     }
@@ -244,10 +244,10 @@ export const removeEmbeddedFilesFromDoc = (pdfDoc: PDFDocument): boolean => {
               ?.toString()
               .substring(1);
 
-            if (subtype !== "FileAttachment") {
-              annotsToKeep.push(ref);
-            } else {
+            if (subtype === "FileAttachment") {
               changesMade = true;
+            } else {
+              annotsToKeep.push(ref);
             }
           } catch {
             annotsToKeep.push(ref);
@@ -310,7 +310,7 @@ export const removeLayersFromDoc = (pdfDoc: PDFDocument): boolean => {
         if (resourcesRef) {
           try {
             const resourcesDict = safeLookupAsDict(pdfDoc, resourcesRef);
-            if (resourcesDict && resourcesDict.has(PDFName.of("Properties"))) {
+            if (resourcesDict?.has(PDFName.of("Properties"))) {
               resourcesDict.delete(PDFName.of("Properties"));
               changesMade = true;
             }
