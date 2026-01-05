@@ -272,6 +272,13 @@ const allTools: Omit<Tool, "icon">[] = [
     implemented: true,
   },
   {
+    id: "svg-to-pdf",
+    name: "SVG to PDF",
+    subtitle: "Create a PDF from one or more SVG images.",
+    href: "/svg-to-pdf",
+    implemented: true,
+  },
+  {
     id: "image-to-pdf",
     name: "Image to PDF",
     subtitle: "Convert JPG, PNG, WebP, SVG, BMP, HEIC, and TIFF images to PDF.",
@@ -541,6 +548,7 @@ const toolsWithIcons: Tool[] = allTools.map((tool) => {
     "png-to-pdf": "image-up",
     "bmp-to-pdf": "image-up",
     "heic-to-pdf": "image-up",
+    "svg-to-pdf": "image-up",
     "image-to-pdf": "image-up",
     "scan-to-pdf": "camera",
     "json-to-pdf": "file",
