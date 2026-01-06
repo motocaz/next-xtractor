@@ -1,7 +1,7 @@
 import { MarkerSlanted } from "@/components/ui/marker-slanted";
 import { ToolCard } from "@/components/ui/tool-card";
 import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import Link from "next/link";
+import { ProtectedToolLink } from "@/components/common/ProtectedToolLink";
 import {
   Paperclip,
   Download,
@@ -655,7 +655,7 @@ export function ToolsSection() {
             {implementedTools.map((tool) => {
               const Icon = tool.icon;
               return (
-                <Link key={tool.id} href={tool.href} scroll={false}>
+                <ProtectedToolLink key={tool.id} href={tool.href} scroll={false}>
                   <ToolCard className="cursor-pointer h-full">
                     <CardHeader>
                       <div className="flex items-center gap-3 mb-2">
@@ -667,7 +667,7 @@ export function ToolsSection() {
                       </CardDescription>
                     </CardHeader>
                   </ToolCard>
-                </Link>
+                </ProtectedToolLink>
               );
             })}
           </div>
