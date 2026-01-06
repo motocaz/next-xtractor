@@ -5,9 +5,9 @@ import { checkSubscriptionAccess } from '@/lib/auth/subscription-check';
 
 export default async function ToolsLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   const { userId } = await auth();
 
   if (!userId) {

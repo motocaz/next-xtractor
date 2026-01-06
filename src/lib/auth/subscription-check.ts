@@ -118,14 +118,20 @@ export const checkSubscriptionAccess = async (
       subscription.plan?.toLowerCase() !== "free";
 
     if (!hasAccess) {
+      let reason: string;
+      if (!subscription) {
+        reason = "No active subscription found";
+      } else if (subscription.plan?.toLowerCase() === "free") {
+        reason =
+          "Free plan does not have access to tools. Please upgrade to a paid plan.";
+      } else {
+        reason = `Subscription status: ${subscription.status}`;
+      }
+
       return {
         hasAccess: false,
         subscription,
-        reason: subscription
-          ? subscription.plan?.toLowerCase() === "free"
-            ? "Free plan does not have access to tools. Please upgrade to a paid plan."
-            : `Subscription status: ${subscription.status}`
-          : "No active subscription found",
+        reason,
       };
     }
 
