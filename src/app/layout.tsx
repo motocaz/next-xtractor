@@ -15,6 +15,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Xtractor - The Privacy First PDF Toolkit",
   description: "Fast, Secure and Professional PDF tools",
+  icons: {
+    icon: "/images/favicon.svg",
+    shortcut: "/images/favicon.png",
+    apple: "/images/favicon.png",
+  },
 };
 
 export default function RootLayout({

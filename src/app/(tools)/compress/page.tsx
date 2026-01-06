@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { ScrollToTop } from '@/components/ScrollToTop';
 
 const CompressPDFTool = dynamic(
   () =>
@@ -19,5 +20,12 @@ const CompressPDFTool = dynamic(
   }
 );
 
-export default CompressPDFTool;
+export default function CompressPDFPage() {
+  return (
+    <>
+      <ScrollToTop />
+      <CompressPDFTool />
+    </>
+  );
+}
 
