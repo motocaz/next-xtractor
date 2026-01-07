@@ -52,7 +52,7 @@ export const splitByRange = async (
     throw new Error('No valid pages were selected for splitting.');
   }
 
-  if (downloadAsZip || uniqueIndices.length > 1) {
+  if (downloadAsZip) {
     const zip = new JSZip();
     for (const index of uniqueIndices) {
       const newPdf = await PDFDocument.create();
@@ -68,8 +68,8 @@ export const splitByRange = async (
     downloadFile(zipBlob, undefined, `${timestamp}_${baseName}.zip`);
   } else {
     const newPdf = await PDFDocument.create();
-    const [copiedPage] = await newPdf.copyPages(pdfDoc, [uniqueIndices[0]]);
-    newPdf.addPage(copiedPage);
+    const copiedPages = await newPdf.copyPages(pdfDoc, uniqueIndices);
+    copiedPages.forEach((page) => newPdf.addPage(page));
     const pdfBytes = await newPdf.save();
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename = originalFileName
@@ -91,7 +91,7 @@ export const splitByVisualSelection = async (
 
   const sortedIndices = Array.from(selectedPages).sort((a, b) => a - b);
 
-  if (downloadAsZip || sortedIndices.length > 1) {
+  if (downloadAsZip) {
     const zip = new JSZip();
     for (const index of sortedIndices) {
       const newPdf = await PDFDocument.create();
@@ -107,8 +107,8 @@ export const splitByVisualSelection = async (
     downloadFile(zipBlob, undefined, `${timestamp}_${baseName}.zip`);
   } else {
     const newPdf = await PDFDocument.create();
-    const [copiedPage] = await newPdf.copyPages(pdfDoc, [sortedIndices[0]]);
-    newPdf.addPage(copiedPage);
+    const copiedPages = await newPdf.copyPages(pdfDoc, sortedIndices);
+    copiedPages.forEach((page) => newPdf.addPage(page));
     const pdfBytes = await newPdf.save();
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename = originalFileName
