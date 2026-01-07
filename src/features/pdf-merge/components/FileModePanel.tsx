@@ -51,7 +51,7 @@ export const FileModePanel = ({
 
   if (pdfFiles.length === 0) {
     return (
-      <div className="p-4 bg-input rounded-lg border border-border">
+      <div className="p-4 bg-input rounded-lg border border-accent">
         <p className="text-sm text-muted-foreground text-center">
           Upload PDF files to get started. Drag and drop to reorder them.
         </p>

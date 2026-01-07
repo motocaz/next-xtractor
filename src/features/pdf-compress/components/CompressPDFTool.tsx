@@ -140,7 +140,7 @@ export const CompressPDFTool = () => {
                     </SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-muted-foreground mt-2 mb-2">
+                <p className="text-xs text-muted-foreground pt-2 pb-4">
                   Choose &apos;Vector&apos; for text based PDFs, or &apos;Photon&apos; for scanned
                   documents and complex images.
                 </p>
@@ -150,7 +150,7 @@ export const CompressPDFTool = () => {
 
           {compressionStats && (
             <Card className="bg-primary/5 border-primary/20">
-              <CardContent className="pt-6">
+              <CardContent className="pt-6 pb-6">
                 <h4 className="text-sm font-semibold text-foreground mb-3">
                   Compression Statistics
                 </h4>

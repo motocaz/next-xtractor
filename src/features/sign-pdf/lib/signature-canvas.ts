@@ -33,7 +33,7 @@ export const getHandleAtPos = (
   sig: PlacedSignature
 ): ResizeHandle | null => {
   const handles = getResizeHandles(sig);
-  const handleSize = 10;
+  const handleSize = 6;
   for (const [name, handlePos] of Object.entries(handles)) {
     if (
       Math.abs(pos.x - handlePos.x) < handleSize &&

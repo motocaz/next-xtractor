@@ -111,7 +111,7 @@ export const EncryptPDFTool = () => {
           </Card>
 
           <Card className="border-green-500/30 bg-green-500/10 dark:bg-green-500/5">
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 pb-6">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5 text-green-600 dark:text-green-400" />
                 <div>

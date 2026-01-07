@@ -94,7 +94,7 @@ export const SignPdfTool = () => {
                         key={index}
                         role="button"
                         tabIndex={0}
-                        className={`p-1 bg-background rounded-md cursor-pointer border-2 h-16 flex items-center justify-center transition-colors relative min-w-[80px] ${
+                        className={`p-1 bg-white rounded-md cursor-pointer border-2 h-20 w-24 flex items-center justify-center transition-colors relative overflow-hidden ${
                           hook.activeSignature?.index === index
                             ? 'border-primary'
                             : 'border-transparent hover:border-primary/50'
@@ -111,7 +111,7 @@ export const SignPdfTool = () => {
                         <img
                           src={img.src}
                           alt={`Signature ${index + 1}`}
-                          className="h-full w-auto max-w-full object-contain"
+                          className="h-full w-full object-contain scale-500"
                         />
                       </div>
                     ))

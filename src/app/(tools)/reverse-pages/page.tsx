@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { ScrollToTop } from '@/components/ScrollToTop';
 
 const ReversePagesTool = dynamic(
   () =>
@@ -19,5 +20,12 @@ const ReversePagesTool = dynamic(
   }
 );
 
-export default ReversePagesTool;
+export default function ReversePagesPage() {
+  return (
+    <>
+      <ScrollToTop />
+      <ReversePagesTool />
+    </>
+  );
+}
 

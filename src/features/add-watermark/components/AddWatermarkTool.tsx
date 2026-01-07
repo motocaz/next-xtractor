@@ -205,7 +205,7 @@ export const AddWatermarkTool = () => {
                     id="image-watermark-input"
                     accept="image/png, image/jpeg, image/jpg"
                     onChange={handleImageFileChange}
-                    className="bg-background! dark:bg-card! h-full"
+                    className="bg-background! dark:bg-card! cursor-pointer text-xs"
                     disabled={isProcessing}
                   />
                   {imageFile && (

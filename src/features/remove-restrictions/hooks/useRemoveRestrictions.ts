@@ -3,30 +3,43 @@
 import { useState, useCallback } from 'react';
 import { removeRestrictions } from '../lib/remove-restrictions-logic';
 import { downloadFile } from '@/lib/pdf/file-utils';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
 import type { UseRemoveRestrictionsReturn } from '../types';
 
 export const useRemoveRestrictions = (): UseRemoveRestrictionsReturn => {
   const [ownerPassword, setOwnerPassword] = useState<string>('');
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [isLoadingPDF, setIsLoadingPDF] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const {
-    isProcessing,
-    loadingMessage,
-    error,
-    success,
-    pdfDoc,
-    pdfFile,
-    isLoadingPDF,
-    pdfError,
-    loadPDF,
-    resetPDF,
-    totalPages,
-    setIsProcessing,
-    setError,
-    setSuccess,
-    setLoadingMessage,
-    resetProcessing,
-  } = usePDFProcessor(true);
+  const loadPDF = useCallback(async (file: File) => {
+    if (!file || file.type !== 'application/pdf') {
+      if (!file.name.toLowerCase().endsWith('.pdf')) {
+        setPdfError('Please select a valid PDF file.');
+        return;
+      }
+    }
+
+    setIsLoadingPDF(true);
+    setPdfError(null);
+    setError(null);
+
+    try {
+      setPdfFile(file);
+    } catch (err) {
+      console.error('Error loading PDF:', err);
+      setPdfError(
+        err instanceof Error
+          ? err.message
+          : 'Could not load PDF. It may be corrupt.'
+      );
+    } finally {
+      setIsLoadingPDF(false);
+    }
+  }, []);
 
   const removeRestrictionsHandler = useCallback(async () => {
     if (!pdfFile) {
@@ -72,20 +85,17 @@ export const useRemoveRestrictions = (): UseRemoveRestrictionsReturn => {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [
-    pdfFile,
-    ownerPassword,
-    setIsProcessing,
-    setError,
-    setSuccess,
-    setLoadingMessage,
-  ]);
+  }, [pdfFile, ownerPassword]);
 
   const reset = useCallback(() => {
     setOwnerPassword('');
-    resetProcessing();
-    resetPDF();
-  }, [resetProcessing, resetPDF]);
+    setPdfFile(null);
+    setPdfError(null);
+    setError(null);
+    setSuccess(null);
+    setLoadingMessage(null);
+    setIsProcessing(false);
+  }, []);
 
   return {
     ownerPassword,
@@ -94,10 +104,10 @@ export const useRemoveRestrictions = (): UseRemoveRestrictionsReturn => {
     error,
     success,
     pdfFile,
-    pdfDoc,
+    pdfDoc: null,
     isLoadingPDF,
     pdfError,
-    totalPages,
+    totalPages: 0,
     setOwnerPassword,
     loadPDF,
     removeRestrictions: removeRestrictionsHandler,

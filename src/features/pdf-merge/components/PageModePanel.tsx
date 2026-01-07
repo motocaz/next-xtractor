@@ -49,7 +49,7 @@ export const PageModePanel = ({
 
   if (isRendering) {
     return (
-      <div className="p-4 bg-input rounded-lg border border-border">
+      <div className="p-4 bg-input rounded-lg border border-accent">
         <p className="text-sm text-muted-foreground text-center">
           Rendering page thumbnails... This may take a moment.
         </p>
@@ -59,7 +59,7 @@ export const PageModePanel = ({
 
   if (pageThumbnails.length === 0) {
     return (
-      <div className="p-4 bg-input rounded-lg border border-border">
+      <div className="p-4 bg-input rounded-lg border border-accent">
         <p className="text-sm text-muted-foreground text-center">
           Upload PDF files to see page thumbnails. Drag and drop pages to
           reorder them.

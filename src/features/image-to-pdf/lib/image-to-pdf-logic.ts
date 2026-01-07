@@ -186,6 +186,8 @@ export const convertMixedTypeImages = async (
       let jpegBytes: Uint8Array;
 
       const lowerName = file.name.toLowerCase();
+      const isSvg = file.type === 'image/svg+xml' || lowerName.endsWith('.svg');
+      
       if (lowerName.endsWith(".heic") || lowerName.endsWith(".heif")) {
         const pngBytes = await convertHeicToPngBytes(file);
         const pngBlob = new Blob([pngBytes], { type: "image/png" });
@@ -245,7 +247,33 @@ export const convertMixedTypeImages = async (
           }
         }
       } else {
-        jpegBytes = await convertImageToJpegBytes(file, quality);
+        if (isSvg) {
+          try {
+            const pngBytes = await convertImageToPngBytes(file);
+            const pngBlob = new Blob([pngBytes], { type: 'image/png' });
+            const imageBitmap = await createImageBitmap(pngBlob);
+            const canvas = document.createElement('canvas');
+            canvas.width = imageBitmap.width;
+            canvas.height = imageBitmap.height;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+              throw new Error('Failed to get canvas context.');
+            }
+            ctx.drawImage(imageBitmap, 0, 0);
+            imageBitmap.close();
+            const jpegBlob = await new Promise<Blob | null>((res) =>
+              canvas.toBlob(res, 'image/jpeg', quality)
+            );
+            if (!jpegBlob) {
+              throw new Error('Failed to convert PNG to JPEG.');
+            }
+            jpegBytes = new Uint8Array(await jpegBlob.arrayBuffer());
+          } catch {
+            jpegBytes = await convertImageToJpegBytes(file, quality);
+          }
+        } else {
+          jpegBytes = await convertImageToJpegBytes(file, quality);
+        }
         const jpgImage = await pdfDoc.embedJpg(jpegBytes);
         addImageAsPage(pdfDoc, jpgImage);
       }

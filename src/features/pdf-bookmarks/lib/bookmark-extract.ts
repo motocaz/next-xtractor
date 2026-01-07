@@ -7,9 +7,7 @@ type PDFObjectWithLookup = {
   [key: string]: unknown;
 };
 
-const hasDecodeText = (
-  obj: unknown
-): obj is { decodeText: () => string } => {
+const hasDecodeText = (obj: unknown): obj is { decodeText: () => string } => {
   return (
     obj !== null &&
     typeof obj === "object" &&
@@ -45,9 +43,7 @@ const hasNumberValue = (obj: unknown): obj is { numberValue: number } => {
   );
 };
 
-const hasObjectNumber = (
-  obj: unknown
-): obj is { objectNumber: number } => {
+const hasObjectNumber = (obj: unknown): obj is { objectNumber: number } => {
   return (
     obj !== null &&
     typeof obj === "object" &&
@@ -155,7 +151,10 @@ const buildNamedDestinations = (
 
     const names = doc.catalog.lookup(PDFName.of("Names"));
     if (names) {
-      const resolvedNames = resolveRefFn(doc, names) as PDFObjectWithLookup | null;
+      const resolvedNames = resolveRefFn(
+        doc,
+        names
+      ) as PDFObjectWithLookup | null;
       if (hasLookup(resolvedNames)) {
         const destsTree = resolvedNames.lookup(PDFName.of("Dests"));
         if (destsTree) traverseNamesNode(destsTree);
@@ -196,7 +195,7 @@ const findPageIndex = (
       if (numericIndex >= 0 && numericIndex < pages.length) return numericIndex;
     }
 
-  if (hasObjectNumber(pageRef)) {
+    if (hasObjectNumber(pageRef)) {
       const idxByObjNum = pages.findIndex(
         (p) => p.ref.objectNumber === pageRef.objectNumber
       );
@@ -205,9 +204,7 @@ const findPageIndex = (
 
     if (hasToString(pageRef)) {
       const target = pageRef.toString();
-      const idxByString = pages.findIndex(
-        (p) => p.ref.toString() === target
-      );
+      const idxByString = pages.findIndex((p) => p.ref.toString() === target);
       if (idxByString !== -1) return idxByString;
     }
 
@@ -417,14 +414,31 @@ const traverseBookmarkTree = (
     }
   }
 
-    return bookmark;
+  return bookmark;
 };
 
 export const extractExistingBookmarks = async (
   doc: PDFDocument
 ): Promise<BookmarkNode[]> => {
   try {
-    const pages = doc.getPages();
+    let pages: ReturnType<PDFDocument["getPages"]>;
+    try {
+      pages = doc.getPages();
+    } catch {
+      let pageCount: number;
+      try {
+        pageCount = doc.getPageCount();
+      } catch {
+        return [];
+      }
+      pages = [];
+      for (let i = 0; i < pageCount; i++) {
+        try {
+          const page = doc.getPage(i);
+          pages.push(page);
+        } catch {}
+      }
+    }
 
     const outlinesRef = doc.catalog.lookup(PDFName.of("Outlines"));
     if (!outlinesRef) return [];
