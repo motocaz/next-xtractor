@@ -60,7 +60,6 @@
     "@types/cropperjs": "^1.1.5",
     "@types/dompurify": "^3.2.0",
     "@types/jszip": "^3.4.0",
-    "@types/mammoth": "^1.7.0",
     "@types/marked": "^6.0.0",
     "@types/node": "^20",
     "@types/pdfjs-dist": "^2.10.377",
@@ -70,7 +69,7 @@
     "@types/utif": "^3.0.6",
     "eslint": "^9",
     "eslint-config-next": "16.0.4",
-    "shadcn": "^3.5.0",
+    "shadcn": "^2.5.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

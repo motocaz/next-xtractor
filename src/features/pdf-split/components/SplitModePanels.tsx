@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { VisualPageSelector } from '@/components/common/VisualPageSelector';
-import type { EvenOddChoice } from '../types';
+} from "@/components/ui/select";
+import { VisualPageSelector } from "@/components/common/VisualPageSelector";
+import type { EvenOddChoice } from "../types";
 
 interface RangePanelProps {
   pageRange: string;
@@ -43,7 +43,7 @@ export const RangePanel = ({
           value={pageRange}
           onChange={(e) => onPageRangeChange(e.target.value)}
           placeholder="e.g., 1-3, 5, 8-10"
-          className="mt-2"
+          className="mt-2 dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15"
           disabled={disabled}
         />
         <p className="text-xs text-muted-foreground mt-1">
@@ -56,6 +56,7 @@ export const RangePanel = ({
           checked={downloadAsZip}
           onCheckedChange={(checked) => onDownloadAsZipChange(checked === true)}
           disabled={disabled}
+          className="bgDownload as ZIP (one PDF per page)-background"
         />
         <Label
           htmlFor="download-as-zip-range"
@@ -243,7 +244,7 @@ export const NTimesPanel = ({
       {showWarning && (
         <div className="p-3 bg-warning/10 border border-warning/20 rounded-md">
           <p className="text-sm text-warning-foreground">
-            The PDF has {totalPages} pages, which is not evenly divisible by{' '}
+            The PDF has {totalPages} pages, which is not evenly divisible by{" "}
             {nValue}. The last PDF will contain {remainder} page(s).
           </p>
         </div>
@@ -251,4 +252,3 @@ export const NTimesPanel = ({
     </div>
   );
 };
-
