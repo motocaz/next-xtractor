@@ -1,5 +1,5 @@
-export { PosterizePDFTool } from './components/PosterizePDFTool';
-export { usePosterizePDF } from './hooks/usePosterizePDF';
+export { PosterizePDFTool } from "./components/PosterizePDFTool";
+export { usePosterizePDF } from "./hooks/usePosterizePDF";
 export type {
   PosterizeOptions,
   UsePosterizePDFReturn,
@@ -7,5 +7,4 @@ export type {
   Orientation,
   ScalingMode,
   OverlapUnits,
-} from './types';
-
+} from "./types";

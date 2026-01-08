@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useWordToPdf } from '../hooks/useWordToPdf';
-import { FileUploader } from '@/components/FileUploader';
-import { ArrowLeft } from 'lucide-react';
-import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { FileCard } from '@/components/common/FileCard';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import { useWordToPdf } from "../hooks/useWordToPdf";
+import { FileUploader } from "@/components/FileUploader";
+import { ArrowLeft } from "lucide-react";
+import { FileUploadStatusMessages } from "@/components/common/FileUploadStatusMessages";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { FileCard } from "@/components/common/FileCard";
+import { Button } from "@/components/ui/button";
 
 export const WordToPdfTool = () => {
   const {
@@ -110,4 +110,3 @@ export const WordToPdfTool = () => {
     </div>
   );
 };
-

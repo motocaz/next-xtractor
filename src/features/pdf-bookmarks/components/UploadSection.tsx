@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useRef } from 'react';
-import { FileUploader } from '@/components/FileUploader';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Sheet, Braces, CheckCircle2, X } from 'lucide-react';
-import type { BookmarkNode } from '../types';
+import { useRef } from "react";
+import { FileUploader } from "@/components/FileUploader";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Sheet, Braces, CheckCircle2, X } from "lucide-react";
+import type { BookmarkNode } from "../types";
 
 interface UploadSectionProps {
   onPDFSelected: (file: File) => void;
@@ -15,7 +15,7 @@ interface UploadSectionProps {
   autoExtract: boolean;
   onAutoExtractChange: (value: boolean) => void;
   pendingImport: {
-    type: 'csv' | 'json';
+    type: "csv" | "json";
     fileName: string;
     bookmarks: BookmarkNode[];
   } | null;
@@ -93,7 +93,7 @@ export const UploadSection = ({
                   const file = e.target.files?.[0];
                   if (file) {
                     onCSVSelected(file);
-                    e.target.value = '';
+                    e.target.value = "";
                   }
                 }}
               />
@@ -120,7 +120,7 @@ export const UploadSection = ({
                   const file = e.target.files?.[0];
                   if (file) {
                     onJSONSelected(file);
-                    e.target.value = '';
+                    e.target.value = "";
                   }
                 }}
               />
@@ -137,8 +137,12 @@ export const UploadSection = ({
                       {pendingImport.fileName}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      {pendingImport.type.toUpperCase()} file loaded ({pendingImport.bookmarks.length} bookmark{pendingImport.bookmarks.length === 1 ? '' : 's'})
-                      <span className="block mt-1 text-primary">Ready to apply when PDF is uploaded</span>
+                      {pendingImport.type.toUpperCase()} file loaded (
+                      {pendingImport.bookmarks.length} bookmark
+                      {pendingImport.bookmarks.length === 1 ? "" : "s"})
+                      <span className="block mt-1 text-primary">
+                        Ready to apply when PDF is uploaded
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -158,4 +162,3 @@ export const UploadSection = ({
     </div>
   );
 };
-

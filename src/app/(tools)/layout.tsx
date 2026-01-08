@@ -1,7 +1,7 @@
-import { auth } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
-import { ToolAccessDenied } from '@/components/protected/ToolAccessDenied';
-import { checkSubscriptionAccess } from '@/lib/auth/subscription-check';
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { ToolAccessDenied } from "@/components/protected/ToolAccessDenied";
+import { checkSubscriptionAccess } from "@/lib/auth/subscription-check";
 
 export default async function ToolsLayout({
   children,
@@ -11,7 +11,7 @@ export default async function ToolsLayout({
   const { userId } = await auth();
 
   if (!userId) {
-    redirect('/sign-in');
+    redirect("/sign-in");
   }
 
   const { hasAccess } = await checkSubscriptionAccess(userId);
@@ -22,4 +22,3 @@ export default async function ToolsLayout({
 
   return <>{children}</>;
 }
-

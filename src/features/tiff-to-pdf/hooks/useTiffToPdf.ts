@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { tiffToPdf } from '../lib/tiff-to-pdf-logic';
-import { handleImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
-import type { TiffFileInfo, UseTiffToPdfReturn } from '../types';
+import { useState, useCallback } from "react";
+import { tiffToPdf } from "../lib/tiff-to-pdf-logic";
+import { handleImageToPdfResult } from "@/lib/pdf/image-to-pdf-utils";
+import type { TiffFileInfo, UseTiffToPdfReturn } from "../types";
 
 export const useTiffToPdf = (): UseTiffToPdfReturn => {
   const [tiffFiles, setTiffFiles] = useState<TiffFileInfo[]>([]);
@@ -16,14 +16,14 @@ export const useTiffToPdf = (): UseTiffToPdfReturn => {
 
   const loadTiffFiles = useCallback(async (files: File[]) => {
     if (!files || files.length === 0) {
-      setError('Please select at least one TIFF file.');
+      setError("Please select at least one TIFF file.");
       return;
     }
 
     setIsLoading(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Validating TIFF files...');
+    setLoadingMessage("Validating TIFF files...");
 
     try {
       const validFiles: TiffFileInfo[] = [];
@@ -31,10 +31,10 @@ export const useTiffToPdf = (): UseTiffToPdfReturn => {
 
       for (const file of files) {
         const isTiff =
-          file.type === 'image/tiff' ||
-          file.type === 'image/tif' ||
-          file.name.toLowerCase().endsWith('.tiff') ||
-          file.name.toLowerCase().endsWith('.tif');
+          file.type === "image/tiff" ||
+          file.type === "image/tif" ||
+          file.name.toLowerCase().endsWith(".tiff") ||
+          file.name.toLowerCase().endsWith(".tif");
 
         if (!isTiff) {
           invalidFiles.push(file.name);
@@ -52,12 +52,14 @@ export const useTiffToPdf = (): UseTiffToPdfReturn => {
 
       if (invalidFiles.length > 0) {
         setError(
-          `The following files are not valid TIFF images: ${invalidFiles.join(', ')}`
+          `The following files are not valid TIFF images: ${invalidFiles.join(", ")}`,
         );
       }
 
       if (validFiles.length === 0) {
-        setError('No valid TIFF files were found. Please select TIFF image files.');
+        setError(
+          "No valid TIFF files were found. Please select TIFF image files.",
+        );
       } else {
         setTiffFiles((prev) => [...prev, ...validFiles]);
         if (validFiles.length > 0 && invalidFiles.length === 0) {
@@ -65,11 +67,11 @@ export const useTiffToPdf = (): UseTiffToPdfReturn => {
         }
       }
     } catch (err) {
-      console.error('Error loading TIFF files:', err);
+      console.error("Error loading TIFF files:", err);
       setError(
         err instanceof Error
           ? `Failed to load TIFF files: ${err.message}`
-          : 'Failed to load TIFF files. Please check your files.'
+          : "Failed to load TIFF files. Please check your files.",
       );
     } finally {
       setIsLoading(false);
@@ -85,7 +87,7 @@ export const useTiffToPdf = (): UseTiffToPdfReturn => {
 
   const processTiffToPdf = useCallback(async () => {
     if (tiffFiles.length === 0) {
-      setError('Please upload at least one TIFF file.');
+      setError("Please upload at least one TIFF file.");
       return;
     }
 
@@ -93,7 +95,7 @@ export const useTiffToPdf = (): UseTiffToPdfReturn => {
     setError(null);
     setSuccess(null);
     setFailedFiles([]);
-    setLoadingMessage('Converting TIFF to PDF...');
+    setLoadingMessage("Converting TIFF to PDF...");
 
     try {
       const files = tiffFiles.map((fileInfo) => fileInfo.file);
@@ -101,7 +103,7 @@ export const useTiffToPdf = (): UseTiffToPdfReturn => {
 
       await handleImageToPdfResult({
         result,
-        firstFileName: tiffFiles[0]?.fileName || 'converted',
+        firstFileName: tiffFiles[0]?.fileName || "converted",
         extensionPattern: /\.(tiff|tif)$/i,
         stateSetters: {
           setFailedFiles,
@@ -109,11 +111,11 @@ export const useTiffToPdf = (): UseTiffToPdfReturn => {
         },
       });
     } catch (err) {
-      console.error('TIFF to PDF conversion error:', err);
+      console.error("TIFF to PDF conversion error:", err);
       setError(
         err instanceof Error
           ? `An error occurred while converting: ${err.message}`
-          : 'An error occurred while converting TIFF to PDF. One of the files may be invalid.'
+          : "An error occurred while converting TIFF to PDF. One of the files may be invalid.",
       );
     } finally {
       setIsProcessing(false);
@@ -145,4 +147,3 @@ export const useTiffToPdf = (): UseTiffToPdfReturn => {
     reset,
   };
 };
-

@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { Rocket, ShieldCheck, Zap, BadgeDollarSign, UserPlus, Code2 } from "lucide-react";
+import {
+  Rocket,
+  ShieldCheck,
+  Zap,
+  BadgeDollarSign,
+  UserPlus,
+  Code2,
+} from "lucide-react";
 import { SectionDivider } from "@/components/ui/section-divider";
 import { MarkerSlanted } from "@/components/ui/marker-slanted";
 import { Card } from "@/components/ui/card";
@@ -15,7 +22,9 @@ export default function AboutPage() {
           We believe PDF tools should be{" "}
           <MarkerSlanted>fast and private.</MarkerSlanted>
         </h1>
-        <p className="text-lg md:text-xl text-muted-foreground">No compromises.</p>
+        <p className="text-lg md:text-xl text-muted-foreground">
+          No compromises.
+        </p>
       </section>
 
       <SectionDivider />
@@ -27,10 +36,10 @@ export default function AboutPage() {
             Our Mission
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            To provide a comprehensive PDF toolbox that respects your
-            privacy. We believe essential document tools should be free and
-            accessible to everyone, with premium features available for those
-            who need advanced capabilities.
+            To provide a comprehensive PDF toolbox that respects your privacy.
+            We believe essential document tools should be free and accessible to
+            everyone, with premium features available for those who need
+            advanced capabilities.
           </p>
         </div>
       </section>
@@ -74,11 +83,14 @@ export default function AboutPage() {
             <div className="flex items-start gap-4">
               <Zap className="w-10 h-10 text-primary shrink-0 mt-1" />
               <div>
-                <h3 className="text-xl font-bold text-foreground">Built for Speed</h3>
+                <h3 className="text-xl font-bold text-foreground">
+                  Built for Speed
+                </h3>
                 <p className="text-muted-foreground mt-2">
                   No waiting for uploads or downloads to a server. By processing
                   files directly in your browser using modern web technologies
-                  like WebAssembly, we offer unparalleled speed for all our tools.
+                  like WebAssembly, we offer unparalleled speed for all our
+                  tools.
                 </p>
               </div>
             </div>
@@ -88,11 +100,13 @@ export default function AboutPage() {
             <div className="flex items-start gap-4">
               <BadgeDollarSign className="w-10 h-10 text-primary shrink-0 mt-1" />
               <div>
-                <h3 className="text-xl font-bold text-foreground">Professional Quality</h3>
+                <h3 className="text-xl font-bold text-foreground">
+                  Professional Quality
+                </h3>
                 <p className="text-muted-foreground mt-2">
                   Core tools are free forever. Premium features available for
-                  subscribers who need advanced capabilities. We believe essential
-                  PDF tools should be accessible to everyone.
+                  subscribers who need advanced capabilities. We believe
+                  essential PDF tools should be accessible to everyone.
                 </p>
               </div>
             </div>
@@ -118,12 +132,14 @@ export default function AboutPage() {
             <div className="flex items-start gap-4">
               <Code2 className="w-10 h-10 text-primary shrink-0 mt-1" />
               <div>
-                <h3 className="text-xl font-bold text-foreground">Open Source Spirit</h3>
+                <h3 className="text-xl font-bold text-foreground">
+                  Open Source Spirit
+                </h3>
                 <p className="text-muted-foreground mt-2">
                   Built with transparency in mind. We leverage incredible
                   open-source libraries like PDF-lib and PDF.js, and believe in
-                  the community-driven effort to make powerful tools accessible to
-                  everyone.
+                  the community-driven effort to make powerful tools accessible
+                  to everyone.
                 </p>
               </div>
             </div>
@@ -157,5 +173,3 @@ export default function AboutPage() {
     </div>
   );
 }
-
-

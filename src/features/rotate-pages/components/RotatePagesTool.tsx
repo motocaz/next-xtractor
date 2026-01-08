@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ArrowLeft, RotateCcw, RotateCw } from 'lucide-react';
-import { useRotatePages } from '../hooks/useRotatePages';
-import { FileUploader } from '@/components/FileUploader';
-import { PdfFileCard } from '@/components/common/PdfFileCard';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Button } from '@/components/ui/button';
-import { RotatePageThumbnail } from './RotatePageThumbnail';
+import Link from "next/link";
+import { ArrowLeft, RotateCcw, RotateCw } from "lucide-react";
+import { useRotatePages } from "../hooks/useRotatePages";
+import { FileUploader } from "@/components/FileUploader";
+import { PdfFileCard } from "@/components/common/PdfFileCard";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Button } from "@/components/ui/button";
+import { RotatePageThumbnail } from "./RotatePageThumbnail";
 
 export const RotatePagesTool = () => {
   const {
@@ -32,8 +32,15 @@ export const RotatePagesTool = () => {
     reset,
   } = useRotatePages();
 
-  const canProcess = pdfFile && thumbnails.length > 0 && !isProcessing && !isLoadingPDF && !isLoadingThumbnails;
-  const hasRotations = Array.from(rotations.values()).some((rotation) => rotation !== 0);
+  const canProcess =
+    pdfFile &&
+    thumbnails.length > 0 &&
+    !isProcessing &&
+    !isLoadingPDF &&
+    !isLoadingThumbnails;
+  const hasRotations = Array.from(rotations.values()).some(
+    (rotation) => rotation !== 0,
+  );
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-8">
@@ -49,7 +56,9 @@ export const RotatePagesTool = () => {
         Rotate PDF Pages
       </h2>
       <p className="mb-6 text-muted-foreground">
-        Rotate all or specific pages in a PDF document. Click the rotate button on each page to rotate it 90° clockwise, or use the batch actions to rotate all pages at once.
+        Rotate all or specific pages in a PDF document. Click the rotate button
+        on each page to rotate it 90° clockwise, or use the batch actions to
+        rotate all pages at once.
       </p>
 
       <div className="mb-4">
@@ -169,4 +178,3 @@ export const RotatePagesTool = () => {
     </div>
   );
 };
-

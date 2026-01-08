@@ -62,7 +62,7 @@ const hasToString = (obj: unknown): obj is { toString: () => string } => {
 };
 
 const hasDictEntries = (
-  obj: unknown
+  obj: unknown,
 ): obj is { dict: { entries: () => Iterable<[unknown, unknown]> } } => {
   return (
     obj !== null &&
@@ -83,7 +83,7 @@ const resolveRef = (doc: PDFDocument, obj: unknown): unknown => {
   if (hasObjectNumber(obj) && doc.context) {
     try {
       return doc.context.lookup(
-        obj as Parameters<typeof doc.context.lookup>[0]
+        obj as Parameters<typeof doc.context.lookup>[0],
       );
     } catch {
       return obj;
@@ -101,7 +101,7 @@ const extractDecodeText = (obj: unknown): string => {
 
 const buildNamedDestinations = (
   doc: PDFDocument,
-  resolveRefFn: (doc: PDFDocument, obj: unknown) => unknown
+  resolveRefFn: (doc: PDFDocument, obj: unknown) => unknown,
 ): Map<string, unknown> => {
   const namedDests = new Map<string, unknown>();
 
@@ -153,7 +153,7 @@ const buildNamedDestinations = (
     if (names) {
       const resolvedNames = resolveRefFn(
         doc,
-        names
+        names,
       ) as PDFObjectWithLookup | null;
       if (hasLookup(resolvedNames)) {
         const destsTree = resolvedNames.lookup(PDFName.of("Dests"));
@@ -183,7 +183,7 @@ const findPageIndex = (
   doc: PDFDocument,
   pages: ReturnType<PDFDocument["getPages"]>,
   pageRef: unknown,
-  resolveRefFn: (doc: PDFDocument, obj: unknown) => unknown
+  resolveRefFn: (doc: PDFDocument, obj: unknown) => unknown,
 ): number => {
   if (!pageRef) return 0;
 
@@ -197,7 +197,7 @@ const findPageIndex = (
 
     if (hasObjectNumber(pageRef)) {
       const idxByObjNum = pages.findIndex(
-        (p) => p.ref.objectNumber === pageRef.objectNumber
+        (p) => p.ref.objectNumber === pageRef.objectNumber,
       );
       if (idxByObjNum !== -1) return idxByObjNum;
     }
@@ -228,7 +228,7 @@ const getDestination = (
   item: PDFObjectWithLookup,
   namedDests: Map<string, unknown>,
   resolveRefFn: (doc: PDFDocument, obj: unknown) => unknown,
-  doc: PDFDocument
+  doc: PDFDocument,
 ): unknown => {
   let dest = item.lookup(PDFName.of("Dest"));
 
@@ -269,8 +269,8 @@ const parseDestinationCoords = (
     doc: PDFDocument,
     pages: ReturnType<PDFDocument["getPages"]>,
     pageRef: unknown,
-    resolveRefFn: (doc: PDFDocument, obj: unknown) => unknown
-  ) => number
+    resolveRefFn: (doc: PDFDocument, obj: unknown) => unknown,
+  ) => number,
 ): {
   pageIndex: number;
   destX: number | null;
@@ -347,7 +347,7 @@ const traverseBookmarkTree = (
   doc: PDFDocument,
   pages: ReturnType<PDFDocument["getPages"]>,
   namedDests: Map<string, unknown>,
-  resolveRefFn: (doc: PDFDocument, obj: unknown) => unknown
+  resolveRefFn: (doc: PDFDocument, obj: unknown) => unknown,
 ): BookmarkNode | null => {
   if (!item) return null;
   const resolvedItem = resolveRefFn(doc, item);
@@ -366,7 +366,7 @@ const traverseBookmarkTree = (
     doc,
     pages,
     resolveRefFn,
-    findPageIndex
+    findPageIndex,
   );
 
   const color = parseBookmarkColor(colorObj);
@@ -394,7 +394,7 @@ const traverseBookmarkTree = (
         doc,
         pages,
         namedDests,
-        resolveRefFn
+        resolveRefFn,
       );
       if (childBookmark) bookmark.children.push(childBookmark);
       const nextRef = childObj.lookup(PDFName.of("Next"));
@@ -418,7 +418,7 @@ const traverseBookmarkTree = (
 };
 
 export const extractExistingBookmarks = async (
-  doc: PDFDocument
+  doc: PDFDocument,
 ): Promise<BookmarkNode[]> => {
   try {
     let pages: ReturnType<PDFDocument["getPages"]>;
@@ -460,7 +460,7 @@ export const extractExistingBookmarks = async (
         doc,
         pages,
         namedDests,
-        resolveRef
+        resolveRef,
       );
       if (bookmark) result.push(bookmark);
       const nextRef = first.lookup(PDFName.of("Next"));

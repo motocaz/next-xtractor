@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { combineToSinglePage } from '../lib/combine-single-page-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import type { UseCombineSinglePageReturn } from '../types';
+import { useState, useCallback } from "react";
+import { combineToSinglePage } from "../lib/combine-single-page-logic";
+import { downloadFile } from "@/lib/pdf/file-utils";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import type { UseCombineSinglePageReturn } from "../types";
 
 const DEFAULT_SPACING = 18;
-const DEFAULT_BACKGROUND_COLOR = '#FFFFFF';
+const DEFAULT_BACKGROUND_COLOR = "#FFFFFF";
 const DEFAULT_ADD_SEPARATOR = false;
 
 export const useCombineSinglePage = (): UseCombineSinglePageReturn => {
   const [spacing, setSpacing] = useState<number>(DEFAULT_SPACING);
   const [backgroundColorHex, setBackgroundColorHex] = useState<string>(
-    DEFAULT_BACKGROUND_COLOR
+    DEFAULT_BACKGROUND_COLOR,
   );
   const [addSeparator, setAddSeparator] = useState<boolean>(
-    DEFAULT_ADD_SEPARATOR
+    DEFAULT_ADD_SEPARATOR,
   );
 
   const {
@@ -38,17 +38,17 @@ export const useCombineSinglePage = (): UseCombineSinglePageReturn => {
 
   const processCombine = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Initializing...');
+    setLoadingMessage("Initializing...");
 
     try {
-      setLoadingMessage('Combining pages...');
+      setLoadingMessage("Combining pages...");
 
       const blob = await combineToSinglePage(
         pdfFile,
@@ -57,30 +57,39 @@ export const useCombineSinglePage = (): UseCombineSinglePageReturn => {
         addSeparator,
         (current, total) => {
           setLoadingMessage(`Processing page ${current} of ${total}...`);
-        }
+        },
       );
 
-      setLoadingMessage('Preparing download...');
+      setLoadingMessage("Preparing download...");
       downloadFile(blob, pdfFile.name);
 
-      setSuccess('Pages combined successfully!');
+      setSuccess("Pages combined successfully!");
     } catch (err) {
-      console.error('Error combining pages:', err);
+      console.error("Error combining pages:", err);
 
       if (err instanceof Error) {
         setError(
-          `An error occurred: ${err.message || 'Could not combine pages.'}`
+          `An error occurred: ${err.message || "Could not combine pages."}`,
         );
       } else {
         setError(
-          'An error occurred while processing the PDF. Please try again.'
+          "An error occurred while processing the PDF. Please try again.",
         );
       }
     } finally {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfFile, spacing, backgroundColorHex, addSeparator, setIsProcessing, setError, setSuccess, setLoadingMessage]);
+  }, [
+    pdfFile,
+    spacing,
+    backgroundColorHex,
+    addSeparator,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+  ]);
 
   const handleSetSpacing = useCallback((value: number) => {
     setSpacing(value);
@@ -121,4 +130,3 @@ export const useCombineSinglePage = (): UseCombineSinglePageReturn => {
     reset,
   };
 };
-

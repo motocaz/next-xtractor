@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { CheckSquare, Square, Trash2 } from 'lucide-react';
+} from "@/components/ui/select";
+import { CheckSquare, Square, Trash2 } from "lucide-react";
 
 interface BatchModeControlsProps {
   batchMode: boolean;
@@ -74,7 +74,7 @@ export const BatchModeControls = ({
             <Select
               onValueChange={(value) => {
                 if (value) {
-                  onApplyColor(value === 'null' ? null : value);
+                  onApplyColor(value === "null" ? null : value);
                 }
               }}
             >
@@ -94,7 +94,7 @@ export const BatchModeControls = ({
             <Select
               onValueChange={(value) => {
                 if (value) {
-                  onApplyStyle(value === 'null' ? null : value);
+                  onApplyStyle(value === "null" ? null : value);
                 }
               }}
             >
@@ -124,4 +124,3 @@ export const BatchModeControls = ({
     </div>
   );
 };
-

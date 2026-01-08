@@ -49,7 +49,7 @@ export const processOCR = async ({
     try {
       const workerPath = new URL(
         "tesseract.js/dist/worker.min.js",
-        import.meta.url
+        import.meta.url,
       ).href;
       workerOptions.workerPath = workerPath;
     } catch {}
@@ -106,7 +106,7 @@ export const processOCR = async ({
       const result = await worker.recognize(
         canvas,
         {},
-        { text: true, hocr: true }
+        { text: true, hocr: true },
       );
       const data = result.data;
 

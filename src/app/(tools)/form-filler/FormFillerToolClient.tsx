@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const FormFillerTool = dynamic(
   () =>
-    import('@/features/pdf-form-filler').then((mod) => ({
+    import("@/features/pdf-form-filler").then((mod) => ({
       default: mod.FormFillerTool,
     })),
   {
@@ -16,8 +16,7 @@ const FormFillerTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default FormFillerTool;
-

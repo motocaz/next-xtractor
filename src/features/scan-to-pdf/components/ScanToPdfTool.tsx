@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useScanToPdf } from '../hooks/useScanToPdf';
-import { FileUploader } from '@/components/FileUploader';
-import { ArrowLeft } from 'lucide-react';
-import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { FileListSection } from '@/components/common/FileListSection';
+import Link from "next/link";
+import { useScanToPdf } from "../hooks/useScanToPdf";
+import { FileUploader } from "@/components/FileUploader";
+import { ArrowLeft } from "lucide-react";
+import { FileUploadStatusMessages } from "@/components/common/FileUploadStatusMessages";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { FileListSection } from "@/components/common/FileListSection";
 
 export const ScanToPdfTool = () => {
   const {
@@ -35,11 +35,10 @@ export const ScanToPdfTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        Scan to PDF
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">Scan to PDF</h2>
       <p className="mb-6 text-muted-foreground">
-        Use your device&apos;s camera to scan documents and save them as a PDF. On desktop, this will open a file picker.
+        Use your device&apos;s camera to scan documents and save them as a PDF.
+        On desktop, this will open a file picker.
       </p>
 
       <div className="mb-4">
@@ -93,4 +92,3 @@ export const ScanToPdfTool = () => {
     </div>
   );
 };
-

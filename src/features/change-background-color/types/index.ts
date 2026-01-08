@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UseChangeBackgroundColorReturn {
   backgroundColor: string;
@@ -17,4 +17,3 @@ export interface UseChangeBackgroundColorReturn {
   processBackgroundColor: () => Promise<void>;
   reset: () => void;
 }
-

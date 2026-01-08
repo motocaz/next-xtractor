@@ -1,26 +1,31 @@
-'use client';
+"use client";
 
-import { PDFDocument as PDFLibDocument, rgb, PageSizes } from 'pdf-lib';
-import type { PDFDocument } from 'pdf-lib';
-import { hexToRgb } from '@/lib/pdf/file-utils';
-import type { FixDimensionsOptions } from '../types';
+import { PDFDocument as PDFLibDocument, rgb, PageSizes } from "pdf-lib";
+import type { PDFDocument } from "pdf-lib";
+import { hexToRgb } from "@/lib/pdf/file-utils";
+import type { FixDimensionsOptions } from "../types";
 
 export const fixDimensions = async (
   pdfDoc: PDFDocument,
-  options: FixDimensionsOptions
+  options: FixDimensionsOptions,
 ): Promise<PDFDocument> => {
   let targetWidth: number;
   let targetHeight: number;
 
-  if (options.targetSize === 'Custom') {
-    const width = Number.parseFloat(options.customWidth || '8.5');
-    const height = Number.parseFloat(options.customHeight || '11');
+  if (options.targetSize === "Custom") {
+    const width = Number.parseFloat(options.customWidth || "8.5");
+    const height = Number.parseFloat(options.customHeight || "11");
 
-    if (Number.isNaN(width) || Number.isNaN(height) || width <= 0 || height <= 0) {
-      throw new Error('Invalid custom dimensions. Please enter valid numbers.');
+    if (
+      Number.isNaN(width) ||
+      Number.isNaN(height) ||
+      width <= 0 ||
+      height <= 0
+    ) {
+      throw new Error("Invalid custom dimensions. Please enter valid numbers.");
     }
 
-    if (options.customUnits === 'in') {
+    if (options.customUnits === "in") {
       targetWidth = width * 72;
       targetHeight = height * 72;
     } else {
@@ -36,8 +41,8 @@ export const fixDimensions = async (
   }
 
   const needsSwap =
-    (options.orientation === 'landscape' && targetWidth < targetHeight) ||
-    (options.orientation === 'portrait' && targetWidth > targetHeight);
+    (options.orientation === "landscape" && targetWidth < targetHeight) ||
+    (options.orientation === "portrait" && targetWidth > targetHeight);
 
   if (needsSwap) {
     [targetWidth, targetHeight] = [targetHeight, targetWidth];
@@ -63,7 +68,7 @@ export const fixDimensions = async (
     const scaleX = targetWidth / sourceWidth;
     const scaleY = targetHeight / sourceHeight;
     const scale =
-      options.scalingMode === 'fit'
+      options.scalingMode === "fit"
         ? Math.min(scaleX, scaleY)
         : Math.max(scaleX, scaleY);
 
@@ -83,4 +88,3 @@ export const fixDimensions = async (
 
   return newDoc;
 };
-

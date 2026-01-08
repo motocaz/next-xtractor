@@ -1,7 +1,7 @@
-import { ScrollToTop } from '@/components/ScrollToTop';
-import { MergePDFTool } from '@/features/pdf-merge';
+import { ScrollToTop } from "@/components/ScrollToTop";
+import { MergePDFTool } from "@/features/pdf-merge";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default function MergePage() {
   return (
@@ -11,4 +11,3 @@ export default function MergePage() {
     </>
   );
 }
-

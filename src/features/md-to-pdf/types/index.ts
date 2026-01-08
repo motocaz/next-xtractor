@@ -1,8 +1,8 @@
-export type PageFormat = 'a4' | 'letter';
+export type PageFormat = "a4" | "letter";
 
-export type Orientation = 'portrait' | 'landscape';
+export type Orientation = "portrait" | "landscape";
 
-export type MarginSize = 'normal' | 'narrow' | 'wide';
+export type MarginSize = "normal" | "narrow" | "wide";
 
 export interface MdToPdfOptions {
   pageFormat: PageFormat;
@@ -26,4 +26,3 @@ export interface UseMdToPdfReturn {
   processMdToPdf: () => Promise<void>;
   reset: () => void;
 }
-

@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useEffect } from 'react';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
+import { useState, useCallback, useEffect } from "react";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
 import {
   getAttachmentsFromPDF,
   editAttachmentsInPDF,
-} from '../lib/edit-attachments-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
-import type { UseEditAttachmentsReturn, AttachmentInfo } from '../types';
+} from "../lib/edit-attachments-logic";
+import { downloadFile } from "@/lib/pdf/file-utils";
+import type { UseEditAttachmentsReturn, AttachmentInfo } from "../types";
 
 export const useEditAttachments = (): UseEditAttachmentsReturn => {
   const [attachments, setAttachments] = useState<AttachmentInfo[]>([]);
   const [attachmentsToRemove, setAttachmentsToRemove] = useState<Set<number>>(
-    new Set()
+    new Set(),
   );
   const [isLoadingAttachments, setIsLoadingAttachments] = useState(false);
 
@@ -47,7 +47,7 @@ export const useEditAttachments = (): UseEditAttachmentsReturn => {
       setAttachmentsToRemove(new Set());
       await loadPDFBase(file);
     },
-    [loadPDFBase]
+    [loadPDFBase],
   );
 
   const loadAttachments = useCallback(async () => {
@@ -57,18 +57,18 @@ export const useEditAttachments = (): UseEditAttachmentsReturn => {
 
     setIsLoadingAttachments(true);
     setError(null);
-    setLoadingMessage('Loading attachments...');
+    setLoadingMessage("Loading attachments...");
 
     try {
       const loadedAttachments = await getAttachmentsFromPDF(pdfFile);
       setAttachments(loadedAttachments);
       setAttachmentsToRemove(new Set());
     } catch (err) {
-      console.error('Error loading attachments:', err);
+      console.error("Error loading attachments:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'Failed to load attachments from PDF.'
+          : "Failed to load attachments from PDF.",
       );
     } finally {
       setIsLoadingAttachments(false);
@@ -94,7 +94,7 @@ export const useEditAttachments = (): UseEditAttachmentsReturn => {
     }
 
     const allSelected = attachments.every((attachment) =>
-      attachmentsToRemove.has(attachment.index)
+      attachmentsToRemove.has(attachment.index),
     );
 
     if (allSelected) {
@@ -107,36 +107,36 @@ export const useEditAttachments = (): UseEditAttachmentsReturn => {
 
   const processAndSave = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     if (attachmentsToRemove.size === 0) {
-      setError('Please select at least one attachment to remove.');
+      setError("Please select at least one attachment to remove.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Processing attachments...');
+    setLoadingMessage("Processing attachments...");
 
     try {
       const indicesToRemove = Array.from(attachmentsToRemove);
       const blob = await editAttachmentsInPDF(pdfFile, indicesToRemove);
 
-      setLoadingMessage('Preparing download...');
+      setLoadingMessage("Preparing download...");
       const now = new Date().toISOString();
       downloadFile(blob, undefined, `${now}_${pdfFile.name}`);
 
-      setSuccess('Attachments updated successfully!');
+      setSuccess("Attachments updated successfully!");
       setAttachmentsToRemove(new Set());
     } catch (err) {
-      console.error('Error editing attachments:', err);
+      console.error("Error editing attachments:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'Failed to edit attachments. Please try again.'
+          : "Failed to edit attachments. Please try again.",
       );
     } finally {
       setIsProcessing(false);
@@ -179,4 +179,3 @@ export const useEditAttachments = (): UseEditAttachmentsReturn => {
     reset,
   };
 };
-

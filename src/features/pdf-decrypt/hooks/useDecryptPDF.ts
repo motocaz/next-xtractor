@@ -34,7 +34,7 @@ export const useDecryptPDF = (): UseDecryptPDFReturn => {
       setPdfError(
         err instanceof Error
           ? err.message
-          : "Could not load PDF. It may be corrupt."
+          : "Could not load PDF. It may be corrupt.",
       );
     } finally {
       setIsLoadingPDF(false);
@@ -80,7 +80,7 @@ export const useDecryptPDF = (): UseDecryptPDFReturn => {
           `An error occurred: ${
             err.message ||
             "The password you entered is wrong or the file is corrupted."
-          }`
+          }`,
         );
       }
     } finally {

@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { PDFDocument as PDFLibDocument, rgb } from 'pdf-lib';
-import { readFileAsArrayBuffer, hexToRgb } from '@/lib/pdf/file-utils';
+import { PDFDocument as PDFLibDocument, rgb } from "pdf-lib";
+import { readFileAsArrayBuffer, hexToRgb } from "@/lib/pdf/file-utils";
 
 export const combineToSinglePage = async (
   file: File,
   spacing: number,
   backgroundColorHex: string,
   addSeparator: boolean,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<Blob> => {
   const arrayBuffer = await readFileAsArrayBuffer(file);
   const sourceDoc = await PDFLibDocument.load(arrayBuffer);
@@ -26,7 +26,7 @@ export const combineToSinglePage = async (
 
   const newPage = newDoc.addPage([maxWidth, totalHeight]);
 
-  if (backgroundColorHex.toUpperCase() !== '#FFFFFF') {
+  if (backgroundColorHex.toUpperCase() !== "#FFFFFF") {
     const backgroundColor = hexToRgb(backgroundColorHex);
     newPage.drawRectangle({
       x: 0,
@@ -50,7 +50,7 @@ export const combineToSinglePage = async (
       const embeddedPage = await newDoc.embedPage(sourcePage);
       newPage.drawPage(embeddedPage, { x, y: currentY, width, height });
     } catch {
-      if (backgroundColorHex.toUpperCase() === '#FFFFFF') {
+      if (backgroundColorHex.toUpperCase() === "#FFFFFF") {
         newPage.drawRectangle({
           x,
           y: currentY,
@@ -75,6 +75,5 @@ export const combineToSinglePage = async (
   }
 
   const newPdfBytes = await newDoc.save();
-  return new Blob([new Uint8Array(newPdfBytes)], { type: 'application/pdf' });
+  return new Blob([new Uint8Array(newPdfBytes)], { type: "application/pdf" });
 };
-

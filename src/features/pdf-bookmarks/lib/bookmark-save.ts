@@ -6,7 +6,7 @@ import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
 export const savePDFWithBookmarks = async (
   pdfDoc: PDFDocument,
   bookmarkTree: BookmarkNode[],
-  originalFileName: string
+  originalFileName: string,
 ): Promise<void> => {
   const pages = pdfDoc.getPages();
   const outlinesDict = pdfDoc.context.obj({});
@@ -14,7 +14,7 @@ export const savePDFWithBookmarks = async (
 
   const createOutlineItems = (
     nodes: BookmarkNode[],
-    parentRef: PDFRef
+    parentRef: PDFRef,
   ): Array<{ ref: PDFRef; dict: PDFDict }> => {
     const items: Array<{ ref: PDFRef; dict: PDFDict }> = [];
 
@@ -101,11 +101,11 @@ export const savePDFWithBookmarks = async (
           itemDict.set(PDFName.of("First"), childItems[0].ref);
           itemDict.set(
             PDFName.of("Last"),
-            childItems[childItems.length - 1].ref
+            childItems[childItems.length - 1].ref,
           );
           itemDict.set(
             PDFName.of("Count"),
-            pdfDoc.context.obj(childItems.length)
+            pdfDoc.context.obj(childItems.length),
           );
         }
       }
@@ -129,11 +129,11 @@ export const savePDFWithBookmarks = async (
       outlinesDict.set(PDFName.of("First"), topLevelItems[0].ref);
       outlinesDict.set(
         PDFName.of("Last"),
-        topLevelItems[topLevelItems.length - 1].ref
+        topLevelItems[topLevelItems.length - 1].ref,
       );
       outlinesDict.set(
         PDFName.of("Count"),
-        pdfDoc.context.obj(topLevelItems.length)
+        pdfDoc.context.obj(topLevelItems.length),
       );
     }
 
@@ -141,7 +141,11 @@ export const savePDFWithBookmarks = async (
 
     const pdfBytes = await pdfDoc.save();
     const now = new Date().toISOString();
-    saveAndDownloadPDF(pdfBytes, originalFileName, `${now}_${originalFileName}.pdf`);
+    saveAndDownloadPDF(
+      pdfBytes,
+      originalFileName,
+      `${now}_${originalFileName}.pdf`,
+    );
   } catch (err) {
     console.error("Error saving PDF:", err);
     throw new Error("Error saving PDF. Check console for details.");

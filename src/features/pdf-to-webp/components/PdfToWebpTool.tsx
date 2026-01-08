@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePdfToWebp } from '../hooks/usePdfToWebp';
-import { FileUploader } from '@/components/FileUploader';
-import { ArrowLeft } from 'lucide-react';
-import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Slider } from '@/components/ui/slider';
-import { PdfFileCard } from '@/components/common/PdfFileCard';
+import Link from "next/link";
+import { usePdfToWebp } from "../hooks/usePdfToWebp";
+import { FileUploader } from "@/components/FileUploader";
+import { ArrowLeft } from "lucide-react";
+import { FileUploadStatusMessages } from "@/components/common/FileUploadStatusMessages";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Slider } from "@/components/ui/slider";
+import { PdfFileCard } from "@/components/common/PdfFileCard";
 
 export const PdfToWebpTool = () => {
   const {
@@ -39,11 +39,10 @@ export const PdfToWebpTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        PDF to WebP
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">PDF to WebP</h2>
       <p className="mb-6 text-muted-foreground">
-        Convert each page of a PDF file into a WebP image. Your files will be downloaded in a ZIP archive.
+        Convert each page of a PDF file into a WebP image. Your files will be
+        downloaded in a ZIP archive.
       </p>
 
       <div className="mb-4">
@@ -125,4 +124,3 @@ export const PdfToWebpTool = () => {
     </div>
   );
 };
-

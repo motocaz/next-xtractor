@@ -19,12 +19,12 @@ import type {
 export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
   const [sensitivity, setSensitivity] = useState<number>(99);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
-    null
+    null,
   );
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisCache, setAnalysisCache] = useState<PageAnalysisData[]>([]);
   const [pdfJsDocCache, setPdfJsDocCache] = useState<PDFDocumentProxy | null>(
-    null
+    null,
   );
 
   const {
@@ -54,7 +54,7 @@ export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
       setPdfJsDocCache(null);
       await baseLoadPDF(file);
     },
-    [baseLoadPDF]
+    [baseLoadPDF],
   );
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
       try {
         const pdfBytes = await pdfDoc.save();
         const pdfJsDoc = await loadPDFWithPDFJSFromBuffer(
-          new Uint8Array(pdfBytes).buffer
+          new Uint8Array(pdfBytes).buffer,
         );
 
         const analysisData = await analyzePagesForBlankDetection(
@@ -78,7 +78,7 @@ export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
           0,
           (current, total) => {
             setLoadingMessage(`Analyzing pages: ${current}/${total}`);
-          }
+          },
         );
 
         setAnalysisCache(analysisData);
@@ -87,7 +87,7 @@ export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
         const result = await updateAnalysisWithSensitivity(
           analysisData,
           sensitivity,
-          pdfJsDoc
+          pdfJsDoc,
         );
         setAnalysisResult(result);
       } catch (err) {
@@ -95,7 +95,7 @@ export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
         setError(
           err instanceof Error
             ? err.message
-            : "Failed to analyze PDF pages. Please try again."
+            : "Failed to analyze PDF pages. Please try again.",
         );
       } finally {
         setIsAnalyzing(false);
@@ -120,7 +120,7 @@ export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
         const result = await updateAnalysisWithSensitivity(
           analysisCache,
           sensitivity,
-          pdfJsDocCache
+          pdfJsDocCache,
         );
         setAnalysisResult(result);
       } catch (err) {
@@ -128,7 +128,7 @@ export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
         setError(
           err instanceof Error
             ? err.message
-            : "Failed to update analysis. Please try again."
+            : "Failed to update analysis. Please try again.",
         );
       } finally {
         setIsAnalyzing(false);
@@ -153,7 +153,7 @@ export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
 
     if (!analysisResult || analysisResult.pagesToRemove.length === 0) {
       setError(
-        "No blank pages found to remove at the current sensitivity level."
+        "No blank pages found to remove at the current sensitivity level.",
       );
       return;
     }
@@ -166,12 +166,12 @@ export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
     try {
       const pagesToKeep = Array.from(
         { length: totalPages },
-        (_, i) => i
+        (_, i) => i,
       ).filter((index) => !analysisResult.pagesToRemove.includes(index + 1));
 
       if (pagesToKeep.length === 0) {
         setError(
-          "All pages were identified as blank at the current sensitivity setting. No new file was created. Try lowering the sensitivity if you believe this is an error."
+          "All pages were identified as blank at the current sensitivity setting. No new file was created. Try lowering the sensitivity if you believe this is an error.",
         );
         setIsProcessing(false);
         setLoadingMessage(null);
@@ -180,7 +180,7 @@ export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
 
       if (pagesToKeep.length === totalPages) {
         setError(
-          "No pages were identified as blank at the current sensitivity level."
+          "No pages were identified as blank at the current sensitivity level.",
         );
         setIsProcessing(false);
         setLoadingMessage(null);
@@ -192,14 +192,14 @@ export const useRemoveBlankPages = (): UseRemoveBlankPagesReturn => {
       saveAndDownloadPDF(pdfBytes, pdfFile.name);
 
       setSuccess(
-        `Successfully removed ${analysisResult.pagesToRemove.length} blank page(s)! Your download has started.`
+        `Successfully removed ${analysisResult.pagesToRemove.length} blank page(s)! Your download has started.`,
       );
     } catch (err) {
       console.error("Error removing blank pages:", err);
       setError(
         err instanceof Error
           ? err.message
-          : "Could not remove blank pages. Please try again."
+          : "Could not remove blank pages. Please try again.",
       );
     } finally {
       setIsProcessing(false);

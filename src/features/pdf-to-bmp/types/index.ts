@@ -12,4 +12,3 @@ export interface UsePdfToBmpReturn {
   processPdfToBmp: () => Promise<void>;
   reset: () => void;
 }
-

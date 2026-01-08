@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface EncryptPDFOptions {
   userPassword: string;
@@ -24,4 +24,3 @@ export interface UseEncryptPDFReturn {
   encryptPDF: () => Promise<void>;
   reset: () => void;
 }
-

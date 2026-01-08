@@ -1,11 +1,11 @@
-import { auth } from '@clerk/nextjs/server';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { auth } from "@clerk/nextjs/server";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default async function ProtectedPage() {
   const { has } = await auth();
 
-  const hasPremiumPlan = has({ plan: 'premium' });
+  const hasPremiumPlan = has({ plan: "premium" });
 
   if (!hasPremiumPlan) {
     return (
@@ -43,4 +43,3 @@ export default async function ProtectedPage() {
     </div>
   );
 }
-

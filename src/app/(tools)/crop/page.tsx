@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
-import { ScrollToTop } from '@/components/ScrollToTop';
+import dynamic from "next/dynamic";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const CropPDFTool = dynamic(
   () =>
-    import('@/features/pdf-crop').then((mod) => ({
+    import("@/features/pdf-crop").then((mod) => ({
       default: mod.CropPDFTool,
     })),
   {
@@ -17,7 +17,7 @@ const CropPDFTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default function CropPage() {
@@ -28,7 +28,3 @@ export default function CropPage() {
     </>
   );
 }
-
-
-
-

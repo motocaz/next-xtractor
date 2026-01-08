@@ -34,7 +34,7 @@ export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
   const [pageScope, setPageScope] = useState<PageScope>("all");
   const [pageRange, setPageRange] = useState<string>("");
   const [selectedTypes, setSelectedTypes] = useState<Set<AnnotationType>>(
-    new Set()
+    new Set(),
   );
 
   const {
@@ -63,7 +63,7 @@ export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
       setSelectedTypes(new Set());
       await baseLoadPDF(file);
     },
-    [baseLoadPDF]
+    [baseLoadPDF],
   );
 
   const toggleAnnotationType = useCallback((type: AnnotationType) => {
@@ -124,7 +124,7 @@ export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
 
         if (targetPageIndices.length === 0) {
           setError(
-            "No valid pages were selected. Please check your page range."
+            "No valid pages were selected. Please check your page range.",
           );
           setIsProcessing(false);
           setLoadingMessage(null);
@@ -133,7 +133,7 @@ export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
       }
 
       const annotationTypesSet = new Set<string>(
-        Array.from(selectedTypes) as string[]
+        Array.from(selectedTypes) as string[],
       );
 
       removeAnnotationsFromDoc(pdfDoc, targetPageIndices, annotationTypesSet);
@@ -143,14 +143,14 @@ export const useRemoveAnnotations = (): UseRemoveAnnotationsReturn => {
       saveAndDownloadPDF(pdfBytes, pdfFile.name);
 
       setSuccess(
-        "Annotations removed successfully! Your download has started."
+        "Annotations removed successfully! Your download has started.",
       );
     } catch (err) {
       console.error("Error removing annotations:", err);
       setError(
         err instanceof Error
           ? err.message
-          : "Could not remove annotations. Please check your page range and try again."
+          : "Could not remove annotations. Please check your page range and try again.",
       );
     } finally {
       setIsProcessing(false);

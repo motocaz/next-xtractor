@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePdfToPng } from '../hooks/usePdfToPng';
-import { FileUploader } from '@/components/FileUploader';
-import { ArrowLeft } from 'lucide-react';
-import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Slider } from '@/components/ui/slider';
-import { PdfFileCard } from '@/components/common/PdfFileCard';
+import Link from "next/link";
+import { usePdfToPng } from "../hooks/usePdfToPng";
+import { FileUploader } from "@/components/FileUploader";
+import { ArrowLeft } from "lucide-react";
+import { FileUploadStatusMessages } from "@/components/common/FileUploadStatusMessages";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Slider } from "@/components/ui/slider";
+import { PdfFileCard } from "@/components/common/PdfFileCard";
 
 export const PdfToPngTool = () => {
   const {
@@ -39,11 +39,10 @@ export const PdfToPngTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        PDF to PNG
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">PDF to PNG</h2>
       <p className="mb-6 text-muted-foreground">
-        Convert each page of a PDF file into a PNG image. Your files will be downloaded in a ZIP archive.
+        Convert each page of a PDF file into a PNG image. Your files will be
+        downloaded in a ZIP archive.
       </p>
 
       <div className="mb-4">
@@ -125,4 +124,3 @@ export const PdfToPngTool = () => {
     </div>
   );
 };
-

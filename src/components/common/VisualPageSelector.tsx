@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
-import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
-import { renderPageAsImage } from '@/lib/pdf/canvas-utils';
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
+import { loadPDFWithPDFJSFromBuffer } from "@/lib/pdf/pdfjs-loader";
+import { renderPageAsImage } from "@/lib/pdf/canvas-utils";
+import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
 
 export interface VisualPageSelectorProps {
   pdfFile: File;
@@ -51,11 +51,11 @@ export const VisualPageSelector = ({
 
       setThumbnails(newThumbnails);
     } catch (err) {
-      console.error('Error loading thumbnails:', err);
+      console.error("Error loading thumbnails:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'Failed to load page previews. Please try again.'
+          : "Failed to load page previews. Please try again.",
       );
     } finally {
       setIsLoading(false);
@@ -80,7 +80,7 @@ export const VisualPageSelector = ({
       }
       onSelectionChange(newSelection);
     },
-    [selectedPages, onSelectionChange, disabled]
+    [selectedPages, onSelectionChange, disabled],
   );
 
   if (isLoading) {
@@ -88,7 +88,9 @@ export const VisualPageSelector = ({
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-          <p className="text-sm text-muted-foreground">Rendering page previews...</p>
+          <p className="text-sm text-muted-foreground">
+            Rendering page previews...
+          </p>
         </div>
       </div>
     );
@@ -111,7 +113,8 @@ export const VisualPageSelector = ({
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">
-        Click on pages to select them. Selected: {selectedPages.size} of {totalPages}
+        Click on pages to select them. Selected: {selectedPages.size} of{" "}
+        {totalPages}
       </p>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
         {Array.from({ length: totalPages }, (_, i) => {
@@ -125,14 +128,14 @@ export const VisualPageSelector = ({
               onClick={() => handlePageClick(pageIndex)}
               className={`relative p-1 border-2 rounded-lg cursor-pointer transition-colors ${
                 isSelected
-                  ? 'border-primary bg-primary/10'
-                  : 'border-transparent hover:border-primary/50'
-              } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  ? "border-primary bg-primary/10"
+                  : "border-transparent hover:border-primary/50"
+              } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
               role="button"
               tabIndex={disabled ? -1 : 0}
-              aria-label={`Page ${pageIndex + 1}${isSelected ? ' (selected)' : ''}`}
+              aria-label={`Page ${pageIndex + 1}${isSelected ? " (selected)" : ""}`}
               onKeyDown={(e) => {
-                if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
+                if ((e.key === "Enter" || e.key === " ") && !disabled) {
                   e.preventDefault();
                   handlePageClick(pageIndex);
                 }
@@ -150,7 +153,9 @@ export const VisualPageSelector = ({
                 </div>
               ) : (
                 <div className="w-full aspect-3/4 rounded-md bg-muted flex items-center justify-center">
-                  <span className="text-xs text-muted-foreground">Loading...</span>
+                  <span className="text-xs text-muted-foreground">
+                    Loading...
+                  </span>
                 </div>
               )}
               <p className="text-center text-xs mt-1 text-muted-foreground">
@@ -163,4 +168,3 @@ export const VisualPageSelector = ({
     </div>
   );
 };
-

@@ -1,5 +1,5 @@
-export { CompressPDFTool } from './components/CompressPDFTool';
-export { useCompressPDF } from './hooks/useCompressPDF';
+export { CompressPDFTool } from "./components/CompressPDFTool";
+export { useCompressPDF } from "./hooks/useCompressPDF";
 export type {
   CompressionLevel,
   CompressionAlgorithm,
@@ -9,5 +9,4 @@ export type {
   CompressionResult,
   PDFFileInfo,
   UseCompressPDFReturn,
-} from './types';
-
+} from "./types";

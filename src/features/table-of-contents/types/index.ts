@@ -1,5 +1,5 @@
 export interface GenerateTOCMessage {
-  command: 'generate-toc';
+  command: "generate-toc";
   pdfData: ArrayBuffer;
   title: string;
   fontSize: number;
@@ -8,12 +8,12 @@ export interface GenerateTOCMessage {
 }
 
 export interface TOCSuccessResponse {
-  status: 'success';
+  status: "success";
   pdfBytes: ArrayBuffer;
 }
 
 export interface TOCErrorResponse {
-  status: 'error';
+  status: "error";
   message: string;
 }
 
@@ -25,4 +25,3 @@ export interface TableOfContentsOptions {
   fontFamily: number;
   addBookmark: boolean;
 }
-

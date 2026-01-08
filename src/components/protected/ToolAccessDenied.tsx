@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Lock } from 'lucide-react';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Lock } from "lucide-react";
 
 export const ToolAccessDenied = () => {
   return (
@@ -18,8 +18,8 @@ export const ToolAccessDenied = () => {
           To access our PDF tools, you need an active subscription.
         </p>
         <p className="text-muted-foreground mb-8">
-          Start your free trial or choose a plan to unlock all features and start
-          processing your PDFs.
+          Start your free trial or choose a plan to unlock all features and
+          start processing your PDFs.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/pricing">
@@ -44,4 +44,3 @@ export const ToolAccessDenied = () => {
     </div>
   );
 };
-

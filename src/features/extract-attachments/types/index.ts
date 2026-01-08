@@ -4,18 +4,18 @@ export interface AttachmentData {
 }
 
 export interface ExtractAttachmentsMessage {
-  command: 'extract-attachments';
+  command: "extract-attachments";
   fileBuffers: ArrayBuffer[];
   fileNames: string[];
 }
 
 export interface ExtractAttachmentSuccessResponse {
-  status: 'success';
+  status: "success";
   attachments: AttachmentData[];
 }
 
 export interface ExtractAttachmentErrorResponse {
-  status: 'error';
+  status: "error";
   message: string;
 }
 
@@ -34,4 +34,3 @@ export interface UseExtractAttachmentsReturn {
   extractAttachments: () => Promise<void>;
   reset: () => void;
 }
-

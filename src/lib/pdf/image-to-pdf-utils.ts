@@ -21,7 +21,7 @@ export interface HandleImageToPdfResultOptions {
 
 export const addImageAsPage = (
   pdfDoc: PDFDocument,
-  embeddedImage: PDFImage
+  embeddedImage: PDFImage,
 ): void => {
   const page = pdfDoc.addPage([embeddedImage.width, embeddedImage.height]);
   page.drawImage(embeddedImage, {
@@ -34,11 +34,11 @@ export const addImageAsPage = (
 
 export const createImageToPdfResult = (
   pdfDoc: PDFDocument,
-  failedFiles: string[]
+  failedFiles: string[],
 ): ImageToPdfResult => {
   if (pdfDoc.getPageCount() === 0) {
     throw new Error(
-      "No valid images could be processed. Please check your files."
+      "No valid images could be processed. Please check your files.",
     );
   }
 
@@ -52,7 +52,7 @@ export const createImageToPdfResult = (
 export const convertImagesToPdf = async (
   files: File[],
   convertToPngBytes: (file: File) => Promise<ArrayBuffer>,
-  emptyFilesError: string
+  emptyFilesError: string,
 ): Promise<ImageToPdfResult> => {
   if (files.length === 0) {
     throw new Error(emptyFilesError);
@@ -76,7 +76,7 @@ export const convertImagesToPdf = async (
 };
 
 export const handleImageToPdfResult = async (
-  options: HandleImageToPdfResultOptions
+  options: HandleImageToPdfResultOptions,
 ): Promise<void> => {
   const { result, firstFileName, extensionPattern, stateSetters } = options;
   const { setFailedFiles, setSuccess } = stateSetters;
@@ -97,7 +97,7 @@ export const handleImageToPdfResult = async (
 };
 
 export const convertImageToPngBytes = async (
-  file: File
+  file: File,
 ): Promise<ArrayBuffer> => {
   const isSvg =
     file.type === "image/svg+xml" || file.name.toLowerCase().endsWith(".svg");
@@ -149,7 +149,7 @@ export const convertImageToPngBytes = async (
 
         ctx.drawImage(img, 0, 0, width, height);
         const pngBlob = await new Promise<Blob | null>((res) =>
-          canvas.toBlob(res, "image/png")
+          canvas.toBlob(res, "image/png"),
         );
 
         if (!pngBlob) {
@@ -194,7 +194,7 @@ export const convertImageToPngBytes = async (
 };
 
 export const convertHeicToPngBytes = async (
-  file: File
+  file: File,
 ): Promise<ArrayBuffer> => {
   const heic2any = (await import("heic2any")).default;
 
@@ -218,7 +218,7 @@ export const convertHeicToPngBytes = async (
     throw new Error(
       `Failed to convert HEIC to PNG: ${
         error instanceof Error ? error.message : "Unknown error"
-      }`
+      }`,
     );
   }
 };

@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useRef, useEffect } from 'react';
-import { useChangeTextColor } from '../hooks/useChangeTextColor';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { ArrowLeft } from 'lucide-react';
-import { updateTextColorPreview } from '../lib/change-text-color-logic';
+import Link from "next/link";
+import { useRef, useEffect } from "react";
+import { useChangeTextColor } from "../hooks/useChangeTextColor";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft } from "lucide-react";
+import { updateTextColorPreview } from "../lib/change-text-color-logic";
 
 export const ChangeTextColorTool = () => {
   const {
@@ -58,10 +58,10 @@ export const ChangeTextColorTool = () => {
           pdfFile,
           colorHex,
           originalCanvas,
-          previewCanvas
+          previewCanvas,
         );
       } catch (err) {
-        console.error('Error updating preview:', err);
+        console.error("Error updating preview:", err);
       } finally {
         isRenderingPreviewRef.current = false;
       }
@@ -155,4 +155,3 @@ export const ChangeTextColorTool = () => {
     </div>
   );
 };
-

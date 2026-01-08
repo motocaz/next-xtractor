@@ -18,4 +18,3 @@ export interface UsePngToPdfReturn {
   processPngToPdf: () => Promise<void>;
   reset: () => void;
 }
-

@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UseRemoveRestrictionsReturn {
   ownerPassword: string;
@@ -17,4 +17,3 @@ export interface UseRemoveRestrictionsReturn {
   removeRestrictions: () => Promise<void>;
   reset: () => void;
 }
-

@@ -109,7 +109,7 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
           imageFile.type !== "image/jpg"
         ) {
           setError(
-            "Unsupported Image. Please use a PNG or JPG for the watermark."
+            "Unsupported Image. Please use a PNG or JPG for the watermark.",
           );
           setIsProcessing(false);
           setLoadingMessage(null);
@@ -149,7 +149,7 @@ export const useAddWatermark = (): UseAddWatermarkReturn => {
       setError(
         err instanceof Error
           ? `Failed to add watermark: ${err.message}`
-          : "Could not add the watermark. Please check your inputs."
+          : "Could not add the watermark. Please check your inputs.",
       );
     } finally {
       setIsProcessing(false);

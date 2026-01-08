@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { splitInHalf } from '../lib/split-in-half-logic';
-import type { UseSplitInHalfReturn, SplitType } from '../types';
+import { useState, useCallback } from "react";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import { splitInHalf } from "../lib/split-in-half-logic";
+import type { UseSplitInHalfReturn, SplitType } from "../types";
 
-const DEFAULT_SPLIT_TYPE: SplitType = 'vertical';
+const DEFAULT_SPLIT_TYPE: SplitType = "vertical";
 
 export const useSplitInHalf = (): UseSplitInHalfReturn => {
   const [splitType, setSplitType] = useState<SplitType>(DEFAULT_SPLIT_TYPE);
@@ -32,39 +32,51 @@ export const useSplitInHalf = (): UseSplitInHalfReturn => {
 
   const processSplit = useCallback(async () => {
     if (!pdfDoc) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     if (!pdfFile) {
-      setError('PDF file is not available. Please try uploading again.');
+      setError("PDF file is not available. Please try uploading again.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Splitting PDF pages...');
+    setLoadingMessage("Splitting PDF pages...");
 
     try {
-      const pdfBytes = await splitInHalf(pdfDoc, splitType, (current, total) => {
-        setLoadingMessage(`Processing page ${current} of ${total}...`);
-      });
+      const pdfBytes = await splitInHalf(
+        pdfDoc,
+        splitType,
+        (current, total) => {
+          setLoadingMessage(`Processing page ${current} of ${total}...`);
+        },
+      );
 
       saveAndDownloadPDF(pdfBytes, pdfFile.name);
-      setSuccess('PDF split successfully!');
+      setSuccess("PDF split successfully!");
     } catch (err) {
-      console.error('Error splitting PDF:', err);
+      console.error("Error splitting PDF:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'An error occurred while splitting the PDF. Please try again.'
+          : "An error occurred while splitting the PDF. Please try again.",
       );
     } finally {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfDoc, pdfFile, splitType, setIsProcessing, setError, setSuccess, setLoadingMessage]);
+  }, [
+    pdfDoc,
+    pdfFile,
+    splitType,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+  ]);
 
   const reset = useCallback(() => {
     setSplitType(DEFAULT_SPLIT_TYPE);
@@ -89,4 +101,3 @@ export const useSplitInHalf = (): UseSplitInHalfReturn => {
     reset,
   };
 };
-

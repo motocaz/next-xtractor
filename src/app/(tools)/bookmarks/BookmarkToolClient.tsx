@@ -1,10 +1,13 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const BookmarkTool = dynamic(
-  () => import('@/features/pdf-bookmarks').then((mod) => ({ default: mod.BookmarkTool })),
-  { 
+  () =>
+    import("@/features/pdf-bookmarks").then((mod) => ({
+      default: mod.BookmarkTool,
+    })),
+  {
     ssr: false,
     loading: () => (
       <div className="flex items-center justify-center min-h-screen">
@@ -13,9 +16,7 @@ const BookmarkTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default BookmarkTool;
-
-

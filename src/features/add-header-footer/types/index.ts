@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface HeaderFooterOptions {
   fontSize: number;
@@ -45,4 +45,3 @@ export interface UseAddHeaderFooterReturn {
   processHeaderFooter: () => Promise<void>;
   reset: () => void;
 }
-

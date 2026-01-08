@@ -1,6 +1,6 @@
-export type MergeMode = 'file' | 'page';
+export type MergeMode = "file" | "page";
 
-import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
+import type { PDFFileInfo } from "@/hooks/useMultiPDFLoader";
 
 export interface MergePageThumbnailData {
   id: string;
@@ -20,16 +20,16 @@ export interface UseMergePDFReturn {
   activeMode: MergeMode;
   pageThumbnails: MergePageThumbnailData[];
   thumbnailImages: Map<string, string>;
-  
+
   isLoading: boolean;
   isRenderingThumbnails: boolean;
   isProcessing: boolean;
   loadingMessage: string | null;
   error: string | null;
   success: string | null;
-  
+
   pageRanges: Map<string, string>;
-  
+
   loadPDFs: (files: File[]) => Promise<void>;
   removePDF: (id: string) => void;
   reorderFiles: (activeId: string, overId: string) => void;
@@ -40,4 +40,3 @@ export interface UseMergePDFReturn {
   processMerge: () => Promise<void>;
   reset: () => void;
 }
-

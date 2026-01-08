@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useAlternateMerge } from '../hooks/useAlternateMerge';
-import { FileUploader } from '@/components/FileUploader';
-import { Spinner } from '@/components/ui/spinner';
-import { Card, CardContent } from '@/components/ui/card';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
+import Link from "next/link";
+import { useAlternateMerge } from "../hooks/useAlternateMerge";
+import { FileUploader } from "@/components/FileUploader";
+import { Spinner } from "@/components/ui/spinner";
+import { Card, CardContent } from "@/components/ui/card";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
 import {
   CheckCircle2,
   AlertCircle,
@@ -14,7 +14,7 @@ import {
   ArrowLeft,
   X,
   GripVertical,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -23,15 +23,15 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
   useSortable,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import type { PDFFileInfo } from "@/hooks/useMultiPDFLoader";
 
 interface SortablePDFItemProps {
   pdfInfo: PDFFileInfo;
@@ -55,11 +55,7 @@ const SortablePDFItem = ({ pdfInfo, onRemove }: SortablePDFItemProps) => {
   };
 
   return (
-    <Card
-      ref={setNodeRef}
-      style={style}
-      className="bg-input border-border"
-    >
+    <Card ref={setNodeRef} style={style} className="bg-input border-border">
       <CardContent className="p-3 flex items-center justify-between gap-2">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <div
@@ -78,7 +74,7 @@ const SortablePDFItem = ({ pdfInfo, onRemove }: SortablePDFItemProps) => {
               </span>
             </div>
             <span className="text-xs text-muted-foreground ml-6">
-              {pdfInfo.pageCount} {pdfInfo.pageCount === 1 ? 'page' : 'pages'}
+              {pdfInfo.pageCount} {pdfInfo.pageCount === 1 ? "page" : "pages"}
             </span>
           </div>
         </div>
@@ -114,7 +110,7 @@ export const AlternateMergeTool = () => {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -142,8 +138,8 @@ export const AlternateMergeTool = () => {
         Alternate Merge
       </h2>
       <p className="mb-6 text-muted-foreground">
-        Upload multiple PDF files and alternate their pages. Pages will be
-        mixed in the order you arrange the files below.
+        Upload multiple PDF files and alternate their pages. Pages will be mixed
+        in the order you arrange the files below.
       </p>
 
       <div className="mb-4">
@@ -163,7 +159,7 @@ export const AlternateMergeTool = () => {
         <div className="flex items-center gap-2 p-3 bg-input rounded-md mb-4">
           <Spinner size="sm" />
           <span className="text-sm text-muted-foreground">
-            {loadingMessage || 'Loading PDFs...'}
+            {loadingMessage || "Loading PDFs..."}
           </span>
         </div>
       )}
@@ -243,4 +239,3 @@ export const AlternateMergeTool = () => {
     </div>
   );
 };
-

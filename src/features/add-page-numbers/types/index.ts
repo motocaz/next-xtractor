@@ -1,9 +1,15 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface PageNumbersOptions {
-  position: 'bottom-center' | 'bottom-left' | 'bottom-right' | 'top-center' | 'top-left' | 'top-right';
+  position:
+    | "bottom-center"
+    | "bottom-left"
+    | "bottom-right"
+    | "top-center"
+    | "top-left"
+    | "top-right";
   fontSize: number;
-  format: 'default' | 'page_x_of_y';
+  format: "default" | "page_x_of_y";
   textColor: string;
 }
 
@@ -30,4 +36,3 @@ export interface UseAddPageNumbersReturn {
   processPageNumbers: () => Promise<void>;
   reset: () => void;
 }
-

@@ -5,7 +5,7 @@ export interface AttachmentInfo {
   data: Uint8Array;
 }
 
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UseEditAttachmentsReturn {
   pdfFile: File | null;
@@ -31,29 +31,28 @@ export interface UseEditAttachmentsReturn {
 }
 
 export interface WorkerGetAttachmentsMessage {
-  command: 'get-attachments';
+  command: "get-attachments";
   fileBuffer: ArrayBuffer;
   fileName: string;
 }
 
 export interface WorkerEditAttachmentsMessage {
-  command: 'edit-attachments';
+  command: "edit-attachments";
   fileBuffer: ArrayBuffer;
   fileName: string;
   attachmentsToRemove: number[];
 }
 
 export interface WorkerSuccessResponse {
-  status: 'success';
+  status: "success";
   attachments?: AttachmentInfo[];
   modifiedPDF?: ArrayBuffer;
   fileName: string;
 }
 
 export interface WorkerErrorResponse {
-  status: 'error';
+  status: "error";
   message: string;
 }
 
 export type WorkerResponse = WorkerSuccessResponse | WorkerErrorResponse;
-

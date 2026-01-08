@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 export interface UseMultiPDFProcessorReturn {
   pdfFiles: File[];
@@ -30,7 +30,9 @@ export const useMultiPDFProcessor = (): UseMultiPDFProcessorReturn => {
     setPdfFiles((prev) => {
       const newFiles = [...prev];
       for (const file of files) {
-        if (!newFiles.some((f) => f.name === file.name && f.size === file.size)) {
+        if (
+          !newFiles.some((f) => f.name === file.name && f.size === file.size)
+        ) {
           newFiles.push(file);
         }
       }
@@ -69,4 +71,3 @@ export const useMultiPDFProcessor = (): UseMultiPDFProcessorReturn => {
     setSuccess,
   };
 };
-

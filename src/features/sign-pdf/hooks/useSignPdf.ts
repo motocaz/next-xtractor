@@ -53,20 +53,20 @@ export const useSignPdf = (): UseSignPdfReturn => {
   } | null>(null);
   const isRenderingRef = useRef<boolean>(false);
   const renderPageRef = useRef<((pageNum: number) => Promise<void>) | null>(
-    null
+    null,
   );
   const redrawSignaturesRef = useRef<((pageNum: number) => void) | null>(null);
   const hoverRenderFrameRef = useRef<number | null>(null);
   const prevPageRef = useRef<number>(1);
 
   const [savedSignatures, setSavedSignatures] = useState<HTMLImageElement[]>(
-    []
+    [],
   );
   const [placedSignatures, setPlacedSignatures] = useState<PlacedSignature[]>(
-    []
+    [],
   );
   const [activeSignature, setActiveSignature] = useState<SavedSignature | null>(
-    null
+    null,
   );
 
   const [interactionMode, setInteractionMode] =
@@ -93,14 +93,14 @@ export const useSignPdf = (): UseSignPdfReturn => {
         setError("Failed to load PDF for rendering.");
       }
     },
-    [loadPDFBase, setError]
+    [loadPDFBase, setError],
   );
 
   const drawSignatures = useCallback(
     (
       context: CanvasRenderingContext2D,
       snapshot: ImageData,
-      pageNum: number
+      pageNum: number,
     ) => {
       context.putImageData(snapshot, 0, 0);
 
@@ -142,13 +142,13 @@ export const useSignPdf = (): UseSignPdfReturn => {
                 handle.x - halfHandle,
                 handle.y - halfHandle,
                 handleSize,
-                handleSize
+                handleSize,
               );
             });
           }
         });
     },
-    [placedSignatures, hoveredSigId, draggedSigId]
+    [placedSignatures, hoveredSigId, draggedSigId],
   );
 
   const redrawSignatures = useCallback(
@@ -159,7 +159,7 @@ export const useSignPdf = (): UseSignPdfReturn => {
       context.putImageData(pageSnapshot, 0, 0);
       drawSignatures(context, pageSnapshot, pageNum);
     },
-    [pageSnapshot, drawSignatures]
+    [pageSnapshot, drawSignatures],
   );
 
   const renderPage = useCallback(
@@ -229,7 +229,7 @@ export const useSignPdf = (): UseSignPdfReturn => {
           0,
           0,
           canvas.width / dpr,
-          canvas.height / dpr
+          canvas.height / dpr,
         );
         setPageSnapshot(snapshot);
 
@@ -250,7 +250,7 @@ export const useSignPdf = (): UseSignPdfReturn => {
         setIsRendering(false);
       }
     },
-    [pdfJsDoc, scale, drawSignatures, setError]
+    [pdfJsDoc, scale, drawSignatures, setError],
   );
 
   const fitToWidth = useCallback(async () => {
@@ -284,7 +284,7 @@ export const useSignPdf = (): UseSignPdfReturn => {
       };
       img.src = imageDataUrl;
     },
-    [setError]
+    [setError],
   );
 
   const selectSignature = useCallback(
@@ -294,7 +294,7 @@ export const useSignPdf = (): UseSignPdfReturn => {
         setActiveSignature({ image: signature, index });
       }
     },
-    [savedSignatures]
+    [savedSignatures],
   );
 
   const placeSignature = useCallback(
@@ -328,7 +328,7 @@ export const useSignPdf = (): UseSignPdfReturn => {
       renderPage(currentPage);
       setActiveSignature(null);
     },
-    [activeSignature, currentPage, renderPage, setError]
+    [activeSignature, currentPage, renderPage, setError],
   );
 
   const removeLastSignature = useCallback(() => {
@@ -361,14 +361,14 @@ export const useSignPdf = (): UseSignPdfReturn => {
         pdfDoc,
         pdfJsDoc,
         placedSignatures,
-        scale
+        scale,
       );
       saveAndDownloadPDF(pdfBytes, pdfFile?.name);
       setSuccess("Signatures applied successfully!");
     } catch (err) {
       console.error("Error applying signatures:", err);
       setError(
-        err instanceof Error ? err.message : "Failed to apply signatures."
+        err instanceof Error ? err.message : "Failed to apply signatures.",
       );
     } finally {
       setIsProcessing(false);
@@ -469,8 +469,8 @@ export const useSignPdf = (): UseSignPdfReturn => {
       if (interactionMode !== "none") return;
 
       const rect = canvas.getBoundingClientRect();
-      const clientX = "touches" in e ? e.touches[0]?.clientX ?? 0 : e.clientX;
-      const clientY = "touches" in e ? e.touches[0]?.clientY ?? 0 : e.clientY;
+      const clientX = "touches" in e ? (e.touches[0]?.clientX ?? 0) : e.clientX;
+      const clientY = "touches" in e ? (e.touches[0]?.clientY ?? 0) : e.clientY;
       const pos = {
         x: clientX - rect.left,
         y: clientY - rect.top,
@@ -509,14 +509,14 @@ export const useSignPdf = (): UseSignPdfReturn => {
         });
       }
     },
-    [interactionMode, placedSignatures, currentPage, hoveredSigId]
+    [interactionMode, placedSignatures, currentPage, hoveredSigId],
   );
 
   const handleDragStart = useCallback(
     (e: MouseEvent | TouchEvent, canvas: HTMLCanvasElement) => {
       const rect = canvas.getBoundingClientRect();
-      const clientX = "touches" in e ? e.touches[0]?.clientX ?? 0 : e.clientX;
-      const clientY = "touches" in e ? e.touches[0]?.clientY ?? 0 : e.clientY;
+      const clientX = "touches" in e ? (e.touches[0]?.clientX ?? 0) : e.clientX;
+      const clientY = "touches" in e ? (e.touches[0]?.clientY ?? 0) : e.clientY;
       const pos = {
         x: clientX - rect.left,
         y: clientY - rect.top,
@@ -553,7 +553,7 @@ export const useSignPdf = (): UseSignPdfReturn => {
         placeSignature(pos.x, pos.y);
       }
     },
-    [placedSignatures, currentPage, activeSignature, placeSignature]
+    [placedSignatures, currentPage, activeSignature, placeSignature],
   );
 
   const handleDragMove = useCallback(
@@ -562,8 +562,8 @@ export const useSignPdf = (): UseSignPdfReturn => {
 
       e.preventDefault();
       const rect = canvas.getBoundingClientRect();
-      const clientX = "touches" in e ? e.touches[0]?.clientX ?? 0 : e.clientX;
-      const clientY = "touches" in e ? e.touches[0]?.clientY ?? 0 : e.clientY;
+      const clientX = "touches" in e ? (e.touches[0]?.clientX ?? 0) : e.clientX;
+      const clientY = "touches" in e ? (e.touches[0]?.clientY ?? 0) : e.clientY;
       const pos = {
         x: clientX - rect.left,
         y: clientY - rect.top,
@@ -619,7 +619,7 @@ export const useSignPdf = (): UseSignPdfReturn => {
       dragOffsetY,
       resizeHandle,
       currentPage,
-    ]
+    ],
   );
 
   const handleDragEnd = useCallback(() => {

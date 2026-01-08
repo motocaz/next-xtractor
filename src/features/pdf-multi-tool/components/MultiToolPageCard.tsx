@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   GripVertical,
   CopyPlus,
@@ -12,10 +12,10 @@ import {
   Scissors,
   CheckSquare,
   Square,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import type { MultiToolPageData } from '../types';
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import type { MultiToolPageData } from "../types";
 
 interface MultiToolPageCardProps {
   pageData: MultiToolPageData;
@@ -65,8 +65,8 @@ export const MultiToolPageCard = ({
       style={style}
       className={`relative cursor-move flex flex-col items-center gap-2 group bg-input rounded-lg border-2 p-2 transition-colors ${
         isSelected
-          ? 'border-primary ring-2 ring-primary'
-          : 'border-border hover:border-primary'
+          ? "border-primary ring-2 ring-primary"
+          : "border-border hover:border-primary"
       }`}
     >
       <div
@@ -86,7 +86,7 @@ export const MultiToolPageCard = ({
         }}
         onMouseDown={(e) => e.stopPropagation()}
         className="absolute top-2 left-2 z-10 p-1 rounded bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
-        aria-label={isSelected ? 'Deselect page' : 'Select page'}
+        aria-label={isSelected ? "Deselect page" : "Select page"}
       >
         {isSelected ? (
           <CheckSquare className="h-4 w-4 text-primary" />
@@ -113,7 +113,7 @@ export const MultiToolPageCard = ({
           className="absolute inset-0 flex items-center justify-center"
           style={{
             transform: `rotate(${pageData.visualRotation}deg)`,
-            transition: 'transform 0.2s ease',
+            transition: "transform 0.2s ease",
           }}
         >
           {pageData.thumbnailUrl ? (
@@ -137,7 +137,7 @@ export const MultiToolPageCard = ({
       </div>
 
       <p className="text-xs text-muted-foreground truncate w-full text-center">
-        {pageData.fileName || 'Blank Page'}
+        {pageData.fileName || "Blank Page"}
       </p>
 
       <div
@@ -148,7 +148,7 @@ export const MultiToolPageCard = ({
         onClick={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === "Enter" || e.key === " ") {
             e.stopPropagation();
           }
         }}
@@ -217,7 +217,7 @@ export const MultiToolPageCard = ({
           <Button
             type="button"
             size="icon"
-            variant={hasSplitMarker ? 'default' : 'ghost'}
+            variant={hasSplitMarker ? "default" : "ghost"}
             className="h-7 w-7"
             onClick={(e) => {
               e.stopPropagation();
@@ -240,7 +240,7 @@ export const MultiToolPageCard = ({
           }}
           disabled={!canDelete}
           aria-label="Delete page"
-          title={canDelete ? 'Delete Page' : 'Cannot delete the last page'}
+          title={canDelete ? "Delete Page" : "Cannot delete the last page"}
         >
           <XCircle className="h-3.5 w-3.5" />
         </Button>
@@ -248,4 +248,3 @@ export const MultiToolPageCard = ({
     </div>
   );
 };
-

@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UseDeletePagesReturn {
   pagesToDelete: string;
@@ -17,4 +17,3 @@ export interface UseDeletePagesReturn {
   deletePages: () => Promise<void>;
   reset: () => void;
 }
-

@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import type { PDFDocumentProxy, PageViewport } from 'pdfjs-dist';
-import type { PDFDocument } from 'pdf-lib';
-import { PDFDocument as PDFLibDocument } from 'pdf-lib';
-import { readFileAsArrayBuffer } from './file-utils';
-import { loadPDFWithPDFJSFromBuffer } from './pdfjs-loader';
-import UTIF from 'utif';
+import type { PDFDocumentProxy, PageViewport } from "pdfjs-dist";
+import type { PDFDocument } from "pdf-lib";
+import { PDFDocument as PDFLibDocument } from "pdf-lib";
+import { readFileAsArrayBuffer } from "./file-utils";
+import { loadPDFWithPDFJSFromBuffer } from "./pdfjs-loader";
+import UTIF from "utif";
 
 export const renderPageToCanvas = async (
   pdfJsDoc: PDFDocumentProxy,
   pageNum: number,
   canvas: HTMLCanvasElement,
-  scale: number = 2.5
+  scale: number = 2.5,
 ): Promise<void> => {
   const page = await pdfJsDoc.getPage(pageNum);
   const viewport = page.getViewport({ scale });
@@ -19,9 +19,9 @@ export const renderPageToCanvas = async (
   canvas.width = viewport.width;
   canvas.height = viewport.height;
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
   if (!ctx) {
-    throw new Error('Failed to get canvas context');
+    throw new Error("Failed to get canvas context");
   }
 
   await page.render({
@@ -34,15 +34,15 @@ export const renderPageToCanvas = async (
 export const renderPageAsImage = async (
   pdfJsDoc: PDFDocumentProxy,
   pageNum: number,
-  scale: number = 2.5
+  scale: number = 2.5,
 ): Promise<string> => {
   const page = await pdfJsDoc.getPage(pageNum);
   const viewport = page.getViewport({ scale });
 
-  const tempCanvas = document.createElement('canvas');
-  const tempCtx = tempCanvas.getContext('2d');
+  const tempCanvas = document.createElement("canvas");
+  const tempCtx = tempCanvas.getContext("2d");
   if (!tempCtx) {
-    throw new Error('Failed to get canvas context');
+    throw new Error("Failed to get canvas context");
   }
 
   tempCanvas.width = viewport.width;
@@ -54,13 +54,13 @@ export const renderPageAsImage = async (
     canvas: tempCanvas,
   }).promise;
 
-  return tempCanvas.toDataURL('image/png');
+  return tempCanvas.toDataURL("image/png");
 };
 
 export const renderPDFPageAsImage = async (
   file: File,
   pageNum: number,
-  scale: number = 2.5
+  scale: number = 2.5,
 ): Promise<string> => {
   const arrayBuffer = await file.arrayBuffer();
   const pdfJsDoc = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
@@ -68,90 +68,84 @@ export const renderPDFPageAsImage = async (
 };
 
 export const canvasToPngBytes = async (
-  canvas: HTMLCanvasElement
+  canvas: HTMLCanvasElement,
 ): Promise<Uint8Array> => {
   return new Promise<Uint8Array>((resolve, reject) => {
-    canvas.toBlob(
-      (blob) => {
-        if (!blob) {
-          reject(new Error('Failed to convert canvas to blob'));
-          return;
-        }
-        const reader = new FileReader();
-        reader.onload = () => {
-          resolve(new Uint8Array(reader.result as ArrayBuffer));
-        };
-        reader.onerror = () => {
-          reject(new Error('Failed to read blob'));
-        };
-        reader.readAsArrayBuffer(blob);
-      },
-      'image/png'
-    );
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        reject(new Error("Failed to convert canvas to blob"));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        resolve(new Uint8Array(reader.result as ArrayBuffer));
+      };
+      reader.onerror = () => {
+        reject(new Error("Failed to read blob"));
+      };
+      reader.readAsArrayBuffer(blob);
+    }, "image/png");
   });
 };
 
 export const canvasToJpgBlob = async (
   canvas: HTMLCanvasElement,
-  quality: number
+  quality: number,
 ): Promise<Blob> => {
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
       (blob) => {
         if (!blob) {
-          reject(new Error('Failed to convert canvas to JPG blob'));
+          reject(new Error("Failed to convert canvas to JPG blob"));
           return;
         }
         resolve(blob);
       },
-      'image/jpeg',
-      quality
+      "image/jpeg",
+      quality,
     );
   });
 };
 
 export const canvasToWebpBlob = async (
   canvas: HTMLCanvasElement,
-  quality: number
+  quality: number,
 ): Promise<Blob> => {
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
       (blob) => {
         if (!blob) {
-          reject(new Error('Failed to convert canvas to WebP blob'));
+          reject(new Error("Failed to convert canvas to WebP blob"));
           return;
         }
         resolve(blob);
       },
-      'image/webp',
-      quality
+      "image/webp",
+      quality,
     );
   });
 };
 
 export const canvasToPngBlob = async (
-  canvas: HTMLCanvasElement
+  canvas: HTMLCanvasElement,
 ): Promise<Blob> => {
   return new Promise<Blob>((resolve, reject) => {
-    canvas.toBlob(
-      (blob) => {
-        if (!blob) {
-          reject(new Error('Failed to convert canvas to PNG blob'));
-          return;
-        }
-        resolve(blob);
-      },
-      'image/png'
-    );
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        reject(new Error("Failed to convert canvas to PNG blob"));
+        return;
+      }
+      resolve(blob);
+    }, "image/png");
   });
 };
 
 export const canvasToTiffBlob = async (
-  canvas: HTMLCanvasElement
+  canvas: HTMLCanvasElement,
 ): Promise<Blob> => {
-  const context = canvas.getContext('2d');
+  const context = canvas.getContext("2d");
   if (!context) {
-    throw new Error('Failed to get canvas context');
+    throw new Error("Failed to get canvas context");
   }
 
   const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -159,16 +153,16 @@ export const canvasToTiffBlob = async (
   const tiffBuffer = UTIF.encodeImage(
     new Uint8Array(rgba),
     canvas.width,
-    canvas.height
+    canvas.height,
   );
 
-  return new Blob([tiffBuffer], { type: 'image/tiff' });
+  return new Blob([tiffBuffer], { type: "image/tiff" });
 };
 
 export const embedCanvasAsPage = async (
   canvas: HTMLCanvasElement,
   pdfDoc: PDFDocument,
-  viewport: PageViewport
+  viewport: PageViewport,
 ): Promise<void> => {
   const pngImageBytes = await canvasToPngBytes(canvas);
   const pngImage = await pdfDoc.embedPng(pngImageBytes);
@@ -185,7 +179,7 @@ export const processPDFPagesWithCanvas = async (
   file: File,
   scale: number,
   pixelProcessor: (imageData: ImageData) => void,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<Uint8Array> => {
   const arrayBuffer = await readFileAsArrayBuffer(file);
   const pdf = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
@@ -196,12 +190,12 @@ export const processPDFPagesWithCanvas = async (
     const page = await pdf.getPage(i);
     const viewport = page.getViewport({ scale });
 
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     canvas.width = viewport.width;
     canvas.height = viewport.height;
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext("2d");
     if (!context) {
-      throw new Error('Failed to get canvas context');
+      throw new Error("Failed to get canvas context");
     }
 
     await page.render({
@@ -220,4 +214,3 @@ export const processPDFPagesWithCanvas = async (
   const newPdfBytes = await newPdfDoc.save();
   return newPdfBytes;
 };
-

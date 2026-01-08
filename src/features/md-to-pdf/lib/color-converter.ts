@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 const labToRgb = (l: number, a: number, b: number): string => {
   const y = (l + 16) / 116;
@@ -72,98 +72,97 @@ const oklchToRgb = (l: number, c: number, h: number): string => {
 
 const parseColorFunction = (
   str: string,
-  functionName: string
+  functionName: string,
 ): number[] | null => {
-  const regex = new RegExp(
-    String.raw`${functionName}\(\s*([^)]+)\s*\)`,
-    'i'
-  );
+  const regex = new RegExp(String.raw`${functionName}\(\s*([^)]+)\s*\)`, "i");
   const match = regex.exec(str);
   if (!match) return null;
 
   const content = match[1].trim();
-  
-  const withoutAlpha = content.split('/')[0].trim();
+
+  const withoutAlpha = content.split("/")[0].trim();
   const rawParts = withoutAlpha.split(/[,\s]+/);
   const parts = rawParts.filter((p) => p.trim().length > 0);
-  const values = parts.map((v) => {
-    const trimmed = v.trim();
-    const parsed = Number.parseFloat(trimmed);
-    return parsed;
-  }).filter((v) => !Number.isNaN(v));
+  const values = parts
+    .map((v) => {
+      const trimmed = v.trim();
+      const parsed = Number.parseFloat(trimmed);
+      return parsed;
+    })
+    .filter((v) => !Number.isNaN(v));
 
   return values.length > 0 ? values : null;
 };
 
 export const convertMultipleColorValues = (colorValue: string): string => {
-  if (!colorValue || typeof colorValue !== 'string') {
+  if (!colorValue || typeof colorValue !== "string") {
     return colorValue;
   }
 
   const unsupportedColorRegex = /(lab|oklab|lch|oklch)\([^)]+\)/gi;
-  
+
   const result = colorValue.replace(unsupportedColorRegex, (match) => {
     const converted = convertUnsupportedColor(match);
     return converted;
   });
-  
+
   return result;
 };
 
 export const convertUnsupportedColor = (colorValue: string): string => {
-  if (!colorValue || typeof colorValue !== 'string') {
+  if (!colorValue || typeof colorValue !== "string") {
     return colorValue;
   }
 
   const trimmed = colorValue.trim();
 
-  if (trimmed.toLowerCase().startsWith('lab(')) {
-    const values = parseColorFunction(trimmed, 'lab');
+  if (trimmed.toLowerCase().startsWith("lab(")) {
+    const values = parseColorFunction(trimmed, "lab");
     if (values && values.length >= 3) {
       try {
         const result = labToRgb(values[0], values[1], values[2]);
         return result;
       } catch (e) {
-        console.warn('Failed to convert lab() color:', trimmed, e);
-        return 'rgb(0, 0, 0)';
+        console.warn("Failed to convert lab() color:", trimmed, e);
+        return "rgb(0, 0, 0)";
       }
     } else {
-      return 'rgb(0, 0, 0)'; 
+      return "rgb(0, 0, 0)";
     }
   }
 
-  if (trimmed.toLowerCase().startsWith('lch(')) {
-    const values = parseColorFunction(trimmed, 'lch');
+  if (trimmed.toLowerCase().startsWith("lch(")) {
+    const values = parseColorFunction(trimmed, "lch");
     if (values && values.length >= 3) {
       try {
         return lchToRgb(values[0], values[1], values[2]);
       } catch (e) {
-        console.warn('Failed to convert lch() color:', trimmed, e);
-        return 'rgb(0, 0, 0)';
+        console.warn("Failed to convert lch() color:", trimmed, e);
+        return "rgb(0, 0, 0)";
       }
     }
   }
 
-  if (trimmed.toLowerCase().startsWith('oklab(')) {
-    const values = parseColorFunction(trimmed, 'oklab');
+  if (trimmed.toLowerCase().startsWith("oklab(")) {
+    const values = parseColorFunction(trimmed, "oklab");
     if (values && values.length >= 3) {
       try {
         return oklabToRgb(values[0], values[1], values[2]);
       } catch (e) {
-        console.warn('Failed to convert oklab() color:', trimmed, e);
-        return 'rgb(0, 0, 0)';
+        console.warn("Failed to convert oklab() color:", trimmed, e);
+        return "rgb(0, 0, 0)";
       }
     }
   }
 
-  if (trimmed.toLowerCase().startsWith('oklch(')) {
-    const values = parseColorFunction(trimmed, 'oklch');
+  if (trimmed.toLowerCase().startsWith("oklch(")) {
+    const values = parseColorFunction(trimmed, "oklch");
     if (values && values.length >= 3) {
       try {
         return oklchToRgb(values[0], values[1], values[2]);
       } catch (e) {
-        console.warn('Failed to convert oklch() color:', trimmed, e);
-        return 'rgb(0, 0, 0)';
+        console.warn("Failed to convert oklch() color:", trimmed, e);
+        return "rgb(0, 0, 0)";
       }
     }
   }
@@ -172,7 +171,7 @@ export const convertUnsupportedColor = (colorValue: string): string => {
 };
 
 export const processCSS = (css: string): string => {
-  if (!css || typeof css !== 'string') {
+  if (!css || typeof css !== "string") {
     return css;
   }
 
@@ -186,30 +185,30 @@ export const processCSS = (css: string): string => {
 };
 
 export const processInlineStyle = (styleValue: string): string => {
-  if (!styleValue || typeof styleValue !== 'string') {
+  if (!styleValue || typeof styleValue !== "string") {
     return styleValue;
   }
 
-  const properties = styleValue.split(';').map((prop) => prop.trim());
+  const properties = styleValue.split(";").map((prop) => prop.trim());
 
   const processed = properties.map((prop) => {
-    if (!prop) return '';
-    const colonIndex = prop.indexOf(':');
+    if (!prop) return "";
+    const colonIndex = prop.indexOf(":");
     if (colonIndex === -1) return prop;
 
     const property = prop.substring(0, colonIndex).trim();
     const value = prop.substring(colonIndex + 1).trim();
 
     const colorProperties = [
-      'color',
-      'background-color',
-      'border-color',
-      'outline-color',
-      'text-decoration-color',
-      'column-rule-color',
-      'caret-color',
-      'fill',
-      'stroke',
+      "color",
+      "background-color",
+      "border-color",
+      "outline-color",
+      "text-decoration-color",
+      "column-rule-color",
+      "caret-color",
+      "fill",
+      "stroke",
     ];
 
     if (colorProperties.includes(property.toLowerCase())) {
@@ -220,6 +219,5 @@ export const processInlineStyle = (styleValue: string): string => {
     return prop;
   });
 
-  return processed.filter(Boolean).join('; ');
+  return processed.filter(Boolean).join("; ");
 };
-

@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useImageToPdf } from '../hooks/useImageToPdf';
-import { FileUploader } from '@/components/FileUploader';
-import { Card, CardContent } from '@/components/ui/card';
-import { Slider } from '@/components/ui/slider';
-import { CheckCircle2, ArrowLeft, X, GripVertical } from 'lucide-react';
-import { formatBytes } from '@/lib/pdf/file-utils';
-import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
+import Link from "next/link";
+import { useImageToPdf } from "../hooks/useImageToPdf";
+import { FileUploader } from "@/components/FileUploader";
+import { Card, CardContent } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
+import { CheckCircle2, ArrowLeft, X, GripVertical } from "lucide-react";
+import { formatBytes } from "@/lib/pdf/file-utils";
+import { FileUploadStatusMessages } from "@/components/common/FileUploadStatusMessages";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
 import {
   DndContext,
   closestCenter,
@@ -18,16 +18,16 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
   useSortable,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import type { ImageFileInfo } from '../types';
-import { useMemo } from 'react';
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import type { ImageFileInfo } from "../types";
+import { useMemo } from "react";
 
 interface SortableImageItemProps {
   imageInfo: ImageFileInfo;
@@ -75,7 +75,7 @@ const SortableImageItem = ({ imageInfo, onRemove }: SortableImageItemProps) => {
               </span>
               <span className="text-xs text-muted-foreground">•</span>
               <span className="text-xs text-muted-foreground">
-                {imageInfo.type || 'Unknown type'}
+                {imageInfo.type || "Unknown type"}
               </span>
             </div>
           </div>
@@ -115,7 +115,7 @@ export const ImageToPdfTool = () => {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -145,9 +145,7 @@ export const ImageToPdfTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        Image to PDF
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">Image to PDF</h2>
       <p className="mb-6 text-muted-foreground">
         Convert JPG, PNG, WebP, SVG, BMP, HEIC, and TIFF images to PDF. Support
         for single or mixed image types with quality control.
@@ -200,8 +198,8 @@ export const ImageToPdfTool = () => {
             aria-label="JPEG Quality for mixed image types"
           />
           <p className="text-xs text-muted-foreground mt-2">
-            Adjust quality for mixed image type conversions. Lower values
-            reduce file size but may decrease image quality.
+            Adjust quality for mixed image type conversions. Lower values reduce
+            file size but may decrease image quality.
           </p>
         </div>
       )}
@@ -256,4 +254,3 @@ export const ImageToPdfTool = () => {
     </div>
   );
 };
-

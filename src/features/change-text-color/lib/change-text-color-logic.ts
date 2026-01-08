@@ -1,8 +1,11 @@
-'use client';
+"use client";
 
-import { readFileAsArrayBuffer, hexToRgb } from '@/lib/pdf/file-utils';
-import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
-import { renderPageToCanvas, processPDFPagesWithCanvas } from '@/lib/pdf/canvas-utils';
+import { readFileAsArrayBuffer, hexToRgb } from "@/lib/pdf/file-utils";
+import { loadPDFWithPDFJSFromBuffer } from "@/lib/pdf/pdfjs-loader";
+import {
+  renderPageToCanvas,
+  processPDFPagesWithCanvas,
+} from "@/lib/pdf/canvas-utils";
 
 const DARKNESS_THRESHOLD = 120;
 const PREVIEW_SCALE = 0.8;
@@ -12,7 +15,7 @@ export const updateTextColorPreview = async (
   file: File,
   colorHex: string,
   originalCanvas: HTMLCanvasElement,
-  previewCanvas: HTMLCanvasElement
+  previewCanvas: HTMLCanvasElement,
 ): Promise<void> => {
   try {
     const arrayBuffer = await readFileAsArrayBuffer(file);
@@ -22,14 +25,14 @@ export const updateTextColorPreview = async (
 
     await renderPageToCanvas(pdf, 1, previewCanvas, PREVIEW_SCALE);
 
-    const previewContext = previewCanvas.getContext('2d');
+    const previewContext = previewCanvas.getContext("2d");
     if (!previewContext) return;
 
     const imageData = previewContext.getImageData(
       0,
       0,
       previewCanvas.width,
-      previewCanvas.height
+      previewCanvas.height,
     );
     const data = imageData.data;
     const { r, g, b } = hexToRgb(colorHex);
@@ -47,7 +50,7 @@ export const updateTextColorPreview = async (
     }
     previewContext.putImageData(imageData, 0, 0);
   } catch (error) {
-    console.error('Error updating preview:', error);
+    console.error("Error updating preview:", error);
     throw error;
   }
 };
@@ -55,7 +58,7 @@ export const updateTextColorPreview = async (
 export const changeTextColor = async (
   file: File,
   colorHex: string,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<Blob> => {
   const { r, g, b } = hexToRgb(colorHex);
   const pdfBytes = await processPDFPagesWithCanvas(
@@ -75,8 +78,7 @@ export const changeTextColor = async (
         }
       }
     },
-    onProgress
+    onProgress,
   );
-  return new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' });
+  return new Blob([new Uint8Array(pdfBytes)], { type: "application/pdf" });
 };
-

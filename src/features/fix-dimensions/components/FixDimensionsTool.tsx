@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useFixDimensions } from '../hooks/useFixDimensions';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
+import Link from "next/link";
+import { useFixDimensions } from "../hooks/useFixDimensions";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { ArrowLeft } from 'lucide-react';
+} from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ArrowLeft } from "lucide-react";
 
 export const FixDimensionsTool = () => {
   const {
@@ -50,7 +50,7 @@ export const FixDimensionsTool = () => {
   } = useFixDimensions();
 
   const showOptions = pdfDoc !== null && !isLoadingPDF && !pdfError;
-  const showCustomSize = targetSize === 'Custom';
+  const showCustomSize = targetSize === "Custom";
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-8">
@@ -110,7 +110,7 @@ export const FixDimensionsTool = () => {
               <Select
                 value={orientation}
                 onValueChange={(value) =>
-                  setOrientation(value as 'portrait' | 'landscape')
+                  setOrientation(value as "portrait" | "landscape")
                 }
                 disabled={isProcessing}
               >
@@ -166,7 +166,7 @@ export const FixDimensionsTool = () => {
                     <Select
                       value={customUnits}
                       onValueChange={(value) =>
-                        setCustomUnits(value as 'in' | 'mm')
+                        setCustomUnits(value as "in" | "mm")
                       }
                       disabled={isProcessing}
                     >
@@ -188,7 +188,7 @@ export const FixDimensionsTool = () => {
             <Label>Content Scaling Method</Label>
             <RadioGroup
               value={scalingMode}
-              onValueChange={(value) => setScalingMode(value as 'fit' | 'fill')}
+              onValueChange={(value) => setScalingMode(value as "fit" | "fill")}
               disabled={isProcessing}
               className="grid grid-cols-1 sm:grid-cols-2 gap-4"
             >
@@ -258,4 +258,3 @@ export const FixDimensionsTool = () => {
     </div>
   );
 };
-

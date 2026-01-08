@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface MultiToolPageData {
   id: string;
@@ -9,9 +9,9 @@ export interface MultiToolPageData {
   originalPageIndex: number;
   rotation: number;
   visualRotation: number;
-  pdfDoc: PDFDocument; 
-  fileName: string; 
-  thumbnailUrl?: string; 
+  pdfDoc: PDFDocument;
+  fileName: string;
+  thumbnailUrl?: string;
   isBlankPage: boolean;
 }
 
@@ -77,4 +77,3 @@ export interface UseMultiToolReturn {
 
   reset: () => void;
 }
-

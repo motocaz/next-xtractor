@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UsePdfToTiffReturn {
   pdfFile: File | null;
@@ -16,4 +16,3 @@ export interface UsePdfToTiffReturn {
   processPdfToTiff: () => Promise<void>;
   reset: () => void;
 }
-

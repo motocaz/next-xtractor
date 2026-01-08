@@ -15,7 +15,7 @@ export interface ChangePermissionsOptions {
   permissions: PDFPermissions;
 }
 
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UseChangePermissionsReturn {
   currentPassword: string;
@@ -40,4 +40,3 @@ export interface UseChangePermissionsReturn {
   processPermissions: () => Promise<void>;
   reset: () => void;
 }
-

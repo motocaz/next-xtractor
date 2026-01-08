@@ -1,4 +1,4 @@
-import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
+import type { PDFFileInfo } from "@/hooks/useMultiPDFLoader";
 
 export interface UseReversePagesReturn {
   pdfFiles: PDFFileInfo[];
@@ -16,4 +16,3 @@ export interface UseReversePagesReturn {
   reversePages: () => Promise<void>;
   reset: () => void;
 }
-

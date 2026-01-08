@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePdfToZip } from '../hooks/usePdfToZip';
-import { FileUploader } from '@/components/FileUploader';
-import { ArrowLeft } from 'lucide-react';
-import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { FileListSection } from '@/components/common/FileListSection';
+import Link from "next/link";
+import { usePdfToZip } from "../hooks/usePdfToZip";
+import { FileUploader } from "@/components/FileUploader";
+import { ArrowLeft } from "lucide-react";
+import { FileUploadStatusMessages } from "@/components/common/FileUploadStatusMessages";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { FileListSection } from "@/components/common/FileListSection";
 
 export const PdfToZipTool = () => {
   const {
@@ -34,9 +34,7 @@ export const PdfToZipTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        PDF to ZIP
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">PDF to ZIP</h2>
       <p className="mb-6 text-muted-foreground">
         Combine multiple PDF files into a single ZIP archive.
       </p>
@@ -91,4 +89,3 @@ export const PdfToZipTool = () => {
     </div>
   );
 };
-

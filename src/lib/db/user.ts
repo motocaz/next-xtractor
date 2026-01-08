@@ -1,5 +1,5 @@
-import prisma from '@/lib/prisma';
-import type { User as ClerkUser } from '@clerk/nextjs/server';
+import prisma from "@/lib/prisma";
+import type { User as ClerkUser } from "@clerk/nextjs/server";
 
 export interface CreateUserData {
   clerkId: string;
@@ -23,14 +23,14 @@ export const getUserByClerkId = async (clerkId: string) => {
       subscriptions: {
         where: {
           status: {
-            in: ['ACTIVE', 'TRIALING'],
+            in: ["ACTIVE", "TRIALING"],
           },
           currentPeriodEnd: {
             gte: new Date(),
           },
         },
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
         take: 1,
       },
@@ -40,7 +40,7 @@ export const getUserByClerkId = async (clerkId: string) => {
 
 export const createUserFromClerk = async (clerkUser: ClerkUser | null) => {
   if (!clerkUser) {
-    throw new Error('Clerk user is required');
+    throw new Error("Clerk user is required");
   }
   const userData: CreateUserData = {
     clerkId: clerkUser.id,
@@ -51,7 +51,7 @@ export const createUserFromClerk = async (clerkUser: ClerkUser | null) => {
   };
 
   if (!userData.email) {
-    throw new Error('User email is required');
+    throw new Error("User email is required");
   }
 
   return prisma.user.create({
@@ -61,7 +61,7 @@ export const createUserFromClerk = async (clerkUser: ClerkUser | null) => {
 
 export const updateUserFromClerk = async (
   clerkId: string,
-  data: UpdateUserData
+  data: UpdateUserData,
 ) => {
   return prisma.user.update({
     where: { clerkId },
@@ -80,16 +80,15 @@ export const getUserById = async (userId: string) => {
     include: {
       subscriptions: {
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
       },
       billingHistory: {
         orderBy: {
-          billingDate: 'desc',
+          billingDate: "desc",
         },
         take: 10,
       },
     },
   });
 };
-

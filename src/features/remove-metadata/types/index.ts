@@ -4,11 +4,10 @@ export interface UseRemoveMetadataReturn {
   error: string | null;
   success: string | null;
   pdfFile: File | null;
-  pdfDoc: import('pdf-lib').PDFDocument | null;
+  pdfDoc: import("pdf-lib").PDFDocument | null;
   isLoadingPDF: boolean;
   pdfError: string | null;
   loadPDF: (file: File) => Promise<void>;
   removeMetadata: () => Promise<void>;
   reset: () => void;
 }
-

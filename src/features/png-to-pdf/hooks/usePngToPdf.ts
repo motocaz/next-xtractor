@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { pngToPdf } from '../lib/png-to-pdf-logic';
-import { handleImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
-import type { PngFileInfo, UsePngToPdfReturn } from '../types';
+import { useState, useCallback } from "react";
+import { pngToPdf } from "../lib/png-to-pdf-logic";
+import { handleImageToPdfResult } from "@/lib/pdf/image-to-pdf-utils";
+import type { PngFileInfo, UsePngToPdfReturn } from "../types";
 
 export const usePngToPdf = (): UsePngToPdfReturn => {
   const [pngFiles, setPngFiles] = useState<PngFileInfo[]>([]);
@@ -16,14 +16,14 @@ export const usePngToPdf = (): UsePngToPdfReturn => {
 
   const loadPngFiles = useCallback(async (files: File[]) => {
     if (!files || files.length === 0) {
-      setError('Please select at least one PNG file.');
+      setError("Please select at least one PNG file.");
       return;
     }
 
     setIsLoading(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Validating PNG files...');
+    setLoadingMessage("Validating PNG files...");
 
     try {
       const validFiles: PngFileInfo[] = [];
@@ -31,8 +31,7 @@ export const usePngToPdf = (): UsePngToPdfReturn => {
 
       for (const file of files) {
         const isPng =
-          file.type === 'image/png' ||
-          file.name.toLowerCase().endsWith('.png');
+          file.type === "image/png" || file.name.toLowerCase().endsWith(".png");
 
         if (!isPng) {
           invalidFiles.push(file.name);
@@ -50,12 +49,14 @@ export const usePngToPdf = (): UsePngToPdfReturn => {
 
       if (invalidFiles.length > 0) {
         setError(
-          `The following files are not valid PNG images: ${invalidFiles.join(', ')}`
+          `The following files are not valid PNG images: ${invalidFiles.join(", ")}`,
         );
       }
 
       if (validFiles.length === 0) {
-        setError('No valid PNG files were found. Please select PNG image files.');
+        setError(
+          "No valid PNG files were found. Please select PNG image files.",
+        );
       } else {
         setPngFiles((prev) => [...prev, ...validFiles]);
         if (validFiles.length > 0 && invalidFiles.length === 0) {
@@ -63,11 +64,11 @@ export const usePngToPdf = (): UsePngToPdfReturn => {
         }
       }
     } catch (err) {
-      console.error('Error loading PNG files:', err);
+      console.error("Error loading PNG files:", err);
       setError(
         err instanceof Error
           ? `Failed to load PNG files: ${err.message}`
-          : 'Failed to load PNG files. Please check your files.'
+          : "Failed to load PNG files. Please check your files.",
       );
     } finally {
       setIsLoading(false);
@@ -83,7 +84,7 @@ export const usePngToPdf = (): UsePngToPdfReturn => {
 
   const processPngToPdf = useCallback(async () => {
     if (pngFiles.length === 0) {
-      setError('Please upload at least one PNG file.');
+      setError("Please upload at least one PNG file.");
       return;
     }
 
@@ -91,7 +92,7 @@ export const usePngToPdf = (): UsePngToPdfReturn => {
     setError(null);
     setSuccess(null);
     setFailedFiles([]);
-    setLoadingMessage('Converting PNG to PDF...');
+    setLoadingMessage("Converting PNG to PDF...");
 
     try {
       const files = pngFiles.map((fileInfo) => fileInfo.file);
@@ -99,7 +100,7 @@ export const usePngToPdf = (): UsePngToPdfReturn => {
 
       await handleImageToPdfResult({
         result,
-        firstFileName: pngFiles[0]?.fileName || 'converted',
+        firstFileName: pngFiles[0]?.fileName || "converted",
         extensionPattern: /\.(png|PNG)$/i,
         stateSetters: {
           setFailedFiles,
@@ -107,11 +108,11 @@ export const usePngToPdf = (): UsePngToPdfReturn => {
         },
       });
     } catch (err) {
-      console.error('PNG to PDF conversion error:', err);
+      console.error("PNG to PDF conversion error:", err);
       setError(
         err instanceof Error
           ? `An error occurred while converting: ${err.message}`
-          : 'An error occurred while converting PNG to PDF. One of the files may be invalid.'
+          : "An error occurred while converting PNG to PDF. One of the files may be invalid.",
       );
     } finally {
       setIsProcessing(false);
@@ -143,4 +144,3 @@ export const usePngToPdf = (): UsePngToPdfReturn => {
     reset,
   };
 };
-

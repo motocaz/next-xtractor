@@ -11,18 +11,18 @@ export interface PdfFileData {
 }
 
 export interface JsonToPdfMessage {
-  command: 'convert';
+  command: "convert";
   fileBuffers: ArrayBuffer[];
   fileNames: string[];
 }
 
 export interface JsonToPdfSuccessResponse {
-  status: 'success';
+  status: "success";
   pdfFiles: PdfFileData[];
 }
 
 export interface JsonToPdfErrorResponse {
-  status: 'error';
+  status: "error";
   message: string;
 }
 
@@ -42,4 +42,3 @@ export interface UseJsonToPdfReturn {
   processJsonToPdf: () => Promise<void>;
   reset: () => void;
 }
-

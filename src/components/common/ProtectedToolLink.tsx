@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs';
-import type { ReactNode } from 'react';
+import Link from "next/link";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import type { ReactNode } from "react";
 
 interface ProtectedToolLinkProps {
   href: string;
@@ -30,4 +30,3 @@ export const ProtectedToolLink = ({
     </>
   );
 };
-

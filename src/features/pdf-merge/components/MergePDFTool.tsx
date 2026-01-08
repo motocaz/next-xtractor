@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useMergePDF } from '../hooks/useMergePDF';
-import { FileUploader } from '@/components/FileUploader';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { FileModePanel } from './FileModePanel';
-import { PageModePanel } from './PageModePanel';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Spinner } from '@/components/ui/spinner';
-import { ArrowLeft } from 'lucide-react';
+import Link from "next/link";
+import { useMergePDF } from "../hooks/useMergePDF";
+import { FileUploader } from "@/components/FileUploader";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { FileModePanel } from "./FileModePanel";
+import { PageModePanel } from "./PageModePanel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Spinner } from "@/components/ui/spinner";
+import { ArrowLeft } from "lucide-react";
 
 export const MergePDFTool = () => {
   const {
@@ -35,7 +35,11 @@ export const MergePDFTool = () => {
     reset,
   } = useMergePDF();
 
-  const canProcess = pdfFiles.length > 0 && !isProcessing && !isLoading && !isRenderingThumbnails;
+  const canProcess =
+    pdfFiles.length > 0 &&
+    !isProcessing &&
+    !isLoading &&
+    !isRenderingThumbnails;
 
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-8">
@@ -49,7 +53,9 @@ export const MergePDFTool = () => {
 
       <h2 className="text-2xl font-bold text-foreground mb-4">Merge PDF</h2>
       <p className="mb-6 text-muted-foreground">
-        Combine multiple PDFs into one file. Choose between file mode (merge entire PDFs or specific page ranges) or page mode (drag and drop individual pages).
+        Combine multiple PDFs into one file. Choose between file mode (merge
+        entire PDFs or specific page ranges) or page mode (drag and drop
+        individual pages).
       </p>
 
       <div className="mb-4">
@@ -69,7 +75,7 @@ export const MergePDFTool = () => {
         <div className="flex items-center gap-2 p-3 bg-input rounded-md mb-4">
           <Spinner size="sm" />
           <span className="text-sm text-muted-foreground">
-            {loadingMessage || 'Loading PDFs...'}
+            {loadingMessage || "Loading PDFs..."}
           </span>
         </div>
       )}
@@ -80,7 +86,7 @@ export const MergePDFTool = () => {
         <div className="mt-6">
           <Tabs
             value={activeMode}
-            onValueChange={(value) => setActiveMode(value as 'file' | 'page')}
+            onValueChange={(value) => setActiveMode(value as "file" | "page")}
             className="w-full"
           >
             <TabsList className="grid w-full grid-cols-2">
@@ -135,4 +141,3 @@ export const MergePDFTool = () => {
     </div>
   );
 };
-

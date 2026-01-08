@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useMdToPdf } from '../hooks/useMdToPdf';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
+import Link from "next/link";
+import { useMdToPdf } from "../hooks/useMdToPdf";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { ArrowLeft } from 'lucide-react';
+} from "@/components/ui/select";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { ArrowLeft } from "lucide-react";
 
 export const MdToPdfTool = () => {
   const {
@@ -50,7 +50,7 @@ export const MdToPdfTool = () => {
       </h2>
       <p className="mb-6 text-muted-foreground">
         Write in Markdown, select your formatting options, and get a
-        high-quality, multi-page PDF.{' '}
+        high-quality, multi-page PDF.{" "}
         <strong className="text-foreground">
           Note: Images linked from the web (e.g., https://...) require an
           internet connection to be rendered.
@@ -62,7 +62,7 @@ export const MdToPdfTool = () => {
           <Label htmlFor="page-format">Page Format</Label>
           <Select
             value={pageFormat}
-            onValueChange={(value) => setPageFormat(value as 'a4' | 'letter')}
+            onValueChange={(value) => setPageFormat(value as "a4" | "letter")}
             disabled={isProcessing}
           >
             <SelectTrigger id="page-format" className="w-full">
@@ -80,7 +80,7 @@ export const MdToPdfTool = () => {
           <Select
             value={orientation}
             onValueChange={(value) =>
-              setOrientation(value as 'portrait' | 'landscape')
+              setOrientation(value as "portrait" | "landscape")
             }
             disabled={isProcessing}
           >
@@ -99,7 +99,7 @@ export const MdToPdfTool = () => {
           <Select
             value={marginSize}
             onValueChange={(value) =>
-              setMarginSize(value as 'normal' | 'narrow' | 'wide')
+              setMarginSize(value as "normal" | "narrow" | "wide")
             }
             disabled={isProcessing}
           >
@@ -115,7 +115,7 @@ export const MdToPdfTool = () => {
         </div>
       </div>
 
-      <div className="mb-6" style={{ height: '50vh' }}>
+      <div className="mb-6" style={{ height: "50vh" }}>
         <Label htmlFor="md-input">Markdown Editor</Label>
         <Textarea
           id="md-input"
@@ -149,4 +149,3 @@ export const MdToPdfTool = () => {
     </div>
   );
 };
-

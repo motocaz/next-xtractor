@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 
 export interface ProcessButtonProps {
   onClick: () => void;
@@ -29,7 +29,7 @@ export const ProcessButton = ({
       {isProcessing ? (
         <span className="flex items-center gap-2">
           <Spinner size="sm" />
-          {loadingMessage || 'Processing...'}
+          {loadingMessage || "Processing..."}
         </span>
       ) : (
         children
@@ -37,4 +37,3 @@ export const ProcessButton = ({
     </Button>
   );
 };
-

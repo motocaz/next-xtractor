@@ -4,7 +4,8 @@ import { cn } from "@/lib/utils";
 import { type VariantProps } from "class-variance-authority";
 
 export interface PillProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
+  extends
+    React.HTMLAttributes<HTMLSpanElement>,
     VariantProps<typeof badgeVariants> {}
 
 function Pill({ className, variant = "secondary", ...props }: PillProps) {
@@ -14,7 +15,7 @@ function Pill({ className, variant = "secondary", ...props }: PillProps) {
         "bg-muted text-muted-foreground",
         "px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm",
         "font-medium",
-        className
+        className,
       )}
       variant={variant}
       {...props}
@@ -23,4 +24,3 @@ function Pill({ className, variant = "secondary", ...props }: PillProps) {
 }
 
 export { Pill };
-

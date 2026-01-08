@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   DndContext,
@@ -8,14 +8,14 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   SortableContext,
   sortableKeyboardCoordinates,
   rectSortingStrategy,
-} from '@dnd-kit/sortable';
-import { SortablePageThumbnail } from './SortablePageThumbnail';
-import type { MergePageThumbnailData } from '../types';
+} from "@dnd-kit/sortable";
+import { SortablePageThumbnail } from "./SortablePageThumbnail";
+import type { MergePageThumbnailData } from "../types";
 
 interface PageModePanelProps {
   pageThumbnails: MergePageThumbnailData[];
@@ -34,7 +34,7 @@ export const PageModePanel = ({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -104,4 +104,3 @@ export const PageModePanel = ({
     </div>
   );
 };
-

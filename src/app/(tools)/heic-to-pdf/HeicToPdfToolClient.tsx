@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const HeicToPdfTool = dynamic(
   () =>
-    import('@/features/heic-to-pdf').then((mod) => ({
+    import("@/features/heic-to-pdf").then((mod) => ({
       default: mod.HeicToPdfTool,
     })),
   {
@@ -16,8 +16,7 @@ const HeicToPdfTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default HeicToPdfTool;
-

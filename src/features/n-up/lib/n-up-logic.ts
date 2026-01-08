@@ -1,7 +1,7 @@
-import { PDFDocument as PDFLibDocument, rgb, PageSizes } from 'pdf-lib';
-import type { PDFDocument } from 'pdf-lib';
-import { hexToRgb } from '@/lib/pdf/file-utils';
-import type { NUpOptions, GridDimensions } from '../types';
+import { PDFDocument as PDFLibDocument, rgb, PageSizes } from "pdf-lib";
+import type { PDFDocument } from "pdf-lib";
+import { hexToRgb } from "@/lib/pdf/file-utils";
+import type { NUpOptions, GridDimensions } from "../types";
 
 const GRID_DIMENSIONS: Record<number, GridDimensions> = {
   2: [2, 1],
@@ -12,11 +12,18 @@ const GRID_DIMENSIONS: Record<number, GridDimensions> = {
 
 export const createNUpPDF = async (
   pdfDoc: PDFDocument,
-  options: NUpOptions
+  options: NUpOptions,
 ): Promise<PDFDocument> => {
   const newDoc = await PDFLibDocument.create();
   const sourcePages = pdfDoc.getPages();
-  const { pagesPerSheet, pageSize, orientation, useMargins, addBorder, borderColor } = options;
+  const {
+    pagesPerSheet,
+    pageSize,
+    orientation,
+    useMargins,
+    addBorder,
+    borderColor,
+  } = options;
 
   const gridDims = GRID_DIMENSIONS[pagesPerSheet];
   if (!gridDims) {
@@ -26,13 +33,14 @@ export const createNUpPDF = async (
   let [pageWidth, pageHeight] = PageSizes[pageSize];
 
   let finalOrientation = orientation;
-  if (orientation === 'auto') {
+  if (orientation === "auto") {
     const firstPage = sourcePages[0];
     const isSourceLandscape = firstPage.getWidth() > firstPage.getHeight();
-    finalOrientation = isSourceLandscape && gridDims[0] > gridDims[1] ? 'landscape' : 'portrait';
+    finalOrientation =
+      isSourceLandscape && gridDims[0] > gridDims[1] ? "landscape" : "portrait";
   }
 
-  if (finalOrientation === 'landscape' && pageWidth < pageHeight) {
+  if (finalOrientation === "landscape" && pageWidth < pageHeight) {
     [pageWidth, pageHeight] = [pageHeight, pageWidth];
   }
 
@@ -49,13 +57,17 @@ export const createNUpPDF = async (
     const outputPage = newDoc.addPage([pageWidth, pageHeight]);
 
     const cellWidth = (usableWidth - gutter * (gridDims[0] - 1)) / gridDims[0];
-    const cellHeight = (usableHeight - gutter * (gridDims[1] - 1)) / gridDims[1];
+    const cellHeight =
+      (usableHeight - gutter * (gridDims[1] - 1)) / gridDims[1];
 
     for (let j = 0; j < chunk.length; j++) {
       const sourcePage = chunk[j];
       const embeddedPage = await newDoc.embedPage(sourcePage);
 
-      const scale = Math.min(cellWidth / embeddedPage.width, cellHeight / embeddedPage.height);
+      const scale = Math.min(
+        cellWidth / embeddedPage.width,
+        cellHeight / embeddedPage.height,
+      );
       const scaledWidth = embeddedPage.width * scale;
       const scaledHeight = embeddedPage.height * scale;
 
@@ -80,7 +92,11 @@ export const createNUpPDF = async (
           y,
           width: scaledWidth,
           height: scaledHeight,
-          borderColor: rgb(borderColorRgb.r, borderColorRgb.g, borderColorRgb.b),
+          borderColor: rgb(
+            borderColorRgb.r,
+            borderColorRgb.g,
+            borderColorRgb.b,
+          ),
           borderWidth: 1,
         });
       }
@@ -89,4 +105,3 @@ export const createNUpPDF = async (
 
   return newDoc;
 };
-

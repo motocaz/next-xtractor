@@ -6,12 +6,12 @@ import type { PDFDocumentProxy } from "pdfjs-dist";
 if (globalThis.window !== undefined) {
   pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
     "pdfjs-dist/build/pdf.worker.min.mjs",
-    import.meta.url
+    import.meta.url,
   ).toString();
 }
 
 export const loadPDFWithPDFJS = async (
-  file: File
+  file: File,
 ): Promise<PDFDocumentProxy> => {
   const arrayBuffer = await file.arrayBuffer();
   const loadingTask = pdfjsLib.getDocument({
@@ -21,7 +21,7 @@ export const loadPDFWithPDFJS = async (
 };
 
 export const loadPDFWithPDFJSFromBuffer = async (
-  arrayBuffer: ArrayBuffer
+  arrayBuffer: ArrayBuffer,
 ): Promise<PDFDocumentProxy> => {
   const loadingTask = pdfjsLib.getDocument({
     data: new Uint8Array(arrayBuffer),

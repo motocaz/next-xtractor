@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useRef } from 'react';
-import { PDFDocument } from 'pdf-lib';
-import { useMultiPDFLoader } from '@/hooks/useMultiPDFLoader';
-import { useMultiToolHistory } from './useMultiToolHistory';
-import { renderMultiplePDFsAsThumbnails } from '../lib/thumbnail-renderer';
+import { useState, useCallback, useRef } from "react";
+import { PDFDocument } from "pdf-lib";
+import { useMultiPDFLoader } from "@/hooks/useMultiPDFLoader";
+import { useMultiToolHistory } from "./useMultiToolHistory";
+import { renderMultiplePDFsAsThumbnails } from "../lib/thumbnail-renderer";
 import {
   downloadSelectedPages,
   downloadAllPages,
-} from '../lib/multi-tool-utils';
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
-import type { MultiToolPageData, UseMultiToolReturn } from '../types';
+} from "../lib/multi-tool-utils";
+import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
+import type { MultiToolPageData, UseMultiToolReturn } from "../types";
 
 export const useMultiTool = (): UseMultiToolReturn => {
   const [pages, setPages] = useState<MultiToolPageData[]>([]);
@@ -31,7 +31,7 @@ export const useMultiTool = (): UseMultiToolReturn => {
     loadPDFs: loadPDFsBase,
     reset: resetLoader,
   } = useMultiPDFLoader({
-    onEncryptedFiles: 'error',
+    onEncryptedFiles: "error",
     allowEncrypted: false,
   });
 
@@ -83,29 +83,33 @@ export const useMultiTool = (): UseMultiToolReturn => {
       splitMarkers: string[];
     }) => {
       const currentPagesMap = new Map(pages.map((p) => [p.id, p]));
-      
-      const restoredPages: MultiToolPageData[] = snapshot.pages.map((p) => {
-        const pdfFile = pdfFiles[p.pdfIndex];
-        if (!pdfFile && !p.isBlankPage) {
-          console.warn(`PDF file at index ${p.pdfIndex} not found when restoring snapshot`);
-        }
-        
-        const currentPage = currentPagesMap.get(p.id);
-        const preservedThumbnail = currentPage?.thumbnailUrl;
-        
-        return {
-          id: p.id,
-          pdfIndex: p.pdfIndex,
-          pageIndex: p.pageIndex,
-          originalPageIndex: p.originalPageIndex,
-          rotation: p.rotation,
-          visualRotation: p.visualRotation,
-          pdfDoc: pdfFile?.pdfDoc || ({} as PDFDocument), 
-          fileName: p.fileName,
-          thumbnailUrl: preservedThumbnail,
-          isBlankPage: p.isBlankPage,
-        };
-      }).filter((p) => p.pdfDoc || p.isBlankPage);
+
+      const restoredPages: MultiToolPageData[] = snapshot.pages
+        .map((p) => {
+          const pdfFile = pdfFiles[p.pdfIndex];
+          if (!pdfFile && !p.isBlankPage) {
+            console.warn(
+              `PDF file at index ${p.pdfIndex} not found when restoring snapshot`,
+            );
+          }
+
+          const currentPage = currentPagesMap.get(p.id);
+          const preservedThumbnail = currentPage?.thumbnailUrl;
+
+          return {
+            id: p.id,
+            pdfIndex: p.pdfIndex,
+            pageIndex: p.pageIndex,
+            originalPageIndex: p.originalPageIndex,
+            rotation: p.rotation,
+            visualRotation: p.visualRotation,
+            pdfDoc: pdfFile?.pdfDoc || ({} as PDFDocument),
+            fileName: p.fileName,
+            thumbnailUrl: preservedThumbnail,
+            isBlankPage: p.isBlankPage,
+          };
+        })
+        .filter((p) => p.pdfDoc || p.isBlankPage);
 
       if (restoredPages.length === 0) {
         setPages([]);
@@ -123,36 +127,39 @@ export const useMultiTool = (): UseMultiToolReturn => {
       setSelectedPages(new Set(snapshot.selectedPages));
       setSplitMarkers(new Set(snapshot.splitMarkers));
     },
-    [pdfFiles, pages]
+    [pdfFiles, pages],
   );
 
-  const saveState = useCallback((customSnapshot?: {
-    pages: Array<{
-      id: string;
-      pdfIndex: number;
-      pageIndex: number;
-      originalPageIndex: number;
-      rotation: number;
-      visualRotation: number;
-      fileName: string;
-      isBlankPage: boolean;
-    }>;
-    selectedPages: string[];
-    splitMarkers: string[];
-  }) => {
-    const snapshot = customSnapshot || createSnapshot();
-    
-    if (snapshot.pages.length === 0 && !customSnapshot) {
-      return;
-    }
-    
-    history.saveState(snapshot);
-  }, [createSnapshot, history]);
+  const saveState = useCallback(
+    (customSnapshot?: {
+      pages: Array<{
+        id: string;
+        pdfIndex: number;
+        pageIndex: number;
+        originalPageIndex: number;
+        rotation: number;
+        visualRotation: number;
+        fileName: string;
+        isBlankPage: boolean;
+      }>;
+      selectedPages: string[];
+      splitMarkers: string[];
+    }) => {
+      const snapshot = customSnapshot || createSnapshot();
+
+      if (snapshot.pages.length === 0 && !customSnapshot) {
+        return;
+      }
+
+      history.saveState(snapshot);
+    },
+    [createSnapshot, history],
+  );
 
   const loadPDFs = useCallback(
     async (files: File[]) => {
       if (isRendering) {
-        setError('Pages are still being rendered. Please wait...');
+        setError("Pages are still being rendered. Please wait...");
         return;
       }
 
@@ -161,7 +168,7 @@ export const useMultiTool = (): UseMultiToolReturn => {
       renderCancelledRef.current = false;
 
       setIsRendering(true);
-      setLoadingMessage('Loading PDFs...');
+      setLoadingMessage("Loading PDFs...");
 
       try {
         const pdfBuffers: ArrayBuffer[] = [];
@@ -187,14 +194,14 @@ export const useMultiTool = (): UseMultiToolReturn => {
 
         await loadPDFsBase(files);
 
-        setLoadingMessage('Rendering page thumbnails...');
+        setLoadingMessage("Rendering page thumbnails...");
 
         const thumbnails = await renderMultiplePDFsAsThumbnails(
           pdfBuffers,
           (current, total) => {
             if (renderCancelledRef.current) return;
             setLoadingMessage(`Rendering pages... ${current} of ${total}`);
-          }
+          },
         );
 
         if (renderCancelledRef.current) {
@@ -205,14 +212,18 @@ export const useMultiTool = (): UseMultiToolReturn => {
         let pageIdCounter = pages.length;
         const startPdfIndex = pdfFiles.length;
 
-        for (let pdfIndex = startPdfIndex; pdfIndex < pdfDocs.length; pdfIndex++) {
+        for (
+          let pdfIndex = startPdfIndex;
+          pdfIndex < pdfDocs.length;
+          pdfIndex++
+        ) {
           const pdfDoc = pdfDocs[pdfIndex];
           const numPages = pdfDoc.getPageCount();
           const fileName = fileNames[pdfIndex];
 
           for (let pageIndex = 0; pageIndex < numPages; pageIndex++) {
             const thumbnail = thumbnails.find(
-              (t) => t.pdfIndex === pdfIndex && t.pageIndex === pageIndex
+              (t) => t.pdfIndex === pdfIndex && t.pageIndex === pageIndex,
             );
 
             newPages.push({
@@ -232,7 +243,7 @@ export const useMultiTool = (): UseMultiToolReturn => {
 
         const updatedPages = [...pages, ...newPages];
         setPages(updatedPages);
-        
+
         const snapshot = {
           pages: updatedPages.map((p) => ({
             id: p.id,
@@ -249,11 +260,11 @@ export const useMultiTool = (): UseMultiToolReturn => {
         };
         saveState(snapshot);
       } catch (err) {
-        console.error('Error loading PDFs:', err);
+        console.error("Error loading PDFs:", err);
         setError(
           err instanceof Error
             ? err.message
-            : 'Failed to load PDFs. They may be corrupted.'
+            : "Failed to load PDFs. They may be corrupted.",
         );
       } finally {
         setIsRendering(false);
@@ -268,13 +279,13 @@ export const useMultiTool = (): UseMultiToolReturn => {
       selectedPages,
       splitMarkers,
       saveState,
-    ]
+    ],
   );
 
   const insertPDFAfter = useCallback(
     async (pageId: string, file: File) => {
       if (isRendering) {
-        setError('Pages are still being rendered. Please wait...');
+        setError("Pages are still being rendered. Please wait...");
         return;
       }
 
@@ -285,7 +296,7 @@ export const useMultiTool = (): UseMultiToolReturn => {
 
         const insertIndex = pages.findIndex((p) => p.id === pageId);
         if (insertIndex === -1) {
-          setError('Page not found');
+          setError("Page not found");
           return;
         }
 
@@ -318,15 +329,15 @@ export const useMultiTool = (): UseMultiToolReturn => {
 
         saveState();
       } catch (err) {
-        console.error('Error inserting PDF:', err);
+        console.error("Error inserting PDF:", err);
         setError(
           err instanceof Error
             ? err.message
-            : 'Failed to insert PDF. The file may be corrupted.'
+            : "Failed to insert PDF. The file may be corrupted.",
         );
       }
     },
-    [isRendering, pages, saveState]
+    [isRendering, pages, saveState],
   );
 
   const toggleSelectPage = useCallback((pageId: string) => {
@@ -362,10 +373,10 @@ export const useMultiTool = (): UseMultiToolReturn => {
             };
           }
           return page;
-        })
+        }),
       );
     },
-    [saveState]
+    [saveState],
   );
 
   const duplicatePage = useCallback(
@@ -386,7 +397,7 @@ export const useMultiTool = (): UseMultiToolReturn => {
         return newPages;
       });
     },
-    [saveState]
+    [saveState],
   );
 
   const deletePage = useCallback(
@@ -419,7 +430,7 @@ export const useMultiTool = (): UseMultiToolReturn => {
         return newSet;
       });
     },
-    [saveState, resetLoader, history]
+    [saveState, resetLoader, history],
   );
 
   const addBlankPage = useCallback(() => {
@@ -432,48 +443,54 @@ export const useMultiTool = (): UseMultiToolReturn => {
       rotation: 0,
       visualRotation: 0,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      pdfDoc: null as any, 
-      fileName: '',
+      pdfDoc: null as any,
+      fileName: "",
       isBlankPage: true,
     };
     setPages((prev) => [...prev, newPage]);
   }, [saveState]);
 
-  const toggleSplitMarker = useCallback((pageId: string) => {
-    saveState();
-    setSplitMarkers((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(pageId)) {
-        newSet.delete(pageId);
-      } else {
-        newSet.add(pageId);
-      }
-      return newSet;
-    });
-  }, [saveState]);
+  const toggleSplitMarker = useCallback(
+    (pageId: string) => {
+      saveState();
+      setSplitMarkers((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(pageId)) {
+          newSet.delete(pageId);
+        } else {
+          newSet.add(pageId);
+        }
+        return newSet;
+      });
+    },
+    [saveState],
+  );
 
-  const reorderPages = useCallback((activeId: string, overId: string) => {
-    if (activeId === overId) return;
+  const reorderPages = useCallback(
+    (activeId: string, overId: string) => {
+      if (activeId === overId) return;
 
-    saveState();
-    setPages((prev) => {
-      const oldIndex = prev.findIndex((p) => p.id === activeId);
-      const newIndex = prev.findIndex((p) => p.id === overId);
+      saveState();
+      setPages((prev) => {
+        const oldIndex = prev.findIndex((p) => p.id === activeId);
+        const newIndex = prev.findIndex((p) => p.id === overId);
 
-      if (oldIndex === -1 || newIndex === -1) return prev;
+        if (oldIndex === -1 || newIndex === -1) return prev;
 
-      const newPages = [...prev];
-      const [moved] = newPages.splice(oldIndex, 1);
-      newPages.splice(newIndex, 0, moved);
+        const newPages = [...prev];
+        const [moved] = newPages.splice(oldIndex, 1);
+        newPages.splice(newIndex, 0, moved);
 
-      return newPages;
-    });
-  }, [saveState]);
+        return newPages;
+      });
+    },
+    [saveState],
+  );
 
   const bulkRotate = useCallback(
     (delta: number) => {
       if (selectedPages.size === 0) {
-        setError('Please select pages to rotate.');
+        setError("Please select pages to rotate.");
         return;
       }
 
@@ -488,15 +505,15 @@ export const useMultiTool = (): UseMultiToolReturn => {
             };
           }
           return page;
-        })
+        }),
       );
     },
-    [selectedPages, saveState]
+    [selectedPages, saveState],
   );
 
   const bulkDelete = useCallback(() => {
     if (selectedPages.size === 0) {
-      setError('Please select pages to delete.');
+      setError("Please select pages to delete.");
       return;
     }
 
@@ -527,7 +544,7 @@ export const useMultiTool = (): UseMultiToolReturn => {
 
   const bulkDuplicate = useCallback(() => {
     if (selectedPages.size === 0) {
-      setError('Please select pages to duplicate.');
+      setError("Please select pages to duplicate.");
       return;
     }
 
@@ -537,7 +554,7 @@ export const useMultiTool = (): UseMultiToolReturn => {
       const selectedIndices = prev
         .map((p, i) => (selectedPages.has(p.id) ? i : -1))
         .filter((i) => i !== -1)
-        .sort((a, b) => b - a); 
+        .sort((a, b) => b - a);
 
       for (const index of selectedIndices) {
         const pageToDuplicate = newPages[index];
@@ -555,7 +572,7 @@ export const useMultiTool = (): UseMultiToolReturn => {
 
   const bulkSplit = useCallback(() => {
     if (selectedPages.size === 0) {
-      setError('Please select pages to mark for splitting.');
+      setError("Please select pages to mark for splitting.");
       return;
     }
 
@@ -574,24 +591,22 @@ export const useMultiTool = (): UseMultiToolReturn => {
 
   const downloadSelected = useCallback(async () => {
     if (selectedPages.size === 0) {
-      setError('Please select pages to download.');
+      setError("Please select pages to download.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Creating PDF...');
+    setLoadingMessage("Creating PDF...");
 
     try {
       const originalFileName = pages[0]?.fileName;
       await downloadSelectedPages(pages, selectedPages, originalFileName);
-      setSuccess('Download started successfully!');
+      setSuccess("Download started successfully!");
     } catch (err) {
-      console.error('Error downloading selected pages:', err);
-      setError(
-        err instanceof Error ? err.message : 'Failed to create PDF.'
-      );
+      console.error("Error downloading selected pages:", err);
+      setError(err instanceof Error ? err.message : "Failed to create PDF.");
     } finally {
       setIsProcessing(false);
       setLoadingMessage(null);
@@ -600,14 +615,14 @@ export const useMultiTool = (): UseMultiToolReturn => {
 
   const downloadAll = useCallback(async () => {
     if (pages.length === 0) {
-      setError('Please upload PDFs first.');
+      setError("Please upload PDFs first.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Creating PDF...');
+    setLoadingMessage("Creating PDF...");
 
     try {
       const originalFileName = pages[0]?.fileName;
@@ -615,11 +630,11 @@ export const useMultiTool = (): UseMultiToolReturn => {
       setSuccess(
         splitMarkers.size > 0
           ? `Downloaded ${Array.from(splitMarkers).length + 1} PDF files in a ZIP archive.`
-          : 'Download started successfully!'
+          : "Download started successfully!",
       );
     } catch (err) {
-      console.error('Error downloading all pages:', err);
-      setError(err instanceof Error ? err.message : 'Failed to create PDF.');
+      console.error("Error downloading all pages:", err);
+      setError(err instanceof Error ? err.message : "Failed to create PDF.");
     } finally {
       setIsProcessing(false);
       setLoadingMessage(null);
@@ -711,4 +726,3 @@ export const useMultiTool = (): UseMultiToolReturn => {
     reset,
   };
 };
-

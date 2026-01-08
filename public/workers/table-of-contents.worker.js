@@ -1,15 +1,15 @@
-globalThis.importScripts('/coherentpdf.browser.min.js');
+globalThis.importScripts("/coherentpdf.browser.min.js");
 
 function generateTableOfContentsInWorker(
   pdfData,
   title,
   fontSize,
   fontFamily,
-  addBookmark
+  addBookmark,
 ) {
   try {
     const uint8Array = new Uint8Array(pdfData);
-    const pdf = coherentpdf.fromMemory(uint8Array, '');
+    const pdf = coherentpdf.fromMemory(uint8Array, "");
 
     coherentpdf.startGetBookmarkInfo(pdf);
     const bookmarkCount = coherentpdf.numberBookmarks();
@@ -18,9 +18,9 @@ function generateTableOfContentsInWorker(
     if (bookmarkCount === 0) {
       coherentpdf.deletePdf(pdf);
       globalThis.postMessage({
-        status: 'error',
+        status: "error",
         message:
-          'This PDF does not have any bookmarks. Please add bookmarks first using the Bookmark tool.',
+          "This PDF does not have any bookmarks. Please add bookmarks first using the Bookmark tool.",
       });
       return;
     }
@@ -32,31 +32,30 @@ function generateTableOfContentsInWorker(
 
     globalThis.postMessage(
       {
-        status: 'success',
+        status: "success",
         pdfBytes: outputBytesBuffer,
       },
-      [outputBytesBuffer]
+      [outputBytesBuffer],
     );
   } catch (error) {
     globalThis.postMessage({
-      status: 'error',
+      status: "error",
       message:
         error instanceof Error
           ? error.message
-          : 'Unknown error occurred during table of contents generation.',
+          : "Unknown error occurred during table of contents generation.",
     });
   }
 }
 
 globalThis.onmessage = (e) => {
-  if (e.data.command === 'generate-toc') {
+  if (e.data.command === "generate-toc") {
     generateTableOfContentsInWorker(
       e.data.pdfData,
       e.data.title,
       e.data.fontSize,
       e.data.fontFamily,
-      e.data.addBookmark
+      e.data.addBookmark,
     );
   }
 };
-

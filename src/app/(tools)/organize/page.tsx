@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
-import { ScrollToTop } from '@/components/ScrollToTop';
+import dynamic from "next/dynamic";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const OrganizeTool = dynamic(
   () =>
-    import('@/features/pdf-organize').then((mod) => ({
+    import("@/features/pdf-organize").then((mod) => ({
       default: mod.OrganizeTool,
     })),
   {
@@ -17,7 +17,7 @@ const OrganizeTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default function OrganizePage() {
@@ -28,4 +28,3 @@ export default function OrganizePage() {
     </>
   );
 }
-

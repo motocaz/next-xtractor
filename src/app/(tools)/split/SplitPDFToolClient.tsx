@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const SplitPDFTool = dynamic(
   () =>
-    import('@/features/pdf-split').then((mod) => ({
+    import("@/features/pdf-split").then((mod) => ({
       default: mod.SplitPDFTool,
     })),
   {
@@ -16,8 +16,7 @@ const SplitPDFTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default SplitPDFTool;
-

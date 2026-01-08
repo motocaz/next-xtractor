@@ -1,37 +1,37 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ArrowLeft, AlertTriangle } from 'lucide-react';
-import { useSanitizePDF } from '../hooks/useSanitizePDF';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Card, CardContent } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import type { SanitizeOptions } from '../types';
+import Link from "next/link";
+import { ArrowLeft, AlertTriangle } from "lucide-react";
+import { useSanitizePDF } from "../hooks/useSanitizePDF";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import type { SanitizeOptions } from "../types";
 
 const ESSENTIAL_OPTIONS: Array<{
   key: keyof SanitizeOptions;
   label: string;
 }> = [
-  { key: 'flattenForms', label: 'Flatten Form Fields' },
-  { key: 'removeMetadata', label: 'Remove All Metadata' },
-  { key: 'removeAnnotations', label: 'Remove Annotations' },
-  { key: 'removeJavascript', label: 'Remove JavaScript' },
-  { key: 'removeEmbeddedFiles', label: 'Remove Embedded Files' },
-  { key: 'removeLayers', label: 'Remove Layers (OCG)' },
-  { key: 'removeLinks', label: 'Remove External Links' },
+  { key: "flattenForms", label: "Flatten Form Fields" },
+  { key: "removeMetadata", label: "Remove All Metadata" },
+  { key: "removeAnnotations", label: "Remove Annotations" },
+  { key: "removeJavascript", label: "Remove JavaScript" },
+  { key: "removeEmbeddedFiles", label: "Remove Embedded Files" },
+  { key: "removeLayers", label: "Remove Layers (OCG)" },
+  { key: "removeLinks", label: "Remove External Links" },
 ];
 
 const ADDITIONAL_OPTIONS: Array<{
   key: keyof SanitizeOptions;
   label: string;
 }> = [
-  { key: 'removeStructureTree', label: 'Remove Structure Tree' },
-  { key: 'removeMarkInfo', label: 'Remove Tagging Info' },
-  { key: 'removeFonts', label: 'Remove Embedded Fonts' },
+  { key: "removeStructureTree", label: "Remove Structure Tree" },
+  { key: "removeMarkInfo", label: "Remove Tagging Info" },
+  { key: "removeFonts", label: "Remove Embedded Fonts" },
 ];
 
 export const SanitizePDFTool = () => {
@@ -65,9 +65,7 @@ export const SanitizePDFTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        Sanitize PDF
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">Sanitize PDF</h2>
       <p className="mb-6 text-muted-foreground">
         Remove potentially sensitive or unnecessary information from your PDF
         before sharing. Select the items you want to remove.
@@ -92,8 +90,14 @@ export const SanitizePDFTool = () => {
                 <div className="text-sm text-foreground">
                   <strong className="font-semibold text-yellow-500">
                     Note:
-                  </strong>{' '}
-                  Removing <code className="bg-background px-1 rounded text-foreground text-xs">Embedded Fonts</code> may break text rendering! Text may not display correctly or at all. Only use if you&apos;re sure the PDF viewer has substitute fonts.
+                  </strong>{" "}
+                  Removing{" "}
+                  <code className="bg-background px-1 rounded text-foreground text-xs">
+                    Embedded Fonts
+                  </code>{" "}
+                  may break text rendering! Text may not display correctly or at
+                  all. Only use if you&apos;re sure the PDF viewer has
+                  substitute fonts.
                 </div>
               </div>
 
@@ -169,4 +173,3 @@ export const SanitizePDFTool = () => {
     </div>
   );
 };
-

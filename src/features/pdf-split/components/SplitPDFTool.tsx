@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
-import { useSplitPDF } from '../hooks/useSplitPDF';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useSplitPDF } from "../hooks/useSplitPDF";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import {
   RangePanel,
   VisualPanel,
@@ -22,8 +22,8 @@ import {
   AllPanel,
   BookmarksPanel,
   NTimesPanel,
-} from './SplitModePanels';
-import type { SplitMode } from '../types';
+} from "./SplitModePanels";
+import type { SplitMode } from "../types";
 
 export const SplitPDFTool = () => {
   const {
@@ -109,7 +109,7 @@ export const SplitPDFTool = () => {
           </div>
 
           <div className="p-4 bg-input border border-border rounded-lg">
-            {splitMode === 'range' && (
+            {splitMode === "range" && (
               <RangePanel
                 pageRange={pageRange}
                 onPageRangeChange={setPageRange}
@@ -120,7 +120,7 @@ export const SplitPDFTool = () => {
               />
             )}
 
-            {splitMode === 'visual' && pdfFile && (
+            {splitMode === "visual" && pdfFile && (
               <VisualPanel
                 pdfFile={pdfFile}
                 selectedPages={selectedPages}
@@ -131,7 +131,7 @@ export const SplitPDFTool = () => {
               />
             )}
 
-            {splitMode === 'even-odd' && (
+            {splitMode === "even-odd" && (
               <EvenOddPanel
                 choice={evenOddChoice}
                 onChoiceChange={setEvenOddChoice}
@@ -139,9 +139,9 @@ export const SplitPDFTool = () => {
               />
             )}
 
-            {splitMode === 'all' && <AllPanel totalPages={totalPages} />}
+            {splitMode === "all" && <AllPanel totalPages={totalPages} />}
 
-            {splitMode === 'bookmarks' && (
+            {splitMode === "bookmarks" && (
               <BookmarksPanel
                 bookmarkLevel={bookmarkLevel}
                 onBookmarkLevelChange={setBookmarkLevel}
@@ -149,7 +149,7 @@ export const SplitPDFTool = () => {
               />
             )}
 
-            {splitMode === 'n-times' && (
+            {splitMode === "n-times" && (
               <NTimesPanel
                 nValue={nValue}
                 onNValueChange={setNValue}
@@ -179,4 +179,3 @@ export const SplitPDFTool = () => {
     </div>
   );
 };
-

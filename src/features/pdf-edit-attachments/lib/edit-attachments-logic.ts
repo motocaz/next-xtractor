@@ -13,19 +13,21 @@ let workerInstance: Worker | null = null;
 
 const getWorker = (): Worker => {
   workerInstance ??= new Worker(
-    new URL("/workers/edit-attachments.worker.js", globalThis.location.origin)
+    new URL("/workers/edit-attachments.worker.js", globalThis.location.origin),
   );
   return workerInstance;
 };
 
 export const getAttachmentsFromPDF = async (
-  file: File
+  file: File,
 ): Promise<AttachmentInfo[]> => {
   return new Promise((resolve, reject) => {
     const worker = getWorker();
     const fileBufferPromise = readFileAsArrayBuffer(file);
 
-    const messageHandler: (e: MessageEvent<WorkerResponse>) => void = (e: MessageEvent<WorkerResponse>) => {
+    const messageHandler: (e: MessageEvent<WorkerResponse>) => void = (
+      e: MessageEvent<WorkerResponse>,
+    ) => {
       const data = e.data;
 
       if (data.status === "success" && data.attachments !== undefined) {
@@ -45,7 +47,11 @@ export const getAttachmentsFromPDF = async (
       }
     };
 
-    const errorHandler = createWorkerErrorHandler(worker, messageHandler, reject);
+    const errorHandler = createWorkerErrorHandler(
+      worker,
+      messageHandler,
+      reject,
+    );
 
     worker.addEventListener("message", messageHandler);
     worker.addEventListener("error", errorHandler);
@@ -70,13 +76,15 @@ export const getAttachmentsFromPDF = async (
 
 export const editAttachmentsInPDF = async (
   file: File,
-  indicesToRemove: number[]
+  indicesToRemove: number[],
 ): Promise<Blob> => {
   return new Promise((resolve, reject) => {
     const worker = getWorker();
     const fileBufferPromise = readFileAsArrayBuffer(file);
 
-    const messageHandler: (e: MessageEvent<WorkerResponse>) => void = (e: MessageEvent<WorkerResponse>) => {
+    const messageHandler: (e: MessageEvent<WorkerResponse>) => void = (
+      e: MessageEvent<WorkerResponse>,
+    ) => {
       const data = e.data;
 
       if (data.status === "success" && data.modifiedPDF !== undefined) {
@@ -94,7 +102,11 @@ export const editAttachmentsInPDF = async (
       }
     };
 
-    const errorHandler = createWorkerErrorHandler(worker, messageHandler, reject);
+    const errorHandler = createWorkerErrorHandler(
+      worker,
+      messageHandler,
+      reject,
+    );
 
     worker.addEventListener("message", messageHandler);
     worker.addEventListener("error", errorHandler);

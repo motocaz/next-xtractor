@@ -38,7 +38,7 @@ export const useViewMetadata = (): UseViewMetadataReturn => {
       setError(
         err instanceof Error
           ? `Could not analyze PDF: ${err.message}`
-          : "Could not fully analyze the PDF. It may be corrupted or have an unusual structure."
+          : "Could not fully analyze the PDF. It may be corrupted or have an unusual structure.",
       );
     } finally {
       setIsLoading(false);
@@ -64,4 +64,3 @@ export const useViewMetadata = (): UseViewMetadataReturn => {
     reset,
   };
 };
-

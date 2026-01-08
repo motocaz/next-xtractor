@@ -1,4 +1,4 @@
-globalThis.importScripts('/coherentpdf.browser.min.js');
+globalThis.importScripts("/coherentpdf.browser.min.js");
 
 function getAttachmentsFromPDFInWorker(fileBuffer, fileName) {
   try {
@@ -6,10 +6,10 @@ function getAttachmentsFromPDFInWorker(fileBuffer, fileName) {
 
     let pdf;
     try {
-      pdf = coherentpdf.fromMemory(uint8Array, '');
+      pdf = coherentpdf.fromMemory(uint8Array, "");
     } catch (error) {
       self.postMessage({
-        status: 'error',
+        status: "error",
         message: `Failed to load PDF: ${fileName}. Error: ${error.message || error}`,
       });
       return;
@@ -20,7 +20,7 @@ function getAttachmentsFromPDFInWorker(fileBuffer, fileName) {
 
     if (attachmentCount === 0) {
       self.postMessage({
-        status: 'success',
+        status: "success",
         attachments: [],
         fileName: fileName,
       });
@@ -38,7 +38,7 @@ function getAttachmentsFromPDFInWorker(fileBuffer, fileName) {
         const dataArray = new Uint8Array(attachmentData);
         const buffer = dataArray.buffer.slice(
           dataArray.byteOffset,
-          dataArray.byteOffset + dataArray.byteLength
+          dataArray.byteOffset + dataArray.byteLength,
         );
 
         attachments.push({
@@ -56,7 +56,7 @@ function getAttachmentsFromPDFInWorker(fileBuffer, fileName) {
     coherentpdf.deletePdf(pdf);
 
     const response = {
-      status: 'success',
+      status: "success",
       attachments: attachments,
       fileName: fileName,
     };
@@ -65,11 +65,11 @@ function getAttachmentsFromPDFInWorker(fileBuffer, fileName) {
     self.postMessage(response, transferBuffers);
   } catch (error) {
     self.postMessage({
-      status: 'error',
+      status: "error",
       message:
         error instanceof Error
           ? error.message
-          : 'Unknown error occurred during attachment listing.',
+          : "Unknown error occurred during attachment listing.",
     });
   }
 }
@@ -100,17 +100,13 @@ function collectAttachmentsToKeep(pdf, attachmentCount, attachmentsToRemove) {
 function reattachFiles(pdf, attachmentsToKeep) {
   for (const attachment of attachmentsToKeep) {
     if (attachment.page === 0) {
-      coherentpdf.attachFileFromMemory(
-        attachment.data,
-        attachment.name,
-        pdf
-      );
+      coherentpdf.attachFileFromMemory(attachment.data, attachment.name, pdf);
     } else {
       coherentpdf.attachFileToPageFromMemory(
         attachment.data,
         attachment.name,
         pdf,
-        attachment.page
+        attachment.page,
       );
     }
   }
@@ -119,17 +115,17 @@ function reattachFiles(pdf, attachmentsToKeep) {
 function editAttachmentsInPDFInWorker(
   fileBuffer,
   fileName,
-  attachmentsToRemove
+  attachmentsToRemove,
 ) {
   try {
     const uint8Array = new Uint8Array(fileBuffer);
 
     let pdf;
     try {
-      pdf = coherentpdf.fromMemory(uint8Array, '');
+      pdf = coherentpdf.fromMemory(uint8Array, "");
     } catch (error) {
       self.postMessage({
-        status: 'error',
+        status: "error",
         message: `Failed to load PDF: ${fileName}. Error: ${error.message || error}`,
       });
       return;
@@ -141,7 +137,7 @@ function editAttachmentsInPDFInWorker(
       const attachmentsToKeep = collectAttachmentsToKeep(
         pdf,
         attachmentCount,
-        attachmentsToRemove
+        attachmentsToRemove,
       );
 
       coherentpdf.endGetAttachments();
@@ -154,11 +150,11 @@ function editAttachmentsInPDFInWorker(
 
     const buffer = modifiedBytes.buffer.slice(
       modifiedBytes.byteOffset,
-      modifiedBytes.byteOffset + modifiedBytes.byteLength
+      modifiedBytes.byteOffset + modifiedBytes.byteLength,
     );
 
     const response = {
-      status: 'success',
+      status: "success",
       modifiedPDF: buffer,
       fileName: fileName,
     };
@@ -166,24 +162,23 @@ function editAttachmentsInPDFInWorker(
     self.postMessage(response, [response.modifiedPDF]);
   } catch (error) {
     self.postMessage({
-      status: 'error',
+      status: "error",
       message:
         error instanceof Error
           ? error.message
-          : 'Unknown error occurred during attachment editing.',
+          : "Unknown error occurred during attachment editing.",
     });
   }
 }
 
 globalThis.onmessage = (e) => {
-  if (e.data.command === 'get-attachments') {
+  if (e.data.command === "get-attachments") {
     getAttachmentsFromPDFInWorker(e.data.fileBuffer, e.data.fileName);
-  } else if (e.data.command === 'edit-attachments') {
+  } else if (e.data.command === "edit-attachments") {
     editAttachmentsInPDFInWorker(
       e.data.fileBuffer,
       e.data.fileName,
-      e.data.attachmentsToRemove
+      e.data.attachmentsToRemove,
     );
   }
 };
-

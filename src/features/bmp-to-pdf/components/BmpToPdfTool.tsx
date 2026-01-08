@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useBmpToPdf } from '../hooks/useBmpToPdf';
-import { FileUploader } from '@/components/FileUploader';
-import { ArrowLeft } from 'lucide-react';
-import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { FileListSection } from '@/components/common/FileListSection';
+import Link from "next/link";
+import { useBmpToPdf } from "../hooks/useBmpToPdf";
+import { FileUploader } from "@/components/FileUploader";
+import { ArrowLeft } from "lucide-react";
+import { FileUploadStatusMessages } from "@/components/common/FileUploadStatusMessages";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { FileListSection } from "@/components/common/FileListSection";
 
 export const BmpToPdfTool = () => {
   const {
@@ -35,9 +35,7 @@ export const BmpToPdfTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        BMP to PDF
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">BMP to PDF</h2>
       <p className="mb-6 text-muted-foreground">
         Convert one or more BMP images into a single PDF file.
       </p>
@@ -93,4 +91,3 @@ export const BmpToPdfTool = () => {
     </div>
   );
 };
-

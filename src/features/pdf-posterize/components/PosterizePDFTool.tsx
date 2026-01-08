@@ -1,20 +1,26 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
-import { usePosterizePDF } from '../hooks/usePosterizePDF';
-import { FileUploader } from '@/components/FileUploader';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { PdfFileCard } from '@/components/common/PdfFileCard';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useState } from "react";
+import Link from "next/link";
+import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { usePosterizePDF } from "../hooks/usePosterizePDF";
+import { FileUploader } from "@/components/FileUploader";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { PdfFileCard } from "@/components/common/PdfFileCard";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export const PosterizePDFTool = () => {
   const {
@@ -50,14 +56,15 @@ export const PosterizePDFTool = () => {
     posterize,
   } = usePosterizePDF();
 
-  const [rowsInput, setRowsInput] = useState<string>('');
-  const [colsInput, setColsInput] = useState<string>('');
-  const [overlapInput, setOverlapInput] = useState<string>('');
+  const [rowsInput, setRowsInput] = useState<string>("");
+  const [colsInput, setColsInput] = useState<string>("");
+  const [overlapInput, setOverlapInput] = useState<string>("");
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
 
-  const rowsDisplay = focusedInput === 'rows' ? rowsInput : String(rows);
-  const colsDisplay = focusedInput === 'cols' ? colsInput : String(cols);
-  const overlapDisplay = focusedInput === 'overlap' ? overlapInput : String(overlap);
+  const rowsDisplay = focusedInput === "rows" ? rowsInput : String(rows);
+  const colsDisplay = focusedInput === "cols" ? colsInput : String(cols);
+  const overlapDisplay =
+    focusedInput === "overlap" ? overlapInput : String(overlap);
 
   const canProcess = pdfFile !== null && !isProcessing && !isLoadingPDF;
   const canNavigate = pdfFile !== null && !isProcessing && !isLoadingPDF;
@@ -75,7 +82,8 @@ export const PosterizePDFTool = () => {
 
       <h2 className="text-2xl font-bold text-foreground mb-4">Posterize PDF</h2>
       <p className="mb-6 text-muted-foreground">
-        Split pages into multiple smaller sheets to print as a poster. Navigate the preview and see the grid update based on your settings.
+        Split pages into multiple smaller sheets to print as a poster. Navigate
+        the preview and see the grid update based on your settings.
       </p>
 
       {!pdfFile && (
@@ -127,7 +135,7 @@ export const PosterizePDFTool = () => {
                 <canvas
                   ref={canvasRef}
                   className="w-full h-auto rounded-md max-w-full"
-                  style={{ maxHeight: '600px' }}
+                  style={{ maxHeight: "600px" }}
                 />
                 <Button
                   variant="outline"
@@ -156,13 +164,13 @@ export const PosterizePDFTool = () => {
                     id="posterize-rows"
                     value={rowsDisplay}
                     onFocus={() => {
-                      setFocusedInput('rows');
+                      setFocusedInput("rows");
                       setRowsInput(String(rows));
                     }}
                     onChange={(e) => {
                       const value = e.target.value;
                       setRowsInput(value);
-                      if (value === '' || value === '-') return;
+                      if (value === "" || value === "-") return;
                       const num = Number.parseInt(value);
                       if (!Number.isNaN(num) && num >= 1) {
                         setRows(num);
@@ -171,13 +179,13 @@ export const PosterizePDFTool = () => {
                     onBlur={(e) => {
                       setFocusedInput(null);
                       const value = e.target.value;
-                      if (value === '' || Number.parseInt(value) < 1) {
-                        setRowsInput('');
+                      if (value === "" || Number.parseInt(value) < 1) {
+                        setRowsInput("");
                       } else {
                         const num = Number.parseInt(value);
                         if (!Number.isNaN(num) && num >= 1) {
                           setRows(num);
-                          setRowsInput('');
+                          setRowsInput("");
                         }
                       }
                     }}
@@ -193,13 +201,13 @@ export const PosterizePDFTool = () => {
                     id="posterize-cols"
                     value={colsDisplay}
                     onFocus={() => {
-                      setFocusedInput('cols');
+                      setFocusedInput("cols");
                       setColsInput(String(cols));
                     }}
                     onChange={(e) => {
                       const value = e.target.value;
                       setColsInput(value);
-                      if (value === '' || value === '-') return;
+                      if (value === "" || value === "-") return;
                       const num = Number.parseInt(value);
                       if (!Number.isNaN(num) && num >= 1) {
                         setCols(num);
@@ -208,13 +216,13 @@ export const PosterizePDFTool = () => {
                     onBlur={(e) => {
                       setFocusedInput(null);
                       const value = e.target.value;
-                      if (value === '' || Number.parseInt(value) < 1) {
-                        setColsInput('');
+                      if (value === "" || Number.parseInt(value) < 1) {
+                        setColsInput("");
                       } else {
                         const num = Number.parseInt(value);
                         if (!Number.isNaN(num) && num >= 1) {
                           setCols(num);
-                          setColsInput('');
+                          setColsInput("");
                         }
                       }
                     }}
@@ -237,7 +245,9 @@ export const PosterizePDFTool = () => {
                   <Label htmlFor="output-page-size">Page Size</Label>
                   <Select
                     value={pageSize}
-                    onValueChange={(value) => setPageSize(value as typeof pageSize)}
+                    onValueChange={(value) =>
+                      setPageSize(value as typeof pageSize)
+                    }
                     disabled={isProcessing}
                   >
                     <SelectTrigger id="output-page-size" className="w-full">
@@ -256,14 +266,18 @@ export const PosterizePDFTool = () => {
                   <Label htmlFor="output-orientation">Orientation</Label>
                   <Select
                     value={orientation}
-                    onValueChange={(value) => setOrientation(value as typeof orientation)}
+                    onValueChange={(value) =>
+                      setOrientation(value as typeof orientation)
+                    }
                     disabled={isProcessing}
                   >
                     <SelectTrigger id="output-orientation" className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="auto">Automatic (Recommended)</SelectItem>
+                      <SelectItem value="auto">
+                        Automatic (Recommended)
+                      </SelectItem>
                       <SelectItem value="portrait">Portrait</SelectItem>
                       <SelectItem value="landscape">Landscape</SelectItem>
                     </SelectContent>
@@ -282,23 +296,37 @@ export const PosterizePDFTool = () => {
                 <Label>Content Scaling</Label>
                 <RadioGroup
                   value={scalingMode}
-                  onValueChange={(value) => setScalingMode(value as typeof scalingMode)}
+                  onValueChange={(value) =>
+                    setScalingMode(value as typeof scalingMode)
+                  }
                   disabled={isProcessing}
                   className="grid grid-cols-1 sm:grid-cols-2 gap-4"
                 >
                   <label className="flex-1 flex items-start gap-3 p-4 rounded-md border border-input hover:bg-accent cursor-pointer transition-colors">
-                    <RadioGroupItem value="fit" id="scaling-fit" className="mt-1" />
+                    <RadioGroupItem
+                      value="fit"
+                      id="scaling-fit"
+                      className="mt-1"
+                    />
                     <div className="flex-1">
-                      <span className="font-semibold text-foreground block mb-1">Fit</span>
+                      <span className="font-semibold text-foreground block mb-1">
+                        Fit
+                      </span>
                       <p className="text-xs text-muted-foreground">
                         Preserves all content, may add margins.
                       </p>
                     </div>
                   </label>
                   <label className="flex-1 flex items-start gap-3 p-4 rounded-md border border-input hover:bg-accent cursor-pointer transition-colors">
-                    <RadioGroupItem value="fill" id="scaling-fill" className="mt-1" />
+                    <RadioGroupItem
+                      value="fill"
+                      id="scaling-fill"
+                      className="mt-1"
+                    />
                     <div className="flex-1">
-                      <span className="font-semibold text-foreground block mb-1">Fill (Crop)</span>
+                      <span className="font-semibold text-foreground block mb-1">
+                        Fill (Crop)
+                      </span>
                       <p className="text-xs text-muted-foreground">
                         Fills the page, may crop content.
                       </p>
@@ -315,13 +343,13 @@ export const PosterizePDFTool = () => {
                     id="overlap"
                     value={overlapDisplay}
                     onFocus={() => {
-                      setFocusedInput('overlap');
+                      setFocusedInput("overlap");
                       setOverlapInput(String(overlap));
                     }}
                     onChange={(e) => {
                       const value = e.target.value;
                       setOverlapInput(value);
-                      if (value === '' || value === '-') return;
+                      if (value === "" || value === "-") return;
                       const num = Number.parseFloat(value);
                       if (!Number.isNaN(num) && num >= 0) {
                         setOverlap(num);
@@ -330,13 +358,13 @@ export const PosterizePDFTool = () => {
                     onBlur={(e) => {
                       setFocusedInput(null);
                       const value = e.target.value;
-                      if (value === '' || Number.parseFloat(value) < 0) {
-                        setOverlapInput('');
+                      if (value === "" || Number.parseFloat(value) < 0) {
+                        setOverlapInput("");
                       } else {
                         const num = Number.parseFloat(value);
                         if (!Number.isNaN(num) && num >= 0) {
                           setOverlap(num);
-                          setOverlapInput('');
+                          setOverlapInput("");
                         }
                       }
                     }}
@@ -347,7 +375,9 @@ export const PosterizePDFTool = () => {
                   />
                   <Select
                     value={overlapUnits}
-                    onValueChange={(value) => setOverlapUnits(value as typeof overlapUnits)}
+                    onValueChange={(value) =>
+                      setOverlapUnits(value as typeof overlapUnits)
+                    }
                     disabled={isProcessing}
                   >
                     <SelectTrigger className="w-32">
@@ -399,8 +429,10 @@ export const PosterizePDFTool = () => {
         <ProcessMessages success={success} error={error || pdfError} />
       </div>
 
-      <ProcessLoadingModal isProcessing={isProcessing} loadingMessage={loadingMessage} />
+      <ProcessLoadingModal
+        isProcessing={isProcessing}
+        loadingMessage={loadingMessage}
+      />
     </div>
   );
 };
-

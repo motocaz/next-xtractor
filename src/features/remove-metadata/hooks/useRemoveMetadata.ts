@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useCallback } from 'react';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import { removeMetadata } from '../lib/remove-metadata-logic';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import type { UseRemoveMetadataReturn } from '../types';
+import { useCallback } from "react";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import { removeMetadata } from "../lib/remove-metadata-logic";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import type { UseRemoveMetadataReturn } from "../types";
 
 export const useRemoveMetadata = (): UseRemoveMetadataReturn => {
   const {
@@ -27,34 +27,34 @@ export const useRemoveMetadata = (): UseRemoveMetadataReturn => {
 
   const removeMetadataHandler = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     if (!pdfDoc) {
-      setError('PDF document is not loaded. Please try uploading again.');
+      setError("PDF document is not loaded. Please try uploading again.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Removing all metadata...');
+    setLoadingMessage("Removing all metadata...");
 
     try {
       removeMetadata(pdfDoc);
-      
-      setLoadingMessage('Saving PDF...');
+
+      setLoadingMessage("Saving PDF...");
       const pdfBytes = await pdfDoc.save();
       saveAndDownloadPDF(pdfBytes, pdfFile.name);
 
-      setSuccess('Metadata removed successfully! Your download has started.');
+      setSuccess("Metadata removed successfully! Your download has started.");
     } catch (err) {
-      console.error('Error removing metadata:', err);
+      console.error("Error removing metadata:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'An error occurred while trying to remove metadata.'
+          : "An error occurred while trying to remove metadata.",
       );
     } finally {
       setIsProcessing(false);
@@ -88,4 +88,3 @@ export const useRemoveMetadata = (): UseRemoveMetadataReturn => {
     reset,
   };
 };
-

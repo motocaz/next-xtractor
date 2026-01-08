@@ -7,25 +7,25 @@ export interface RedactionRect {
 
 export type PageRedactions = Record<number, RedactionRect[]>;
 
-import type { UsePDFProcessorReturn } from '@/hooks/usePDFProcessor';
+import type { UsePDFProcessorReturn } from "@/hooks/usePDFProcessor";
 
 export interface UseRedactPDFReturn {
   pdfFile: File | null;
-  pdfDoc: UsePDFProcessorReturn['pdfDoc'];
+  pdfDoc: UsePDFProcessorReturn["pdfDoc"];
   isLoadingPDF: boolean;
   pdfError: string | null;
   totalPages: number;
-  
+
   isProcessing: boolean;
   loadingMessage: string | null;
   error: string | null;
   success: string | null;
-  
+
   currentPageNum: number;
   pageRedactions: PageRedactions;
   currentPageImageUrl: string | null;
   canvasScale: number;
-  
+
   loadPDF: (file: File) => Promise<void>;
   resetPDF: () => void;
   changePage: (offset: number) => Promise<void>;
@@ -36,4 +36,3 @@ export interface UseRedactPDFReturn {
   applyRedactions: () => Promise<void>;
   setError: (error: string | null) => void;
 }
-

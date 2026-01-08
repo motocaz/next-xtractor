@@ -1,14 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { alternateMergePDFs } from '../lib/alternate-merge-logic';
-import { useMultiPDFLoader } from '@/hooks/useMultiPDFLoader';
-import type { UseAlternateMergeReturn } from '../types';
+import { useState, useCallback } from "react";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import { alternateMergePDFs } from "../lib/alternate-merge-logic";
+import { useMultiPDFLoader } from "@/hooks/useMultiPDFLoader";
+import type { UseAlternateMergeReturn } from "../types";
 
 export const useAlternateMerge = (): UseAlternateMergeReturn => {
   const [isProcessing, setIsProcessing] = useState(false);
-  const [processingLoadingMessage, setProcessingLoadingMessage] = useState<string | null>(null);
+  const [processingLoadingMessage, setProcessingLoadingMessage] = useState<
+    string | null
+  >(null);
   const [processingError, setProcessingError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -23,7 +25,7 @@ export const useAlternateMerge = (): UseAlternateMergeReturn => {
     reorderFiles,
     reset: loaderReset,
   } = useMultiPDFLoader({
-    onEncryptedFiles: 'warning',
+    onEncryptedFiles: "warning",
   });
 
   const loadPDFs = useCallback(
@@ -31,7 +33,7 @@ export const useAlternateMerge = (): UseAlternateMergeReturn => {
       setSuccess(null);
       await loaderLoadPDFs(files);
     },
-    [loaderLoadPDFs]
+    [loaderLoadPDFs],
   );
 
   const removePDF = useCallback(
@@ -39,35 +41,37 @@ export const useAlternateMerge = (): UseAlternateMergeReturn => {
       loaderRemovePDF(id);
       setSuccess(null);
     },
-    [loaderRemovePDF]
+    [loaderRemovePDF],
   );
 
   const processAlternateMerge = useCallback(async () => {
     if (pdfFiles.length < 2) {
-      setProcessingError('Please upload at least two PDF files to alternate and mix.');
+      setProcessingError(
+        "Please upload at least two PDF files to alternate and mix.",
+      );
       return;
     }
 
     setIsProcessing(true);
     setProcessingError(null);
     setSuccess(null);
-    setProcessingLoadingMessage('Alternating and mixing pages...');
+    setProcessingLoadingMessage("Alternating and mixing pages...");
 
     try {
       const pdfDocs = pdfFiles.map((pdfInfo) => pdfInfo.pdfDoc);
       const newPdfDoc = await alternateMergePDFs(pdfDocs);
 
       const mergedPdfBytes = await newPdfDoc.save();
-      const firstFileName = pdfFiles[0]?.fileName || 'merged';
+      const firstFileName = pdfFiles[0]?.fileName || "merged";
       saveAndDownloadPDF(mergedPdfBytes, firstFileName);
 
-      setSuccess('PDFs have been mixed successfully!');
+      setSuccess("PDFs have been mixed successfully!");
     } catch (err) {
-      console.error('Alternate Merge error:', err);
+      console.error("Alternate Merge error:", err);
       setProcessingError(
         err instanceof Error
           ? `An error occurred while mixing the PDFs: ${err.message}`
-          : 'An error occurred while mixing the PDFs.'
+          : "An error occurred while mixing the PDFs.",
       );
     } finally {
       setIsProcessing(false);
@@ -102,4 +106,3 @@ export const useAlternateMerge = (): UseAlternateMergeReturn => {
     reset,
   };
 };
-

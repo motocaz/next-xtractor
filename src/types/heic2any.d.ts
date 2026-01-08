@@ -1,4 +1,4 @@
-declare module 'heic2any' {
+declare module "heic2any" {
   interface Heic2anyOptions {
     blob: Blob | File;
     toType?: string;
@@ -12,4 +12,3 @@ declare module 'heic2any' {
 
   export default heic2any;
 }
-

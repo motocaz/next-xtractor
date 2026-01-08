@@ -22,12 +22,7 @@ function FAQItem({
   const labelId = `${contentId}-label`;
 
   return (
-    <div
-      className={cn(
-        "bg-card rounded-lg border border-border",
-        className
-      )}
-    >
+    <div className={cn("bg-card rounded-lg border border-border", className)}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -36,25 +31,27 @@ function FAQItem({
         className={cn(
           "w-full flex justify-between items-center text-left p-6",
           "transition-colors",
-          isOpen && "text-primary"
+          isOpen && "text-primary",
         )}
       >
-        <span id={labelId} className="text-lg font-semibold text-foreground">{question}</span>
+        <span id={labelId} className="text-lg font-semibold text-foreground">
+          {question}
+        </span>
         <ChevronDown
           className={cn(
             "w-6 h-6 text-muted-foreground transition-transform shrink-0",
-            isOpen && "rotate-180"
+            isOpen && "rotate-180",
           )}
         />
       </button>
       <div
-      id={contentId}
-      aria-labelledby={labelId}
-      role="region"
-      aria-hidden={!isOpen}
+        id={contentId}
+        aria-labelledby={labelId}
+        role="region"
+        aria-hidden={!isOpen}
         className={cn(
           "overflow-hidden transition-all duration-300 ease-in-out",
-          isOpen ? "max-h-96" : "max-h-0"
+          isOpen ? "max-h-96" : "max-h-0",
         )}
       >
         <div className="p-6 pt-0 text-muted-foreground">{answer}</div>
@@ -64,4 +61,3 @@ function FAQItem({
 }
 
 export { FAQItem };
-

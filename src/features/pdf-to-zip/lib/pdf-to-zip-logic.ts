@@ -1,7 +1,7 @@
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
+import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
 
 export const pdfsToZip = async (files: File[]): Promise<Blob> => {
-  const JSZip = (await import('jszip')).default;
+  const JSZip = (await import("jszip")).default;
   const zip = new JSZip();
 
   for (const file of files) {
@@ -9,6 +9,5 @@ export const pdfsToZip = async (files: File[]): Promise<Blob> => {
     zip.file(file.name, arrayBuffer);
   }
 
-  return await zip.generateAsync({ type: 'blob' });
+  return await zip.generateAsync({ type: "blob" });
 };
-

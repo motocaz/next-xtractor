@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UsePdfToGreyscaleReturn {
   pdfFile: File | null;
@@ -15,4 +15,3 @@ export interface UsePdfToGreyscaleReturn {
   processPdfToGreyscale: () => Promise<void>;
   reset: () => void;
 }
-

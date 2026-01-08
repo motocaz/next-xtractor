@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Trash2 } from 'lucide-react';
-import type { AttachmentInfo } from '../types';
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Trash2 } from "lucide-react";
+import type { AttachmentInfo } from "../types";
 
 export interface AttachmentItemProps {
   attachment: AttachmentInfo;
@@ -19,7 +19,7 @@ export const AttachmentItem = ({
   return (
     <Card
       className={`flex items-center justify-between p-3 border ${
-        isSelected ? 'opacity-50 line-through' : ''
+        isSelected ? "opacity-50 line-through" : ""
       }`}
       data-attachment-index={attachment.index}
     >
@@ -29,7 +29,7 @@ export const AttachmentItem = ({
         </span>
         <span className="text-muted-foreground text-sm block">
           {attachment.page === 0
-            ? 'Document-level attachment'
+            ? "Document-level attachment"
             : `Page ${attachment.page} attachment`}
         </span>
       </div>
@@ -40,8 +40,8 @@ export const AttachmentItem = ({
           size="sm"
           className={`${
             isSelected
-              ? 'bg-muted-foreground/60 hover:bg-muted-foreground/70 text-white'
-              : 'bg-destructive hover:bg-destructive/90 text-white'
+              ? "bg-muted-foreground/60 hover:bg-muted-foreground/70 text-white"
+              : "bg-destructive hover:bg-destructive/90 text-white"
           }`}
           onClick={onToggle}
           title="Remove attachment"
@@ -53,4 +53,3 @@ export const AttachmentItem = ({
     </Card>
   );
 };
-

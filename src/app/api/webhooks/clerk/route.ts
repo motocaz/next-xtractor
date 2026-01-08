@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
   if (!webhookSecret) {
     return NextResponse.json(
       { error: "CLERK_WEBHOOK_SECRET is not configured" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
   if (!svixId || !svixTimestamp || !svixSignature) {
     return NextResponse.json(
       { error: "Error occurred -- no svix headers" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
       } else {
         await createUserFromClerk(clerkUser);
         console.log(
-          `User created in database (from update event): ${clerkUser.id}`
+          `User created in database (from update event): ${clerkUser.id}`,
         );
       }
     }
@@ -119,14 +119,13 @@ export async function POST(request: NextRequest) {
 
       if (!userId || !subscriptionId) {
         console.error(
-          "Missing user_id or subscription id in subscription.created event"
+          "Missing user_id or subscription id in subscription.created event",
         );
         return NextResponse.json({ received: true });
       }
 
-      const existingSubscription = await getSubscriptionByClerkId(
-        subscriptionId
-      );
+      const existingSubscription =
+        await getSubscriptionByClerkId(subscriptionId);
       if (existingSubscription) {
         console.log(`Subscription already exists: ${subscriptionId}`);
         return NextResponse.json({ received: true });
@@ -182,9 +181,8 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ received: true });
       }
 
-      const existingSubscription = await getSubscriptionByClerkId(
-        subscriptionId
-      );
+      const existingSubscription =
+        await getSubscriptionByClerkId(subscriptionId);
 
       if (existingSubscription) {
         const statusMap: Record<
@@ -238,7 +236,7 @@ export async function POST(request: NextRequest) {
 
       if (!userId || !sessionId) {
         console.error(
-          "Missing user_id or session id in checkout.session.completed event"
+          "Missing user_id or session id in checkout.session.completed event",
         );
         return NextResponse.json({ received: true });
       }
@@ -248,7 +246,7 @@ export async function POST(request: NextRequest) {
         console.error(`User not found for checkout session: ${userId}`);
         return NextResponse.json(
           { error: "Webhook processing failed" },
-          { status: 500 }
+          { status: 500 },
         );
       }
 

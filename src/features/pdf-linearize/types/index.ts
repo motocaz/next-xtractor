@@ -9,4 +9,3 @@ export interface UseLinearizePDFReturn {
   linearizePDFs: () => Promise<void>;
   reset: () => void;
 }
-

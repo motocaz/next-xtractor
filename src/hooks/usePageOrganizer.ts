@@ -1,18 +1,28 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useEffect } from 'react';
-import { usePDFProcessor } from './usePDFProcessor';
-import { processOrganizedPages, buildPageOrder, type PageThumbnailData } from '@/lib/pdf/organize-pages-utils';
-import { renderAllPagesAsThumbnails, type PageThumbnail } from '@/lib/pdf/thumbnail-renderer';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import type { UsePageOrganizerReturn, UsePageOrganizerWithDuplicateReturn } from '@/types/pdf-organize';
+import { useState, useCallback, useEffect } from "react";
+import { usePDFProcessor } from "./usePDFProcessor";
+import {
+  processOrganizedPages,
+  buildPageOrder,
+  type PageThumbnailData,
+} from "@/lib/pdf/organize-pages-utils";
+import {
+  renderAllPagesAsThumbnails,
+  type PageThumbnail,
+} from "@/lib/pdf/thumbnail-renderer";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import type {
+  UsePageOrganizerReturn,
+  UsePageOrganizerWithDuplicateReturn,
+} from "@/types/pdf-organize";
 
 interface UsePageOrganizerOptions {
   allowDuplicate?: boolean;
 }
 
 export const usePageOrganizer = (
-  options: UsePageOrganizerOptions = {}
+  options: UsePageOrganizerOptions = {},
 ): UsePageOrganizerReturn | UsePageOrganizerWithDuplicateReturn => {
   const { allowDuplicate = false } = options;
   const [pages, setPages] = useState<PageThumbnailData[]>([]);
@@ -41,18 +51,26 @@ export const usePageOrganizer = (
   useEffect(() => {
     if (pdfDoc && !isLoadingPDF && !pdfError) {
       const total = pdfDoc.getPageCount();
-      const initialPages: PageThumbnailData[] = Array.from({ length: total }, (_, i) => ({
-        id: `page-${i}-${Date.now()}`,
-        originalPageIndex: i,
-        displayNumber: i + 1,
-      }));
+      const initialPages: PageThumbnailData[] = Array.from(
+        { length: total },
+        (_, i) => ({
+          id: `page-${i}-${Date.now()}`,
+          originalPageIndex: i,
+          displayNumber: i + 1,
+        }),
+      );
       setPages(initialPages);
       setThumbnails([]);
     }
   }, [pdfDoc, isLoadingPDF, pdfError]);
 
   useEffect(() => {
-    if (pages.length > 0 && pdfFile && thumbnails.length === 0 && !isLoadingThumbnails) {
+    if (
+      pages.length > 0 &&
+      pdfFile &&
+      thumbnails.length === 0 &&
+      !isLoadingThumbnails
+    ) {
       const loadThumbnails = async () => {
         setIsLoadingThumbnails(true);
         try {
@@ -61,12 +79,12 @@ export const usePageOrganizer = (
             arrayBuffer,
             (current, total) => {
               setLoadingMessage(`Rendering thumbnails: ${current}/${total}`);
-            }
+            },
           );
           setThumbnails(renderedThumbnails);
         } catch (err) {
-          console.error('Error loading thumbnails:', err);
-          setError('Failed to load page thumbnails.');
+          console.error("Error loading thumbnails:", err);
+          setError("Failed to load page thumbnails.");
         } finally {
           setIsLoadingThumbnails(false);
           setLoadingMessage(null);
@@ -82,7 +100,7 @@ export const usePageOrganizer = (
     async (file: File) => {
       await loadPDFBase(file);
     },
-    [loadPDFBase]
+    [loadPDFBase],
   );
 
   const reorderPages = useCallback((activeId: string, overId: string) => {
@@ -130,7 +148,7 @@ export const usePageOrganizer = (
   const deletePage = useCallback(
     (pageId: string) => {
       if (pages.length <= 1) {
-        setError('You cannot delete the last page of the document.');
+        setError("You cannot delete the last page of the document.");
         return;
       }
 
@@ -142,50 +160,58 @@ export const usePageOrganizer = (
         }));
       });
     },
-    [pages.length, setError]
+    [pages.length, setError],
   );
 
   const processAndSave = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     if (!pdfDoc) {
-      setError('PDF document is not loaded. Please try uploading again.');
+      setError("PDF document is not loaded. Please try uploading again.");
       return;
     }
 
     if (pages.length === 0) {
-      setError('No pages to process.');
+      setError("No pages to process.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Building new PDF...');
+    setLoadingMessage("Building new PDF...");
 
     try {
       const pageIndices = buildPageOrder(pages);
       const pdfBytes = await processOrganizedPages(pdfDoc, pageIndices);
 
-      setLoadingMessage('Preparing download...');
+      setLoadingMessage("Preparing download...");
       saveAndDownloadPDF(pdfBytes, pdfFile.name);
 
-      setSuccess('PDF organized successfully! Your download has started.');
+      setSuccess("PDF organized successfully! Your download has started.");
     } catch (err) {
-      console.error('Error processing PDF:', err);
+      console.error("Error processing PDF:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'Could not process PDF. Please try again.'
+          : "Could not process PDF. Please try again.",
       );
     } finally {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfFile, pdfDoc, pages, setIsProcessing, setError, setSuccess, setLoadingMessage]);
+  }, [
+    pdfFile,
+    pdfDoc,
+    pages,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+  ]);
 
   const reset = useCallback(() => {
     setPages([]);
@@ -224,4 +250,3 @@ export const usePageOrganizer = (
 
   return baseReturn;
 };
-

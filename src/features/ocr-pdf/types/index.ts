@@ -1,14 +1,14 @@
 export type WhitelistPreset =
-  | 'alphanumeric'
-  | 'numbers-currency'
-  | 'letters-only'
-  | 'numbers-only'
-  | 'invoice'
-  | 'forms'
-  | 'custom'
-  | '';
+  | "alphanumeric"
+  | "numbers-currency"
+  | "letters-only"
+  | "numbers-only"
+  | "invoice"
+  | "forms"
+  | "custom"
+  | "";
 
-export type OCRResolution = '2.0' | '3.0' | '4.0';
+export type OCRResolution = "2.0" | "3.0" | "4.0";
 
 export interface OCROptions {
   selectedLanguages: string[];
@@ -38,7 +38,9 @@ export interface HOCRWord {
 
 export interface UseOCRReturn {
   pdfFile: File | null;
-  pdfDoc: ReturnType<typeof import('@/hooks/usePDFProcessor').usePDFProcessor>['pdfDoc'];
+  pdfDoc: ReturnType<
+    typeof import("@/hooks/usePDFProcessor").usePDFProcessor
+  >["pdfDoc"];
   isLoadingPDF: boolean;
   pdfError: string | null;
   totalPages: number;
@@ -71,4 +73,3 @@ export interface UseOCRReturn {
   downloadSearchablePDF: () => void;
   reset: () => void;
 }
-

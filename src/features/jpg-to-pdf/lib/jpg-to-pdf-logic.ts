@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import { PDFDocument } from 'pdf-lib';
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
-import { convertImageToJpegBytes } from '@/features/image-to-pdf/lib/image-to-pdf-logic';
+import { PDFDocument } from "pdf-lib";
+import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
+import { convertImageToJpegBytes } from "@/features/image-to-pdf/lib/image-to-pdf-logic";
 import {
   addImageAsPage,
   createImageToPdfResult,
   type ImageToPdfResult,
-} from '@/lib/pdf/image-to-pdf-utils';
+} from "@/lib/pdf/image-to-pdf-utils";
 
 export interface JpgToPdfResult {
-  pdfDoc: ImageToPdfResult['pdfDoc'];
+  pdfDoc: ImageToPdfResult["pdfDoc"];
   successCount: number;
   failedFiles: string[];
 }
 
 export const jpgToPdf = async (files: File[]): Promise<JpgToPdfResult> => {
   if (files.length === 0) {
-    throw new Error('Please select at least one JPG file.');
+    throw new Error("Please select at least one JPG file.");
   }
 
   const pdfDoc = await PDFDocument.create();
@@ -32,7 +32,7 @@ export const jpgToPdf = async (files: File[]): Promise<JpgToPdfResult> => {
         jpgImage = await pdfDoc.embedJpg(new Uint8Array(originalBytes));
       } catch {
         console.warn(
-          `Direct JPG embedding failed for ${file.name}, attempting to sanitize...`
+          `Direct JPG embedding failed for ${file.name}, attempting to sanitize...`,
         );
         try {
           const sanitizedBytes = await convertImageToJpegBytes(file, 0.9);
@@ -40,10 +40,10 @@ export const jpgToPdf = async (files: File[]): Promise<JpgToPdfResult> => {
         } catch (fallbackError) {
           console.error(
             `Failed to process ${file.name} after sanitization:`,
-            fallbackError
+            fallbackError,
           );
           throw new Error(
-            `Could not process "${file.name}". The file may be corrupted.`
+            `Could not process "${file.name}". The file may be corrupted.`,
           );
         }
       }
@@ -57,4 +57,3 @@ export const jpgToPdf = async (files: File[]): Promise<JpgToPdfResult> => {
 
   return createImageToPdfResult(pdfDoc, failedFiles);
 };
-

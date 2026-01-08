@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
 interface MobileViewToggleProps {
   showViewer: boolean;
@@ -19,14 +19,14 @@ export const MobileViewToggle = ({
     <div className="lg:hidden bg-card border-b border-border">
       <div className="flex">
         <Button
-          variant={showViewer ? 'default' : 'ghost'}
+          variant={showViewer ? "default" : "ghost"}
           className="flex-1 rounded-none"
           onClick={onToggleViewer}
         >
           PDF Viewer
         </Button>
         <Button
-          variant={showBookmarks ? 'default' : 'ghost'}
+          variant={showBookmarks ? "default" : "ghost"}
           className="flex-1 rounded-none"
           onClick={onToggleBookmarks}
         >
@@ -36,4 +36,3 @@ export const MobileViewToggle = ({
     </div>
   );
 };
-

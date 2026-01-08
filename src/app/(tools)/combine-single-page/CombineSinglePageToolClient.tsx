@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const CombineSinglePageTool = dynamic(
   () =>
-    import('@/features/combine-single-page').then((mod) => ({
+    import("@/features/combine-single-page").then((mod) => ({
       default: mod.CombineSinglePageTool,
     })),
   {
@@ -16,8 +16,7 @@ const CombineSinglePageTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default CombineSinglePageTool;
-

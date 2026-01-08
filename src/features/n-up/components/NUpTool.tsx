@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useNUp } from '../hooks/useNUp';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
+import Link from "next/link";
+import { useNUp } from "../hooks/useNUp";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft } from 'lucide-react';
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowLeft } from "lucide-react";
 
 export const NUpTool = () => {
   const {
@@ -59,10 +59,12 @@ export const NUpTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">N-Up Page Arrangement</h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">
+        N-Up Page Arrangement
+      </h2>
       <p className="mb-6 text-muted-foreground">
-        Combine multiple pages from your PDF onto a single sheet. This is great for creating
-        booklets or proof sheets.
+        Combine multiple pages from your PDF onto a single sheet. This is great
+        for creating booklets or proof sheets.
       </p>
 
       <PDFUploadSection
@@ -84,7 +86,9 @@ export const NUpTool = () => {
                   <Label htmlFor="pages-per-sheet">Pages Per Sheet</Label>
                   <Select
                     value={pagesPerSheet.toString()}
-                    onValueChange={(value) => setPagesPerSheet(Number.parseInt(value) as 2 | 4 | 9 | 16)}
+                    onValueChange={(value) =>
+                      setPagesPerSheet(Number.parseInt(value) as 2 | 4 | 9 | 16)
+                    }
                     disabled={isProcessing}
                   >
                     <SelectTrigger id="pages-per-sheet" className="w-full">
@@ -103,16 +107,24 @@ export const NUpTool = () => {
                   <Label htmlFor="output-page-size">Output Page Size</Label>
                   <Select
                     value={pageSize}
-                    onValueChange={(value) => setPageSize(value as 'Letter' | 'Legal' | 'Tabloid' | 'A4' | 'A3')}
+                    onValueChange={(value) =>
+                      setPageSize(
+                        value as "Letter" | "Legal" | "Tabloid" | "A4" | "A3",
+                      )
+                    }
                     disabled={isProcessing}
                   >
                     <SelectTrigger id="output-page-size" className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Letter">Letter (8.5 x 11 in)</SelectItem>
+                      <SelectItem value="Letter">
+                        Letter (8.5 x 11 in)
+                      </SelectItem>
                       <SelectItem value="Legal">Legal (8.5 x 14 in)</SelectItem>
-                      <SelectItem value="Tabloid">Tabloid (11 x 17 in)</SelectItem>
+                      <SelectItem value="Tabloid">
+                        Tabloid (11 x 17 in)
+                      </SelectItem>
                       <SelectItem value="A4">A4 (210 x 297 mm)</SelectItem>
                       <SelectItem value="A3">A3 (297 x 420 mm)</SelectItem>
                     </SelectContent>
@@ -125,7 +137,9 @@ export const NUpTool = () => {
                   <Label htmlFor="output-orientation">Output Orientation</Label>
                   <Select
                     value={orientation}
-                    onValueChange={(value) => setOrientation(value as 'auto' | 'portrait' | 'landscape')}
+                    onValueChange={(value) =>
+                      setOrientation(value as "auto" | "portrait" | "landscape")
+                    }
                     disabled={isProcessing}
                   >
                     <SelectTrigger id="output-orientation" className="w-full">
@@ -144,7 +158,9 @@ export const NUpTool = () => {
                     <Checkbox
                       id="add-margins"
                       checked={useMargins}
-                      onCheckedChange={(checked) => setUseMargins(checked === true)}
+                      onCheckedChange={(checked) =>
+                        setUseMargins(checked === true)
+                      }
                       disabled={isProcessing}
                     />
                     <Label
@@ -163,7 +179,9 @@ export const NUpTool = () => {
                     <Checkbox
                       id="add-border"
                       checked={addBorder}
-                      onCheckedChange={(checked) => setAddBorder(checked === true)}
+                      onCheckedChange={(checked) =>
+                        setAddBorder(checked === true)
+                      }
                       disabled={isProcessing}
                     />
                     <Label
@@ -208,8 +226,10 @@ export const NUpTool = () => {
         </div>
       )}
 
-      <ProcessLoadingModal isProcessing={isProcessing} loadingMessage={loadingMessage} />
+      <ProcessLoadingModal
+        isProcessing={isProcessing}
+        loadingMessage={loadingMessage}
+      />
     </div>
   );
 };
-

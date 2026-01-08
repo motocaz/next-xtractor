@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
-import { renderPageAsImage } from '@/lib/pdf/canvas-utils';
-import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
+import { loadPDFWithPDFJSFromBuffer } from "@/lib/pdf/pdfjs-loader";
+import { renderPageAsImage } from "@/lib/pdf/canvas-utils";
+import type { PDFFileInfo } from "@/hooks/useMultiPDFLoader";
 
 export const renderAllPagesAsThumbnails = async (
   pdfFiles: PDFFileInfo[],
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<Map<string, string>> => {
   const thumbnailMap = new Map<string, string>();
   let currentPage = 0;
@@ -21,13 +21,13 @@ export const renderAllPagesAsThumbnails = async (
       const pdfBytes = await pdfInfo.pdfDoc.save();
       const arrayBuffer = pdfBytes.buffer.slice(
         pdfBytes.byteOffset,
-        pdfBytes.byteOffset + pdfBytes.byteLength
+        pdfBytes.byteOffset + pdfBytes.byteLength,
       ) as ArrayBuffer;
       const pdfJsDoc = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
 
       for (let i = 1; i <= pdfInfo.pageCount; i++) {
         currentPage++;
-        
+
         if (onProgress) {
           onProgress(currentPage, totalPages);
         }
@@ -41,11 +41,13 @@ export const renderAllPagesAsThumbnails = async (
         }
       }
     } catch (error) {
-      console.error(`Error rendering thumbnails for ${pdfInfo.fileName}:`, error);
+      console.error(
+        `Error rendering thumbnails for ${pdfInfo.fileName}:`,
+        error,
+      );
       throw new Error(`Failed to render thumbnails for ${pdfInfo.fileName}`);
     }
   }
 
   return thumbnailMap;
 };
-

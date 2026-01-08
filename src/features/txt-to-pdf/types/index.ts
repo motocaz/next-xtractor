@@ -1,5 +1,5 @@
-export type FontFamily = 'Helvetica' | 'TimesRoman' | 'Courier';
-export type PageSize = 'A4' | 'Letter';
+export type FontFamily = "Helvetica" | "TimesRoman" | "Courier";
+export type PageSize = "A4" | "Letter";
 
 export interface TxtToPdfOptions {
   fontFamily: FontFamily;
@@ -16,10 +16,10 @@ export interface UseTxtToPdfReturn {
   fileSuccess: string | null;
   loadTxtFiles: (files: File[]) => Promise<void>;
   removeTxtFile: (id: string) => void;
-  
+
   textInput: string;
   setTextInput: (text: string) => void;
-  
+
   fontFamily: FontFamily;
   fontSize: number;
   pageSize: PageSize;
@@ -28,7 +28,7 @@ export interface UseTxtToPdfReturn {
   setFontSize: (size: number) => void;
   setPageSize: (size: PageSize) => void;
   setTextColor: (color: string) => void;
-  
+
   isProcessing: boolean;
   loadingMessage: string | null;
   error: string | null;
@@ -36,4 +36,3 @@ export interface UseTxtToPdfReturn {
   processTxtToPdf: () => Promise<void>;
   reset: () => void;
 }
-

@@ -18,4 +18,3 @@ export interface UseWebpToPdfReturn {
   processWebpToPdf: () => Promise<void>;
   reset: () => void;
 }
-

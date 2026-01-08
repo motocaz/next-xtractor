@@ -1,12 +1,12 @@
-import type { PDFDocument } from 'pdf-lib';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
-import type { PlacedSignature } from '../types';
+import type { PDFDocument } from "pdf-lib";
+import type { PDFDocumentProxy } from "pdfjs-dist";
+import type { PlacedSignature } from "../types";
 
 export const applySignaturesToPDF = async (
   pdfDoc: PDFDocument,
   pdfJsDoc: PDFDocumentProxy,
   placedSignatures: PlacedSignature[],
-  scale: number
+  scale: number,
 ): Promise<Uint8Array> => {
   const pages = pdfDoc.getPages();
 
@@ -17,7 +17,7 @@ export const applySignaturesToPDF = async (
     const originalPageSize = page.getSize();
 
     const pngBytes = await fetch(sig.image.src).then((res) =>
-      res.arrayBuffer()
+      res.arrayBuffer(),
     );
 
     const pngImage = await pdfDoc.embedPng(pngBytes);
@@ -28,9 +28,7 @@ export const applySignaturesToPDF = async (
 
     const pdfX = sig.x * scaleRatio;
     const pdfY =
-      originalPageSize.height -
-      sig.y * scaleRatio -
-      sig.height * scaleRatio;
+      originalPageSize.height - sig.y * scaleRatio - sig.height * scaleRatio;
     const pdfWidth = sig.width * scaleRatio;
     const pdfHeight = sig.height * scaleRatio;
 
@@ -44,4 +42,3 @@ export const applySignaturesToPDF = async (
 
   return await pdfDoc.save();
 };
-

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { usePDFLoader } from './usePDFLoader';
+import { useState, useCallback } from "react";
+import { usePDFLoader } from "./usePDFLoader";
 
 export interface UsePDFProcessorReturn {
   isProcessing: boolean;
@@ -9,7 +9,7 @@ export interface UsePDFProcessorReturn {
   error: string | null;
   success: string | null;
 
-  pdfDoc: ReturnType<typeof usePDFLoader>['pdfDoc'];
+  pdfDoc: ReturnType<typeof usePDFLoader>["pdfDoc"];
   pdfFile: File | null;
   isLoadingPDF: boolean;
   pdfError: string | null;
@@ -26,7 +26,9 @@ export interface UsePDFProcessorReturn {
   resetProcessing: () => void;
 }
 
-export const usePDFProcessor = (allowEncrypted = false): UsePDFProcessorReturn => {
+export const usePDFProcessor = (
+  allowEncrypted = false,
+): UsePDFProcessorReturn => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -69,4 +71,3 @@ export const usePDFProcessor = (allowEncrypted = false): UsePDFProcessorReturn =
     resetProcessing,
   };
 };
-

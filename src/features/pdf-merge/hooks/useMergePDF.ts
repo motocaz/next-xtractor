@@ -1,21 +1,31 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useEffect } from 'react';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { mergePDFsFileMode, mergePDFsPageMode } from '../lib/merge-logic';
-import { renderAllPagesAsThumbnails } from '../lib/thumbnail-renderer';
-import { useMultiPDFLoader } from '@/hooks/useMultiPDFLoader';
-import type { UseMergePDFReturn, MergePageThumbnailData, MergeMode } from '../types';
+import { useState, useCallback, useEffect } from "react";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import { mergePDFsFileMode, mergePDFsPageMode } from "../lib/merge-logic";
+import { renderAllPagesAsThumbnails } from "../lib/thumbnail-renderer";
+import { useMultiPDFLoader } from "@/hooks/useMultiPDFLoader";
+import type {
+  UseMergePDFReturn,
+  MergePageThumbnailData,
+  MergeMode,
+} from "../types";
 
 export const useMergePDF = (): UseMergePDFReturn => {
-  const [activeMode, setActiveModeState] = useState<MergeMode>('file');
-  const [pageThumbnails, setPageThumbnails] = useState<MergePageThumbnailData[]>([]);
-  const [thumbnailImages, setThumbnailImages] = useState<Map<string, string>>(new Map());
+  const [activeMode, setActiveModeState] = useState<MergeMode>("file");
+  const [pageThumbnails, setPageThumbnails] = useState<
+    MergePageThumbnailData[]
+  >([]);
+  const [thumbnailImages, setThumbnailImages] = useState<Map<string, string>>(
+    new Map(),
+  );
   const [pageRanges, setPageRanges] = useState<Map<string, string>>(new Map());
 
   const [isRenderingThumbnails, setIsRenderingThumbnails] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [processingLoadingMessage, setProcessingLoadingMessage] = useState<string | null>(null);
+  const [processingLoadingMessage, setProcessingLoadingMessage] = useState<
+    string | null
+  >(null);
   const [processingError, setProcessingError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -29,7 +39,7 @@ export const useMergePDF = (): UseMergePDFReturn => {
     reorderFiles,
     reset: loaderReset,
   } = useMultiPDFLoader({
-    onEncryptedFiles: 'error',
+    onEncryptedFiles: "error",
   });
 
   const loadPDFs = useCallback(
@@ -37,7 +47,7 @@ export const useMergePDF = (): UseMergePDFReturn => {
       setSuccess(null);
       await loaderLoadPDFs(files);
     },
-    [loaderLoadPDFs]
+    [loaderLoadPDFs],
   );
 
   const removePDF = useCallback(
@@ -60,7 +70,7 @@ export const useMergePDF = (): UseMergePDFReturn => {
       });
       setSuccess(null);
     },
-    [loaderRemovePDF]
+    [loaderRemovePDF],
   );
 
   const setPageRange = useCallback((fileId: string, range: string) => {
@@ -80,7 +90,7 @@ export const useMergePDF = (): UseMergePDFReturn => {
 
     setIsRenderingThumbnails(true);
     setProcessingError(null);
-    setProcessingLoadingMessage('Rendering page previews...');
+    setProcessingLoadingMessage("Rendering page previews...");
 
     try {
       const thumbnailsData: MergePageThumbnailData[] = [];
@@ -99,17 +109,22 @@ export const useMergePDF = (): UseMergePDFReturn => {
 
       setPageThumbnails(thumbnailsData);
 
-      const imagesMap = await renderAllPagesAsThumbnails(pdfFiles, (current, total) => {
-        setProcessingLoadingMessage(`Rendering page previews: ${current}/${total}`);
-      });
+      const imagesMap = await renderAllPagesAsThumbnails(
+        pdfFiles,
+        (current, total) => {
+          setProcessingLoadingMessage(
+            `Rendering page previews: ${current}/${total}`,
+          );
+        },
+      );
 
       setThumbnailImages(imagesMap);
     } catch (err) {
-      console.error('Error rendering thumbnails:', err);
+      console.error("Error rendering thumbnails:", err);
       setProcessingError(
         err instanceof Error
           ? `Failed to render thumbnails: ${err.message}`
-          : 'Failed to render page thumbnails.'
+          : "Failed to render page thumbnails.",
       );
     } finally {
       setIsRenderingThumbnails(false);
@@ -123,11 +138,15 @@ export const useMergePDF = (): UseMergePDFReturn => {
 
       setActiveModeState(mode);
 
-      if (mode === 'page' && pdfFiles.length > 0 && pageThumbnails.length === 0) {
+      if (
+        mode === "page" &&
+        pdfFiles.length > 0 &&
+        pageThumbnails.length === 0
+      ) {
         await renderPageThumbnails();
       }
     },
-    [activeMode, pdfFiles.length, pageThumbnails.length, renderPageThumbnails]
+    [activeMode, pdfFiles.length, pageThumbnails.length, renderPageThumbnails],
   );
 
   const reorderPages = useCallback((activeId: string, overId: string) => {
@@ -149,23 +168,23 @@ export const useMergePDF = (): UseMergePDFReturn => {
 
   const processMerge = useCallback(async () => {
     if (pdfFiles.length === 0) {
-      setProcessingError('Please upload at least one PDF file.');
+      setProcessingError("Please upload at least one PDF file.");
       return;
     }
 
     setIsProcessing(true);
     setProcessingError(null);
     setSuccess(null);
-    setProcessingLoadingMessage('Merging PDFs...');
+    setProcessingLoadingMessage("Merging PDFs...");
 
     try {
       let newPdfDoc;
 
-      if (activeMode === 'file') {
+      if (activeMode === "file") {
         newPdfDoc = await mergePDFsFileMode(pdfFiles, pageRanges);
       } else {
         if (pageThumbnails.length === 0) {
-          setProcessingError('Please select at least one page to merge.');
+          setProcessingError("Please select at least one page to merge.");
           setIsProcessing(false);
           setProcessingLoadingMessage(null);
           return;
@@ -174,16 +193,16 @@ export const useMergePDF = (): UseMergePDFReturn => {
       }
 
       const mergedPdfBytes = await newPdfDoc.save();
-      const firstFileName = pdfFiles[0]?.fileName || 'merged';
+      const firstFileName = pdfFiles[0]?.fileName || "merged";
       saveAndDownloadPDF(mergedPdfBytes, firstFileName);
 
-      setSuccess('PDFs merged successfully!');
+      setSuccess("PDFs merged successfully!");
     } catch (err) {
-      console.error('Merge error:', err);
+      console.error("Merge error:", err);
       setProcessingError(
         err instanceof Error
           ? `Failed to merge PDFs: ${err.message}`
-          : 'Failed to merge PDFs. Please check that all files are valid and not password-protected.'
+          : "Failed to merge PDFs. Please check that all files are valid and not password-protected.",
       );
     } finally {
       setIsProcessing(false);
@@ -193,7 +212,7 @@ export const useMergePDF = (): UseMergePDFReturn => {
 
   const reset = useCallback(() => {
     loaderReset();
-    setActiveModeState('file');
+    setActiveModeState("file");
     setPageThumbnails([]);
     setThumbnailImages(new Map());
     setPageRanges(new Map());
@@ -205,11 +224,21 @@ export const useMergePDF = (): UseMergePDFReturn => {
   }, [loaderReset]);
 
   useEffect(() => {
-    if (activeMode === 'page' && pdfFiles.length > 0 && pageThumbnails.length === 0 && !isRenderingThumbnails) {
+    if (
+      activeMode === "page" &&
+      pdfFiles.length > 0 &&
+      pageThumbnails.length === 0 &&
+      !isRenderingThumbnails
+    ) {
       renderPageThumbnails();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeMode, pdfFiles.length, pageThumbnails.length, isRenderingThumbnails]);
+  }, [
+    activeMode,
+    pdfFiles.length,
+    pageThumbnails.length,
+    isRenderingThumbnails,
+  ]);
 
   const combinedLoading = isLoading || isRenderingThumbnails || isProcessing;
   const combinedLoadingMessage = loadingMessage || processingLoadingMessage;
@@ -238,4 +267,3 @@ export const useMergePDF = (): UseMergePDFReturn => {
     reset,
   };
 };
-

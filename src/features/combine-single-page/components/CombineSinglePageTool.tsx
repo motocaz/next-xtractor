@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useCombineSinglePage } from '../hooks/useCombineSinglePage';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowLeft } from 'lucide-react';
+import Link from "next/link";
+import { useCombineSinglePage } from "../hooks/useCombineSinglePage";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ArrowLeft } from "lucide-react";
 
 export const CombineSinglePageTool = () => {
   const {
@@ -99,9 +99,7 @@ export const CombineSinglePageTool = () => {
               <Checkbox
                 id="add-separator"
                 checked={addSeparator}
-                onCheckedChange={(checked) =>
-                  setAddSeparator(checked === true)
-                }
+                onCheckedChange={(checked) => setAddSeparator(checked === true)}
                 disabled={isProcessing}
               />
               <Label
@@ -132,4 +130,3 @@ export const CombineSinglePageTool = () => {
     </div>
   );
 };
-

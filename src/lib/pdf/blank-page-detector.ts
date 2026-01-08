@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import type { PDFPageProxy } from 'pdfjs-dist';
+import type { PDFPageProxy } from "pdfjs-dist";
 
 export const isPageBlank = async (
   page: PDFPageProxy,
   threshold: number,
-  scale: number = 0.2
+  scale: number = 0.2,
 ): Promise<boolean> => {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
 
   if (!context) {
-    throw new Error('Failed to get canvas context');
+    throw new Error("Failed to get canvas context");
   }
 
   const viewport = page.getViewport({ scale });
@@ -38,4 +38,3 @@ export const isPageBlank = async (
   const blankness = 1 - nonWhitePixels / totalPixels;
   return blankness >= threshold / 100;
 };
-

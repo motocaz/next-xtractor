@@ -52,7 +52,6 @@ export const CropPDFTool = () => {
         "https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css";
       document.head.appendChild(link);
 
-      
       const style = document.createElement("style");
       style.id = "cropper-custom-styles";
       style.textContent = `
@@ -65,7 +64,7 @@ export const CropPDFTool = () => {
 
       return () => {
         const existingLink = document.querySelector(
-          'link[href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css"]'
+          'link[href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css"]',
         );
         if (existingLink) {
           existingLink.remove();
@@ -83,8 +82,7 @@ export const CropPDFTool = () => {
       isCropperReadyRef.current = false;
       return;
     }
-    
-    
+
     isCropperReadyRef.current = false;
 
     if (cropperInstanceRef.current) {
@@ -111,14 +109,18 @@ export const CropPDFTool = () => {
 
       import("cropperjs")
         .then((CropperModule) => {
-          
           const CropperClass = (CropperModule.default || CropperModule) as
             | (new (img: HTMLImageElement, options?: unknown) => unknown)
             | undefined;
-          
+
           if (!CropperClass || typeof CropperClass !== "function") {
-            console.error("Failed to get Cropper class from module:", CropperModule);
-            setError("Failed to load cropper library. Please refresh the page.");
+            console.error(
+              "Failed to get Cropper class from module:",
+              CropperModule,
+            );
+            setError(
+              "Failed to load cropper library. Please refresh the page.",
+            );
             return;
           }
 
@@ -137,12 +139,12 @@ export const CropPDFTool = () => {
               },
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any);
-            
+
             cropperInstanceRef.current = cropperInstance;
           } catch (error) {
             console.error("Error creating CropperJS instance:", error);
             setError(
-              "Failed to initialize cropper. Please try refreshing the page."
+              "Failed to initialize cropper. Please try refreshing the page.",
             );
           }
 
@@ -173,7 +175,7 @@ export const CropPDFTool = () => {
         .catch((error) => {
           console.error("Error importing CropperJS:", error);
           setError(
-            "Failed to load cropper library. Please try refreshing the page."
+            "Failed to load cropper library. Please try refreshing the page.",
           );
         });
     };
@@ -238,49 +240,40 @@ export const CropPDFTool = () => {
   };
 
   const handleApplyCrop = async () => {
-    
     if (!cropperInstanceRef.current) {
       setError(
-        "Cropper is not initialized. Please wait for the page to finish loading."
+        "Cropper is not initialized. Please wait for the page to finish loading.",
       );
       return;
     }
 
-    
     if (!isCropperReadyRef.current) {
       setError(
-        "Cropper is not ready yet. Please wait for the page to finish loading."
+        "Cropper is not ready yet. Please wait for the page to finish loading.",
       );
       return;
     }
 
-    
     if (
       typeof cropperInstanceRef.current.getData !== "function" ||
       typeof cropperInstanceRef.current.getImageData !== "function"
     ) {
-      setError(
-        "Cropper is not ready yet. Please wait a moment and try again."
-      );
+      setError("Cropper is not ready yet. Please wait a moment and try again.");
       return;
     }
 
-    
     let currentCrop: { x: number; y: number; width: number; height: number };
     let imageData: { naturalWidth: number; naturalHeight: number };
-    
+
     try {
       currentCrop = cropperInstanceRef.current.getData(true);
       imageData = cropperInstanceRef.current.getImageData();
     } catch (error) {
       console.error("Error accessing cropper methods:", error);
-      setError(
-        "Failed to get crop data. Please try selecting the area again."
-      );
+      setError("Failed to get crop data. Please try selecting the area again.");
       return;
     }
 
-    
     if (
       !imageData?.naturalWidth ||
       !imageData?.naturalHeight ||
@@ -291,7 +284,6 @@ export const CropPDFTool = () => {
       return;
     }
 
-    
     if (
       typeof currentCrop.x !== "number" ||
       typeof currentCrop.y !== "number" ||
@@ -302,7 +294,6 @@ export const CropPDFTool = () => {
       return;
     }
 
-    
     const cropPercentages: CropData = {
       x: currentCrop.x / imageData.naturalWidth,
       y: currentCrop.y / imageData.naturalHeight,
@@ -310,10 +301,8 @@ export const CropPDFTool = () => {
       height: currentCrop.height / imageData.naturalHeight,
     };
 
-    
     saveCurrentCrop(cropPercentages);
 
-    
     await applyCrop(cropPercentages);
   };
 

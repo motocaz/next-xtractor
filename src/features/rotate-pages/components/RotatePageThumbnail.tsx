@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { RotateCw } from 'lucide-react';
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { RotateCw } from "lucide-react";
 
 interface RotatePageThumbnailProps {
   pageNum: number;
@@ -26,7 +26,7 @@ export const RotatePageThumbnail = ({
           className="absolute inset-0 flex items-center justify-center"
           style={{
             transform: `rotate(${rotation}deg)`,
-            transition: 'transform 0.2s ease',
+            transition: "transform 0.2s ease",
           }}
         >
           <Image
@@ -64,4 +64,3 @@ export const RotatePageThumbnail = ({
     </div>
   );
 };
-

@@ -20,7 +20,9 @@ export default function Footer() {
                 height={40}
                 className="h-10 w-10 mr-3"
               />
-              <span className="text-xl font-bold text-foreground">Xtractor</span>
+              <span className="text-xl font-bold text-foreground">
+                Xtractor
+              </span>
             </div>
             <p className="text-muted-foreground text-sm">
               &copy; {currentYear} Xtractor. All rights reserved.

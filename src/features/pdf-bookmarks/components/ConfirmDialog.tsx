@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   AlertDialog,
@@ -9,9 +9,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-import { AlertTriangle } from 'lucide-react';
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { AlertTriangle } from "lucide-react";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -21,7 +21,7 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
   confirmLabel?: string;
   cancelLabel?: string;
-  variant?: 'default' | 'destructive';
+  variant?: "default" | "destructive";
 }
 
 export const ConfirmDialog = ({
@@ -30,9 +30,9 @@ export const ConfirmDialog = ({
   title,
   message,
   onConfirm,
-  confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
-  variant = 'default',
+  confirmLabel = "Confirm",
+  cancelLabel = "Cancel",
+  variant = "default",
 }: ConfirmDialogProps) => {
   const handleConfirm = () => {
     onConfirm();
@@ -57,7 +57,7 @@ export const ConfirmDialog = ({
           </AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
-              variant={variant === 'destructive' ? 'destructive' : 'default'}
+              variant={variant === "destructive" ? "destructive" : "default"}
               onClick={handleConfirm}
             >
               {confirmLabel}
@@ -68,5 +68,3 @@ export const ConfirmDialog = ({
     </AlertDialog>
   );
 };
-
-

@@ -23,4 +23,3 @@ export interface UseCombineSinglePageReturn {
   processCombine: () => Promise<void>;
   reset: () => void;
 }
-

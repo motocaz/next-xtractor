@@ -32,7 +32,7 @@ interface BookmarkNodeProps {
     page: number,
     destX: number | null,
     destY: number | null,
-    zoom: string | null
+    zoom: string | null,
   ) => void;
   searchQuery: string;
 }

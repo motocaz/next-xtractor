@@ -18,4 +18,3 @@ export interface UseHeicToPdfReturn {
   processHeicToPdf: () => Promise<void>;
   reset: () => void;
 }
-

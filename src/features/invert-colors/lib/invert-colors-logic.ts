@@ -6,7 +6,7 @@ const PROCESSING_SCALE = 1.5;
 
 export const invertColors = async (
   file: File,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<Uint8Array> => {
   return processPDFPagesWithCanvas(
     file,
@@ -19,6 +19,6 @@ export const invertColors = async (
         data[j + 2] = 255 - data[j + 2];
       }
     },
-    onProgress
+    onProgress,
   );
 };

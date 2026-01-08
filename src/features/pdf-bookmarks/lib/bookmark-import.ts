@@ -1,7 +1,7 @@
-import type { BookmarkNode } from '../types';
+import type { BookmarkNode } from "../types";
 
 export const parseCSV = (text: string): BookmarkNode[] => {
-  const lines = text.trim().split('\n').slice(1);
+  const lines = text.trim().split("\n").slice(1);
   const bookmarks: BookmarkNode[] = [];
   const stack: Array<{ children: BookmarkNode[]; level: number }> = [
     { children: bookmarks, level: -1 },
@@ -39,11 +39,10 @@ export const parseJSON = (text: string): BookmarkNode[] => {
   try {
     const parsed = JSON.parse(text);
     if (!Array.isArray(parsed)) {
-      throw new Error('JSON must be an array of bookmarks');
+      throw new Error("JSON must be an array of bookmarks");
     }
     return parsed as BookmarkNode[];
   } catch {
-    throw new Error('Invalid JSON format');
+    throw new Error("Invalid JSON format");
   }
 };
-

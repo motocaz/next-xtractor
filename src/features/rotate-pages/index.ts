@@ -1,2 +1,1 @@
-export { RotatePagesTool } from './components/RotatePagesTool';
-
+export { RotatePagesTool } from "./components/RotatePagesTool";

@@ -6,11 +6,10 @@ export default function TermsPage() {
       </h1>
       <div className="prose prose-invert max-w-4xl">
         <p className="text-muted-foreground text-lg mb-4">
-          Please read these terms and conditions carefully before using Xtractor.
+          Please read these terms and conditions carefully before using
+          Xtractor.
         </p>
       </div>
     </div>
   );
 }
-
-

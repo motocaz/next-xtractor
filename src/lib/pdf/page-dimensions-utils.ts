@@ -7,11 +7,8 @@ const STANDARD_SIZES = {
   A5: { width: 419.53, height: 595.28 },
 } as const;
 
-export const getStandardPageName = (
-  width: number,
-  height: number
-): string => {
-  const tolerance = 1; 
+export const getStandardPageName = (width: number, height: number): string => {
+  const tolerance = 1;
 
   for (const [name, size] of Object.entries(STANDARD_SIZES)) {
     if (
@@ -24,23 +21,23 @@ export const getStandardPageName = (
     }
   }
 
-  return 'Custom';
+  return "Custom";
 };
 
 export const convertPoints = (
   points: number,
-  unit: 'pt' | 'in' | 'mm' | 'px'
+  unit: "pt" | "in" | "mm" | "px",
 ): string => {
   let result = 0;
 
   switch (unit) {
-    case 'in':
+    case "in":
       result = points / 72;
       break;
-    case 'mm':
+    case "mm":
       result = (points / 72) * 25.4;
       break;
-    case 'px':
+    case "px":
       result = points * (96 / 72);
       break;
     default:
@@ -50,4 +47,3 @@ export const convertPoints = (
 
   return result.toFixed(2);
 };
-

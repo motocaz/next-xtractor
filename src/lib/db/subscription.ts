@@ -1,5 +1,5 @@
-import prisma from '@/lib/prisma';
-import type { SubscriptionStatus } from '../../generated/prisma/client';
+import prisma from "@/lib/prisma";
+import type { SubscriptionStatus } from "../../generated/prisma/client";
 
 export interface SubscriptionData {
   userId: string;
@@ -26,21 +26,19 @@ export const getUserSubscription = async (userId: string) => {
     where: {
       userId,
       status: {
-        in: ['ACTIVE', 'TRIALING'],
+        in: ["ACTIVE", "TRIALING"],
       },
       currentPeriodEnd: {
         gte: new Date(),
       },
     },
     orderBy: {
-      createdAt: 'desc',
+      createdAt: "desc",
     },
   });
 };
 
-export const createSubscriptionFromClerk = async (
-  data: SubscriptionData
-) => {
+export const createSubscriptionFromClerk = async (data: SubscriptionData) => {
   return prisma.subscription.create({
     data: {
       userId: data.userId,
@@ -57,7 +55,7 @@ export const createSubscriptionFromClerk = async (
 
 export const updateSubscriptionFromClerk = async (
   clerkSubscriptionId: string,
-  data: UpdateSubscriptionData
+  data: UpdateSubscriptionData,
 ) => {
   return prisma.subscription.update({
     where: { clerkSubscriptionId },
@@ -76,15 +74,13 @@ export const cancelSubscription = async (clerkSubscriptionId: string) => {
   return prisma.subscription.update({
     where: { clerkSubscriptionId },
     data: {
-      status: 'CANCELED',
+      status: "CANCELED",
       canceledAt: new Date(),
     },
   });
 };
 
-export const getSubscriptionByClerkId = async (
-  clerkSubscriptionId: string
-) => {
+export const getSubscriptionByClerkId = async (clerkSubscriptionId: string) => {
   return prisma.subscription.findUnique({
     where: { clerkSubscriptionId },
     include: {
@@ -93,22 +89,23 @@ export const getSubscriptionByClerkId = async (
   });
 };
 
-export const hasActiveSubscription = async (userId: string): Promise<boolean> => {
+export const hasActiveSubscription = async (
+  userId: string,
+): Promise<boolean> => {
   const subscription = await prisma.subscription.findFirst({
     where: {
       userId,
       status: {
-        in: ['ACTIVE', 'TRIALING'],
+        in: ["ACTIVE", "TRIALING"],
       },
       currentPeriodEnd: {
         gte: new Date(),
       },
     },
     orderBy: {
-      createdAt: 'desc',
+      createdAt: "desc",
     },
   });
 
   return !!subscription;
 };
-

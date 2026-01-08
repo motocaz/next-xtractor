@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { removeRestrictions } from '../lib/remove-restrictions-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
-import type { UseRemoveRestrictionsReturn } from '../types';
+import { useState, useCallback } from "react";
+import { removeRestrictions } from "../lib/remove-restrictions-logic";
+import { downloadFile } from "@/lib/pdf/file-utils";
+import type { UseRemoveRestrictionsReturn } from "../types";
 
 export const useRemoveRestrictions = (): UseRemoveRestrictionsReturn => {
-  const [ownerPassword, setOwnerPassword] = useState<string>('');
+  const [ownerPassword, setOwnerPassword] = useState<string>("");
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [isLoadingPDF, setIsLoadingPDF] = useState(false);
   const [pdfError, setPdfError] = useState<string | null>(null);
@@ -16,9 +16,9 @@ export const useRemoveRestrictions = (): UseRemoveRestrictionsReturn => {
   const [success, setSuccess] = useState<string | null>(null);
 
   const loadPDF = useCallback(async (file: File) => {
-    if (!file || file.type !== 'application/pdf') {
-      if (!file.name.toLowerCase().endsWith('.pdf')) {
-        setPdfError('Please select a valid PDF file.');
+    if (!file || file.type !== "application/pdf") {
+      if (!file.name.toLowerCase().endsWith(".pdf")) {
+        setPdfError("Please select a valid PDF file.");
         return;
       }
     }
@@ -30,11 +30,11 @@ export const useRemoveRestrictions = (): UseRemoveRestrictionsReturn => {
     try {
       setPdfFile(file);
     } catch (err) {
-      console.error('Error loading PDF:', err);
+      console.error("Error loading PDF:", err);
       setPdfError(
         err instanceof Error
           ? err.message
-          : 'Could not load PDF. It may be corrupt.'
+          : "Could not load PDF. It may be corrupt.",
       );
     } finally {
       setIsLoadingPDF(false);
@@ -43,42 +43,45 @@ export const useRemoveRestrictions = (): UseRemoveRestrictionsReturn => {
 
   const removeRestrictionsHandler = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Initializing...');
+    setLoadingMessage("Initializing...");
 
     try {
-      setLoadingMessage('Reading PDF...');
-      setLoadingMessage('Removing restrictions...');
+      setLoadingMessage("Reading PDF...");
+      setLoadingMessage("Removing restrictions...");
 
-      const password = ownerPassword.trim().length > 0 ? ownerPassword : undefined;
+      const password =
+        ownerPassword.trim().length > 0 ? ownerPassword : undefined;
       const blob = await removeRestrictions(pdfFile, password);
 
-      setLoadingMessage('Preparing download...');
+      setLoadingMessage("Preparing download...");
       downloadFile(blob, pdfFile.name);
 
       setSuccess(
-        'PDF restrictions removed successfully! The file is now fully editable and printable.'
+        "PDF restrictions removed successfully! The file is now fully editable and printable.",
       );
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.error('Error removing restrictions:', err);
+      console.error("Error removing restrictions:", err);
 
-      if (err.message?.includes('password') || err.message?.includes('encrypt')) {
+      if (
+        err.message?.includes("password") ||
+        err.message?.includes("encrypt")
+      ) {
         setError(
-          'Failed to remove restrictions. The PDF may require the correct owner password.'
+          "Failed to remove restrictions. The PDF may require the correct owner password.",
         );
       } else {
         setError(
           `An error occurred: ${
-            err.message ||
-            'The PDF might be corrupted or password-protected.'
-          }`
+            err.message || "The PDF might be corrupted or password-protected."
+          }`,
         );
       }
     } finally {
@@ -88,7 +91,7 @@ export const useRemoveRestrictions = (): UseRemoveRestrictionsReturn => {
   }, [pdfFile, ownerPassword]);
 
   const reset = useCallback(() => {
-    setOwnerPassword('');
+    setOwnerPassword("");
     setPdfFile(null);
     setPdfError(null);
     setError(null);
@@ -114,4 +117,3 @@ export const useRemoveRestrictions = (): UseRemoveRestrictionsReturn => {
     reset,
   };
 };
-

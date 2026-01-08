@@ -1,22 +1,31 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useRef, useEffect } from 'react';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
-import { PDFDocument } from 'pdf-lib';
-import type { PDFDocument as PDFDocumentType } from 'pdf-lib';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
-import { readFileAsArrayBuffer, saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { renderPageAsImage } from '@/lib/pdf/canvas-utils';
-import { applyRedactions as applyRedactionsToPDF } from '../lib/redact-logic';
-import type { RedactionRect, PageRedactions, UseRedactPDFReturn } from '../types';
+import { useState, useCallback, useRef, useEffect } from "react";
+import type { PDFDocumentProxy } from "pdfjs-dist";
+import { PDFDocument } from "pdf-lib";
+import type { PDFDocument as PDFDocumentType } from "pdf-lib";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import { loadPDFWithPDFJSFromBuffer } from "@/lib/pdf/pdfjs-loader";
+import {
+  readFileAsArrayBuffer,
+  saveAndDownloadPDF,
+} from "@/lib/pdf/file-utils";
+import { renderPageAsImage } from "@/lib/pdf/canvas-utils";
+import { applyRedactions as applyRedactionsToPDF } from "../lib/redact-logic";
+import type {
+  RedactionRect,
+  PageRedactions,
+  UseRedactPDFReturn,
+} from "../types";
 
-const CANVAS_SCALE = 2.5; 
+const CANVAS_SCALE = 2.5;
 
 export const useRedactPDF = (): UseRedactPDFReturn => {
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const [pageRedactions, setPageRedactions] = useState<PageRedactions>({});
-  const [currentPageImageUrl, setCurrentPageImageUrl] = useState<string | null>(null);
+  const [currentPageImageUrl, setCurrentPageImageUrl] = useState<string | null>(
+    null,
+  );
   const [, setOriginalPdfBytes] = useState<ArrayBuffer | null>(null);
   const pdfJsDocRef = useRef<PDFDocumentProxy | null>(null);
   const pdfDocRef = useRef<PDFDocumentType | null>(null);
@@ -52,7 +61,7 @@ export const useRedactPDF = (): UseRedactPDFReturn => {
       setOriginalPdfBytes(null);
       pdfJsDocRef.current = null;
 
-      setLoadingMessage('Loading PDF...');
+      setLoadingMessage("Loading PDF...");
       setIsProcessing(true);
       setError(null);
       setSuccess(null);
@@ -72,20 +81,22 @@ export const useRedactPDF = (): UseRedactPDFReturn => {
           setCurrentPageImageUrl(imageUrl);
         }
 
-        setSuccess('PDF loaded successfully. Draw rectangles to redact content.');
+        setSuccess(
+          "PDF loaded successfully. Draw rectangles to redact content.",
+        );
       } catch (err) {
-        console.error('Error loading PDF:', err);
+        console.error("Error loading PDF:", err);
         setError(
           err instanceof Error
             ? err.message
-            : 'Could not load PDF. It may be corrupt or password-protected.'
+            : "Could not load PDF. It may be corrupt or password-protected.",
         );
       } finally {
         setIsProcessing(false);
         setLoadingMessage(null);
       }
     },
-    [baseLoadPDF, setError, setSuccess, setLoadingMessage, setIsProcessing]
+    [baseLoadPDF, setError, setSuccess, setLoadingMessage, setIsProcessing],
   );
 
   const changePage = useCallback(
@@ -101,16 +112,20 @@ export const useRedactPDF = (): UseRedactPDFReturn => {
       setLoadingMessage(`Rendering page ${newPageNum}...`);
 
       try {
-        const imageUrl = await renderPageAsImage(pdfJsDocRef.current, newPageNum, CANVAS_SCALE);
+        const imageUrl = await renderPageAsImage(
+          pdfJsDocRef.current,
+          newPageNum,
+          CANVAS_SCALE,
+        );
         setCurrentPageImageUrl(imageUrl);
         setLoadingMessage(null);
       } catch (err) {
-        console.error('Error rendering page:', err);
-        setError('Failed to render page.');
+        console.error("Error rendering page:", err);
+        setError("Failed to render page.");
         setLoadingMessage(null);
       }
     },
-    [currentPageNum, setError, setLoadingMessage]
+    [currentPageNum, setError, setLoadingMessage],
   );
 
   const addRedaction = useCallback(
@@ -123,7 +138,7 @@ export const useRedactPDF = (): UseRedactPDFReturn => {
         };
       });
     },
-    [currentPageNum]
+    [currentPageNum],
   );
 
   const removeRedaction = useCallback((pageNum: number, index: number) => {
@@ -134,13 +149,13 @@ export const useRedactPDF = (): UseRedactPDFReturn => {
       }
       const newRedactions = [...currentRedactions];
       newRedactions.splice(index, 1);
-      
+
       if (newRedactions.length === 0) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [pageNum]: _, ...rest } = prev;
         return rest;
       }
-      
+
       return {
         ...prev,
         [pageNum]: newRedactions,
@@ -162,21 +177,21 @@ export const useRedactPDF = (): UseRedactPDFReturn => {
 
   const applyRedactions = useCallback(async () => {
     if (!pdfDocRef.current) {
-      setError('Please load a PDF file first.');
+      setError("Please load a PDF file first.");
       return;
     }
 
     const hasRedactions = Object.keys(pageRedactions).some(
-      (pageNum) => pageRedactions[Number.parseInt(pageNum, 10)]?.length > 0
+      (pageNum) => pageRedactions[Number.parseInt(pageNum, 10)]?.length > 0,
     );
 
     if (!hasRedactions) {
-      setError('Please draw at least one redaction rectangle before applying.');
+      setError("Please draw at least one redaction rectangle before applying.");
       return;
     }
 
     setIsProcessing(true);
-    setLoadingMessage('Applying redactions...');
+    setLoadingMessage("Applying redactions...");
     setError(null);
     setSuccess(null);
 
@@ -187,16 +202,16 @@ export const useRedactPDF = (): UseRedactPDFReturn => {
       await applyRedactionsToPDF(clonedPdfDoc, pageRedactions, CANVAS_SCALE);
 
       const finalPdfBytes = await clonedPdfDoc.save();
-      const fileName = pdfFile?.name || 'redacted.pdf';
+      const fileName = pdfFile?.name || "redacted.pdf";
       saveAndDownloadPDF(finalPdfBytes, fileName);
 
-      setSuccess('Redactions applied successfully! Your download has started.');
+      setSuccess("Redactions applied successfully! Your download has started.");
     } catch (err) {
-      console.error('Error applying redactions:', err);
+      console.error("Error applying redactions:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'An error occurred while applying redactions.'
+          : "An error occurred while applying redactions.",
       );
     } finally {
       setIsProcessing(false);
@@ -250,4 +265,3 @@ export const useRedactPDF = (): UseRedactPDFReturn => {
     setError,
   };
 };
-

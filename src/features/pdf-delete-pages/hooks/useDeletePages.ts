@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { deletePages } from '../lib/delete-pages-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import type { UseDeletePagesReturn } from '../types';
+import { useState, useCallback } from "react";
+import { deletePages } from "../lib/delete-pages-logic";
+import { downloadFile } from "@/lib/pdf/file-utils";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import type { UseDeletePagesReturn } from "../types";
 
 export const useDeletePages = (): UseDeletePagesReturn => {
-  const [pagesToDelete, setPagesToDelete] = useState<string>('');
+  const [pagesToDelete, setPagesToDelete] = useState<string>("");
 
   const {
     isProcessing,
@@ -30,38 +30,38 @@ export const useDeletePages = (): UseDeletePagesReturn => {
 
   const deletePagesHandler = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     if (!pdfDoc) {
-      setError('PDF document is not loaded. Please try uploading again.');
+      setError("PDF document is not loaded. Please try uploading again.");
       return;
     }
 
-    if (!pagesToDelete || pagesToDelete.trim() === '') {
-      setError('Please enter page numbers to delete.');
+    if (!pagesToDelete || pagesToDelete.trim() === "") {
+      setError("Please enter page numbers to delete.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Deleting pages...');
+    setLoadingMessage("Deleting pages...");
 
     try {
       const blob = await deletePages(pdfDoc, pagesToDelete);
 
-      setLoadingMessage('Preparing download...');
+      setLoadingMessage("Preparing download...");
       downloadFile(blob, pdfFile.name);
 
-      setSuccess('Pages deleted successfully! Your download has started.');
+      setSuccess("Pages deleted successfully! Your download has started.");
     } catch (err) {
-      console.error('Error deleting pages:', err);
+      console.error("Error deleting pages:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'Could not delete pages. Please check your input and try again.'
+          : "Could not delete pages. Please check your input and try again.",
       );
     } finally {
       setIsProcessing(false);
@@ -78,7 +78,7 @@ export const useDeletePages = (): UseDeletePagesReturn => {
   ]);
 
   const reset = useCallback(() => {
-    setPagesToDelete('');
+    setPagesToDelete("");
     resetProcessing();
     resetPDF();
   }, [resetProcessing, resetPDF]);
@@ -100,4 +100,3 @@ export const useDeletePages = (): UseDeletePagesReturn => {
     reset,
   };
 };
-

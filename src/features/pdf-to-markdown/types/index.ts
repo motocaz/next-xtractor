@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UsePdfToMarkdownReturn {
   pdfFile: File | null;
@@ -14,4 +14,3 @@ export interface UsePdfToMarkdownReturn {
   processPdfToMarkdown: () => Promise<void>;
   reset: () => void;
 }
-

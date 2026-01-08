@@ -5,7 +5,7 @@ import type { HeaderFooterOptions } from "../types";
 
 export const addHeaderFooter = async (
   pdfDoc: PDFDocument,
-  options: HeaderFooterOptions
+  options: HeaderFooterOptions,
 ): Promise<PDFDocument> => {
   const newPdf = await PDFLibDocument.create();
   const allPages = pdfDoc.getPages();
@@ -13,7 +13,7 @@ export const addHeaderFooter = async (
 
   const copiedPages = await newPdf.copyPages(
     pdfDoc,
-    allPages.map((_, i) => i)
+    allPages.map((_, i) => i),
   );
   copiedPages.forEach((page) => newPdf.addPage(page));
 
@@ -23,7 +23,7 @@ export const addHeaderFooter = async (
   const indicesToProcess = parsePageRanges(options.pageRange, totalPages);
   if (indicesToProcess.length === 0) {
     throw new Error(
-      "Invalid page range specified. Please check your input (e.g., '1-3, 5')."
+      "Invalid page range specified. Please check your input (e.g., '1-3, 5').",
     );
   }
 
@@ -72,7 +72,7 @@ export const addHeaderFooter = async (
           width / 2 -
           helveticaFont.widthOfTextAtSize(
             processedTexts.headerCenter,
-            fontSize
+            fontSize,
           ) /
             2,
         y: height - margin,
@@ -105,7 +105,7 @@ export const addHeaderFooter = async (
           width / 2 -
           helveticaFont.widthOfTextAtSize(
             processedTexts.footerCenter,
-            fontSize
+            fontSize,
           ) /
             2,
         y: margin,

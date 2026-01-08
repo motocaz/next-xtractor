@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   RotateCcw,
@@ -13,8 +13,8 @@ import {
   Redo,
   RefreshCw,
   FilePlus,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface MultiToolToolbarProps {
   selectedCount: number;
@@ -63,7 +63,9 @@ export const MultiToolToolbar = ({
   return (
     <div className="flex flex-wrap items-center gap-2 p-4 bg-input rounded-lg border border-border">
       <div className="flex items-center gap-2">
-        <span className="text-sm font-medium text-foreground">Bulk Actions:</span>
+        <span className="text-sm font-medium text-foreground">
+          Bulk Actions:
+        </span>
         <Button
           type="button"
           size="sm"
@@ -238,4 +240,3 @@ export const MultiToolToolbar = ({
     </div>
   );
 };
-

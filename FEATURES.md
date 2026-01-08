@@ -20,14 +20,17 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 📎 Anexos e Arquivos
 
 #### 1. **Add Attachments** (`/add-attachments`)
+
 - **Descrição**: Incorpora um ou mais arquivos no PDF
 - **Funcionalidade**: Permite adicionar arquivos como anexos ao documento PDF
 
 #### 2. **Extract Attachments** (`/extract-attachments`)
+
 - **Descrição**: Extrai todos os arquivos incorporados de PDF(s) como um arquivo ZIP
 - **Funcionalidade**: Recupera anexos de um ou múltiplos PDFs e os compacta em um ZIP
 
 #### 3. **Edit Attachments** (`/edit-attachments`)
+
 - **Descrição**: Visualiza ou remove anexos do PDF
 - **Funcionalidade**: Gerencia anexos existentes no documento
 
@@ -36,18 +39,22 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 🔀 Mesclagem e Divisão
 
 #### 4. **Merge PDF** (`/merge`)
+
 - **Descrição**: Combina múltiplos PDFs em um único arquivo
 - **Funcionalidade**: Une vários documentos PDF em ordem sequencial
 
 #### 5. **Alternate Merge** (`/alternate-merge`)
+
 - **Descrição**: Alterna e mistura páginas de múltiplos arquivos PDF
 - **Funcionalidade**: Cria um PDF intercalando páginas de diferentes documentos
 
 #### 6. **Split PDF** (`/split`)
+
 - **Descrição**: Extrai páginas usando intervalo, seleção visual, bookmarks ou outros métodos
 - **Funcionalidade**: Divide um PDF em múltiplos arquivos baseado em critérios personalizados
 
 #### 7. **Split Pages in Half** (`/split-in-half`)
+
 - **Descrição**: Divide cada página do documento em duas páginas separadas
 - **Funcionalidade**: Permite escolher um método para dividir páginas ao meio
 
@@ -56,34 +63,42 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 📄 Gerenciamento de Páginas
 
 #### 8. **Organize PDF** (`/organize`)
+
 - **Descrição**: Reordena e organiza páginas no PDF
 - **Funcionalidade**: Permite reorganizar a ordem das páginas
 
 #### 9. **Organize Pages** (`/organize-pages`)
+
 - **Descrição**: Reordena, duplica ou exclui páginas com drag-and-drop
 - **Funcionalidade**: Interface visual para gerenciar páginas
 
 #### 10. **Delete Pages** (`/delete-pages`)
+
 - **Descrição**: Remove páginas específicas do documento
 - **Funcionalidade**: Permite selecionar e excluir páginas indesejadas
 
 #### 11. **Remove Blank Pages** (`/remove-blank-pages`)
+
 - **Descrição**: Detecta e remove automaticamente páginas em branco ou quase em branco
 - **Funcionalidade**: Limpeza automática de páginas vazias
 
 #### 12. **Extract Pages** (`/extract-pages`)
+
 - **Descrição**: Salva uma seleção de páginas como novos arquivos
 - **Funcionalidade**: Extrai páginas específicas em arquivos separados
 
 #### 13. **Add Blank Page** (`/add-blank-page`)
+
 - **Descrição**: Insere páginas em branco no PDF
 - **Funcionalidade**: Adiciona páginas vazias em posições específicas
 
 #### 14. **Reverse Pages** (`/reverse-pages`)
+
 - **Descrição**: Inverte a ordem das páginas do PDF
 - **Funcionalidade**: Reverte completamente a sequência de páginas
 
 #### 15. **Rotate PDF** (`/rotate-pages`)
+
 - **Descrição**: Rotaciona páginas no documento PDF
 - **Funcionalidade**: Permite girar páginas em 90°, 180° ou 270°
 
@@ -92,18 +107,22 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 🔒 Segurança e Proteção
 
 #### 16. **Encrypt PDF** (`/encrypt`)
+
 - **Descrição**: Adiciona proteção por senha ao PDF
 - **Funcionalidade**: Criptografa o documento com senha
 
 #### 17. **Decrypt PDF** (`/decrypt`)
+
 - **Descrição**: Remove proteção por senha do PDF
 - **Funcionalidade**: Descriptografa documentos protegidos
 
 #### 18. **Remove Restrictions** (`/remove-restrictions`)
+
 - **Descrição**: Remove restrições de segurança e desbloqueia permissões para edição e impressão
 - **Funcionalidade**: Libera PDFs com restrições de uso
 
 #### 19. **Change Permissions** (`/change-permissions`)
+
 - **Descrição**: Modifica senhas e permissões nos documentos PDF
 - **Funcionalidade**: Ajusta configurações de segurança do documento
 
@@ -112,34 +131,42 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 🎨 Edição Visual e Formatação
 
 #### 20. **Add Watermark** (`/add-watermark`)
+
 - **Descrição**: Adiciona marcas d'água de texto ou imagem ao PDF
 - **Funcionalidade**: Insere marca d'água personalizada em todas as páginas
 
 #### 21. **Add Header & Footer** (`/add-header-footer`)
+
 - **Descrição**: Adiciona texto personalizado nas margens superior e inferior de cada página
 - **Funcionalidade**: Cria cabeçalhos e rodapés customizados
 
 #### 22. **Add Page Numbers** (`/add-page-numbers`)
+
 - **Descrição**: Adiciona numeração de páginas ao PDF
 - **Funcionalidade**: Insere números de página com formatação personalizada
 
 #### 23. **Crop PDF** (`/crop`)
+
 - **Descrição**: Apara as margens de cada página do PDF
 - **Funcionalidade**: Remove bordas e ajusta dimensões das páginas
 
 #### 24. **Change Background Color** (`/change-background-color`)
+
 - **Descrição**: Altera a cor de fundo de cada página do PDF
 - **Funcionalidade**: Personaliza a cor de fundo do documento
 
 #### 25. **Change Text Color** (`/change-text-color`)
+
 - **Descrição**: Altera a cor do texto escuro no PDF
 - **Funcionalidade**: Modifica a cor do texto do documento
 
 #### 26. **Invert Colors** (`/invert-colors`)
+
 - **Descrição**: Cria uma versão "dark mode" do PDF
 - **Funcionalidade**: Inverte as cores para modo escuro
 
 #### 27. **PDF to Greyscale** (`/pdf-to-greyscale`)
+
 - **Descrição**: Converte um PDF colorido em versão preto e branco
 - **Funcionalidade**: Remove cores e converte para escala de cinza
 
@@ -148,10 +175,12 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 📑 Bookmarks e Navegação
 
 #### 28. **Edit Bookmarks** (`/bookmarks`)
+
 - **Descrição**: Adiciona, edita e organiza bookmarks do PDF com destinos personalizados
 - **Funcionalidade**: Gerencia a estrutura de navegação do documento
 
 #### 29. **Table of Contents** (`/table-of-contents`)
+
 - **Descrição**: Gera uma página de índice a partir dos bookmarks do PDF
 - **Funcionalidade**: Cria sumário automático baseado em bookmarks
 
@@ -160,38 +189,47 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 🖼️ Conversão de Imagens para PDF
 
 #### 30. **JPG to PDF** (`/jpg-to-pdf`)
+
 - **Descrição**: Cria um PDF a partir de uma ou mais imagens JPG
 - **Funcionalidade**: Converte imagens JPEG para documento PDF
 
 #### 31. **PNG to PDF** (`/png-to-pdf`)
+
 - **Descrição**: Cria um PDF a partir de uma ou mais imagens PNG
 - **Funcionalidade**: Converte imagens PNG para documento PDF
 
 #### 32. **BMP to PDF** (`/bmp-to-pdf`)
+
 - **Descrição**: Cria um PDF a partir de uma ou mais imagens BMP
 - **Funcionalidade**: Converte imagens BMP para documento PDF
 
 #### 33. **TIFF to PDF** (`/tiff-to-pdf`)
+
 - **Descrição**: Converte uma ou mais imagens TIFF em um único arquivo PDF
 - **Funcionalidade**: Converte imagens TIFF para documento PDF
 
 #### 34. **HEIC to PDF** (`/heic-to-pdf`)
+
 - **Descrição**: Converte uma ou mais imagens HEIC do iPhone ou câmera em um único arquivo PDF
 - **Funcionalidade**: Suporta formato HEIC do iOS
 
 #### 35. **WebP to PDF** (`/webp-to-pdf`)
+
 - **Descrição**: Converte uma ou mais imagens WebP em um único arquivo PDF
 - **Funcionalidade**: Converte imagens WebP modernas para PDF
 
 #### 36. **SVG to PDF** (`/svg-to-pdf`)
+
 - **Descrição**: Cria um PDF a partir de uma ou mais imagens SVG
 - **Funcionalidade**: Converte gráficos vetoriais SVG para PDF
 
 #### 37. **Image to PDF** (`/image-to-pdf`)
+
 - **Descrição**: Converte JPG, PNG, WebP, SVG, BMP, HEIC e TIFF para PDF
 - **Funcionalidade**: Ferramenta universal para conversão de imagens
 
 #### 38. **Scan to PDF** (`/scan-to-pdf`)
+
 - **Descrição**: Usa a câmera do dispositivo para escanear documentos e salvá-los como PDF
 - **Funcionalidade**: Digitalização direta via câmera do dispositivo
 
@@ -200,22 +238,27 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 📝 Conversão de Texto e Documentos
 
 #### 39. **JSON to PDF** (`/json-to-pdf`)
+
 - **Descrição**: Converte arquivos JSON (de PDF-to-JSON) de volta para formato PDF
 - **Funcionalidade**: Reconstrói PDFs a partir de dados JSON
 
 #### 40. **PDF to JSON** (`/pdf-to-json`)
+
 - **Descrição**: Converte arquivos PDF para formato JSON
 - **Funcionalidade**: Extrai estrutura e conteúdo do PDF em JSON
 
 #### 41. **Markdown to PDF** (`/md-to-pdf`)
+
 - **Descrição**: Converte texto Markdown em um documento PDF de alta qualidade
 - **Funcionalidade**: Renderiza Markdown como PDF formatado
 
 #### 42. **PDF to Markdown** (`/pdf-to-markdown`)
+
 - **Descrição**: Converte o conteúdo de texto de um PDF em um arquivo Markdown estruturado
 - **Funcionalidade**: Extrai texto e estrutura para formato Markdown
 
 #### 43. **Text to PDF** (`/txt-to-pdf`)
+
 - **Descrição**: Converte arquivos de texto ou texto digitado em PDF com formatação personalizada
 - **Funcionalidade**: Cria PDFs a partir de texto simples
 
@@ -224,22 +267,27 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 🖼️ Conversão de PDF para Imagens
 
 #### 44. **PDF to JPG** (`/pdf-to-jpg`)
+
 - **Descrição**: Converte páginas do PDF em imagens JPG
 - **Funcionalidade**: Exporta cada página como imagem JPEG
 
 #### 45. **PDF to PNG** (`/pdf-to-png`)
+
 - **Descrição**: Converte páginas do PDF em imagens PNG
 - **Funcionalidade**: Exporta cada página como imagem PNG
 
 #### 46. **PDF to BMP** (`/pdf-to-bmp`)
+
 - **Descrição**: Converte cada página de um PDF em uma imagem BMP
 - **Funcionalidade**: Exporta páginas como imagens BMP
 
 #### 47. **PDF to TIFF** (`/pdf-to-tiff`)
+
 - **Descrição**: Converte cada página de um PDF em uma imagem TIFF
 - **Funcionalidade**: Exporta páginas como imagens TIFF
 
 #### 48. **PDF to WebP** (`/pdf-to-webp`)
+
 - **Descrição**: Converte cada página de um PDF em uma imagem WebP
 - **Funcionalidade**: Exporta páginas como imagens WebP modernas
 
@@ -248,10 +296,12 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 📦 Compressão e Otimização
 
 #### 49. **Compress PDF** (`/compress`)
+
 - **Descrição**: Reduz o tamanho do arquivo PDF
 - **Funcionalidade**: Otimiza o tamanho do documento
 
 #### 50. **Linearize PDF** (`/linearize`)
+
 - **Descrição**: Otimiza PDFs para visualização rápida na web
 - **Funcionalidade**: Melhora o carregamento progressivo do PDF
 
@@ -260,14 +310,17 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### ✍️ Assinatura e Formulários
 
 #### 51. **Sign PDF** (`/sign-pdf`)
+
 - **Descrição**: Desenha, digita ou faz upload da sua assinatura
 - **Funcionalidade**: Adiciona assinatura digital ao documento
 
 #### 52. **PDF Form Filler** (`/form-filler`)
+
 - **Descrição**: Preenche formulários PDF diretamente no navegador com preview ao vivo
 - **Funcionalidade**: Editor visual de formulários PDF
 
 #### 53. **Flatten PDF** (`/flatten`)
+
 - **Descrição**: Torna campos de formulário e anotações não editáveis
 - **Funcionalidade**: "Congela" o documento para evitar edições
 
@@ -276,18 +329,22 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 🗑️ Remoção e Limpeza
 
 #### 54. **Redact PDF** (`/redact`)
+
 - **Descrição**: Remove permanentemente conteúdo sensível dos PDFs
 - **Funcionalidade**: Apaga informações de forma irreversível
 
 #### 55. **Remove Annotations** (`/remove-annotations`)
+
 - **Descrição**: Remove anotações (destaques, comentários, desenhos, etc.) do PDF
 - **Funcionalidade**: Limpa todas as anotações do documento
 
 #### 56. **Remove Metadata** (`/remove-metadata`)
+
 - **Descrição**: Remove completamente metadados identificadores do PDF
 - **Funcionalidade**: Limpa informações de metadados
 
 #### 57. **Sanitize PDF** (`/sanitize`)
+
 - **Descrição**: Remove informações potencialmente sensíveis ou desnecessárias antes de compartilhar
 - **Funcionalidade**: Limpeza completa de dados sensíveis
 
@@ -296,10 +353,12 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 📊 Metadados e Informações
 
 #### 58. **Edit Metadata** (`/edit-metadata`)
+
 - **Descrição**: Visualiza e modifica metadados do PDF (autor, título, palavras-chave, etc.)
 - **Funcionalidade**: Editor de propriedades do documento
 
 #### 59. **View Metadata** (`/view-metadata`)
+
 - **Descrição**: Visualiza metadados completos do PDF incluindo XMP e campos de formulário
 - **Funcrição**: Visualização detalhada de todas as informações
 
@@ -308,22 +367,27 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 🎭 Transformações Avançadas
 
 #### 60. **Combine to Single Page** (`/combine-single-page`)
+
 - **Descrição**: Une todas as páginas em uma única página contínua
 - **Funcionalidade**: Cria um scroll vertical de todas as páginas
 
 #### 61. **N-Up PDF** (`/n-up`)
+
 - **Descrição**: Combina múltiplas páginas em uma única folha
 - **Funcionalidade**: Cria layouts como 2-up, 4-up, etc.
 
 #### 62. **Posterize PDF** (`/posterize`)
+
 - **Descrição**: Divide páginas em múltiplas folhas menores para imprimir como pôster
 - **Funcionalidade**: Divide páginas grandes em múltiplas folhas
 
 #### 63. **Fix Page Dimensions** (`/fix-dimensions`)
+
 - **Descrição**: Padroniza todas as páginas para um tamanho uniforme
 - **Funcionalidade**: Normaliza dimensões de páginas
 
 #### 64. **Page Dimensions** (`/page-dimensions`)
+
 - **Descrição**: Analisa as dimensões, tamanho padrão e orientação de cada página
 - **Funcionalidade**: Relatório detalhado de dimensões
 
@@ -332,6 +396,7 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 🔍 Comparação e Análise
 
 #### 65. **Compare PDFs** (`/compare-pdfs`)
+
 - **Descrição**: Compara dois PDFs lado a lado ou em modo overlay
 - **Funcionalidade**: Ferramenta de comparação visual de documentos
 
@@ -340,14 +405,17 @@ A aplicação possui **68 ferramentas PDF** implementadas, organizadas nas segui
 ### 🛠️ Ferramentas Avançadas
 
 #### 66. **PDF Multi-Tool** (`/multi-tool`)
+
 - **Descrição**: Gerenciamento avançado de páginas: rotaciona, duplica, divide e organiza páginas de múltiplos PDFs
 - **Funcionalidade**: Ferramenta tudo-em-um para manipulação complexa
 
 #### 67. **PDF to ZIP** (`/pdf-to-zip`)
+
 - **Descrição**: Combina múltiplos arquivos PDF em um único arquivo ZIP
 - **Funcionalidade**: Compacta PDFs em arquivo ZIP
 
 #### 68. **OCR PDF** (`/ocr`)
+
 - **Descrição**: Extrai texto de PDFs escaneados e os torna pesquisáveis
 - **Funcionalidade**: Reconhecimento óptico de caracteres para PDFs escaneados
 
@@ -423,16 +491,19 @@ A aplicação utiliza **Clerk Billing** para gerenciamento de assinaturas:
 ### User API
 
 #### `GET /api/user`
+
 - **Descrição**: Obtém dados do usuário atual e assinatura
 - **Autenticação**: Requerida
 - **Resposta**: Dados do usuário e assinatura ativa
 
 #### `GET /api/user/subscription`
+
 - **Descrição**: Obtém assinatura ativa do usuário
 - **Autenticação**: Requerida
 - **Resposta**: Detalhes da assinatura
 
 #### `GET /api/user/billing-history`
+
 - **Descrição**: Obtém histórico de pagamentos do usuário
 - **Autenticação**: Requerida
 - **Resposta**: Lista de transações e faturas
@@ -440,6 +511,7 @@ A aplicação utiliza **Clerk Billing** para gerenciamento de assinaturas:
 ### Webhooks
 
 #### `POST /api/webhooks/clerk`
+
 - **Descrição**: Recebe webhooks do Clerk para sincronização de dados
 - **Eventos Suportados**:
   - Sincronização de usuários
@@ -462,11 +534,11 @@ import { auth } from '@clerk/nextjs/server';
 export default async function Page() {
   const { has } = await auth();
   const hasPremiumPlan = has({ plan: 'premium' });
-  
+
   if (!hasPremiumPlan) {
     return <div>Conteúdo premium apenas</div>;
   }
-  
+
   return <div>Conteúdo premium aqui</div>;
 }
 ```
@@ -474,8 +546,8 @@ export default async function Page() {
 #### Client Components
 
 ```tsx
-'use client';
-import { Protect } from '@clerk/nextjs';
+"use client";
+import { Protect } from "@clerk/nextjs";
 
 export default function Page() {
   return (
@@ -568,4 +640,3 @@ export default function Page() {
 
 **Última Atualização**: Dezembro 2024  
 **Versão da Aplicação**: 1.0.0
-

@@ -1,38 +1,40 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useTableOfContents } from '../hooks/useTableOfContents';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import Link from "next/link";
+import { useTableOfContents } from "../hooks/useTableOfContents";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowLeft } from 'lucide-react';
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ArrowLeft } from "lucide-react";
 
-const fontSizes = [10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 30, 36, 42, 48, 60, 72];
+const fontSizes = [
+  10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 30, 36, 42, 48, 60, 72,
+];
 
 const fontFamilies = [
-  { value: 0, label: 'Times Roman' },
-  { value: 1, label: 'Times Bold' },
-  { value: 2, label: 'Times Italic' },
-  { value: 3, label: 'Times Bold Italic' },
-  { value: 4, label: 'Helvetica' },
-  { value: 5, label: 'Helvetica Bold' },
-  { value: 6, label: 'Helvetica Oblique' },
-  { value: 7, label: 'Helvetica Bold Oblique' },
-  { value: 8, label: 'Courier' },
-  { value: 9, label: 'Courier Bold' },
-  { value: 10, label: 'Courier Oblique' },
-  { value: 11, label: 'Courier Bold Oblique' },
+  { value: 0, label: "Times Roman" },
+  { value: 1, label: "Times Bold" },
+  { value: 2, label: "Times Italic" },
+  { value: 3, label: "Times Bold Italic" },
+  { value: 4, label: "Helvetica" },
+  { value: 5, label: "Helvetica Bold" },
+  { value: 6, label: "Helvetica Oblique" },
+  { value: 7, label: "Helvetica Bold Oblique" },
+  { value: 8, label: "Courier" },
+  { value: 9, label: "Courier Bold" },
+  { value: 10, label: "Courier Oblique" },
+  { value: 11, label: "Courier Bold Oblique" },
 ];
 
 export const TableOfContentsTool = () => {
@@ -126,7 +128,9 @@ export const TableOfContentsTool = () => {
             <Label htmlFor="font-family">Font Family</Label>
             <Select
               value={fontFamily.toString()}
-              onValueChange={(value) => setFontFamily(Number.parseInt(value, 10))}
+              onValueChange={(value) =>
+                setFontFamily(Number.parseInt(value, 10))
+              }
               disabled={isProcessing}
             >
               <SelectTrigger id="font-family" className="mt-2 w-full">
@@ -134,7 +138,10 @@ export const TableOfContentsTool = () => {
               </SelectTrigger>
               <SelectContent>
                 {fontFamilies.map((family) => (
-                  <SelectItem key={family.value} value={family.value.toString()}>
+                  <SelectItem
+                    key={family.value}
+                    value={family.value.toString()}
+                  >
                     {family.label}
                   </SelectItem>
                 ))}
@@ -176,4 +183,3 @@ export const TableOfContentsTool = () => {
     </div>
   );
 };
-

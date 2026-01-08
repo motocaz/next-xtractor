@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { webpToPdf } from '../lib/webp-to-pdf-logic';
-import { handleImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
-import type { WebpFileInfo, UseWebpToPdfReturn } from '../types';
+import { useState, useCallback } from "react";
+import { webpToPdf } from "../lib/webp-to-pdf-logic";
+import { handleImageToPdfResult } from "@/lib/pdf/image-to-pdf-utils";
+import type { WebpFileInfo, UseWebpToPdfReturn } from "../types";
 
 export const useWebpToPdf = (): UseWebpToPdfReturn => {
   const [webpFiles, setWebpFiles] = useState<WebpFileInfo[]>([]);
@@ -16,14 +16,14 @@ export const useWebpToPdf = (): UseWebpToPdfReturn => {
 
   const loadWebpFiles = useCallback(async (files: File[]) => {
     if (!files || files.length === 0) {
-      setError('Please select at least one WebP file.');
+      setError("Please select at least one WebP file.");
       return;
     }
 
     setIsLoading(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Validating WebP files...');
+    setLoadingMessage("Validating WebP files...");
 
     try {
       const validFiles: WebpFileInfo[] = [];
@@ -31,8 +31,8 @@ export const useWebpToPdf = (): UseWebpToPdfReturn => {
 
       for (const file of files) {
         const isWebp =
-          file.type === 'image/webp' ||
-          file.name.toLowerCase().endsWith('.webp');
+          file.type === "image/webp" ||
+          file.name.toLowerCase().endsWith(".webp");
 
         if (!isWebp) {
           invalidFiles.push(file.name);
@@ -50,12 +50,14 @@ export const useWebpToPdf = (): UseWebpToPdfReturn => {
 
       if (invalidFiles.length > 0) {
         setError(
-          `The following files are not valid WebP images: ${invalidFiles.join(', ')}`
+          `The following files are not valid WebP images: ${invalidFiles.join(", ")}`,
         );
       }
 
       if (validFiles.length === 0) {
-        setError('No valid WebP files were found. Please select WebP image files.');
+        setError(
+          "No valid WebP files were found. Please select WebP image files.",
+        );
       } else {
         setWebpFiles((prev) => [...prev, ...validFiles]);
         if (validFiles.length > 0 && invalidFiles.length === 0) {
@@ -63,11 +65,11 @@ export const useWebpToPdf = (): UseWebpToPdfReturn => {
         }
       }
     } catch (err) {
-      console.error('Error loading WebP files:', err);
+      console.error("Error loading WebP files:", err);
       setError(
         err instanceof Error
           ? `Failed to load WebP files: ${err.message}`
-          : 'Failed to load WebP files. Please check your files.'
+          : "Failed to load WebP files. Please check your files.",
       );
     } finally {
       setIsLoading(false);
@@ -83,7 +85,7 @@ export const useWebpToPdf = (): UseWebpToPdfReturn => {
 
   const processWebpToPdf = useCallback(async () => {
     if (webpFiles.length === 0) {
-      setError('Please upload at least one WebP file.');
+      setError("Please upload at least one WebP file.");
       return;
     }
 
@@ -91,7 +93,7 @@ export const useWebpToPdf = (): UseWebpToPdfReturn => {
     setError(null);
     setSuccess(null);
     setFailedFiles([]);
-    setLoadingMessage('Converting WebP to PDF...');
+    setLoadingMessage("Converting WebP to PDF...");
 
     try {
       const files = webpFiles.map((fileInfo) => fileInfo.file);
@@ -99,7 +101,7 @@ export const useWebpToPdf = (): UseWebpToPdfReturn => {
 
       await handleImageToPdfResult({
         result,
-        firstFileName: webpFiles[0]?.fileName || 'converted',
+        firstFileName: webpFiles[0]?.fileName || "converted",
         extensionPattern: /\.(webp|WEBP)$/i,
         stateSetters: {
           setFailedFiles,
@@ -107,11 +109,11 @@ export const useWebpToPdf = (): UseWebpToPdfReturn => {
         },
       });
     } catch (err) {
-      console.error('WebP to PDF conversion error:', err);
+      console.error("WebP to PDF conversion error:", err);
       setError(
         err instanceof Error
           ? `An error occurred while converting: ${err.message}`
-          : 'An error occurred while converting WebP to PDF. One of the files may be invalid.'
+          : "An error occurred while converting WebP to PDF. One of the files may be invalid.",
       );
     } finally {
       setIsProcessing(false);
@@ -143,4 +145,3 @@ export const useWebpToPdf = (): UseWebpToPdfReturn => {
     reset,
   };
 };
-

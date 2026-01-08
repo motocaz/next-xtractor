@@ -17,7 +17,7 @@ const formatDateForInput = (date: Date | undefined): string => {
   if (!date) return "";
   const pad = (num: number) => num.toString().padStart(2, "0");
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
-    date.getDate()
+    date.getDate(),
   )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 };
 
@@ -83,7 +83,7 @@ export const useEditMetadata = (): UseEditMetadataReturn => {
 
       const customFieldsMap = extractCustomMetadataFields(pdfDoc);
       const customFieldsList: CustomMetadataField[] = Array.from(
-        customFieldsMap.entries()
+        customFieldsMap.entries(),
       ).map(([key, value]) => ({ key, value }));
 
       setCustomFields(customFieldsList);
@@ -96,7 +96,7 @@ export const useEditMetadata = (): UseEditMetadataReturn => {
     (field: keyof PDFMetadata, value: string) => {
       setMetadata((prev) => ({ ...prev, [field]: value }));
     },
-    []
+    [],
   );
 
   const addCustomField = useCallback(() => {
@@ -110,17 +110,17 @@ export const useEditMetadata = (): UseEditMetadataReturn => {
   const updateCustomField = useCallback(
     (index: number, key: string, value: string) => {
       setCustomFields((prev) =>
-        prev.map((field, i) => (i === index ? { key, value } : field))
+        prev.map((field, i) => (i === index ? { key, value } : field)),
       );
     },
-    []
+    [],
   );
 
   const loadPDF = useCallback(
     async (file: File) => {
       await baseLoadPDF(file);
     },
-    [baseLoadPDF]
+    [baseLoadPDF],
   );
 
   const processMetadata = useCallback(async () => {
@@ -138,7 +138,7 @@ export const useEditMetadata = (): UseEditMetadataReturn => {
       const updatedPdfDoc = await editPDFMetadata(
         pdfDoc,
         metadata,
-        customFields
+        customFields,
       );
       const pdfBytes = await updatedPdfDoc.save();
       saveAndDownloadPDF(pdfBytes, pdfFile?.name);
@@ -148,7 +148,7 @@ export const useEditMetadata = (): UseEditMetadataReturn => {
       setError(
         err instanceof Error
           ? `Failed to update metadata: ${err.message}`
-          : "Could not update metadata. Please check that date formats are correct."
+          : "Could not update metadata. Please check that date formats are correct.",
       );
     } finally {
       setIsProcessing(false);

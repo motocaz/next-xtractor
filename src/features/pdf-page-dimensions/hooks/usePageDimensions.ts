@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useMemo } from 'react';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import { getStandardPageName } from '@/lib/pdf/page-dimensions-utils';
+import { useState, useCallback, useMemo } from "react";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import { getStandardPageName } from "@/lib/pdf/page-dimensions-utils";
 import type {
   UsePageDimensionsReturn,
   PageDimensionData,
   DimensionUnit,
-} from '../types';
+} from "../types";
 
 export const usePageDimensions = (): UsePageDimensionsReturn => {
-  const [selectedUnit, setSelectedUnit] = useState<DimensionUnit>('pt');
+  const [selectedUnit, setSelectedUnit] = useState<DimensionUnit>("pt");
 
   const {
     pdfFile,
@@ -32,7 +32,7 @@ export const usePageDimensions = (): UsePageDimensionsReturn => {
 
     pages.forEach((page, index) => {
       const { width, height } = page.getSize();
-      const orientation = width > height ? 'Landscape' : 'Portrait';
+      const orientation = width > height ? "Landscape" : "Portrait";
       const standardSize = getStandardPageName(width, height);
 
       analyzedData.push({
@@ -52,7 +52,7 @@ export const usePageDimensions = (): UsePageDimensionsReturn => {
   }, []);
 
   const reset = useCallback(() => {
-    setSelectedUnit('pt');
+    setSelectedUnit("pt");
     resetPDF();
   }, [resetPDF]);
 
@@ -69,4 +69,3 @@ export const usePageDimensions = (): UsePageDimensionsReturn => {
     reset,
   };
 };
-

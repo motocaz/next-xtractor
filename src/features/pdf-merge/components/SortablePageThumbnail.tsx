@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import type { MergePageThumbnailData } from '../types';
-import Image from 'next/image';
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import type { MergePageThumbnailData } from "../types";
+import Image from "next/image";
 
 interface SortablePageThumbnailProps {
   pageData: MergePageThumbnailData;
@@ -29,9 +29,10 @@ export const SortablePageThumbnail = ({
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const displayFileName = pageData.fileName.length > 10
-    ? `${pageData.fileName.substring(0, 10)}...`
-    : pageData.fileName;
+  const displayFileName =
+    pageData.fileName.length > 10
+      ? `${pageData.fileName.substring(0, 10)}...`
+      : pageData.fileName;
 
   return (
     <div
@@ -68,4 +69,3 @@ export const SortablePageThumbnail = ({
     </div>
   );
 };
-

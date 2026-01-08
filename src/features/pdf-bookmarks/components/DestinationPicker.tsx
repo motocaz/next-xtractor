@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Crosshair, X } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Crosshair, X } from "lucide-react";
 
 interface DestinationPickerProps {
   isActive: boolean;
@@ -36,5 +36,3 @@ export const DestinationPicker = ({
     </div>
   );
 };
-
-

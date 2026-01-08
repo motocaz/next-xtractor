@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { PDFDocument, rgb } from 'pdf-lib';
-import type { PageRedactions } from '../types';
+import { PDFDocument, rgb } from "pdf-lib";
+import type { PageRedactions } from "../types";
 
 export const applyRedactions = async (
   pdfDoc: PDFDocument,
   pageRedactions: PageRedactions,
-  canvasScale: number
+  canvasScale: number,
 ): Promise<PDFDocument> => {
   const pages = pdfDoc.getPages();
   const conversionScale = 1 / canvasScale;
 
   for (const pageNumStr in pageRedactions) {
     const pageNum = Number.parseInt(pageNumStr, 10);
-    
+
     if (pageNum < 1 || pageNum > pages.length) {
       continue;
     }
@@ -40,4 +40,3 @@ export const applyRedactions = async (
 
   return pdfDoc;
 };
-

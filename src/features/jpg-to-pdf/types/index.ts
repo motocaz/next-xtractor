@@ -18,4 +18,3 @@ export interface UseJpgToPdfReturn {
   processJpgToPdf: () => Promise<void>;
   reset: () => void;
 }
-

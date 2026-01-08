@@ -4,7 +4,7 @@ import type { PDFDocumentProxy } from "pdfjs-dist";
 import { loadPDFWithPDFJSFromBuffer } from "@/lib/pdf/pdfjs-loader";
 
 export const loadPDFForRendering = async (
-  pdfBytes: Uint8Array
+  pdfBytes: Uint8Array,
 ): Promise<PDFDocumentProxy> => {
   const arrayBuffer = new ArrayBuffer(pdfBytes.length);
   new Uint8Array(arrayBuffer).set(pdfBytes);
@@ -15,7 +15,7 @@ export const renderPDFPage = async (
   pdfJsDoc: PDFDocumentProxy,
   pageNum: number,
   canvas: HTMLCanvasElement,
-  scale: number
+  scale: number,
 ): Promise<void> => {
   const page = await pdfJsDoc.getPage(pageNum);
   const viewport = page.getViewport({ scale: 1 });

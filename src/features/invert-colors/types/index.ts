@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UseInvertColorsReturn {
   pdfFile: File | null;
@@ -15,4 +15,3 @@ export interface UseInvertColorsReturn {
   processInvertColors: () => Promise<void>;
   reset: () => void;
 }
-

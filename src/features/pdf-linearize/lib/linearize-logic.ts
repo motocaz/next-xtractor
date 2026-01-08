@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 import {
   initializeQpdf,
   prepareQpdfFile,
   readQpdfOutput,
   cleanupQpdfFiles,
-} from '@/lib/pdf/qpdf-utils';
+} from "@/lib/pdf/qpdf-utils";
 
 export interface LinearizedPDF {
   fileName: string;
@@ -14,10 +14,10 @@ export interface LinearizedPDF {
 
 export const linearizePDFs = async (
   files: File[],
-  onProgress?: (current: number, total: number, fileName: string) => void
+  onProgress?: (current: number, total: number, fileName: string) => void,
 ): Promise<LinearizedPDF[]> => {
   if (files.length === 0) {
-    throw new Error('No PDF files provided');
+    throw new Error("No PDF files provided");
   }
 
   const qpdf = await initializeQpdf();
@@ -35,12 +35,12 @@ export const linearizePDFs = async (
     try {
       await prepareQpdfFile(qpdf, file, inputPath);
 
-      qpdf.callMain([inputPath, '--linearize', outputPath]);
+      qpdf.callMain([inputPath, "--linearize", outputPath]);
 
       const blob = readQpdfOutput(
         qpdf,
         outputPath,
-        `Linearization resulted in an empty file for ${file.name}.`
+        `Linearization resulted in an empty file for ${file.name}.`,
       );
 
       results.push({
@@ -57,9 +57,8 @@ export const linearizePDFs = async (
   }
 
   if (successCount === 0) {
-    throw new Error('No PDF files could be linearized.');
+    throw new Error("No PDF files could be linearized.");
   }
 
   return results;
 };
-

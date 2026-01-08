@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
-import { ScrollToTop } from '@/components/ScrollToTop';
+import dynamic from "next/dynamic";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const ReversePagesTool = dynamic(
   () =>
-    import('@/features/reverse-pages').then((mod) => ({
+    import("@/features/reverse-pages").then((mod) => ({
       default: mod.ReversePagesTool,
     })),
   {
@@ -17,7 +17,7 @@ const ReversePagesTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default function ReversePagesPage() {
@@ -28,4 +28,3 @@ export default function ReversePagesPage() {
     </>
   );
 }
-

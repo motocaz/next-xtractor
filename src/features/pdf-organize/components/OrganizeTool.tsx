@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useOrganize } from '../hooks/useOrganize';
-import { PageOrganizerTool } from '@/components/common/PageOrganizerTool';
+import { useOrganize } from "../hooks/useOrganize";
+import { PageOrganizerTool } from "@/components/common/PageOrganizerTool";
 
 export const OrganizeTool = () => {
   const hookReturn = useOrganize();

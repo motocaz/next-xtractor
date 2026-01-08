@@ -1,25 +1,25 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useTxtToPdf } from '../hooks/useTxtToPdf';
-import { FileUploader } from '@/components/FileUploader';
-import { ArrowLeft } from 'lucide-react';
-import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { FileListSection } from '@/components/common/FileListSection';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import Link from "next/link";
+import { useTxtToPdf } from "../hooks/useTxtToPdf";
+import { FileUploader } from "@/components/FileUploader";
+import { ArrowLeft } from "lucide-react";
+import { FileUploadStatusMessages } from "@/components/common/FileUploadStatusMessages";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { FileListSection } from "@/components/common/FileListSection";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 
 export const TxtToPdfTool = () => {
   const {
@@ -132,7 +132,9 @@ export const TxtToPdfTool = () => {
             <Label htmlFor="font-family">Font Family</Label>
             <Select
               value={fontFamily}
-              onValueChange={(value) => setFontFamily(value as typeof fontFamily)}
+              onValueChange={(value) =>
+                setFontFamily(value as typeof fontFamily)
+              }
               disabled={isProcessing}
             >
               <SelectTrigger id="font-family" className="w-full">
@@ -219,4 +221,3 @@ export const TxtToPdfTool = () => {
     </div>
   );
 };
-

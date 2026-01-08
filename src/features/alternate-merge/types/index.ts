@@ -1,4 +1,4 @@
-import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
+import type { PDFFileInfo } from "@/hooks/useMultiPDFLoader";
 
 export interface UseAlternateMergeReturn {
   pdfFiles: PDFFileInfo[];
@@ -15,4 +15,3 @@ export interface UseAlternateMergeReturn {
   processAlternateMerge: () => Promise<void>;
   reset: () => void;
 }
-

@@ -1,23 +1,33 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useMemo } from 'react';
-import { compressPDF, compressMultiplePDFs } from '../lib/compress-logic';
-import { saveAndDownloadPDF, downloadFile, formatBytes } from '@/lib/pdf/file-utils';
-import { useFileInfoLoader } from '@/hooks/useFileInfoLoader';
+import { useState, useCallback, useMemo } from "react";
+import { compressPDF, compressMultiplePDFs } from "../lib/compress-logic";
+import {
+  saveAndDownloadPDF,
+  downloadFile,
+  formatBytes,
+} from "@/lib/pdf/file-utils";
+import { useFileInfoLoader } from "@/hooks/useFileInfoLoader";
 import type {
   CompressionLevel,
   CompressionAlgorithm,
   PDFFileInfo,
   UseCompressPDFReturn,
-} from '../types';
+} from "../types";
 
 export const useCompressPDF = (): UseCompressPDFReturn => {
-  const [compressionLevel, setCompressionLevel] = useState<CompressionLevel>('balanced');
-  const [compressionAlgorithm, setCompressionAlgorithm] = useState<CompressionAlgorithm>('automatic');
+  const [compressionLevel, setCompressionLevel] =
+    useState<CompressionLevel>("balanced");
+  const [compressionAlgorithm, setCompressionAlgorithm] =
+    useState<CompressionAlgorithm>("automatic");
   const [isProcessing, setIsProcessing] = useState(false);
-  const [processingLoadingMessage, setProcessingLoadingMessage] = useState<string | null>(null);
+  const [processingLoadingMessage, setProcessingLoadingMessage] = useState<
+    string | null
+  >(null);
   const [processingError, setProcessingError] = useState<string | null>(null);
-  const [processingSuccess, setProcessingSuccess] = useState<string | null>(null);
+  const [processingSuccess, setProcessingSuccess] = useState<string | null>(
+    null,
+  );
   const [compressionStats, setCompressionStats] = useState<{
     originalSize: number;
     compressedSize: number;
@@ -35,13 +45,13 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
     removeFile,
     reset: resetFiles,
   } = useFileInfoLoader({
-    acceptMimeTypes: ['application/pdf'],
-    acceptExtensions: ['.pdf'],
+    acceptMimeTypes: ["application/pdf"],
+    acceptExtensions: [".pdf"],
     errorMessages: {
-      noFiles: 'Please select at least one PDF file.',
-      noValidFiles: 'No valid PDF files were found. Please select PDF files.',
+      noFiles: "Please select at least one PDF file.",
+      noValidFiles: "No valid PDF files were found. Please select PDF files.",
       invalidFiles: (fileNames: string[]) =>
-        `The following files are not valid PDFs: ${fileNames.join(', ')}`,
+        `The following files are not valid PDFs: ${fileNames.join(", ")}`,
       loadFailed: (fileName: string) =>
         `Failed to load ${fileName}. Please check your file.`,
     },
@@ -55,7 +65,7 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
         fileName: fileInfo.fileName,
         fileSize: fileInfo.fileSize,
       })),
-    [fileInfos]
+    [fileInfos],
   );
 
   const loadPDFFiles = useCallback(
@@ -65,7 +75,7 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
       setProcessingSuccess(null);
       await loadFiles(files);
     },
-    [loadFiles]
+    [loadFiles],
   );
 
   const removePDFFile = useCallback(
@@ -75,12 +85,12 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
       setProcessingError(null);
       setProcessingSuccess(null);
     },
-    [removeFile]
+    [removeFile],
   );
 
   const processCompression = useCallback(async () => {
     if (pdfFiles.length === 0) {
-      setProcessingError('Please upload at least one PDF file.');
+      setProcessingError("Please upload at least one PDF file.");
       return;
     }
 
@@ -88,7 +98,7 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
     setProcessingError(null);
     setProcessingSuccess(null);
     setCompressionStats(null);
-    setProcessingLoadingMessage('Preparing compression...');
+    setProcessingLoadingMessage("Preparing compression...");
 
     try {
       if (pdfFiles.length === 1) {
@@ -99,7 +109,7 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
           fileInfo.file,
           compressionLevel,
           compressionAlgorithm,
-          (message) => setProcessingLoadingMessage(message)
+          (message) => setProcessingLoadingMessage(message),
         );
 
         saveAndDownloadPDF(result.bytes, fileInfo.fileName);
@@ -116,18 +126,18 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
           setProcessingSuccess(
             `Compression complete! Method: ${result.method}. ` +
               `File size reduced from ${formatBytes(result.originalSize)} to ${formatBytes(result.compressedSize)} ` +
-              `(Saved ${result.savingsPercent}%).`
+              `(Saved ${result.savingsPercent}%).`,
           );
         } else {
           setProcessingSuccess(
             `Compression finished. Method: ${result.method}. ` +
               `Could not reduce file size. Original: ${formatBytes(result.originalSize)}, ` +
-              `New: ${formatBytes(result.compressedSize)}.`
+              `New: ${formatBytes(result.compressedSize)}.`,
           );
         }
       } else {
-        setProcessingLoadingMessage('Compressing multiple PDFs...');
-        const JSZip = (await import('jszip')).default;
+        setProcessingLoadingMessage("Compressing multiple PDFs...");
+        const JSZip = (await import("jszip")).default;
         const zip = new JSZip();
         let totalOriginalSize = 0;
         let totalCompressedSize = 0;
@@ -141,9 +151,9 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
           compressionAlgorithm,
           (current, total, fileName) => {
             setProcessingLoadingMessage(
-              `Compressing ${current}/${total}: ${fileName}...`
+              `Compressing ${current}/${total}: ${fileName}...`,
             );
-          }
+          },
         );
 
         for (let i = 0; i < results.length; i++) {
@@ -156,45 +166,47 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
             methodsUsed.push(result.result.method);
           }
 
-          const baseName = fileInfo.fileName.replace(/\.pdf$/i, '');
+          const baseName = fileInfo.fileName.replace(/\.pdf$/i, "");
           zip.file(`${baseName}_compressed.pdf`, result.bytes);
         }
 
-        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        const zipBlob = await zip.generateAsync({ type: "blob" });
         const totalSavingsPercent =
           totalSavings > 0
-            ? Number.parseFloat(((totalSavings / totalOriginalSize) * 100).toFixed(1))
+            ? Number.parseFloat(
+                ((totalSavings / totalOriginalSize) * 100).toFixed(1),
+              )
             : 0;
 
-        downloadFile(zipBlob, undefined, 'compressed-pdfs.zip');
+        downloadFile(zipBlob, undefined, "compressed-pdfs.zip");
 
         setCompressionStats({
           originalSize: totalOriginalSize,
           compressedSize: totalCompressedSize,
           savings: totalSavings,
           savingsPercent: totalSavingsPercent,
-          method: methodsUsed.join(', '),
+          method: methodsUsed.join(", "),
         });
 
         if (totalSavings > 0) {
           setProcessingSuccess(
             `Compressed ${pdfFiles.length} PDF(s). ` +
               `Total size reduced from ${formatBytes(totalOriginalSize)} to ${formatBytes(totalCompressedSize)} ` +
-              `(Saved ${totalSavingsPercent}%).`
+              `(Saved ${totalSavingsPercent}%).`,
           );
         } else {
           setProcessingSuccess(
             `Compressed ${pdfFiles.length} PDF(s). ` +
-              `Total size: ${formatBytes(totalCompressedSize)}.`
+              `Total size: ${formatBytes(totalCompressedSize)}.`,
           );
         }
       }
     } catch (err) {
-      console.error('Compression error:', err);
+      console.error("Compression error:", err);
       setProcessingError(
         err instanceof Error
           ? `An error occurred during compression: ${err.message}`
-          : 'An error occurred during compression. Please check your files.'
+          : "An error occurred during compression. Please check your files.",
       );
     } finally {
       setIsProcessing(false);
@@ -204,8 +216,8 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
 
   const reset = useCallback(() => {
     resetFiles();
-    setCompressionLevel('balanced');
-    setCompressionAlgorithm('automatic');
+    setCompressionLevel("balanced");
+    setCompressionAlgorithm("automatic");
     setProcessingError(null);
     setProcessingSuccess(null);
     setCompressionStats(null);
@@ -234,4 +246,3 @@ export const useCompressPDF = (): UseCompressPDFReturn => {
     reset,
   };
 };
-

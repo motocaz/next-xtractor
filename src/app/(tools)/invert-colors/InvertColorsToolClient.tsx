@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const InvertColorsTool = dynamic(
   () =>
-    import('@/features/invert-colors').then((mod) => ({
+    import("@/features/invert-colors").then((mod) => ({
       default: mod.InvertColorsTool,
     })),
   {
@@ -16,8 +16,7 @@ const InvertColorsTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default InvertColorsTool;
-

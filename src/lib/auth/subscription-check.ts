@@ -10,7 +10,7 @@ export interface SubscriptionAccessResult {
 }
 
 export const checkSubscriptionAccess = async (
-  userId: string
+  userId: string,
 ): Promise<SubscriptionAccessResult> => {
   try {
     const { has } = await auth();
@@ -20,9 +20,8 @@ export const checkSubscriptionAccess = async (
     let planName: string | null = null;
     try {
       const client = await clerkClient();
-      clerkSubscription = await client.billing.getUserBillingSubscription(
-        userId
-      );
+      clerkSubscription =
+        await client.billing.getUserBillingSubscription(userId);
       const subscriptionData = clerkSubscription as {
         plan?: { name?: string };
         planName?: string;

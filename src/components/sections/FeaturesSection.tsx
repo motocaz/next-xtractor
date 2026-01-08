@@ -1,4 +1,10 @@
-import { Shield, BadgeDollarSign, Infinity as InfinityIcon, Layers, Zap } from "lucide-react";
+import {
+  Shield,
+  BadgeDollarSign,
+  Infinity as InfinityIcon,
+  Layers,
+  Zap,
+} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { MarkerSlanted } from "@/components/ui/marker-slanted";
 
@@ -50,7 +56,9 @@ export function FeaturesSection() {
           >
             <div className="flex items-center gap-4">
               {feature.icon}
-              <h3 className="text-xl font-bold text-foreground">{feature.title}</h3>
+              <h3 className="text-xl font-bold text-foreground">
+                {feature.title}
+              </h3>
             </div>
             <p className="text-muted-foreground pl-14">{feature.description}</p>
           </Card>
@@ -59,4 +67,3 @@ export function FeaturesSection() {
     </section>
   );
 }
-

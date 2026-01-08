@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertCircle } from "lucide-react";
 
 export interface ProcessMessagesProps {
   success: string | null;
@@ -26,4 +26,3 @@ export const ProcessMessages = ({ success, error }: ProcessMessagesProps) => {
     </>
   );
 };
-

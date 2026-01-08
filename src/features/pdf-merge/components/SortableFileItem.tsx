@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { GripVertical, X } from 'lucide-react';
-import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { GripVertical, X } from "lucide-react";
+import type { PDFFileInfo } from "@/hooks/useMultiPDFLoader";
 
 interface SortableFileItemProps {
   pdfInfo: PDFFileInfo;
@@ -36,7 +36,7 @@ export const SortableFileItem = ({
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const safeFileName = pdfInfo.fileName.replace(/[^a-zA-Z0-9]/g, '_');
+  const safeFileName = pdfInfo.fileName.replace(/[^a-zA-Z0-9]/g, "_");
   const inputId = `range-${safeFileName}`;
 
   return (
@@ -53,11 +53,14 @@ export const SortableFileItem = ({
               <GripVertical className="h-5 w-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="truncate font-medium text-foreground text-sm block" title={pdfInfo.fileName}>
+              <span
+                className="truncate font-medium text-foreground text-sm block"
+                title={pdfInfo.fileName}
+              >
                 {pdfInfo.fileName}
               </span>
               <span className="text-xs text-muted-foreground">
-                {pdfInfo.pageCount} {pdfInfo.pageCount === 1 ? 'page' : 'pages'}
+                {pdfInfo.pageCount} {pdfInfo.pageCount === 1 ? "page" : "pages"}
               </span>
             </div>
           </div>
@@ -88,4 +91,3 @@ export const SortableFileItem = ({
     </Card>
   );
 };
-

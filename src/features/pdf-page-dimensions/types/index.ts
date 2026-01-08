@@ -1,12 +1,12 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
-export type DimensionUnit = 'pt' | 'in' | 'mm' | 'px';
+export type DimensionUnit = "pt" | "in" | "mm" | "px";
 
 export interface PageDimensionData {
   pageNum: number;
-  width: number; 
+  width: number;
   height: number;
-  orientation: 'Portrait' | 'Landscape';
+  orientation: "Portrait" | "Landscape";
   standardSize: string;
 }
 
@@ -24,4 +24,3 @@ export interface UsePageDimensionsReturn {
   setSelectedUnit: (unit: DimensionUnit) => void;
   reset: () => void;
 }
-

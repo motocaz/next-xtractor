@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { addHeaderFooter } from '../lib/add-header-footer-logic';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import type { UseAddHeaderFooterReturn } from '../types';
+import { useState, useCallback } from "react";
+import { addHeaderFooter } from "../lib/add-header-footer-logic";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import type { UseAddHeaderFooterReturn } from "../types";
 
 export const useAddHeaderFooter = (): UseAddHeaderFooterReturn => {
-  const [pageRange, setPageRange] = useState<string>('');
-  const [fontSize, setFontSize] = useState<string>('10');
-  const [fontColor, setFontColor] = useState<string>('#000000');
-  const [headerLeft, setHeaderLeft] = useState<string>('');
-  const [headerCenter, setHeaderCenter] = useState<string>('');
-  const [headerRight, setHeaderRight] = useState<string>('');
-  const [footerLeft, setFooterLeft] = useState<string>('');
-  const [footerCenter, setFooterCenter] = useState<string>('');
-  const [footerRight, setFooterRight] = useState<string>('');
+  const [pageRange, setPageRange] = useState<string>("");
+  const [fontSize, setFontSize] = useState<string>("10");
+  const [fontColor, setFontColor] = useState<string>("#000000");
+  const [headerLeft, setHeaderLeft] = useState<string>("");
+  const [headerCenter, setHeaderCenter] = useState<string>("");
+  const [headerRight, setHeaderRight] = useState<string>("");
+  const [footerLeft, setFooterLeft] = useState<string>("");
+  const [footerCenter, setFooterCenter] = useState<string>("");
+  const [footerRight, setFooterRight] = useState<string>("");
 
   const {
     isProcessing,
@@ -38,34 +38,34 @@ export const useAddHeaderFooter = (): UseAddHeaderFooterReturn => {
 
   const processHeaderFooter = useCallback(async () => {
     if (!pdfDoc) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     const hasHeader =
-      headerLeft.trim() !== '' ||
-      headerCenter.trim() !== '' ||
-      headerRight.trim() !== '';
+      headerLeft.trim() !== "" ||
+      headerCenter.trim() !== "" ||
+      headerRight.trim() !== "";
     const hasFooter =
-      footerLeft.trim() !== '' ||
-      footerCenter.trim() !== '' ||
-      footerRight.trim() !== '';
+      footerLeft.trim() !== "" ||
+      footerCenter.trim() !== "" ||
+      footerRight.trim() !== "";
 
     if (!hasHeader && !hasFooter) {
-      setError('Please provide at least one header or footer text.');
+      setError("Please provide at least one header or footer text.");
       return;
     }
 
     const fontSizeNum = Number.parseInt(fontSize, 10);
     if (isNaN(fontSizeNum) || fontSizeNum <= 0) {
-      setError('Please enter a valid font size (greater than 0).');
+      setError("Please enter a valid font size (greater than 0).");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Adding header & footer...');
+    setLoadingMessage("Adding header & footer...");
 
     try {
       const options = {
@@ -84,13 +84,13 @@ export const useAddHeaderFooter = (): UseAddHeaderFooterReturn => {
       const pdfBytes = await newPdf.save();
       saveAndDownloadPDF(pdfBytes, pdfFile?.name);
 
-      setSuccess('Header and footer added successfully!');
+      setSuccess("Header and footer added successfully!");
     } catch (err) {
-      console.error('Error adding header and footer:', err);
+      console.error("Error adding header and footer:", err);
       setError(
         err instanceof Error
           ? `Failed to add header and footer: ${err.message}`
-          : 'Could not add header or footer.'
+          : "Could not add header or footer.",
       );
     } finally {
       setIsProcessing(false);
@@ -115,15 +115,15 @@ export const useAddHeaderFooter = (): UseAddHeaderFooterReturn => {
   ]);
 
   const reset = useCallback(() => {
-    setPageRange('');
-    setFontSize('10');
-    setFontColor('#000000');
-    setHeaderLeft('');
-    setHeaderCenter('');
-    setHeaderRight('');
-    setFooterLeft('');
-    setFooterCenter('');
-    setFooterRight('');
+    setPageRange("");
+    setFontSize("10");
+    setFontColor("#000000");
+    setHeaderLeft("");
+    setHeaderCenter("");
+    setHeaderRight("");
+    setFooterLeft("");
+    setFooterCenter("");
+    setFooterRight("");
     resetProcessing();
     resetPDF();
   }, [resetProcessing, resetPDF]);
@@ -162,4 +162,3 @@ export const useAddHeaderFooter = (): UseAddHeaderFooterReturn => {
     reset,
   };
 };
-

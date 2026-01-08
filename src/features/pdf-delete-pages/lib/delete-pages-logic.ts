@@ -5,7 +5,7 @@ import { PDFDocument as PDFLibDocument } from "pdf-lib";
 
 const parsePagesToDelete = (
   rangeString: string,
-  totalPages: number
+  totalPages: number,
 ): Set<number> => {
   const indicesToDelete = new Set<number>();
 
@@ -35,7 +35,8 @@ const parsePagesToDelete = (
       }
     } else {
       const pageNum = Number(trimmedRange);
-      if (Number.isNaN(pageNum) || pageNum < 1 || pageNum > totalPages) continue;
+      if (Number.isNaN(pageNum) || pageNum < 1 || pageNum > totalPages)
+        continue;
       indicesToDelete.add(pageNum - 1);
     }
   }
@@ -45,7 +46,7 @@ const parsePagesToDelete = (
 
 export const deletePages = async (
   pdfDoc: PDFDocument,
-  pagesToDeleteInput: string
+  pagesToDeleteInput: string,
 ): Promise<Blob> => {
   const totalPages = pdfDoc.getPageCount();
 
@@ -64,7 +65,7 @@ export const deletePages = async (
   }
 
   const indicesToKeep = Array.from({ length: totalPages }, (_, i) => i).filter(
-    (index) => !indicesToDelete.has(index)
+    (index) => !indicesToDelete.has(index),
   );
 
   const newPdf = await PDFLibDocument.create();

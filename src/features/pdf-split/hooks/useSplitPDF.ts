@@ -1,28 +1,32 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
+import { useState, useCallback } from "react";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
 import {
   splitByRange,
   splitByVisualSelection,
   splitEvenOdd,
   splitAllPages,
   splitByNPages,
-} from '../lib/split-logic';
-import { splitByBookmarks } from '../lib/bookmark-split';
-import type { UseSplitPDFReturn, SplitMode, EvenOddChoice } from '../types';
+} from "../lib/split-logic";
+import { splitByBookmarks } from "../lib/bookmark-split";
+import type { UseSplitPDFReturn, SplitMode, EvenOddChoice } from "../types";
 
-const DEFAULT_SPLIT_MODE: SplitMode = 'range';
-const DEFAULT_EVEN_ODD_CHOICE: EvenOddChoice = 'even';
-const DEFAULT_BOOKMARK_LEVEL = 'all';
+const DEFAULT_SPLIT_MODE: SplitMode = "range";
+const DEFAULT_EVEN_ODD_CHOICE: EvenOddChoice = "even";
+const DEFAULT_BOOKMARK_LEVEL = "all";
 const DEFAULT_N_VALUE = 5;
 
 export const useSplitPDF = (): UseSplitPDFReturn => {
   const [splitMode, setSplitMode] = useState<SplitMode>(DEFAULT_SPLIT_MODE);
-  const [pageRange, setPageRange] = useState<string>('');
+  const [pageRange, setPageRange] = useState<string>("");
   const [selectedPages, setSelectedPages] = useState<Set<number>>(new Set());
-  const [evenOddChoice, setEvenOddChoice] = useState<EvenOddChoice>(DEFAULT_EVEN_ODD_CHOICE);
-  const [bookmarkLevel, setBookmarkLevel] = useState<string>(DEFAULT_BOOKMARK_LEVEL);
+  const [evenOddChoice, setEvenOddChoice] = useState<EvenOddChoice>(
+    DEFAULT_EVEN_ODD_CHOICE,
+  );
+  const [bookmarkLevel, setBookmarkLevel] = useState<string>(
+    DEFAULT_BOOKMARK_LEVEL,
+  );
   const [nValue, setNValue] = useState<number>(DEFAULT_N_VALUE);
   const [downloadAsZip, setDownloadAsZip] = useState<boolean>(false);
 
@@ -47,32 +51,32 @@ export const useSplitPDF = (): UseSplitPDFReturn => {
 
   const processSplit = useCallback(async () => {
     if (!pdfDoc) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     if (!pdfFile) {
-      setError('PDF file is not available. Please try uploading again.');
+      setError("PDF file is not available. Please try uploading again.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Processing split...');
+    setLoadingMessage("Processing split...");
 
     try {
       const originalFileName = pdfFile.name;
 
       switch (splitMode) {
-        case 'range': {
-          if (!pageRange || pageRange.trim() === '') {
-            setError('Please enter a page range.');
+        case "range": {
+          if (!pageRange || pageRange.trim() === "") {
+            setError("Please enter a page range.");
             setIsProcessing(false);
             setLoadingMessage(null);
             return;
           }
-          setLoadingMessage('Splitting PDF by range...');
+          setLoadingMessage("Splitting PDF by range...");
           await splitByRange(pdfDoc, {
             pageRange,
             totalPages,
@@ -82,14 +86,14 @@ export const useSplitPDF = (): UseSplitPDFReturn => {
           break;
         }
 
-        case 'visual': {
+        case "visual": {
           if (selectedPages.size === 0) {
-            setError('Please select at least one page.');
+            setError("Please select at least one page.");
             setIsProcessing(false);
             setLoadingMessage(null);
             return;
           }
-          setLoadingMessage('Splitting PDF by selection...');
+          setLoadingMessage("Splitting PDF by selection...");
           await splitByVisualSelection(pdfDoc, {
             selectedPages,
             downloadAsZip,
@@ -98,8 +102,8 @@ export const useSplitPDF = (): UseSplitPDFReturn => {
           break;
         }
 
-        case 'even-odd': {
-          setLoadingMessage('Splitting PDF into even/odd pages...');
+        case "even-odd": {
+          setLoadingMessage("Splitting PDF into even/odd pages...");
           await splitEvenOdd(pdfDoc, {
             choice: evenOddChoice,
             totalPages,
@@ -108,8 +112,8 @@ export const useSplitPDF = (): UseSplitPDFReturn => {
           break;
         }
 
-        case 'all': {
-          setLoadingMessage('Splitting all pages...');
+        case "all": {
+          setLoadingMessage("Splitting all pages...");
           await splitAllPages(pdfDoc, {
             totalPages,
             originalFileName,
@@ -117,8 +121,8 @@ export const useSplitPDF = (): UseSplitPDFReturn => {
           break;
         }
 
-        case 'bookmarks': {
-          setLoadingMessage('Splitting PDF by bookmarks...');
+        case "bookmarks": {
+          setLoadingMessage("Splitting PDF by bookmarks...");
           await splitByBookmarks(pdfDoc, {
             bookmarkLevel,
             totalPages,
@@ -127,14 +131,14 @@ export const useSplitPDF = (): UseSplitPDFReturn => {
           break;
         }
 
-        case 'n-times': {
+        case "n-times": {
           if (nValue < 1) {
-            setError('N must be at least 1.');
+            setError("N must be at least 1.");
             setIsProcessing(false);
             setLoadingMessage(null);
             return;
           }
-          setLoadingMessage('Splitting PDF into chunks...');
+          setLoadingMessage("Splitting PDF into chunks...");
           await splitByNPages(pdfDoc, {
             nValue,
             totalPages,
@@ -144,19 +148,19 @@ export const useSplitPDF = (): UseSplitPDFReturn => {
         }
 
         default:
-          setError('Invalid split mode.');
+          setError("Invalid split mode.");
           setIsProcessing(false);
           setLoadingMessage(null);
           return;
       }
 
-      setSuccess('PDF split successfully!');
+      setSuccess("PDF split successfully!");
     } catch (err) {
-      console.error('Error splitting PDF:', err);
+      console.error("Error splitting PDF:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'An error occurred while splitting the PDF. Please try again.'
+          : "An error occurred while splitting the PDF. Please try again.",
       );
     } finally {
       setIsProcessing(false);
@@ -181,7 +185,7 @@ export const useSplitPDF = (): UseSplitPDFReturn => {
 
   const reset = useCallback(() => {
     setSplitMode(DEFAULT_SPLIT_MODE);
-    setPageRange('');
+    setPageRange("");
     setSelectedPages(new Set());
     setEvenOddChoice(DEFAULT_EVEN_ODD_CHOICE);
     setBookmarkLevel(DEFAULT_BOOKMARK_LEVEL);
@@ -220,4 +224,3 @@ export const useSplitPDF = (): UseSplitPDFReturn => {
     reset,
   };
 };
-

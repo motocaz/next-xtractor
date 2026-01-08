@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useEffect, useRef } from "react";
+import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export interface PDFViewerProps {
   currentPage: number;
@@ -100,10 +100,9 @@ export const PDFViewer = ({
         <canvas
           ref={canvasRef}
           className="mx-auto max-w-full h-auto"
-          style={{ display: 'block' }}
+          style={{ display: "block" }}
         />
       </div>
     </div>
   );
 };
-

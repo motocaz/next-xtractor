@@ -113,14 +113,16 @@ const allTools: Omit<Tool, "icon">[] = [
   {
     id: "split-in-half",
     name: "Split Pages in Half",
-    subtitle: "Choose a method to divide every page of your document into two separate pages.",
+    subtitle:
+      "Choose a method to divide every page of your document into two separate pages.",
     href: "/split-in-half",
     implemented: true,
   },
   {
     id: "split",
     name: "Split PDF",
-    subtitle: "Extract pages using range, visual selection, bookmarks, or other methods.",
+    subtitle:
+      "Extract pages using range, visual selection, bookmarks, or other methods.",
     href: "/split",
     implemented: true,
   },
@@ -155,7 +157,8 @@ const allTools: Omit<Tool, "icon">[] = [
   {
     id: "remove-restrictions",
     name: "Remove Restrictions",
-    subtitle: "Remove security restrictions and unlock PDF permissions for editing and printing.",
+    subtitle:
+      "Remove security restrictions and unlock PDF permissions for editing and printing.",
     href: "/remove-restrictions",
     implemented: true,
   },
@@ -197,7 +200,8 @@ const allTools: Omit<Tool, "icon">[] = [
   {
     id: "remove-blank-pages",
     name: "Remove Blank Pages",
-    subtitle: "Automatically detect and remove blank or nearly blank pages from your PDF.",
+    subtitle:
+      "Automatically detect and remove blank or nearly blank pages from your PDF.",
     href: "/remove-blank-pages",
     implemented: true,
   },
@@ -281,7 +285,8 @@ const allTools: Omit<Tool, "icon">[] = [
   {
     id: "heic-to-pdf",
     name: "HEIC to PDF",
-    subtitle: "Convert one or more HEIC images from your iPhone or camera into a single PDF file.",
+    subtitle:
+      "Convert one or more HEIC images from your iPhone or camera into a single PDF file.",
     href: "/heic-to-pdf",
     implemented: true,
   },
@@ -309,7 +314,8 @@ const allTools: Omit<Tool, "icon">[] = [
   {
     id: "scan-to-pdf",
     name: "Scan to PDF",
-    subtitle: "Use your device's camera to scan documents and save them as a PDF.",
+    subtitle:
+      "Use your device's camera to scan documents and save them as a PDF.",
     href: "/scan-to-pdf",
     implemented: true,
   },
@@ -428,7 +434,8 @@ const allTools: Omit<Tool, "icon">[] = [
   {
     id: "remove-annotations",
     name: "Remove Annotations",
-    subtitle: "Remove annotations (highlights, comments, drawings, etc.) from your PDF.",
+    subtitle:
+      "Remove annotations (highlights, comments, drawings, etc.) from your PDF.",
     href: "/remove-annotations",
     implemented: true,
   },
@@ -442,7 +449,8 @@ const allTools: Omit<Tool, "icon">[] = [
   {
     id: "sanitize-pdf",
     name: "Sanitize PDF",
-    subtitle: "Remove potentially sensitive or unnecessary information from your PDF before sharing.",
+    subtitle:
+      "Remove potentially sensitive or unnecessary information from your PDF before sharing.",
     href: "/sanitize",
     implemented: true,
   },
@@ -526,14 +534,16 @@ const allTools: Omit<Tool, "icon">[] = [
   {
     id: "page-dimensions",
     name: "Page Dimensions",
-    subtitle: "Analyze the dimensions, standard size, and orientation of every page.",
+    subtitle:
+      "Analyze the dimensions, standard size, and orientation of every page.",
     href: "/page-dimensions",
     implemented: true,
   },
   {
     id: "multi-tool",
     name: "PDF Multi-Tool",
-    subtitle: "Advanced page management: rotate, duplicate, split, and organize pages from multiple PDFs.",
+    subtitle:
+      "Advanced page management: rotate, duplicate, split, and organize pages from multiple PDFs.",
     href: "/multi-tool",
     implemented: true,
   },
@@ -663,7 +673,11 @@ export function ToolsSection() {
             {implementedTools.map((tool) => {
               const Icon = tool.icon;
               return (
-                <ProtectedToolLink key={tool.id} href={tool.href} scroll={false}>
+                <ProtectedToolLink
+                  key={tool.id}
+                  href={tool.href}
+                  scroll={false}
+                >
                   <ToolCard className="cursor-pointer h-full">
                     <CardHeader>
                       <div className="flex items-center gap-3 mb-2">

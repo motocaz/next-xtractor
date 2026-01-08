@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
-import { ScrollToTop } from '@/components/ScrollToTop';
+import dynamic from "next/dynamic";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const EditMetadataTool = dynamic(
   () =>
-    import('@/features/pdf-edit-metadata').then((mod) => ({
+    import("@/features/pdf-edit-metadata").then((mod) => ({
       default: mod.EditMetadataTool,
     })),
   {
@@ -17,7 +17,7 @@ const EditMetadataTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default function EditMetadataPage() {
@@ -28,4 +28,3 @@ export default function EditMetadataPage() {
     </>
   );
 }
-

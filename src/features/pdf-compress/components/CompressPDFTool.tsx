@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useCompressPDF } from '../hooks/useCompressPDF';
-import { FileUploader } from '@/components/FileUploader';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
+import Link from "next/link";
+import { useCompressPDF } from "../hooks/useCompressPDF";
+import { FileUploader } from "@/components/FileUploader";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft } from 'lucide-react';
-import { formatBytes } from '@/lib/pdf/file-utils';
-import type { CompressionLevel, CompressionAlgorithm } from '../types';
-import { FileListSection } from '@/components/common/FileListSection';
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowLeft } from "lucide-react";
+import { formatBytes } from "@/lib/pdf/file-utils";
+import type { CompressionLevel, CompressionAlgorithm } from "../types";
+import { FileListSection } from "@/components/common/FileListSection";
 
 export const CompressPDFTool = () => {
   const {
@@ -49,9 +49,7 @@ export const CompressPDFTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        Compress PDF
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">Compress PDF</h2>
       <p className="mb-6 text-muted-foreground">
         Reduce file size by choosing the compression method that best suits your
         document. Supports multiple PDFs.
@@ -141,8 +139,8 @@ export const CompressPDFTool = () => {
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground pt-2 pb-4">
-                  Choose &apos;Vector&apos; for text based PDFs, or &apos;Photon&apos; for scanned
-                  documents and complex images.
+                  Choose &apos;Vector&apos; for text based PDFs, or
+                  &apos;Photon&apos; for scanned documents and complex images.
                 </p>
               </div>
             </CardContent>
@@ -162,7 +160,9 @@ export const CompressPDFTool = () => {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Original Size:</span>
+                    <span className="text-muted-foreground">
+                      Original Size:
+                    </span>
                     <span className="text-foreground">
                       {formatBytes(compressionStats.originalSize)}
                     </span>
@@ -193,7 +193,7 @@ export const CompressPDFTool = () => {
             loadingMessage={loadingMessage}
             disabled={!canProcess}
           >
-            Compress PDF{pdfFiles.length > 1 ? 's' : ''}
+            Compress PDF{pdfFiles.length > 1 ? "s" : ""}
           </ProcessButton>
 
           <ProcessMessages success={success} error={error} />
@@ -207,4 +207,3 @@ export const CompressPDFTool = () => {
     </div>
   );
 };
-

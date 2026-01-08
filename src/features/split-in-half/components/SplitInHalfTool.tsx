@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
-import { useSplitInHalf } from '../hooks/useSplitInHalf';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useSplitInHalf } from "../hooks/useSplitInHalf";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
 export const SplitInHalfTool = () => {
   const {
@@ -44,9 +44,12 @@ export const SplitInHalfTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">Split Pages in Half</h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">
+        Split Pages in Half
+      </h2>
       <p className="mb-6 text-muted-foreground">
-        Choose a method to divide every page of your document into two separate pages.
+        Choose a method to divide every page of your document into two separate
+        pages.
       </p>
 
       <PDFUploadSection
@@ -66,7 +69,9 @@ export const SplitInHalfTool = () => {
             </Label>
             <Select
               value={splitType}
-              onValueChange={(value) => setSplitType(value as 'vertical' | 'horizontal')}
+              onValueChange={(value) =>
+                setSplitType(value as "vertical" | "horizontal")
+              }
               disabled={isProcessing}
             >
               <SelectTrigger id="split-type" className="w-full">
@@ -96,8 +101,10 @@ export const SplitInHalfTool = () => {
         </div>
       )}
 
-      <ProcessLoadingModal isProcessing={isProcessing} loadingMessage={loadingMessage} />
+      <ProcessLoadingModal
+        isProcessing={isProcessing}
+        loadingMessage={loadingMessage}
+      />
     </div>
   );
 };
-

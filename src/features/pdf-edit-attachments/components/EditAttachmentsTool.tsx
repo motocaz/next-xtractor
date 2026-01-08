@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useEditAttachments } from '../hooks/useEditAttachments';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
-import { AttachmentItem } from './AttachmentItem';
+import Link from "next/link";
+import { useEditAttachments } from "../hooks/useEditAttachments";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import { AttachmentItem } from "./AttachmentItem";
 
 export const EditAttachmentsTool = () => {
   const {
@@ -35,7 +35,9 @@ export const EditAttachmentsTool = () => {
 
   const allSelected =
     attachments.length > 0 &&
-    attachments.every((attachment) => attachmentsToRemove.has(attachment.index));
+    attachments.every((attachment) =>
+      attachmentsToRemove.has(attachment.index),
+    );
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-8">
@@ -68,7 +70,7 @@ export const EditAttachmentsTool = () => {
       {isLoadingAttachments && (
         <div className="mt-6 p-4 bg-input rounded-lg">
           <p className="text-sm text-muted-foreground">
-            {loadingMessage || 'Loading attachments...'}
+            {loadingMessage || "Loading attachments..."}
           </p>
         </div>
       )}
@@ -89,9 +91,7 @@ export const EditAttachmentsTool = () => {
                   onClick={toggleAllAttachments}
                   disabled={isProcessing}
                 >
-                  {allSelected
-                    ? 'Deselect All'
-                    : 'Remove All Attachments'}
+                  {allSelected ? "Deselect All" : "Remove All Attachments"}
                 </Button>
               </div>
 
@@ -101,9 +101,7 @@ export const EditAttachmentsTool = () => {
                     key={attachment.index}
                     attachment={attachment}
                     isSelected={attachmentsToRemove.has(attachment.index)}
-                    onToggle={() =>
-                      toggleAttachmentRemoval(attachment.index)
-                    }
+                    onToggle={() => toggleAttachmentRemoval(attachment.index)}
                   />
                 ))}
               </div>
@@ -133,4 +131,3 @@ export const EditAttachmentsTool = () => {
     </div>
   );
 };
-

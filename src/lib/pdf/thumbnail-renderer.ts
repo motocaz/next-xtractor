@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { loadPDFWithPDFJSFromBuffer } from './pdfjs-loader';
-import { renderPageAsImage } from './canvas-utils';
+import { loadPDFWithPDFJSFromBuffer } from "./pdfjs-loader";
+import { renderPageAsImage } from "./canvas-utils";
 
 export interface PageThumbnail {
   pageNum: number;
@@ -10,7 +10,7 @@ export interface PageThumbnail {
 
 export const renderAllPagesAsThumbnails = async (
   pdfBytes: ArrayBuffer,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<PageThumbnail[]> => {
   const pdfJsDoc = await loadPDFWithPDFJSFromBuffer(pdfBytes);
   const totalPages = pdfJsDoc.numPages;
@@ -34,4 +34,3 @@ export const renderAllPagesAsThumbnails = async (
 
   return thumbnails;
 };
-

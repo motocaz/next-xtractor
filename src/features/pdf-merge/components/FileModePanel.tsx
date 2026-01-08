@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   DndContext,
@@ -8,14 +8,14 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { SortableFileItem } from './SortableFileItem';
-import type { PDFFileInfo } from '@/hooks/useMultiPDFLoader';
+} from "@dnd-kit/sortable";
+import { SortableFileItem } from "./SortableFileItem";
+import type { PDFFileInfo } from "@/hooks/useMultiPDFLoader";
 
 interface FileModePanelProps {
   pdfFiles: PDFFileInfo[];
@@ -36,7 +36,7 @@ export const FileModePanel = ({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -82,7 +82,7 @@ export const FileModePanel = ({
               <SortableFileItem
                 key={pdfInfo.id}
                 pdfInfo={pdfInfo}
-                pageRange={pageRanges.get(pdfInfo.id) || ''}
+                pageRange={pageRanges.get(pdfInfo.id) || ""}
                 onRemove={onRemove}
                 onPageRangeChange={onPageRangeChange}
               />
@@ -93,4 +93,3 @@ export const FileModePanel = ({
     </div>
   );
 };
-

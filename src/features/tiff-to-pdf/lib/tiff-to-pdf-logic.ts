@@ -1,23 +1,26 @@
-'use client';
+"use client";
 
-import { PDFDocument } from 'pdf-lib';
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
+import { PDFDocument } from "pdf-lib";
+import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
 import {
   addImageAsPage,
   createImageToPdfResult,
   type ImageToPdfResult,
-} from '@/lib/pdf/image-to-pdf-utils';
-import { decodeTiffToImageData, imageDataToPngBytes } from '@/lib/pdf/tiff-utils';
+} from "@/lib/pdf/image-to-pdf-utils";
+import {
+  decodeTiffToImageData,
+  imageDataToPngBytes,
+} from "@/lib/pdf/tiff-utils";
 
 export interface TiffToPdfResult {
-  pdfDoc: ImageToPdfResult['pdfDoc'];
+  pdfDoc: ImageToPdfResult["pdfDoc"];
   successCount: number;
   failedFiles: string[];
 }
 
 export const tiffToPdf = async (files: File[]): Promise<TiffToPdfResult> => {
   if (files.length === 0) {
-    throw new Error('Please select at least one TIFF file.');
+    throw new Error("Please select at least one TIFF file.");
   }
 
   const pdfDoc = await PDFDocument.create();
@@ -48,4 +51,3 @@ export const tiffToPdf = async (files: File[]): Promise<TiffToPdfResult> => {
 
   return createImageToPdfResult(pdfDoc, failedFiles);
 };
-

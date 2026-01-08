@@ -1,15 +1,15 @@
-import type { HOCRWord } from '../types';
+import type { HOCRWord } from "../types";
 
 export const parseHOCR = (hocrText: string): HOCRWord[] => {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(hocrText, 'text/html');
+  const doc = parser.parseFromString(hocrText, "text/html");
   const words: HOCRWord[] = [];
 
-  const wordElements = doc.querySelectorAll('.ocrx_word');
+  const wordElements = doc.querySelectorAll(".ocrx_word");
 
   wordElements.forEach((wordEl) => {
-    const titleAttr = wordEl.getAttribute('title');
-    const text = wordEl.textContent?.trim() || '';
+    const titleAttr = wordEl.getAttribute("title");
+    const text = wordEl.textContent?.trim() || "";
 
     if (!titleAttr || !text) return;
 
@@ -34,4 +34,3 @@ export const parseHOCR = (hocrText: string): HOCRWord[] => {
 
   return words;
 };
-

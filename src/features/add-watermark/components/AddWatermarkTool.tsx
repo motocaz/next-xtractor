@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useAddWatermark } from '../hooks/useAddWatermark';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft } from 'lucide-react';
+import Link from "next/link";
+import { useAddWatermark } from "../hooks/useAddWatermark";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowLeft } from "lucide-react";
 
 export const AddWatermarkTool = () => {
   const {
@@ -64,9 +64,7 @@ export const AddWatermarkTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        Add Watermark
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">Add Watermark</h2>
       <p className="mb-6 text-muted-foreground">
         Apply a text or image watermark to every page of your PDF document.
       </p>
@@ -87,19 +85,25 @@ export const AddWatermarkTool = () => {
             <CardContent className="p-2">
               <RadioGroup
                 value={watermarkType}
-                onValueChange={(value) => setWatermarkType(value as 'text' | 'image')}
+                onValueChange={(value) =>
+                  setWatermarkType(value as "text" | "image")
+                }
                 className="flex gap-4"
               >
                 <div className="flex-1">
                   <Label
                     htmlFor="watermark-type-text"
                     className={`flex items-center justify-center gap-2 p-3 rounded-md hover:bg-accent cursor-pointer transition-colors ${
-                      watermarkType === 'text'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-transparent'
+                      watermarkType === "text"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-transparent"
                     }`}
                   >
-                    <RadioGroupItem value="text" id="watermark-type-text" className="sr-only" />
+                    <RadioGroupItem
+                      value="text"
+                      id="watermark-type-text"
+                      className="sr-only"
+                    />
                     <span className="font-semibold">Text</span>
                   </Label>
                 </div>
@@ -107,12 +111,16 @@ export const AddWatermarkTool = () => {
                   <Label
                     htmlFor="watermark-type-image"
                     className={`flex items-center justify-center gap-2 p-3 rounded-md hover:bg-accent cursor-pointer transition-colors ${
-                      watermarkType === 'image'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-transparent'
+                      watermarkType === "image"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-transparent"
                     }`}
                   >
-                    <RadioGroupItem value="image" id="watermark-type-image" className="sr-only" />
+                    <RadioGroupItem
+                      value="image"
+                      id="watermark-type-image"
+                      className="sr-only"
+                    />
                     <span className="font-semibold">Image</span>
                   </Label>
                 </div>
@@ -120,7 +128,7 @@ export const AddWatermarkTool = () => {
             </CardContent>
           </Card>
 
-          {watermarkType === 'text' && (
+          {watermarkType === "text" && (
             <Card>
               <CardContent className="pt-6 pb-6 space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -149,34 +157,37 @@ export const AddWatermarkTool = () => {
                     />
                   </div>
                 </div>
-                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                   <div className="space-y-2">
-                     <Label htmlFor="text-color">Text Color</Label>
-                     <Input
-                       type="color"
-                       id="text-color"
-                       value={textColor}
-                       onChange={(e) => setTextColor(e.target.value)}
-                       className="h-[42px] p-1 cursor-pointer bg-background! dark:bg-card!"
-                       disabled={isProcessing}
-                     />
-                   </div>
-                   <div className="space-y-2 flex flex-col justify-center">
-                     <Label htmlFor="opacity-text">
-                       Opacity (<span id="opacity-value-text">{opacityText}</span>)
-                     </Label>
-                     <Slider
-                       id="opacity-text"
-                       value={[Number.parseFloat(opacityText)]}
-                       onValueChange={(values) => setOpacityText(values[0].toString())}
-                       min={0}
-                       max={1}
-                       step={0.1}
-                       disabled={isProcessing}
-                       className="mt-2"
-                     />
-                   </div>
-                 </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="text-color">Text Color</Label>
+                    <Input
+                      type="color"
+                      id="text-color"
+                      value={textColor}
+                      onChange={(e) => setTextColor(e.target.value)}
+                      className="h-[42px] p-1 cursor-pointer bg-background! dark:bg-card!"
+                      disabled={isProcessing}
+                    />
+                  </div>
+                  <div className="space-y-2 flex flex-col justify-center">
+                    <Label htmlFor="opacity-text">
+                      Opacity (
+                      <span id="opacity-value-text">{opacityText}</span>)
+                    </Label>
+                    <Slider
+                      id="opacity-text"
+                      value={[Number.parseFloat(opacityText)]}
+                      onValueChange={(values) =>
+                        setOpacityText(values[0].toString())
+                      }
+                      min={0}
+                      max={1}
+                      step={0.1}
+                      disabled={isProcessing}
+                      className="mt-2"
+                    />
+                  </div>
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="angle-text">
                     Angle (<span id="angle-value-text">{angleText}</span>°)
@@ -184,7 +195,9 @@ export const AddWatermarkTool = () => {
                   <Slider
                     id="angle-text"
                     value={[Number.parseInt(angleText, 10)]}
-                    onValueChange={(values) => setAngleText(values[0].toString())}
+                    onValueChange={(values) =>
+                      setAngleText(values[0].toString())
+                    }
                     min={-180}
                     max={180}
                     step={1}
@@ -195,11 +208,13 @@ export const AddWatermarkTool = () => {
             </Card>
           )}
 
-          {watermarkType === 'image' && (
+          {watermarkType === "image" && (
             <Card>
               <CardContent className="pt-6 pb-6 space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="image-watermark-input">Upload Watermark Image</Label>
+                  <Label htmlFor="image-watermark-input">
+                    Upload Watermark Image
+                  </Label>
                   <Input
                     type="file"
                     id="image-watermark-input"
@@ -214,21 +229,24 @@ export const AddWatermarkTool = () => {
                     </p>
                   )}
                 </div>
-                 <div className="space-y-2 flex flex-col justify-center">
-                   <Label htmlFor="opacity-image">
-                     Opacity (<span id="opacity-value-image">{opacityImage}</span>)
-                   </Label>
-                   <Slider
-                     id="opacity-image"
-                     value={[Number.parseFloat(opacityImage)]}
-                     onValueChange={(values) => setOpacityImage(values[0].toString())}
-                     min={0}
-                     max={1}
-                     step={0.1}
-                     disabled={isProcessing}
-                     className="mt-2"
-                   />
-                 </div>
+                <div className="space-y-2 flex flex-col justify-center">
+                  <Label htmlFor="opacity-image">
+                    Opacity (
+                    <span id="opacity-value-image">{opacityImage}</span>)
+                  </Label>
+                  <Slider
+                    id="opacity-image"
+                    value={[Number.parseFloat(opacityImage)]}
+                    onValueChange={(values) =>
+                      setOpacityImage(values[0].toString())
+                    }
+                    min={0}
+                    max={1}
+                    step={0.1}
+                    disabled={isProcessing}
+                    className="mt-2"
+                  />
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="angle-image">
                     Angle (<span id="angle-value-image">{angleImage}</span>°)
@@ -236,7 +254,9 @@ export const AddWatermarkTool = () => {
                   <Slider
                     id="angle-image"
                     value={[Number.parseInt(angleImage, 10)]}
-                    onValueChange={(values) => setAngleImage(values[0].toString())}
+                    onValueChange={(values) =>
+                      setAngleImage(values[0].toString())
+                    }
                     min={-180}
                     max={180}
                     step={1}
@@ -270,4 +290,3 @@ export const AddWatermarkTool = () => {
     </div>
   );
 };
-

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Download as DownloadIcon, FileSearch } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Download as DownloadIcon, FileSearch } from "lucide-react";
 
 interface BookmarkActionsProps {
   onSavePDF: () => void;
@@ -25,4 +25,3 @@ export const BookmarkActions = ({
     </div>
   );
 };
-

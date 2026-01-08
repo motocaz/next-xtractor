@@ -13,7 +13,7 @@ export interface UsePDFViewerReturn {
     canvas: HTMLCanvasElement,
     zoom?: number | null,
     destX?: number | null,
-    destY?: number | null
+    destY?: number | null,
   ) => Promise<void>;
   goToPage: (pageNum: number) => void;
   nextPage: () => void;
@@ -74,7 +74,7 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
       canvas: HTMLCanvasElement,
       zoom: number | null = null,
       destX: number | null = null,
-      destY: number | null = null
+      destY: number | null = null,
     ) => {
       if (!pdfJsDocRef.current) return;
 
@@ -82,7 +82,7 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
         try {
           renderTaskRef.current.cancel();
         } catch {}
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 50));
       }
 
       isRenderingRef.current = true;
@@ -195,7 +195,7 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
         zoom: zoomScale,
       }));
     },
-    [state.zoom]
+    [state.zoom],
   );
 
   const goToPage = useCallback((pageNum: number) => {

@@ -7,8 +7,9 @@ export default function ContactPage() {
           Get in Touch
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-          We&apos;d love to hear from you. Whether you have a question, feedback, or
-          a feature request, please don&apos;t hesitate to reach out.
+          We&apos;d love to hear from you. Whether you have a question,
+          feedback, or a feature request, please don&apos;t hesitate to reach
+          out.
         </p>
       </section>
 
@@ -27,5 +28,3 @@ export default function ContactPage() {
     </div>
   );
 }
-
-

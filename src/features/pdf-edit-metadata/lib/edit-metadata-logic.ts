@@ -3,7 +3,7 @@ import type { PDFDocument } from "pdf-lib";
 import type { PDFMetadata, CustomMetadataField } from "../types";
 
 export const extractCustomMetadataFields = (
-  pdfDoc: PDFDocument
+  pdfDoc: PDFDocument,
 ): Map<string, string> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const infoDict = (pdfDoc as any).getInfoDict();
@@ -46,7 +46,7 @@ export const editPDFMetadata = async (
   pdfDoc: PDFDocument,
   metadata: PDFMetadata,
   customFields: CustomMetadataField[],
-  preserveExistingCustomFields: boolean = true
+  preserveExistingCustomFields: boolean = true,
 ): Promise<PDFDocument> => {
   pdfDoc.setTitle(metadata.title || "");
   pdfDoc.setAuthor(metadata.author || "");

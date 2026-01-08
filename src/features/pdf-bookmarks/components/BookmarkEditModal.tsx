@@ -72,7 +72,7 @@ export const BookmarkEditModal = ({
       setUseDestination(
         bookmark.destX !== null ||
           bookmark.destY !== null ||
-          bookmark.zoom !== null
+          bookmark.zoom !== null,
       );
       if (bookmark.color?.startsWith("#")) {
         setCustomColor(bookmark.color);
@@ -231,8 +231,11 @@ export const BookmarkEditModal = ({
                         setDestPage(
                           Math.max(
                             1,
-                            Math.min(maxPages, Number.parseInt(e.target.value) || 1)
-                          )
+                            Math.min(
+                              maxPages,
+                              Number.parseInt(e.target.value) || 1,
+                            ),
+                          ),
                         )
                       }
                       className="text-sm"
@@ -270,7 +273,9 @@ export const BookmarkEditModal = ({
                       value={destX ?? 0}
                       onChange={(e) =>
                         setDestX(
-                          e.target.value ? Number.parseFloat(e.target.value) : null
+                          e.target.value
+                            ? Number.parseFloat(e.target.value)
+                            : null,
                         )
                       }
                       step={10}
@@ -287,7 +292,9 @@ export const BookmarkEditModal = ({
                       value={destY ?? 0}
                       onChange={(e) =>
                         setDestY(
-                          e.target.value ? Number.parseFloat(e.target.value) : null
+                          e.target.value
+                            ? Number.parseFloat(e.target.value)
+                            : null,
                         )
                       }
                       step={10}

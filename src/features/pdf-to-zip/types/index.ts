@@ -1,4 +1,4 @@
-import type { FileInfo } from '@/hooks/useFileInfoLoader';
+import type { FileInfo } from "@/hooks/useFileInfoLoader";
 
 export type PdfFileInfo = FileInfo;
 
@@ -14,4 +14,3 @@ export interface UsePdfToZipReturn {
   processPdfToZip: () => Promise<void>;
   reset: () => void;
 }
-

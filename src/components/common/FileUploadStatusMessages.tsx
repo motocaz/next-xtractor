@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Spinner } from '@/components/ui/spinner';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { Spinner } from "@/components/ui/spinner";
+import { CheckCircle2, AlertCircle } from "lucide-react";
 
 export interface FileUploadStatusMessagesProps {
   isLoading?: boolean;
@@ -16,7 +16,7 @@ export interface FileUploadStatusMessagesProps {
 export const FileUploadStatusMessages = ({
   isLoading,
   loadingMessage,
-  defaultLoadingText = 'Loading files...',
+  defaultLoadingText = "Loading files...",
   error,
   success,
   failedFiles = [],
@@ -69,4 +69,3 @@ export const FileUploadStatusMessages = ({
     </div>
   );
 };
-

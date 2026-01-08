@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { heicToPdf } from '../lib/heic-to-pdf-logic';
-import { handleImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
-import type { HeicFileInfo, UseHeicToPdfReturn } from '../types';
+import { useState, useCallback } from "react";
+import { heicToPdf } from "../lib/heic-to-pdf-logic";
+import { handleImageToPdfResult } from "@/lib/pdf/image-to-pdf-utils";
+import type { HeicFileInfo, UseHeicToPdfReturn } from "../types";
 
 export const useHeicToPdf = (): UseHeicToPdfReturn => {
   const [heicFiles, setHeicFiles] = useState<HeicFileInfo[]>([]);
@@ -16,14 +16,14 @@ export const useHeicToPdf = (): UseHeicToPdfReturn => {
 
   const loadHeicFiles = useCallback(async (files: File[]) => {
     if (!files || files.length === 0) {
-      setError('Please select at least one HEIC file.');
+      setError("Please select at least one HEIC file.");
       return;
     }
 
     setIsLoading(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Validating HEIC files...');
+    setLoadingMessage("Validating HEIC files...");
 
     try {
       const validFiles: HeicFileInfo[] = [];
@@ -32,10 +32,10 @@ export const useHeicToPdf = (): UseHeicToPdfReturn => {
       for (const file of files) {
         const fileNameLower = file.name.toLowerCase();
         const isHeic =
-          file.type === 'image/heic' ||
-          file.type === 'image/heif' ||
-          fileNameLower.endsWith('.heic') ||
-          fileNameLower.endsWith('.heif');
+          file.type === "image/heic" ||
+          file.type === "image/heif" ||
+          fileNameLower.endsWith(".heic") ||
+          fileNameLower.endsWith(".heif");
 
         if (!isHeic) {
           invalidFiles.push(file.name);
@@ -53,12 +53,14 @@ export const useHeicToPdf = (): UseHeicToPdfReturn => {
 
       if (invalidFiles.length > 0) {
         setError(
-          `The following files are not valid HEIC images: ${invalidFiles.join(', ')}`
+          `The following files are not valid HEIC images: ${invalidFiles.join(", ")}`,
         );
       }
 
       if (validFiles.length === 0) {
-        setError('No valid HEIC files were found. Please select HEIC or HEIF image files.');
+        setError(
+          "No valid HEIC files were found. Please select HEIC or HEIF image files.",
+        );
       } else {
         setHeicFiles((prev) => [...prev, ...validFiles]);
         if (validFiles.length > 0 && invalidFiles.length === 0) {
@@ -66,11 +68,11 @@ export const useHeicToPdf = (): UseHeicToPdfReturn => {
         }
       }
     } catch (err) {
-      console.error('Error loading HEIC files:', err);
+      console.error("Error loading HEIC files:", err);
       setError(
         err instanceof Error
           ? `Failed to load HEIC files: ${err.message}`
-          : 'Failed to load HEIC files. Please check your files.'
+          : "Failed to load HEIC files. Please check your files.",
       );
     } finally {
       setIsLoading(false);
@@ -86,7 +88,7 @@ export const useHeicToPdf = (): UseHeicToPdfReturn => {
 
   const processHeicToPdf = useCallback(async () => {
     if (heicFiles.length === 0) {
-      setError('Please upload at least one HEIC file.');
+      setError("Please upload at least one HEIC file.");
       return;
     }
 
@@ -94,7 +96,7 @@ export const useHeicToPdf = (): UseHeicToPdfReturn => {
     setError(null);
     setSuccess(null);
     setFailedFiles([]);
-    setLoadingMessage('Converting HEIC to PDF...');
+    setLoadingMessage("Converting HEIC to PDF...");
 
     try {
       const files = heicFiles.map((fileInfo) => fileInfo.file);
@@ -102,7 +104,7 @@ export const useHeicToPdf = (): UseHeicToPdfReturn => {
 
       await handleImageToPdfResult({
         result,
-        firstFileName: heicFiles[0]?.fileName || 'converted',
+        firstFileName: heicFiles[0]?.fileName || "converted",
         extensionPattern: /\.(heic|heif)$/i,
         stateSetters: {
           setFailedFiles,
@@ -110,11 +112,11 @@ export const useHeicToPdf = (): UseHeicToPdfReturn => {
         },
       });
     } catch (err) {
-      console.error('HEIC to PDF conversion error:', err);
+      console.error("HEIC to PDF conversion error:", err);
       setError(
         err instanceof Error
           ? `An error occurred while converting: ${err.message}`
-          : 'An error occurred while converting HEIC to PDF. One of the files may be invalid or unsupported.'
+          : "An error occurred while converting HEIC to PDF. One of the files may be invalid or unsupported.",
       );
     } finally {
       setIsProcessing(false);
@@ -146,4 +148,3 @@ export const useHeicToPdf = (): UseHeicToPdfReturn => {
     reset,
   };
 };
-

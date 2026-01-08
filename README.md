@@ -11,6 +11,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ### Environment Setup
 
 1. Copy `.env.example` to `.env.local`:
+
    ```bash
    cp .env.example .env.local
    ```
@@ -76,7 +77,7 @@ This project uses Clerk Billing for subscription management:
 - **Pricing Page**: `/pricing` - Displays subscription plans using Clerk's `<PricingTable />` component
 - **Account Page**: `/account` - User profile and subscription management using Clerk's `<UserProfile />` component
 - **Protected Content**: Use `<Protect>` component or `has()` method to restrict access based on subscription plans
-- **API Routes**: 
+- **API Routes**:
   - `/api/user` - Get current user data and subscription
   - `/api/user/subscription` - Get user's active subscription
   - `/api/user/billing-history` - Get user's payment history
@@ -84,25 +85,27 @@ This project uses Clerk Billing for subscription management:
 ### Protecting Content
 
 **Server Components:**
+
 ```typescript
 import { auth } from '@clerk/nextjs/server';
 
 export default async function Page() {
   const { has } = await auth();
   const hasPremiumPlan = has({ plan: 'premium' });
-  
+
   if (!hasPremiumPlan) {
     return <div>Premium content only</div>;
   }
-  
+
   return <div>Premium content here</div>;
 }
 ```
 
 **Client Components:**
+
 ```tsx
-'use client';
-import { Protect } from '@clerk/nextjs';
+"use client";
+import { Protect } from "@clerk/nextjs";
 
 export default function Page() {
   return (

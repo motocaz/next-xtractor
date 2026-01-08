@@ -1,6 +1,12 @@
-export type SplitMode = 'range' | 'visual' | 'even-odd' | 'all' | 'bookmarks' | 'n-times';
+export type SplitMode =
+  | "range"
+  | "visual"
+  | "even-odd"
+  | "all"
+  | "bookmarks"
+  | "n-times";
 
-export type EvenOddChoice = 'even' | 'odd';
+export type EvenOddChoice = "even" | "odd";
 
 export interface SplitPDFOptions {
   mode: SplitMode;
@@ -22,7 +28,9 @@ export interface UseSplitPDFReturn {
   downloadAsZip: boolean;
 
   pdfFile: File | null;
-  pdfDoc: ReturnType<typeof import('@/hooks/usePDFProcessor').usePDFProcessor>['pdfDoc'];
+  pdfDoc: ReturnType<
+    typeof import("@/hooks/usePDFProcessor").usePDFProcessor
+  >["pdfDoc"];
   isProcessing: boolean;
   loadingMessage: string | null;
   error: string | null;
@@ -43,4 +51,3 @@ export interface UseSplitPDFReturn {
   processSplit: () => Promise<void>;
   reset: () => void;
 }
-

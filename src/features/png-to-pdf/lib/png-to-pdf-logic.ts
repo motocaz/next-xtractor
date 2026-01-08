@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { PDFDocument } from 'pdf-lib';
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
+import { PDFDocument } from "pdf-lib";
+import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
 import {
   addImageAsPage,
   createImageToPdfResult,
   type ImageToPdfResult,
-} from '@/lib/pdf/image-to-pdf-utils';
+} from "@/lib/pdf/image-to-pdf-utils";
 
 export interface PngToPdfResult {
-  pdfDoc: ImageToPdfResult['pdfDoc'];
+  pdfDoc: ImageToPdfResult["pdfDoc"];
   successCount: number;
   failedFiles: string[];
 }
 
 export const pngToPdf = async (files: File[]): Promise<PngToPdfResult> => {
   if (files.length === 0) {
-    throw new Error('Please select at least one PNG file.');
+    throw new Error("Please select at least one PNG file.");
   }
 
   const pdfDoc = await PDFDocument.create();
@@ -35,4 +35,3 @@ export const pngToPdf = async (files: File[]): Promise<PngToPdfResult> => {
 
   return createImageToPdfResult(pdfDoc, failedFiles);
 };
-

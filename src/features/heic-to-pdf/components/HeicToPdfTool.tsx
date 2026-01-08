@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useHeicToPdf } from '../hooks/useHeicToPdf';
-import { FileUploader } from '@/components/FileUploader';
-import { ArrowLeft } from 'lucide-react';
-import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { FileListSection } from '@/components/common/FileListSection';
+import Link from "next/link";
+import { useHeicToPdf } from "../hooks/useHeicToPdf";
+import { FileUploader } from "@/components/FileUploader";
+import { ArrowLeft } from "lucide-react";
+import { FileUploadStatusMessages } from "@/components/common/FileUploadStatusMessages";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { FileListSection } from "@/components/common/FileListSection";
 
 export const HeicToPdfTool = () => {
   const {
@@ -35,11 +35,10 @@ export const HeicToPdfTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        HEIC to PDF
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">HEIC to PDF</h2>
       <p className="mb-6 text-muted-foreground">
-        Convert one or more HEIC (High Efficiency) images from your iPhone or camera into a single PDF file.
+        Convert one or more HEIC (High Efficiency) images from your iPhone or
+        camera into a single PDF file.
       </p>
 
       <div className="mb-4">
@@ -93,4 +92,3 @@ export const HeicToPdfTool = () => {
     </div>
   );
 };
-

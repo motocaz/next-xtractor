@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { PDFDocument } from 'pdf-lib';
-import type { SplitType } from '../types';
+import { PDFDocument } from "pdf-lib";
+import type { SplitType } from "../types";
 
 export const splitInHalf = async (
   pdfDoc: PDFDocument,
   splitType: SplitType,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<Uint8Array> => {
   const newPdfDoc = await PDFDocument.create();
   const pages = pdfDoc.getPages();
@@ -22,11 +22,11 @@ export const splitInHalf = async (
     const [page2] = await newPdfDoc.copyPages(pdfDoc, [i]);
 
     switch (splitType) {
-      case 'vertical':
+      case "vertical":
         page1.setCropBox(0, 0, width / 2, height);
         page2.setCropBox(width / 2, 0, width / 2, height);
         break;
-      case 'horizontal':
+      case "horizontal":
         page1.setCropBox(0, height / 2, width, height / 2);
         page2.setCropBox(0, 0, width, height / 2);
         break;
@@ -39,4 +39,3 @@ export const splitInHalf = async (
   const newPdfBytes = await newPdfDoc.save();
   return newPdfBytes;
 };
-

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { PDFDocument } from 'pdf-lib';
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
+import { useState, useCallback } from "react";
+import { PDFDocument } from "pdf-lib";
+import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
 
 export interface PDFFileInfo {
   id: string;
@@ -13,7 +13,7 @@ export interface PDFFileInfo {
 }
 
 export interface UseMultiPDFLoaderOptions {
-  onEncryptedFiles?: 'error' | 'warning';
+  onEncryptedFiles?: "error" | "warning";
   allowEncrypted?: boolean;
   errorMessages?: {
     noFiles?: string;
@@ -37,17 +37,19 @@ export interface UseMultiPDFLoaderReturn {
 }
 
 const DEFAULT_ERROR_MESSAGES = {
-  noFiles: 'Please select at least one PDF file.',
-  noValidFiles: 'No valid PDF files were loaded.',
-  encryptedFiles: 'The following PDFs are password-protected and were skipped. Please use the Decrypt tool first:\n',
-  loadFailed: (fileName: string) => `Failed to load ${fileName}. The file may be corrupted or password-protected.`,
+  noFiles: "Please select at least one PDF file.",
+  noValidFiles: "No valid PDF files were loaded.",
+  encryptedFiles:
+    "The following PDFs are password-protected and were skipped. Please use the Decrypt tool first:\n",
+  loadFailed: (fileName: string) =>
+    `Failed to load ${fileName}. The file may be corrupted or password-protected.`,
 };
 
 export const useMultiPDFLoader = (
-  options: UseMultiPDFLoaderOptions = {}
+  options: UseMultiPDFLoaderOptions = {},
 ): UseMultiPDFLoaderReturn => {
   const {
-    onEncryptedFiles = 'warning',
+    onEncryptedFiles = "warning",
     allowEncrypted = false,
     errorMessages = {},
   } = options;
@@ -70,14 +72,14 @@ export const useMultiPDFLoader = (
       setIsLoading(true);
       setError(null);
       setWarning(null);
-      setLoadingMessage('Loading PDF documents...');
+      setLoadingMessage("Loading PDF documents...");
 
       try {
         const pdfInfos: PDFFileInfo[] = [];
         const encryptedFiles: string[] = [];
 
         for (const file of files) {
-          if (file.type !== 'application/pdf') {
+          if (file.type !== "application/pdf") {
             continue;
           }
 
@@ -112,8 +114,9 @@ export const useMultiPDFLoader = (
         }
 
         if (encryptedFiles.length > 0) {
-          const encryptedMessage = messages.encryptedFiles + encryptedFiles.join('\n');
-          if (onEncryptedFiles === 'error') {
+          const encryptedMessage =
+            messages.encryptedFiles + encryptedFiles.join("\n");
+          if (onEncryptedFiles === "error") {
             setError(encryptedMessage);
           } else {
             setWarning(encryptedMessage);
@@ -127,18 +130,18 @@ export const useMultiPDFLoader = (
           setPdfFiles((prev) => [...prev, ...pdfInfos]);
         }
       } catch (err) {
-        console.error('Error loading PDFs:', err);
+        console.error("Error loading PDFs:", err);
         setError(
           err instanceof Error
             ? `Failed to load PDFs: ${err.message}`
-            : 'Failed to load PDF files. They may be corrupted or password-protected.'
+            : "Failed to load PDF files. They may be corrupted or password-protected.",
         );
       } finally {
         setIsLoading(false);
         setLoadingMessage(null);
       }
     },
-    [onEncryptedFiles, allowEncrypted, messages]
+    [onEncryptedFiles, allowEncrypted, messages],
   );
 
   const removePDF = useCallback((id: string) => {
@@ -184,4 +187,3 @@ export const useMultiPDFLoader = (
     reset,
   };
 };
-

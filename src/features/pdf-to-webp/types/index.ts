@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UsePdfToWebpReturn {
   pdfFile: File | null;
@@ -16,4 +16,3 @@ export interface UsePdfToWebpReturn {
   processPdfToWebp: () => Promise<void>;
   reset: () => void;
 }
-

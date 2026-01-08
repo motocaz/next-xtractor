@@ -17,7 +17,7 @@ export const initializeQpdf = async (): Promise<any> => {
   } catch (error) {
     console.error("Failed to initialize qpdf-wasm:", error);
     throw new Error(
-      "Could not load the PDF engine. Please refresh the page and try again."
+      "Could not load the PDF engine. Please refresh the page and try again.",
     );
   }
 
@@ -28,7 +28,7 @@ export const prepareQpdfFile = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   qpdf: any,
   file: File,
-  inputPath: string
+  inputPath: string,
 ): Promise<void> => {
   const fileBuffer = await readFileAsArrayBuffer(file);
   const uint8Array = new Uint8Array(fileBuffer);
@@ -39,7 +39,7 @@ export const readQpdfOutput = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   qpdf: any,
   outputPath: string,
-  errorMessage?: string
+  errorMessage?: string,
 ): Blob => {
   const outputFile = qpdf.FS.readFile(outputPath, { encoding: "binary" });
 
@@ -54,7 +54,7 @@ export const cleanupQpdfFiles = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   qpdf: any,
   inputPath: string,
-  outputPath: string
+  outputPath: string,
 ): void => {
   try {
     if (qpdf?.FS) {

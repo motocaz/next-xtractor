@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useRef } from 'react';
-import { ArrowLeft } from 'lucide-react';
-import { FileUploader } from '@/components/FileUploader';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Spinner } from '@/components/ui/spinner';
+import Link from "next/link";
+import { useRef } from "react";
+import { ArrowLeft } from "lucide-react";
+import { FileUploader } from "@/components/FileUploader";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Spinner } from "@/components/ui/spinner";
 import {
   DndContext,
   closestCenter,
@@ -15,15 +15,15 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   SortableContext,
   sortableKeyboardCoordinates,
   rectSortingStrategy,
-} from '@dnd-kit/sortable';
-import { useMultiTool } from '../hooks/useMultiTool';
-import { MultiToolPageCard } from './MultiToolPageCard';
-import { MultiToolToolbar } from './MultiToolToolbar';
+} from "@dnd-kit/sortable";
+import { useMultiTool } from "../hooks/useMultiTool";
+import { MultiToolPageCard } from "./MultiToolPageCard";
+import { MultiToolToolbar } from "./MultiToolToolbar";
 
 export const MultiToolTool = () => {
   const {
@@ -67,7 +67,7 @@ export const MultiToolTool = () => {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -84,17 +84,17 @@ export const MultiToolTool = () => {
   };
 
   const handleInsertPDFChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = event.target.files?.[0];
     if (!file || !insertAfterPageIdRef.current) {
-      event.target.value = '';
+      event.target.value = "";
       return;
     }
 
     await insertPDFAfter(insertAfterPageIdRef.current, file);
     insertAfterPageIdRef.current = null;
-    event.target.value = '';
+    event.target.value = "";
   };
 
   const pageIds = pages.map((page) => page.id);
@@ -110,10 +110,12 @@ export const MultiToolTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">PDF Multi-Tool</h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">
+        PDF Multi-Tool
+      </h2>
       <p className="mb-6 text-muted-foreground">
-        Advanced page management: rotate, duplicate, split, and organize pages from
-        multiple PDFs. Select pages, apply bulk actions, and download your
+        Advanced page management: rotate, duplicate, split, and organize pages
+        from multiple PDFs. Select pages, apply bulk actions, and download your
         organized PDFs.
       </p>
 
@@ -142,7 +144,7 @@ export const MultiToolTool = () => {
         <div className="flex items-center gap-2 p-3 bg-input rounded-md mb-4">
           <Spinner size="sm" />
           <span className="text-sm text-muted-foreground">
-            {loadingMessage || 'Loading PDFs...'}
+            {loadingMessage || "Loading PDFs..."}
           </span>
         </div>
       )}
@@ -221,4 +223,3 @@ export const MultiToolTool = () => {
     </div>
   );
 };
-

@@ -85,7 +85,7 @@ export const OCRTool = () => {
     return Object.entries(tesseractLanguages).filter(
       ([code, name]) =>
         name.toLowerCase().includes(searchLower) ||
-        code.toLowerCase().includes(searchLower)
+        code.toLowerCase().includes(searchLower),
     );
   }, [langSearch]);
 
@@ -218,7 +218,10 @@ export const OCRTool = () => {
                       }
                       disabled={isProcessing}
                     >
-                      <SelectTrigger id="ocr-resolution" className="w-full dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15">
+                      <SelectTrigger
+                        id="ocr-resolution"
+                        className="w-full dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15"
+                      >
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -255,7 +258,10 @@ export const OCRTool = () => {
                       onValueChange={handleWhitelistPresetChange}
                       disabled={isProcessing}
                     >
-                      <SelectTrigger id="whitelist-preset" className="w-full dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15">
+                      <SelectTrigger
+                        id="whitelist-preset"
+                        className="w-full dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15"
+                      >
                         <SelectValue placeholder="None (All characters)" />
                       </SelectTrigger>
                       <SelectContent>

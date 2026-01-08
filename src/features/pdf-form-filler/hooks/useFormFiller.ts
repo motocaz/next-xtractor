@@ -76,7 +76,7 @@ export const useFormFiller = (): UseFormFillerReturn => {
         setError(
           err instanceof Error
             ? err.message
-            : "Failed to read PDF form data. The file may be corrupt or not a valid form."
+            : "Failed to read PDF form data. The file may be corrupt or not a valid form.",
         );
         setLoadingMessage(null);
       }
@@ -86,7 +86,8 @@ export const useFormFiller = (): UseFormFillerReturn => {
   }, [pdfDoc, setLoadingMessage, setError]);
 
   const renderCurrentPage = useCallback(async () => {
-    if (!pdfDoc || !pdfJsDoc || !canvasRef.current || isRenderingRef.current) return;
+    if (!pdfDoc || !pdfJsDoc || !canvasRef.current || isRenderingRef.current)
+      return;
 
     isRenderingRef.current = true;
     setIsRendering(true);
@@ -143,7 +144,7 @@ export const useFormFiller = (): UseFormFillerReturn => {
         [name]: value,
       }));
     },
-    []
+    [],
   );
 
   const changePage = useCallback(
@@ -154,7 +155,7 @@ export const useFormFiller = (): UseFormFillerReturn => {
         setCurrentPage(newPage);
       }
     },
-    [currentPage, pdfJsDoc]
+    [currentPage, pdfJsDoc],
   );
 
   const setZoomLevel = useCallback((factor: number) => {
@@ -186,7 +187,7 @@ export const useFormFiller = (): UseFormFillerReturn => {
     } catch (err) {
       console.error("Error processing form:", err);
       setError(
-        err instanceof Error ? err.message : "Failed to save the filled form."
+        err instanceof Error ? err.message : "Failed to save the filled form.",
       );
     } finally {
       setIsProcessing(false);

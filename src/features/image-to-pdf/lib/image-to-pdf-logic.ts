@@ -41,7 +41,7 @@ export const detectImageTypes = (files: File[]): Map<string, File[]> => {
       !type ||
       (!ACCEPTED_TYPES.has(type) &&
         ACCEPTED_EXTENSIONS.some((ext) =>
-          file.name.toLowerCase().endsWith(ext)
+          file.name.toLowerCase().endsWith(ext),
         ))
     ) {
       const lowerName = file.name.toLowerCase();
@@ -61,7 +61,7 @@ export const detectImageTypes = (files: File[]): Map<string, File[]> => {
 
 export const convertImageToJpegBytes = async (
   file: File,
-  quality: number
+  quality: number,
 ): Promise<Uint8Array> => {
   return new Promise((resolve, reject) => {
     const imageBitmapPromise = createImageBitmap(file);
@@ -83,7 +83,7 @@ export const convertImageToJpegBytes = async (
           imageBitmap.close();
 
           const jpegBlob = await new Promise<Blob | null>((res) =>
-            canvas.toBlob(res, "image/jpeg", quality)
+            canvas.toBlob(res, "image/jpeg", quality),
           );
 
           if (!jpegBlob) {
@@ -102,8 +102,8 @@ export const convertImageToJpegBytes = async (
           new Error(
             `Failed to create image bitmap: ${
               error instanceof Error ? error.message : "Unknown error"
-            }`
-          )
+            }`,
+          ),
         );
       });
   });
@@ -111,7 +111,7 @@ export const convertImageToJpegBytes = async (
 
 export const convertSingleTypeImages = async (
   files: File[],
-  type: string
+  type: string,
 ): Promise<ImageToPdfResult> => {
   if (files.length === 0) {
     throw new Error("Please select at least one image file.");
@@ -129,7 +129,7 @@ export const convertSingleTypeImages = async (
           addImageAsPage(pdfDoc, jpgImage);
         } catch {
           console.warn(
-            `Direct JPG embedding failed for ${file.name}, using canvas conversion...`
+            `Direct JPG embedding failed for ${file.name}, using canvas conversion...`,
           );
           const jpegBytes = await convertImageToJpegBytes(file, 0.9);
           const jpgImage = await pdfDoc.embedJpg(jpegBytes);
@@ -172,7 +172,7 @@ export const convertSingleTypeImages = async (
 
 export const convertMixedTypeImages = async (
   files: File[],
-  quality: number
+  quality: number,
 ): Promise<ImageToPdfResult> => {
   if (files.length === 0) {
     throw new Error("Please select at least one image file.");
@@ -186,8 +186,8 @@ export const convertMixedTypeImages = async (
       let jpegBytes: Uint8Array;
 
       const lowerName = file.name.toLowerCase();
-      const isSvg = file.type === 'image/svg+xml' || lowerName.endsWith('.svg');
-      
+      const isSvg = file.type === "image/svg+xml" || lowerName.endsWith(".svg");
+
       if (lowerName.endsWith(".heic") || lowerName.endsWith(".heif")) {
         const pngBytes = await convertHeicToPngBytes(file);
         const pngBlob = new Blob([pngBytes], { type: "image/png" });
@@ -202,7 +202,7 @@ export const convertMixedTypeImages = async (
         ctx.drawImage(imageBitmap, 0, 0);
         imageBitmap.close();
         const jpegBlob = await new Promise<Blob | null>((res) =>
-          canvas.toBlob(res, "image/jpeg", quality)
+          canvas.toBlob(res, "image/jpeg", quality),
         );
         if (!jpegBlob) {
           throw new Error("Failed to convert to JPEG.");
@@ -234,7 +234,7 @@ export const convertMixedTypeImages = async (
             ctx.drawImage(imageBitmap, 0, 0);
             imageBitmap.close();
             const jpegBlob = await new Promise<Blob | null>((res) =>
-              canvas.toBlob(res, "image/jpeg", quality)
+              canvas.toBlob(res, "image/jpeg", quality),
             );
             if (!jpegBlob) {
               throw new Error("Failed to convert to JPEG.");
@@ -250,22 +250,22 @@ export const convertMixedTypeImages = async (
         if (isSvg) {
           try {
             const pngBytes = await convertImageToPngBytes(file);
-            const pngBlob = new Blob([pngBytes], { type: 'image/png' });
+            const pngBlob = new Blob([pngBytes], { type: "image/png" });
             const imageBitmap = await createImageBitmap(pngBlob);
-            const canvas = document.createElement('canvas');
+            const canvas = document.createElement("canvas");
             canvas.width = imageBitmap.width;
             canvas.height = imageBitmap.height;
-            const ctx = canvas.getContext('2d');
+            const ctx = canvas.getContext("2d");
             if (!ctx) {
-              throw new Error('Failed to get canvas context.');
+              throw new Error("Failed to get canvas context.");
             }
             ctx.drawImage(imageBitmap, 0, 0);
             imageBitmap.close();
             const jpegBlob = await new Promise<Blob | null>((res) =>
-              canvas.toBlob(res, 'image/jpeg', quality)
+              canvas.toBlob(res, "image/jpeg", quality),
             );
             if (!jpegBlob) {
-              throw new Error('Failed to convert PNG to JPEG.');
+              throw new Error("Failed to convert PNG to JPEG.");
             }
             jpegBytes = new Uint8Array(await jpegBlob.arrayBuffer());
           } catch {

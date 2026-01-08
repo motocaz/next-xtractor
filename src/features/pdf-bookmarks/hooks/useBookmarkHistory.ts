@@ -35,7 +35,7 @@ export const useBookmarkHistory = (): UseBookmarkHistoryReturn => {
         return newHistory;
       });
     },
-    [historyIndex]
+    [historyIndex],
   );
 
   const undo = useCallback((): BookmarkNode[] | null => {

@@ -2,10 +2,14 @@
 
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import { parsePdfDate, parseXmpMetadata } from "@/lib/pdf/metadata-utils";
-import type { ViewMetadataResult, InfoDictionaryMetadata, FormField } from "../types";
+import type {
+  ViewMetadataResult,
+  InfoDictionaryMetadata,
+  FormField,
+} from "../types";
 
 export const extractMetadataFromPDF = async (
-  pdfDoc: PDFDocumentProxy
+  pdfDoc: PDFDocumentProxy,
 ): Promise<ViewMetadataResult> => {
   const [metadataResult, fieldObjects] = await Promise.all([
     pdfDoc.getMetadata(),
@@ -67,4 +71,3 @@ export const extractMetadataFromPDF = async (
     rawXmpString,
   };
 };
-

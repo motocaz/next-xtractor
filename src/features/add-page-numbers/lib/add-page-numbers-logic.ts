@@ -1,11 +1,11 @@
-import type { PDFDocument } from 'pdf-lib';
-import { PDFDocument as PDFLibDocument, rgb, StandardFonts } from 'pdf-lib';
-import { hexToRgb } from '@/lib/pdf/file-utils';
-import type { PageNumbersOptions } from '../types';
+import type { PDFDocument } from "pdf-lib";
+import { PDFDocument as PDFLibDocument, rgb, StandardFonts } from "pdf-lib";
+import { hexToRgb } from "@/lib/pdf/file-utils";
+import type { PageNumbersOptions } from "../types";
 
 export const addPageNumbers = async (
   pdfDoc: PDFDocument,
-  options: PageNumbersOptions
+  options: PageNumbersOptions,
 ): Promise<PDFDocument> => {
   const newPdf = await PDFLibDocument.create();
   const allPages = pdfDoc.getPages();
@@ -13,7 +13,7 @@ export const addPageNumbers = async (
 
   const copiedPages = await newPdf.copyPages(
     pdfDoc,
-    allPages.map((_, i) => i)
+    allPages.map((_, i) => i),
   );
   copiedPages.forEach((page) => newPdf.addPage(page));
 
@@ -35,7 +35,7 @@ export const addPageNumbers = async (
     const yOffset = bounds.y || 0;
 
     const pageNumText =
-      options.format === 'page_x_of_y'
+      options.format === "page_x_of_y"
         ? `${i + 1} / ${totalPages}`
         : `${i + 1}`;
 
@@ -48,65 +48,62 @@ export const addPageNumbers = async (
 
     const horizontalMargin = Math.max(
       minMargin,
-      Math.min(maxMargin, width * marginPercentage)
+      Math.min(maxMargin, width * marginPercentage),
     );
     const verticalMargin = Math.max(
       minMargin,
-      Math.min(maxMargin, height * marginPercentage)
+      Math.min(maxMargin, height * marginPercentage),
     );
 
-    const safeHorizontalMargin = Math.max(
-      horizontalMargin,
-      textWidth / 2 + 3
-    );
+    const safeHorizontalMargin = Math.max(horizontalMargin, textWidth / 2 + 3);
     const safeVerticalMargin = Math.max(verticalMargin, textHeight + 3);
 
     let x, y;
 
     switch (options.position) {
-      case 'bottom-center':
+      case "bottom-center":
         x =
           Math.max(
             safeHorizontalMargin,
             Math.min(
               width - safeHorizontalMargin - textWidth,
-              (width - textWidth) / 2
-            )
+              (width - textWidth) / 2,
+            ),
           ) + xOffset;
         y = safeVerticalMargin + yOffset;
         break;
-      case 'bottom-left':
+      case "bottom-left":
         x = safeHorizontalMargin + xOffset;
         y = safeVerticalMargin + yOffset;
         break;
-      case 'bottom-right':
+      case "bottom-right":
         x =
           Math.max(
             safeHorizontalMargin,
-            width - safeHorizontalMargin - textWidth
+            width - safeHorizontalMargin - textWidth,
           ) + xOffset;
         y = safeVerticalMargin + yOffset;
         break;
-      case 'top-center':
+      case "top-center":
         x =
           Math.max(
             safeHorizontalMargin,
             Math.min(
               width - safeHorizontalMargin - textWidth,
-              (width - textWidth) / 2
-            )
+              (width - textWidth) / 2,
+            ),
           ) + xOffset;
         y = height - safeVerticalMargin - textHeight + yOffset;
         break;
-      case 'top-left':
+      case "top-left":
         x = safeHorizontalMargin + xOffset;
         y = height - safeVerticalMargin - textHeight + yOffset;
         break;
-      case 'top-right':
+      case "top-right":
         x =
           Math.max(
             safeHorizontalMargin,
-            width - safeHorizontalMargin - textWidth
+            width - safeHorizontalMargin - textWidth,
           ) + xOffset;
         y = height - safeVerticalMargin - textHeight + yOffset;
         break;
@@ -126,4 +123,3 @@ export const addPageNumbers = async (
 
   return newPdf;
 };
-

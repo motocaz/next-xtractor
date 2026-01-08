@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle2, X } from 'lucide-react';
-import { formatBytes } from '@/lib/pdf/file-utils';
+import { Card, CardContent } from "@/components/ui/card";
+import { CheckCircle2, X } from "lucide-react";
+import { formatBytes } from "@/lib/pdf/file-utils";
 
 export interface PdfFileCardProps {
   pdfFile: File;
@@ -21,9 +21,7 @@ export const PdfFileCard = ({
 }: PdfFileCardProps) => {
   return (
     <div className={className}>
-      <h3 className="text-lg font-semibold text-foreground mb-3">
-        PDF File
-      </h3>
+      <h3 className="text-lg font-semibold text-foreground mb-3">PDF File</h3>
       <Card className="bg-input border-border">
         <CardContent className="p-3 flex items-center justify-between gap-2">
           <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -37,7 +35,9 @@ export const PdfFileCard = ({
                 {totalPages > 0 && (
                   <>
                     <span>•</span>
-                    <span>{totalPages} page{totalPages !== 1 ? 's' : ''}</span>
+                    <span>
+                      {totalPages} page{totalPages !== 1 ? "s" : ""}
+                    </span>
                   </>
                 )}
               </div>
@@ -57,4 +57,3 @@ export const PdfFileCard = ({
     </div>
   );
 };
-

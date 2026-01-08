@@ -9,7 +9,7 @@ import type { PosterizeOptions } from "../types";
 export const posterizePDF = async (
   pdfJsDoc: PDFDocumentProxy,
   options: PosterizeOptions,
-  onProgress?: (currentPage: number, totalPages: number) => void
+  onProgress?: (currentPage: number, totalPages: number) => void,
 ): Promise<Uint8Array> => {
   const {
     rows,
@@ -50,7 +50,8 @@ export const posterizePDF = async (
     const viewport = page.getViewport({ scale: 2 });
     tempCanvas.width = viewport.width;
     tempCanvas.height = viewport.height;
-    await page.render({ canvasContext: tempCtx, viewport, canvas: tempCanvas }).promise;
+    await page.render({ canvasContext: tempCtx, viewport, canvas: tempCanvas })
+      .promise;
 
     let [targetWidth, targetHeight] = PageSizes[pageSize];
     let currentOrientation = orientation;
@@ -102,7 +103,7 @@ export const posterizePDF = async (
           0,
           0,
           sWidth,
-          sHeight
+          sHeight,
         );
 
         const pngBytes = await canvasToPngBytes(tileCanvas);

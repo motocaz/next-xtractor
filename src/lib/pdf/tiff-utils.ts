@@ -1,42 +1,42 @@
-'use client';
+"use client";
 
-import UTIF from 'utif';
+import UTIF from "utif";
 
 export const decodeTiffToImageData = async (
-  tiffBytes: ArrayBuffer
+  tiffBytes: ArrayBuffer,
 ): Promise<ImageData[]> => {
   const ifds = UTIF.decode(tiffBytes);
-  
+
   if (!ifds || ifds.length === 0) {
-    throw new Error('No valid IFDs found in TIFF file.');
+    throw new Error("No valid IFDs found in TIFF file.");
   }
 
   const imageDataArray: ImageData[] = [];
 
   for (const ifd of ifds) {
     UTIF.decodeImage(tiffBytes, ifd);
-    
+
     const width = ifd.width;
     const height = ifd.height;
-    
+
     if (!width || !height || width <= 0 || height <= 0) {
-      throw new Error('Invalid TIFF dimensions.');
+      throw new Error("Invalid TIFF dimensions.");
     }
 
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     if (!ctx) {
-      throw new Error('Failed to get canvas context');
+      throw new Error("Failed to get canvas context");
     }
 
     const imageData = ctx.createImageData(width, height);
     const pixels = imageData.data;
 
     if (!ifd.data || ifd.data.length === 0) {
-      throw new Error('TIFF IFD has no image data after decoding.');
+      throw new Error("TIFF IFD has no image data after decoding.");
     }
 
     const totalPixels = width * height;
@@ -49,7 +49,7 @@ export const decodeTiffToImageData = async (
       samplesPerPixel !== 4
     ) {
       throw new Error(
-        `Unsupported TIFF format: ${samplesPerPixel} samples per pixel. Expected 1 (grayscale), 3 (RGB), or 4 (RGBA).`
+        `Unsupported TIFF format: ${samplesPerPixel} samples per pixel. Expected 1 (grayscale), 3 (RGB), or 4 (RGBA).`,
       );
     }
 
@@ -84,27 +84,26 @@ export const decodeTiffToImageData = async (
 };
 
 export const imageDataToPngBytes = async (
-  imageData: ImageData
+  imageData: ImageData,
 ): Promise<ArrayBuffer> => {
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   canvas.width = imageData.width;
   canvas.height = imageData.height;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
 
   if (!ctx) {
-    throw new Error('Failed to get canvas context');
+    throw new Error("Failed to get canvas context");
   }
 
   ctx.putImageData(imageData, 0, 0);
 
   const pngBlob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, 'image/png')
+    canvas.toBlob(resolve, "image/png"),
   );
 
   if (!pngBlob) {
-    throw new Error('Failed to convert ImageData to PNG');
+    throw new Error("Failed to convert ImageData to PNG");
   }
 
   return pngBlob.arrayBuffer();
 };
-

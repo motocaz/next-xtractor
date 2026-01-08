@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { encryptPDF } from '../lib/encrypt-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import type { UseEncryptPDFReturn } from '../types';
+import { useState, useCallback } from "react";
+import { encryptPDF } from "../lib/encrypt-logic";
+import { downloadFile } from "@/lib/pdf/file-utils";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import type { UseEncryptPDFReturn } from "../types";
 
 export const useEncryptPDF = (): UseEncryptPDFReturn => {
-  const [userPassword, setUserPassword] = useState<string>('');
-  const [ownerPassword, setOwnerPassword] = useState<string>('');
+  const [userPassword, setUserPassword] = useState<string>("");
+  const [ownerPassword, setOwnerPassword] = useState<string>("");
 
   const {
     isProcessing,
@@ -31,52 +31,50 @@ export const useEncryptPDF = (): UseEncryptPDFReturn => {
 
   const encrypt = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     if (!userPassword || userPassword.trim().length === 0) {
-      setError('Please enter a user password.');
+      setError("Please enter a user password.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Initializing encryption...');
+    setLoadingMessage("Initializing encryption...");
 
     try {
-      setLoadingMessage('Reading PDF...');
-      setLoadingMessage('Encrypting PDF with 256-bit AES...');
+      setLoadingMessage("Reading PDF...");
+      setLoadingMessage("Encrypting PDF with 256-bit AES...");
 
       const blob = await encryptPDF(pdfFile, {
         userPassword,
         ownerPassword: ownerPassword || undefined,
       });
 
-      setLoadingMessage('Preparing download...');
+      setLoadingMessage("Preparing download...");
       downloadFile(blob, pdfFile.name);
 
       const hasDistinctOwnerPassword =
         ownerPassword && ownerPassword !== userPassword;
-      let successMessage = 'PDF encrypted successfully with 256-bit AES!';
+      let successMessage = "PDF encrypted successfully with 256-bit AES!";
       if (!hasDistinctOwnerPassword) {
         successMessage +=
-          ' Note: Without a separate owner password, the PDF has no usage restrictions.';
+          " Note: Without a separate owner password, the PDF has no usage restrictions.";
       }
 
       setSuccess(successMessage);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.error('Error encrypting PDF:', err);
+      console.error("Error encrypting PDF:", err);
 
-      if (err.message?.includes('password')) {
-        setError('An error occurred with the password. Please try again.');
+      if (err.message?.includes("password")) {
+        setError("An error occurred with the password. Please try again.");
       } else {
         setError(
-          `An error occurred: ${
-            err.message || 'The PDF might be corrupted.'
-          }`
+          `An error occurred: ${err.message || "The PDF might be corrupted."}`,
         );
       }
     } finally {
@@ -94,8 +92,8 @@ export const useEncryptPDF = (): UseEncryptPDFReturn => {
   ]);
 
   const reset = useCallback(() => {
-    setUserPassword('');
-    setOwnerPassword('');
+    setUserPassword("");
+    setOwnerPassword("");
     resetProcessing();
     resetPDF();
   }, [resetProcessing, resetPDF]);
@@ -119,4 +117,3 @@ export const useEncryptPDF = (): UseEncryptPDFReturn => {
     reset,
   };
 };
-

@@ -1,6 +1,6 @@
-import { PricingTable } from '@clerk/nextjs';
-import { clerkAppearance } from '@/lib/clerk-appearance';
-import { MarkerSlanted } from '@/components/ui/marker-slanted';
+import { PricingTable } from "@clerk/nextjs";
+import { clerkAppearance } from "@/lib/clerk-appearance";
+import { MarkerSlanted } from "@/components/ui/marker-slanted";
 
 export default function PricingPage() {
   return (
@@ -19,4 +19,3 @@ export default function PricingPage() {
     </div>
   );
 }
-

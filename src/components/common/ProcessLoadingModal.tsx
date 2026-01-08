@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Spinner } from '@/components/ui/spinner';
+import { Spinner } from "@/components/ui/spinner";
 
 export interface ProcessLoadingModalProps {
   isProcessing: boolean;
@@ -24,4 +24,3 @@ export const ProcessLoadingModal = ({
     </div>
   );
 };
-

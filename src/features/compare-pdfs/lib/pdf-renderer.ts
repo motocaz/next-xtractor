@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import type { PDFDocumentProxy } from 'pdfjs-dist';
+import type { PDFDocumentProxy } from "pdfjs-dist";
 
 export const renderPage = async (
   pdfDoc: PDFDocumentProxy | null,
   pageNum: number,
   canvas: HTMLCanvasElement,
-  container: HTMLElement
+  container: HTMLElement,
 ): Promise<void> => {
   if (!pdfDoc) return;
 
@@ -20,9 +20,9 @@ export const renderPage = async (
   canvas.width = scaledViewport.width;
   canvas.height = scaledViewport.height;
 
-  const context = canvas.getContext('2d');
+  const context = canvas.getContext("2d");
   if (!context) {
-    throw new Error('Failed to get canvas context');
+    throw new Error("Failed to get canvas context");
   }
 
   await page.render({
@@ -31,4 +31,3 @@ export const renderPage = async (
     canvas: canvas,
   }).promise;
 };
-

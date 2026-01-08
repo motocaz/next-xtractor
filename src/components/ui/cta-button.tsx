@@ -5,7 +5,8 @@ import { type VariantProps } from "class-variance-authority";
 import { buttonVariants } from "@/components/ui/button";
 
 export interface CTAButtonProps
-  extends React.ComponentProps<typeof Button>,
+  extends
+    React.ComponentProps<typeof Button>,
     VariantProps<typeof buttonVariants> {}
 
 function CTAButton({ className, ...props }: CTAButtonProps) {
@@ -16,7 +17,7 @@ function CTAButton({ className, ...props }: CTAButtonProps) {
         "px-6 py-3 rounded-lg",
         "transition-colors duration-200",
         "hover:bg-primary/90",
-        className
+        className,
       )}
       {...props}
     />
@@ -24,4 +25,3 @@ function CTAButton({ className, ...props }: CTAButtonProps) {
 }
 
 export { CTAButton };
-

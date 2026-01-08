@@ -1,10 +1,10 @@
-import { PDFDocument as PDFLibDocument, rgb } from 'pdf-lib';
-import type { PDFDocument } from 'pdf-lib';
-import { hexToRgb } from '@/lib/pdf/file-utils';
+import { PDFDocument as PDFLibDocument, rgb } from "pdf-lib";
+import type { PDFDocument } from "pdf-lib";
+import { hexToRgb } from "@/lib/pdf/file-utils";
 
 export const changeBackgroundColor = async (
   pdfDoc: PDFDocument,
-  colorHex: string
+  colorHex: string,
 ): Promise<PDFDocument> => {
   const newPdfDoc = await PDFLibDocument.create();
   const color = hexToRgb(colorHex);
@@ -34,4 +34,3 @@ export const changeBackgroundColor = async (
 
   return newPdfDoc;
 };
-

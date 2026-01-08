@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePdfToJson } from '../hooks/usePdfToJson';
-import { FileUploader } from '@/components/FileUploader';
-import { ArrowLeft } from 'lucide-react';
-import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { FileListSection } from '@/components/common/FileListSection';
+import Link from "next/link";
+import { usePdfToJson } from "../hooks/usePdfToJson";
+import { FileUploader } from "@/components/FileUploader";
+import { ArrowLeft } from "lucide-react";
+import { FileUploadStatusMessages } from "@/components/common/FileUploadStatusMessages";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { FileListSection } from "@/components/common/FileListSection";
 
 export const PdfToJsonTool = () => {
   const {
@@ -38,7 +38,8 @@ export const PdfToJsonTool = () => {
         PDF to JSON Converter
       </h2>
       <p className="mb-6 text-muted-foreground">
-        Convert PDF files to JSON format. Files will be downloaded as a ZIP archive.
+        Convert PDF files to JSON format. Files will be downloaded as a ZIP
+        archive.
       </p>
 
       <div className="mb-4">
@@ -91,4 +92,3 @@ export const PdfToJsonTool = () => {
     </div>
   );
 };
-

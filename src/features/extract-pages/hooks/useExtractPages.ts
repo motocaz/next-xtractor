@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import JSZip from 'jszip';
-import { extractPages } from '../lib/extract-pages-logic';
-import { downloadFile, parsePageRanges } from '@/lib/pdf/file-utils';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import type { UseExtractPagesReturn } from '../types';
+import { useState, useCallback } from "react";
+import JSZip from "jszip";
+import { extractPages } from "../lib/extract-pages-logic";
+import { downloadFile, parsePageRanges } from "@/lib/pdf/file-utils";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import type { UseExtractPagesReturn } from "../types";
 
 export const useExtractPages = (): UseExtractPagesReturn => {
-  const [pagesToExtract, setPagesToExtract] = useState<string>('');
+  const [pagesToExtract, setPagesToExtract] = useState<string>("");
 
   const {
     isProcessing,
@@ -31,36 +31,36 @@ export const useExtractPages = (): UseExtractPagesReturn => {
 
   const extractPagesHandler = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     if (!pdfDoc) {
-      setError('PDF document is not loaded. Please try uploading again.');
+      setError("PDF document is not loaded. Please try uploading again.");
       return;
     }
 
-    if (!pagesToExtract || pagesToExtract.trim() === '') {
-      setError('Please enter page numbers to extract.');
+    if (!pagesToExtract || pagesToExtract.trim() === "") {
+      setError("Please enter page numbers to extract.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Extracting pages...');
+    setLoadingMessage("Extracting pages...");
 
     try {
       const extractedPDFs = await extractPages(pdfDoc, pagesToExtract);
 
       if (extractedPDFs.length === 0) {
-        setError('No valid pages selected for extraction.');
+        setError("No valid pages selected for extraction.");
         setIsProcessing(false);
         setLoadingMessage(null);
         return;
       }
 
-      setLoadingMessage('Creating ZIP file...');
+      setLoadingMessage("Creating ZIP file...");
 
       const zip = new JSZip();
       const sortedIndices = parsePageRanges(pagesToExtract, totalPages);
@@ -71,25 +71,25 @@ export const useExtractPages = (): UseExtractPagesReturn => {
         zip.file(`page-${pageNumber}.pdf`, extractedPDFs[i]);
       }
 
-      setLoadingMessage('Preparing download...');
+      setLoadingMessage("Preparing download...");
 
-      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const zipBlob = await zip.generateAsync({ type: "blob" });
 
-      const baseName = pdfFile.name.replace(/\.pdf$/i, '');
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const baseName = pdfFile.name.replace(/\.pdf$/i, "");
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
       const zipFileName = `${timestamp}_${baseName}.zip`;
 
       downloadFile(zipBlob, undefined, zipFileName);
 
       setSuccess(
-        `Extraction completed! ${extractedPDFs.length} page(s) extracted. Download started.`
+        `Extraction completed! ${extractedPDFs.length} page(s) extracted. Download started.`,
       );
     } catch (err) {
-      console.error('Error extracting pages:', err);
+      console.error("Error extracting pages:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'Could not extract pages. Please check your input and try again.'
+          : "Could not extract pages. Please check your input and try again.",
       );
     } finally {
       setIsProcessing(false);
@@ -107,7 +107,7 @@ export const useExtractPages = (): UseExtractPagesReturn => {
   ]);
 
   const reset = useCallback(() => {
-    setPagesToExtract('');
+    setPagesToExtract("");
     resetProcessing();
     resetPDF();
   }, [resetProcessing, resetPDF]);
@@ -129,4 +129,3 @@ export const useExtractPages = (): UseExtractPagesReturn => {
     reset,
   };
 };
-

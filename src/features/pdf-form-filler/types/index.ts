@@ -1,14 +1,14 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export type FormFieldValue = string | boolean | string[];
 
 export type FormFieldType =
-  | 'text'
-  | 'checkbox'
-  | 'radio'
-  | 'dropdown'
-  | 'option-list'
-  | 'unsupported';
+  | "text"
+  | "checkbox"
+  | "radio"
+  | "dropdown"
+  | "option-list"
+  | "unsupported";
 
 export interface FormField {
   name: string;
@@ -44,4 +44,3 @@ export interface UseFormFillerReturn {
   setCanvasRef: (canvas: HTMLCanvasElement | null) => void;
   reset: () => void;
 }
-

@@ -1,4 +1,4 @@
-import type { FileInfo } from '@/hooks/useFileInfoLoader';
+import type { FileInfo } from "@/hooks/useFileInfoLoader";
 
 export type PdfFileInfo = FileInfo;
 
@@ -8,18 +8,18 @@ export interface JsonFileData {
 }
 
 export interface PdfToJsonMessage {
-  command: 'convert';
+  command: "convert";
   fileBuffers: ArrayBuffer[];
   fileNames: string[];
 }
 
 export interface PdfToJsonSuccessResponse {
-  status: 'success';
+  status: "success";
   jsonFiles: JsonFileData[];
 }
 
 export interface PdfToJsonErrorResponse {
-  status: 'error';
+  status: "error";
   message: string;
 }
 
@@ -39,4 +39,3 @@ export interface UsePdfToJsonReturn {
   processPdfToJson: () => Promise<void>;
   reset: () => void;
 }
-

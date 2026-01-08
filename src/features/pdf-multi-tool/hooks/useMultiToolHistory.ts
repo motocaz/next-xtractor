@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useReducer, useCallback } from 'react';
-import type { MultiToolSnapshot } from '../types';
+import { useReducer, useCallback } from "react";
+import type { MultiToolSnapshot } from "../types";
 
 export interface UseMultiToolHistoryReturn {
   canUndo: boolean;
@@ -20,17 +20,17 @@ interface HistoryState {
 }
 
 type HistoryAction =
-  | { type: 'SAVE_STATE'; snapshot: MultiToolSnapshot }
-  | { type: 'UNDO' }
-  | { type: 'REDO' }
-  | { type: 'CLEAR' };
+  | { type: "SAVE_STATE"; snapshot: MultiToolSnapshot }
+  | { type: "UNDO" }
+  | { type: "REDO" }
+  | { type: "CLEAR" };
 
 const historyReducer = (
   state: HistoryState,
-  action: HistoryAction
+  action: HistoryAction,
 ): HistoryState => {
   switch (action.type) {
-    case 'SAVE_STATE': {
+    case "SAVE_STATE": {
       const newHistory = state.history.slice(0, state.index + 1);
       const newState = structuredClone(action.snapshot);
       newHistory.push(newState);
@@ -46,7 +46,7 @@ const historyReducer = (
         index: newIndex,
       };
     }
-    case 'UNDO': {
+    case "UNDO": {
       if (state.index > 0) {
         return {
           ...state,
@@ -55,7 +55,7 @@ const historyReducer = (
       }
       return state;
     }
-    case 'REDO': {
+    case "REDO": {
       if (state.index < state.history.length - 1) {
         return {
           ...state,
@@ -64,7 +64,7 @@ const historyReducer = (
       }
       return state;
     }
-    case 'CLEAR': {
+    case "CLEAR": {
       return {
         history: [],
         index: -1,
@@ -82,14 +82,14 @@ export const useMultiToolHistory = (): UseMultiToolHistoryReturn => {
   });
 
   const saveState = useCallback((snapshot: MultiToolSnapshot) => {
-    dispatch({ type: 'SAVE_STATE', snapshot });
+    dispatch({ type: "SAVE_STATE", snapshot });
   }, []);
 
   const undo = useCallback((): MultiToolSnapshot | null => {
     if (state.index > 0) {
       const newIndex = state.index - 1;
       const snapshot = structuredClone(state.history[newIndex]);
-      dispatch({ type: 'UNDO' });
+      dispatch({ type: "UNDO" });
       return snapshot;
     }
     return null;
@@ -99,14 +99,14 @@ export const useMultiToolHistory = (): UseMultiToolHistoryReturn => {
     if (state.index < state.history.length - 1) {
       const newIndex = state.index + 1;
       const snapshot = structuredClone(state.history[newIndex]);
-      dispatch({ type: 'REDO' });
+      dispatch({ type: "REDO" });
       return snapshot;
     }
     return null;
   }, [state.history, state.index]);
 
   const clearHistory = useCallback(() => {
-    dispatch({ type: 'CLEAR' });
+    dispatch({ type: "CLEAR" });
   }, []);
 
   return {

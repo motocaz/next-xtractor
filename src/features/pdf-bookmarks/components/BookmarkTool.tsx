@@ -76,7 +76,7 @@ export const BookmarkTool = () => {
   const [autoExtract, setAutoExtract] = useState(true);
   const [bookmarkTitle, setBookmarkTitle] = useState("");
   const [editingBookmark, setEditingBookmark] = useState<BookmarkNode | null>(
-    null
+    null,
   );
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showViewer, setShowViewer] = useState(true);
@@ -102,7 +102,7 @@ export const BookmarkTool = () => {
     ) {
       const fileName = previousPendingImportRef.current.fileName;
       setImportSuccessMessage(
-        `Bookmarks from "${fileName}" applied successfully! ${bookmarkTree.length} bookmark(s) loaded.`
+        `Bookmarks from "${fileName}" applied successfully! ${bookmarkTree.length} bookmark(s) loaded.`,
       );
       setTimeout(() => setImportSuccessMessage(null), 3000);
       previousPendingImportRef.current = null;
@@ -138,7 +138,7 @@ export const BookmarkTool = () => {
       if (pdfLoaded) {
         setTimeout(() => {
           setImportSuccessMessage(
-            `CSV imported successfully! ${bookmarkTree.length} bookmark(s) loaded.`
+            `CSV imported successfully! ${bookmarkTree.length} bookmark(s) loaded.`,
           );
           setTimeout(() => setImportSuccessMessage(null), 3000);
         }, 100);
@@ -161,7 +161,7 @@ export const BookmarkTool = () => {
       if (pdfLoaded) {
         setTimeout(() => {
           setImportSuccessMessage(
-            `JSON imported successfully! ${bookmarkTree.length} bookmark(s) loaded.`
+            `JSON imported successfully! ${bookmarkTree.length} bookmark(s) loaded.`,
           );
           setTimeout(() => setImportSuccessMessage(null), 3000);
         }, 100);

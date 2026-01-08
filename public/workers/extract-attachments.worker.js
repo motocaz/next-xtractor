@@ -1,4 +1,4 @@
-globalThis.importScripts('/coherentpdf.browser.min.js');
+globalThis.importScripts("/coherentpdf.browser.min.js");
 
 function extractAttachmentsFromPDFsInWorker(fileBuffers, fileNames) {
   try {
@@ -12,7 +12,7 @@ function extractAttachmentsFromPDFsInWorker(fileBuffers, fileNames) {
 
       let pdf;
       try {
-        pdf = coherentpdf.fromMemory(uint8Array, '');
+        pdf = coherentpdf.fromMemory(uint8Array, "");
       } catch (error) {
         console.warn(`Failed to load PDF: ${fileName}`, error);
         continue;
@@ -27,7 +27,7 @@ function extractAttachmentsFromPDFsInWorker(fileBuffers, fileNames) {
         continue;
       }
 
-      const baseName = fileName.replace(/\.pdf$/i, '');
+      const baseName = fileName.replace(/\.pdf$/i, "");
       for (let j = 0; j < attachmentCount; j++) {
         try {
           const attachmentName = coherentpdf.getAttachmentName(j);
@@ -37,10 +37,10 @@ function extractAttachmentsFromPDFsInWorker(fileBuffers, fileNames) {
           let uniqueName = attachmentName;
           let counter = 1;
           while (allAttachments.some((att) => att.name === uniqueName)) {
-            const nameParts = attachmentName.split('.');
+            const nameParts = attachmentName.split(".");
             if (nameParts.length > 1) {
               const extension = nameParts.pop();
-              uniqueName = `${nameParts.join('.')}_${counter}.${extension}`;
+              uniqueName = `${nameParts.join(".")}_${counter}.${extension}`;
             } else {
               uniqueName = `${attachmentName}_${counter}`;
             }
@@ -60,7 +60,7 @@ function extractAttachmentsFromPDFsInWorker(fileBuffers, fileNames) {
         } catch (error) {
           console.warn(
             `Failed to extract attachment ${j} from ${fileName}:`,
-            error
+            error,
           );
         }
       }
@@ -71,14 +71,14 @@ function extractAttachmentsFromPDFsInWorker(fileBuffers, fileNames) {
 
     if (allAttachments.length === 0) {
       self.postMessage({
-        status: 'error',
-        message: 'No attachments were found in the selected PDF(s).',
+        status: "error",
+        message: "No attachments were found in the selected PDF(s).",
       });
       return;
     }
 
     const response = {
-      status: 'success',
+      status: "success",
       attachments: [],
     };
 
@@ -94,18 +94,17 @@ function extractAttachmentsFromPDFsInWorker(fileBuffers, fileNames) {
     self.postMessage(response, transferBuffers);
   } catch (error) {
     self.postMessage({
-      status: 'error',
+      status: "error",
       message:
         error instanceof Error
           ? error.message
-          : 'Unknown error occurred during attachment extraction.',
+          : "Unknown error occurred during attachment extraction.",
     });
   }
 }
 
 globalThis.onmessage = (e) => {
-  if (e.data.command === 'extract-attachments') {
+  if (e.data.command === "extract-attachments") {
     extractAttachmentsFromPDFsInWorker(e.data.fileBuffers, e.data.fileNames);
   }
 };
-

@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePageDimensions } from '../hooks/usePageDimensions';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
+import Link from "next/link";
+import { usePageDimensions } from "../hooks/usePageDimensions";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -17,10 +17,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Label } from '@/components/ui/label';
-import { ArrowLeft } from 'lucide-react';
-import { convertPoints } from '@/lib/pdf/page-dimensions-utils';
+} from "@/components/ui/table";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft } from "lucide-react";
+import { convertPoints } from "@/lib/pdf/page-dimensions-utils";
 
 export const PageDimensionsTool = () => {
   const {
@@ -35,7 +35,8 @@ export const PageDimensionsTool = () => {
     reset,
   } = usePageDimensions();
 
-  const showResults = pdfDoc !== null && !isLoadingPDF && !pdfError && pageData.length > 0;
+  const showResults =
+    pdfDoc !== null && !isLoadingPDF && !pdfError && pageData.length > 0;
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-8">
@@ -74,7 +75,7 @@ export const PageDimensionsTool = () => {
               <Select
                 value={selectedUnit}
                 onValueChange={(value) =>
-                  setSelectedUnit(value as 'pt' | 'in' | 'mm' | 'px')
+                  setSelectedUnit(value as "pt" | "in" | "mm" | "px")
                 }
               >
                 <SelectTrigger id="units-select" className="w-[180px]">
@@ -131,4 +132,3 @@ export const PageDimensionsTool = () => {
     </div>
   );
 };
-

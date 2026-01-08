@@ -1,5 +1,5 @@
-import type { PDFDocument } from 'pdf-lib';
-import type { PDFPageProxy } from 'pdfjs-dist';
+import type { PDFDocument } from "pdf-lib";
+import type { PDFPageProxy } from "pdfjs-dist";
 
 export interface PageAnalysisData {
   pageNum: number;
@@ -34,4 +34,3 @@ export interface UseRemoveBlankPagesReturn {
   loadPDF: (file: File) => Promise<void>;
   reset: () => void;
 }
-

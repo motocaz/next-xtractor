@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Protect } from '@clerk/nextjs';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Protect } from "@clerk/nextjs";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface ProtectedContentProps {
   plan: string;
@@ -13,7 +13,7 @@ interface ProtectedContentProps {
 export const ProtectedContent = ({
   plan,
   children,
-  fallbackMessage = 'This content is only available to subscribers.',
+  fallbackMessage = "This content is only available to subscribers.",
 }: ProtectedContentProps) => {
   return (
     <Protect
@@ -33,4 +33,3 @@ export const ProtectedContent = ({
     </Protect>
   );
 };
-

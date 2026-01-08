@@ -1,13 +1,15 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const PdfToWebpTool = dynamic(
-  () => import('@/features/pdf-to-webp').then((mod) => ({ default: mod.PdfToWebpTool })),
-  { ssr: false }
+  () =>
+    import("@/features/pdf-to-webp").then((mod) => ({
+      default: mod.PdfToWebpTool,
+    })),
+  { ssr: false },
 );
 
 export default function PdfToWebpToolClient() {
   return <PdfToWebpTool />;
 }
-

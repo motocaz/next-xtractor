@@ -18,4 +18,3 @@ export interface UseSvgToPdfReturn {
   processSvgToPdf: () => Promise<void>;
   reset: () => void;
 }
-

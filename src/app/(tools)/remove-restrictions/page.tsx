@@ -1,11 +1,11 @@
-import { ScrollToTop } from '@/components/ScrollToTop';
-import RemoveRestrictionsToolClient from './RemoveRestrictionsToolClient';
-import type { Metadata } from 'next';
+import { ScrollToTop } from "@/components/ScrollToTop";
+import RemoveRestrictionsToolClient from "./RemoveRestrictionsToolClient";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Remove Restrictions | Xtractor',
+  title: "Remove Restrictions | Xtractor",
   description:
-    'Remove security restrictions and unlock PDF permissions for editing and printing.',
+    "Remove security restrictions and unlock PDF permissions for editing and printing.",
 };
 
 export default function RemoveRestrictionsPage() {
@@ -16,4 +16,3 @@ export default function RemoveRestrictionsPage() {
     </>
   );
 }
-

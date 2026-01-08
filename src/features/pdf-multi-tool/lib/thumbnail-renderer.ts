@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
-import { renderPageAsImage } from '@/lib/pdf/canvas-utils';
+import { loadPDFWithPDFJSFromBuffer } from "@/lib/pdf/pdfjs-loader";
+import { renderPageAsImage } from "@/lib/pdf/canvas-utils";
 
 export interface MultiToolThumbnail {
   pdfIndex: number;
@@ -11,14 +11,14 @@ export interface MultiToolThumbnail {
 
 export const renderMultiplePDFsAsThumbnails = async (
   pdfBuffers: ArrayBuffer[],
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<MultiToolThumbnail[]> => {
   const thumbnails: MultiToolThumbnail[] = [];
   let totalPages = 0;
   let currentPage = 0;
 
   const bufferCopies = pdfBuffers.map((buffer) => buffer.slice(0));
-  
+
   for (const bufferCopy of bufferCopies) {
     const freshCopy = bufferCopy.slice(0);
     const pdfJsDoc = await loadPDFWithPDFJSFromBuffer(freshCopy);
@@ -52,4 +52,3 @@ export const renderMultiplePDFsAsThumbnails = async (
 
   return thumbnails;
 };
-

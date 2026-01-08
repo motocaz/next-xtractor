@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useTiffToPdf } from '../hooks/useTiffToPdf';
-import { FileUploader } from '@/components/FileUploader';
-import { ArrowLeft } from 'lucide-react';
-import { FileUploadStatusMessages } from '@/components/common/FileUploadStatusMessages';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { FileListSection } from '@/components/common/FileListSection';
+import Link from "next/link";
+import { useTiffToPdf } from "../hooks/useTiffToPdf";
+import { FileUploader } from "@/components/FileUploader";
+import { ArrowLeft } from "lucide-react";
+import { FileUploadStatusMessages } from "@/components/common/FileUploadStatusMessages";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { FileListSection } from "@/components/common/FileListSection";
 
 export const TiffToPdfTool = () => {
   const {
@@ -35,11 +35,10 @@ export const TiffToPdfTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        TIFF to PDF
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">TIFF to PDF</h2>
       <p className="mb-6 text-muted-foreground">
-        Convert one or more TIFF images into a single PDF file. Supports multi-page TIFF files.
+        Convert one or more TIFF images into a single PDF file. Supports
+        multi-page TIFF files.
       </p>
 
       <div className="mb-4">
@@ -93,4 +92,3 @@ export const TiffToPdfTool = () => {
     </div>
   );
 };
-

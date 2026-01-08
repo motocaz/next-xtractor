@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/nextjs';
-import ThemeToggle from '@/components/ThemeToggle';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,8 +12,8 @@ export default function Navbar() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      const mobileMenu = document.getElementById('mobile-menu');
-      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById("mobile-menu");
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
 
       if (
         mobileMenu &&
@@ -27,11 +27,11 @@ export default function Navbar() {
     };
 
     if (isMobileMenuOpen) {
-      document.addEventListener('click', handleClickOutside);
+      document.addEventListener("click", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [isMobileMenuOpen]);
 
@@ -119,7 +119,7 @@ export default function Navbar() {
             >
               <span className="sr-only">Open main menu</span>
               <svg
-                className={`block h-6 w-6 ${isMobileMenuOpen ? 'hidden' : ''}`}
+                className={`block h-6 w-6 ${isMobileMenuOpen ? "hidden" : ""}`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -134,7 +134,7 @@ export default function Navbar() {
                 />
               </svg>
               <svg
-                className={`block h-6 w-6 ${isMobileMenuOpen ? '' : 'hidden'}`}
+                className={`block h-6 w-6 ${isMobileMenuOpen ? "" : "hidden"}`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -156,7 +156,7 @@ export default function Navbar() {
       <div
         id="mobile-menu"
         className={`md:hidden bg-muted border-t border-border ${
-          isMobileMenuOpen ? '' : 'hidden'
+          isMobileMenuOpen ? "" : "hidden"
         }`}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 text-center">
@@ -213,4 +213,3 @@ export default function Navbar() {
     </nav>
   );
 }
-

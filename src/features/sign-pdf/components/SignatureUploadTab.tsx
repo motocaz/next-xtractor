@@ -1,17 +1,20 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import Image from 'next/image';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Image from "next/image";
 
 interface SignatureUploadTabProps {
   onSave: (imageDataUrl: string) => void;
   disabled?: boolean;
 }
 
-export const SignatureUploadTab = ({ onSave, disabled }: SignatureUploadTabProps) => {
+export const SignatureUploadTab = ({
+  onSave,
+  disabled,
+}: SignatureUploadTabProps) => {
   const [, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -19,8 +22,8 @@ export const SignatureUploadTab = ({ onSave, disabled }: SignatureUploadTabProps
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
 
-    if (selectedFile.type !== 'image/png') {
-      alert('Please select a PNG file only.');
+    if (selectedFile.type !== "image/png") {
+      alert("Please select a PNG file only.");
       return;
     }
 
@@ -29,7 +32,7 @@ export const SignatureUploadTab = ({ onSave, disabled }: SignatureUploadTabProps
     const reader = new FileReader();
     reader.onload = (event) => {
       const result = event.target?.result;
-      if (typeof result === 'string') {
+      if (typeof result === "string") {
         setPreview(result);
       }
     };
@@ -78,4 +81,3 @@ export const SignatureUploadTab = ({ onSave, disabled }: SignatureUploadTabProps
     </div>
   );
 };
-

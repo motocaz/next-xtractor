@@ -12,4 +12,3 @@ export interface UseWordToPdfReturn {
   convertAndDownloadPdf: () => Promise<void>;
   reset: () => void;
 }
-

@@ -1,10 +1,10 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export type PagesPerSheet = 2 | 4 | 9 | 16;
 
-export type PageSize = 'Letter' | 'Legal' | 'Tabloid' | 'A4' | 'A3';
+export type PageSize = "Letter" | "Legal" | "Tabloid" | "A4" | "A3";
 
-export type Orientation = 'auto' | 'portrait' | 'landscape';
+export type Orientation = "auto" | "portrait" | "landscape";
 
 export type GridDimensions = [number, number];
 
@@ -46,4 +46,3 @@ export interface UseNUpReturn {
   processNUp: () => Promise<void>;
   reset: () => void;
 }
-

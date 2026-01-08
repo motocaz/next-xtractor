@@ -1,17 +1,17 @@
-import type { PDFDocument } from 'pdf-lib';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
+import type { PDFDocument } from "pdf-lib";
+import type { PDFDocumentProxy } from "pdfjs-dist";
 
-export type InteractionMode = 'none' | 'drag' | 'resize';
+export type InteractionMode = "none" | "drag" | "resize";
 
 export type ResizeHandle =
-  | 'top-left'
-  | 'top-middle'
-  | 'top-right'
-  | 'middle-left'
-  | 'middle-right'
-  | 'bottom-left'
-  | 'bottom-middle'
-  | 'bottom-right';
+  | "top-left"
+  | "top-middle"
+  | "top-right"
+  | "middle-left"
+  | "middle-right"
+  | "bottom-left"
+  | "bottom-middle"
+  | "bottom-right";
 
 export interface PlacedSignature {
   id: number;
@@ -71,10 +71,18 @@ export interface UseSignPdfReturn {
   applySignatures: () => Promise<void>;
   reset: () => void;
   setCanvasRef: (canvas: HTMLCanvasElement | null) => void;
-  handleMouseMove: (e: MouseEvent | TouchEvent, canvas: HTMLCanvasElement) => void;
-  handleDragStart: (e: MouseEvent | TouchEvent, canvas: HTMLCanvasElement) => void;
-  handleDragMove: (e: MouseEvent | TouchEvent, canvas: HTMLCanvasElement) => void;
+  handleMouseMove: (
+    e: MouseEvent | TouchEvent,
+    canvas: HTMLCanvasElement,
+  ) => void;
+  handleDragStart: (
+    e: MouseEvent | TouchEvent,
+    canvas: HTMLCanvasElement,
+  ) => void;
+  handleDragMove: (
+    e: MouseEvent | TouchEvent,
+    canvas: HTMLCanvasElement,
+  ) => void;
   handleDragEnd: () => void;
   setCurrentPage: (page: number) => void;
 }
-

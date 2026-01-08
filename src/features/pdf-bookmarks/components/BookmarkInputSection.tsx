@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Plus } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Plus } from "lucide-react";
 
 interface BookmarkInputSectionProps {
   bookmarkTitle: string;
@@ -25,7 +25,7 @@ export const BookmarkInputSection = ({
         value={bookmarkTitle}
         onChange={(e) => onTitleChange(e.target.value)}
         onKeyPress={(e) => {
-          if (e.key === 'Enter') {
+          if (e.key === "Enter") {
             onAddBookmark();
           }
         }}
@@ -38,4 +38,3 @@ export const BookmarkInputSection = ({
     </div>
   );
 };
-

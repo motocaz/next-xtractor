@@ -26,7 +26,7 @@ export const useComparePDFs = (): UseComparePDFsReturn => {
       setFile: React.Dispatch<React.SetStateAction<File | null>>,
       setLoading: React.Dispatch<React.SetStateAction<boolean>>,
       setError: React.Dispatch<React.SetStateAction<string | null>>,
-      pdfLabel: string
+      pdfLabel: string,
     ) => {
       return async (file: File) => {
         if (file?.type !== "application/pdf") {
@@ -47,24 +47,24 @@ export const useComparePDFs = (): UseComparePDFsReturn => {
           setError(
             err instanceof Error
               ? err.message
-              : "Could not load PDF. It may be corrupt or password-protected."
+              : "Could not load PDF. It may be corrupt or password-protected.",
           );
         } finally {
           setLoading(false);
         }
       };
     },
-    []
+    [],
   );
 
   const loadPDF1 = useCallback(
     createPDFLoader(setPdfDoc1, setPdfFile1, setIsLoading1, setError1, "PDF 1"),
-    [createPDFLoader]
+    [createPDFLoader],
   );
 
   const loadPDF2 = useCallback(
     createPDFLoader(setPdfDoc2, setPdfFile2, setIsLoading2, setError2, "PDF 2"),
-    [createPDFLoader]
+    [createPDFLoader],
   );
 
   const resetPDF1 = useCallback(() => {
@@ -122,7 +122,7 @@ export const useComparePDFs = (): UseComparePDFsReturn => {
         setCurrentPage(page);
       }
     },
-    [getMaxPages]
+    [getMaxPages],
   );
 
   const handleRenderPage = useCallback(
@@ -130,11 +130,11 @@ export const useComparePDFs = (): UseComparePDFsReturn => {
       pdfDoc: PDFDocumentProxy | null,
       pageNum: number,
       canvas: HTMLCanvasElement,
-      container: HTMLElement
+      container: HTMLElement,
     ) => {
       await renderPage(pdfDoc, pageNum, canvas, container);
     },
-    []
+    [],
   );
 
   return {

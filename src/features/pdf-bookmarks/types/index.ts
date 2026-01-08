@@ -1,5 +1,5 @@
-import type { PDFDocument } from 'pdf-lib';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
+import type { PDFDocument } from "pdf-lib";
+import type { PDFDocumentProxy } from "pdfjs-dist";
 
 export interface BookmarkNode {
   id: string;
@@ -40,4 +40,3 @@ export interface DestinationPickerState {
   currentCallback: ((page: number, x: number, y: number) => void) | null;
   markerPosition: { x: number; y: number } | null;
 }
-

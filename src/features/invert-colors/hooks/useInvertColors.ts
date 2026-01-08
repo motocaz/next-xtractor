@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useCallback } from 'react';
-import { invertColors } from '../lib/invert-colors-logic';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import type { UseInvertColorsReturn } from '../types';
+import { useCallback } from "react";
+import { invertColors } from "../lib/invert-colors-logic";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import type { UseInvertColorsReturn } from "../types";
 
 export const useInvertColors = (): UseInvertColorsReturn => {
   const {
@@ -28,29 +28,29 @@ export const useInvertColors = (): UseInvertColorsReturn => {
 
   const processInvertColors = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Inverting PDF colors...');
+    setLoadingMessage("Inverting PDF colors...");
 
     try {
       const pdfBytes = await invertColors(pdfFile, (current, total) => {
         setLoadingMessage(`Processing page ${current} of ${total}...`);
       });
 
-      setLoadingMessage('Preparing download...');
+      setLoadingMessage("Preparing download...");
       saveAndDownloadPDF(pdfBytes, pdfFile.name);
-      setSuccess('Colors inverted successfully!');
+      setSuccess("Colors inverted successfully!");
     } catch (err) {
-      console.error('Error inverting colors:', err);
+      console.error("Error inverting colors:", err);
       setError(
         err instanceof Error
           ? `Failed to invert colors: ${err.message}`
-          : 'Could not invert PDF colors. Please check your inputs.'
+          : "Could not invert PDF colors. Please check your inputs.",
       );
     } finally {
       setIsProcessing(false);
@@ -78,4 +78,3 @@ export const useInvertColors = (): UseInvertColorsReturn => {
     reset,
   };
 };
-

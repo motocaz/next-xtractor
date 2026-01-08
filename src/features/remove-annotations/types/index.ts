@@ -1,25 +1,25 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export type AnnotationType =
-  | 'Highlight'
-  | 'StrikeOut'
-  | 'Underline'
-  | 'Ink'
-  | 'Polygon'
-  | 'Square'
-  | 'Circle'
-  | 'Line'
-  | 'PolyLine'
-  | 'Link'
-  | 'Text'
-  | 'FreeText'
-  | 'Popup'
-  | 'Squiggly'
-  | 'Stamp'
-  | 'Caret'
-  | 'FileAttachment';
+  | "Highlight"
+  | "StrikeOut"
+  | "Underline"
+  | "Ink"
+  | "Polygon"
+  | "Square"
+  | "Circle"
+  | "Line"
+  | "PolyLine"
+  | "Link"
+  | "Text"
+  | "FreeText"
+  | "Popup"
+  | "Squiggly"
+  | "Stamp"
+  | "Caret"
+  | "FileAttachment";
 
-export type PageScope = 'all' | 'specific';
+export type PageScope = "all" | "specific";
 
 export interface UseRemoveAnnotationsReturn {
   pageScope: PageScope;
@@ -44,4 +44,3 @@ export interface UseRemoveAnnotationsReturn {
   loadPDF: (file: File) => Promise<void>;
   reset: () => void;
 }
-

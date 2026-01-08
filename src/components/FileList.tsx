@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import { formatBytes } from '@/lib/pdf/file-utils';
-import { cn } from '@/lib/utils';
+import { useMemo } from "react";
+import { formatBytes } from "@/lib/pdf/file-utils";
+import { cn } from "@/lib/utils";
 
 export interface FileListItem {
   name: string;
@@ -18,14 +18,14 @@ export interface FileListProps {
 export const FileList = ({ files, onRemove, className }: FileListProps) => {
   const normalizedFiles = useMemo(() => {
     if (files.length === 0) return [];
-    
+
     if (files[0] instanceof File) {
       return (files as File[]).map((file) => ({
         name: file.name,
         size: file.size,
       }));
     }
-    
+
     return files.map((file) => ({
       name: file.name,
       size: file.size,
@@ -37,7 +37,7 @@ export const FileList = ({ files, onRemove, className }: FileListProps) => {
   }
 
   return (
-    <div className={cn('mt-4 space-y-2', className)}>
+    <div className={cn("mt-4 space-y-2", className)}>
       {normalizedFiles.map((file, index) => (
         <div
           key={`${file.name}-${index}`}
@@ -63,4 +63,3 @@ export const FileList = ({ files, onRemove, className }: FileListProps) => {
     </div>
   );
 };
-

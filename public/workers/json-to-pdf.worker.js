@@ -1,4 +1,4 @@
-globalThis.importScripts('/coherentpdf.browser.min.js');
+globalThis.importScripts("/coherentpdf.browser.min.js");
 
 function convertJSONsToPDFInWorker(fileBuffers, fileNames) {
   try {
@@ -15,11 +15,11 @@ function convertJSONsToPDFInWorker(fileBuffers, fileNames) {
         pdf = coherentpdf.fromJSONMemory(uint8Array);
       } catch (error) {
         const errorMsg =
-          error && error.message ? error.message : 'Unknown error';
+          error && error.message ? error.message : "Unknown error";
         throw new Error(
           `Failed to convert "${fileName}" to PDF. ` +
             `The JSON file must be in the format produced by cpdf's outputJSONMemory. ` +
-            `Error: ${errorMsg}`
+            `Error: ${errorMsg}`,
         );
       }
 
@@ -37,26 +37,25 @@ function convertJSONsToPDFInWorker(fileBuffers, fileNames) {
 
     globalThis.postMessage(
       {
-        status: 'success',
+        status: "success",
         pdfFiles: pdfFiles,
       },
-      transferBuffers
+      transferBuffers,
     );
   } catch (error) {
     globalThis.postMessage({
-      status: 'error',
+      status: "error",
       message:
         error instanceof Error
           ? error.message
-          : 'Unknown error during JSON to PDF conversion.',
+          : "Unknown error during JSON to PDF conversion.",
     });
     return;
   }
 }
 
 globalThis.onmessage = (e) => {
-  if (e.data.command === 'convert') {
+  if (e.data.command === "convert") {
     convertJSONsToPDFInWorker(e.data.fileBuffers, e.data.fileNames);
   }
 };
-

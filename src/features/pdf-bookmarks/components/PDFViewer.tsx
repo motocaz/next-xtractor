@@ -1,10 +1,16 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
-import type { UsePDFViewerReturn } from '../hooks/usePDFViewer';
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+  ZoomOut,
+  Maximize2,
+} from "lucide-react";
+import type { UsePDFViewerReturn } from "../hooks/usePDFViewer";
 
 interface PDFViewerProps {
   pdfViewer: UsePDFViewerReturn;
@@ -30,9 +36,17 @@ export const PDFViewer = ({
     text: string;
   } | null>(null);
 
-  const { state, renderPage, nextPage, prevPage, goToPage, zoomIn, zoomOut, zoomFit } =
-    pdfViewer;
-  
+  const {
+    state,
+    renderPage,
+    nextPage,
+    prevPage,
+    goToPage,
+    zoomIn,
+    zoomOut,
+    zoomFit,
+  } = pdfViewer;
+
   const [gotoPageValue, setGotoPageValue] = useState(String(state.currentPage));
 
   useEffect(() => {
@@ -44,7 +58,13 @@ export const PDFViewer = ({
       }, 0);
       return () => clearTimeout(timeoutId);
     }
-  }, [state.currentPage, state.zoom, state.totalPages, renderPage, destinationMarker]);
+  }, [
+    state.currentPage,
+    state.zoom,
+    state.totalPages,
+    renderPage,
+    destinationMarker,
+  ]);
 
   const handlePageChange = (newPage: number) => {
     goToPage(newPage);
@@ -66,11 +86,11 @@ export const PDFViewer = ({
     const page = Number.parseInt(value);
     if (page >= 1 && page <= state.totalPages) {
       handlePageChange(page);
-    }                            
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleGotoPage();
     }
   };
@@ -172,7 +192,12 @@ export const PDFViewer = ({
           </Button>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={zoomOut} title="Zoom Out">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={zoomOut}
+            title="Zoom Out"
+          >
             <ZoomOut className="h-4 w-4" />
           </Button>
           <span className="text-sm font-medium text-foreground whitespace-nowrap min-w-[60px] text-center">
@@ -181,7 +206,12 @@ export const PDFViewer = ({
           <Button variant="outline" size="sm" onClick={zoomIn} title="Zoom In">
             <ZoomIn className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="sm" onClick={zoomFit} title="Fit to Width">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={zoomFit}
+            title="Fit to Width"
+          >
             <Maximize2 className="h-4 w-4" />
           </Button>
         </div>
@@ -190,7 +220,7 @@ export const PDFViewer = ({
       <div
         ref={wrapperRef}
         className={`overflow-auto border border-border rounded relative flex items-center justify-center min-h-[400px] ${
-          isPickingDestination ? 'cursor-crosshair' : ''
+          isPickingDestination ? "cursor-crosshair" : ""
         }`}
       >
         <div className="pdf-canvas-wrapper relative inline-block">
@@ -217,5 +247,3 @@ export const PDFViewer = ({
     </div>
   );
 };
-
-

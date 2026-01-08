@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useEncryptPDF } from '../hooks/useEncryptPDF';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import Link from "next/link";
+import { useEncryptPDF } from "../hooks/useEncryptPDF";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowLeft, AlertTriangle, CheckCircle2 } from "lucide-react";
 
 export const EncryptPDFTool = () => {
   const {
@@ -102,8 +102,8 @@ export const EncryptPDFTool = () => {
                   </h3>
                   <p className="text-sm text-muted-foreground">
                     For strong security, set both passwords. Without an owner
-                    password, the security restrictions (printing, copying, etc.)
-                    can be easily bypassed.
+                    password, the security restrictions (printing, copying,
+                    etc.) can be easily bypassed.
                   </p>
                 </div>
               </div>
@@ -146,4 +146,3 @@ export const EncryptPDFTool = () => {
     </div>
   );
 };
-

@@ -1,45 +1,73 @@
-'use client';
+"use client";
 
-import { marked } from 'marked';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
-import DOMPurify from 'dompurify';
-import type { MdToPdfOptions } from '../types';
-import { processCSS, processInlineStyle, convertMultipleColorValues } from './color-converter';
+import { marked } from "marked";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
+import DOMPurify from "dompurify";
+import type { MdToPdfOptions } from "../types";
+import {
+  processCSS,
+  processInlineStyle,
+  convertMultipleColorValues,
+} from "./color-converter";
 
 export const mdToPdf = async (
   markdownContent: string,
-  options: MdToPdfOptions
+  options: MdToPdfOptions,
 ): Promise<Blob> => {
   if (!markdownContent?.trim()) {
-    throw new Error('Please enter some Markdown text.');
+    throw new Error("Please enter some Markdown text.");
   }
 
   const htmlContent = marked.parse(markdownContent) as string;
-  
+
   const sanitizedHtml = DOMPurify.sanitize(htmlContent, {
     ALLOWED_TAGS: [
-      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-      'p', 'br', 'hr',
-      'ul', 'ol', 'li',
-      'blockquote', 'pre', 'code',
-      'strong', 'em', 'b', 'i', 'u', 's',
-      'a', 'img',
-      'table', 'thead', 'tbody', 'tr', 'th', 'td',
-      'div', 'span'
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+      "p",
+      "br",
+      "hr",
+      "ul",
+      "ol",
+      "li",
+      "blockquote",
+      "pre",
+      "code",
+      "strong",
+      "em",
+      "b",
+      "i",
+      "u",
+      "s",
+      "a",
+      "img",
+      "table",
+      "thead",
+      "tbody",
+      "tr",
+      "th",
+      "td",
+      "div",
+      "span",
     ],
-    ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'id', 'style'],
-    ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+    ALLOWED_ATTR: ["href", "src", "alt", "title", "class", "id", "style"],
+    ALLOWED_URI_REGEXP:
+      /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
     KEEP_CONTENT: true,
     RETURN_DOM: false,
     RETURN_DOM_FRAGMENT: false,
-    RETURN_TRUSTED_TYPE: false
+    RETURN_TRUSTED_TYPE: false,
   });
 
-  const tempContainer = document.createElement('div');
+  const tempContainer = document.createElement("div");
   tempContainer.style.cssText =
-    'position: absolute; top: -9999px; left: -9999px; width: 800px; padding: 40px; background-color: rgb(255, 255, 255) !important; color: rgb(0, 0, 0) !important;';
-  
+    "position: absolute; top: -9999px; left: -9999px; width: 800px; padding: 40px; background-color: rgb(255, 255, 255) !important; color: rgb(0, 0, 0) !important;";
+
   const rawCss = `
     body { font-family: Helvetica, Arial, sans-serif; line-height: 1.6; font-size: 12px; }
     h1, h2, h3 { margin: 20px 0 10px 0; font-weight: 600; border-bottom: 1px solid #eaecef; padding-bottom: .3em; }
@@ -53,24 +81,27 @@ export const mdToPdf = async (
     th, td { padding: 6px 13px; border: 1px solid #dfe2e5; }
     img { max-width: 100%; }
   `;
-  
+
   const processedCss = processCSS(rawCss);
-  
-  const styleSheet = document.createElement('style');
+
+  const styleSheet = document.createElement("style");
   styleSheet.textContent = processedCss;
-  
+
   tempContainer.appendChild(styleSheet);
-  
-  let processedHtml = sanitizedHtml.replace(/style\s*=\s*["']([^"']+)["']/gi, (match, styleValue) => {
-    const processedStyle = processInlineStyle(styleValue);
-    return `style="${processedStyle}"`;
-  });
-  
+
+  let processedHtml = sanitizedHtml.replace(
+    /style\s*=\s*["']([^"']+)["']/gi,
+    (match, styleValue) => {
+      const processedStyle = processInlineStyle(styleValue);
+      return `style="${processedStyle}"`;
+    },
+  );
+
   processedHtml = convertMultipleColorValues(processedHtml);
-  
-  const contentDiv = document.createElement('div');
+
+  const contentDiv = document.createElement("div");
   contentDiv.innerHTML = processedHtml;
-  
+
   const processElementStyles = (element: Element) => {
     if (element instanceof HTMLElement && element.style.cssText) {
       const originalStyle = element.style.cssText;
@@ -81,42 +112,48 @@ export const mdToPdf = async (
     }
     Array.from(element.children).forEach(processElementStyles);
   };
-  
+
   processElementStyles(contentDiv);
-  
+
   tempContainer.appendChild(contentDiv);
   document.body.appendChild(tempContainer);
 
-  await new Promise(resolve => setTimeout(resolve, 0));
-  
+  await new Promise((resolve) => setTimeout(resolve, 0));
+
   const processComputedStyles = (element: Element) => {
     if (element instanceof HTMLElement) {
       const computedStyle = globalThis.getComputedStyle(element);
       const colorProperties = [
-        'color',
-        'backgroundColor',
-        'borderColor',
-        'borderTopColor',
-        'borderRightColor',
-        'borderBottomColor',
-        'borderLeftColor',
-        'outlineColor',
-        'textDecorationColor',
-        'columnRuleColor',
-        'caretColor',
-        'fill',
-        'stroke',
+        "color",
+        "backgroundColor",
+        "borderColor",
+        "borderTopColor",
+        "borderRightColor",
+        "borderBottomColor",
+        "borderLeftColor",
+        "outlineColor",
+        "textDecorationColor",
+        "columnRuleColor",
+        "caretColor",
+        "fill",
+        "stroke",
       ];
-      
+
       const stylesToUpdate: string[] = [];
-      
-      colorProperties.forEach(prop => {
-        const kebabProp = prop.replace(/([A-Z])/g, '-$1').toLowerCase();
+
+      colorProperties.forEach((prop) => {
+        const kebabProp = prop.replace(/([A-Z])/g, "-$1").toLowerCase();
         const value = computedStyle.getPropertyValue(kebabProp);
-        if (value && (value.includes('lab(') || value.includes('oklab(') || value.includes('lch(') || value.includes('oklch('))) {
+        if (
+          value &&
+          (value.includes("lab(") ||
+            value.includes("oklab(") ||
+            value.includes("lch(") ||
+            value.includes("oklch("))
+        ) {
           const converted = convertMultipleColorValues(value);
           if (converted !== value) {
-            element.style.setProperty(kebabProp, converted, 'important');
+            element.style.setProperty(kebabProp, converted, "important");
             stylesToUpdate.push(`${kebabProp}: ${converted}`);
           }
         }
@@ -124,16 +161,26 @@ export const mdToPdf = async (
     }
     Array.from(element.children).forEach(processComputedStyles);
   };
-  
+
   processComputedStyles(tempContainer);
-  
+
   if (document.body) {
     const bodyComputedStyle = globalThis.getComputedStyle(document.body);
-    const bodyBgColor = bodyComputedStyle.getPropertyValue('background-color');
-    if (bodyBgColor && (bodyBgColor.includes('lab(') || bodyBgColor.includes('oklab(') || bodyBgColor.includes('lch(') || bodyBgColor.includes('oklch('))) {
+    const bodyBgColor = bodyComputedStyle.getPropertyValue("background-color");
+    if (
+      bodyBgColor &&
+      (bodyBgColor.includes("lab(") ||
+        bodyBgColor.includes("oklab(") ||
+        bodyBgColor.includes("lch(") ||
+        bodyBgColor.includes("oklch("))
+    ) {
       const converted = convertMultipleColorValues(bodyBgColor);
       if (converted !== bodyBgColor) {
-        document.body.style.setProperty('background-color', converted, 'important');
+        document.body.style.setProperty(
+          "background-color",
+          converted,
+          "important",
+        );
       }
     }
   }
@@ -142,24 +189,39 @@ export const mdToPdf = async (
     if (element instanceof HTMLElement) {
       const computedStyle = globalThis.getComputedStyle(element);
       const allColorProps = [
-        'color', 'background-color', 'border-color', 'border-top-color',
-        'border-right-color', 'border-bottom-color', 'border-left-color',
-        'outline-color', 'text-decoration-color', 'column-rule-color',
-        'caret-color', 'fill', 'stroke'
+        "color",
+        "background-color",
+        "border-color",
+        "border-top-color",
+        "border-right-color",
+        "border-bottom-color",
+        "border-left-color",
+        "outline-color",
+        "text-decoration-color",
+        "column-rule-color",
+        "caret-color",
+        "fill",
+        "stroke",
       ];
-      
+
       for (const prop of allColorProps) {
         const value = computedStyle.getPropertyValue(prop);
-        if (value && (value.includes('lab(') || value.includes('oklab(') || value.includes('lch(') || value.includes('oklch('))) {
+        if (
+          value &&
+          (value.includes("lab(") ||
+            value.includes("oklab(") ||
+            value.includes("lch(") ||
+            value.includes("oklch("))
+        ) {
           const converted = convertMultipleColorValues(value);
-          element.style.setProperty(prop, converted, 'important');
+          element.style.setProperty(prop, converted, "important");
           return false;
         }
       }
     }
     return Array.from(element.children).every(verifyNoLabColors);
   };
-  
+
   verifyNoLabColors(tempContainer);
 
   try {
@@ -173,7 +235,7 @@ export const mdToPdf = async (
 
     const pdf = new jsPDF({
       orientation: options.orientation,
-      unit: 'mm',
+      unit: "mm",
       format: options.pageFormat,
     });
 
@@ -184,7 +246,7 @@ export const mdToPdf = async (
 
     const format = pageFormats[options.pageFormat];
     const [pageWidth, pageHeight] =
-      options.orientation === 'landscape' ? [format[1], format[0]] : format;
+      options.orientation === "landscape" ? [format[1], format[0]] : format;
 
     const margins: Record<string, number> = {
       narrow: 10,
@@ -196,23 +258,23 @@ export const mdToPdf = async (
     const contentWidth = pageWidth - margin * 2;
     const contentHeight = pageHeight - margin * 2;
 
-    const imgData = canvas.toDataURL('image/png');
+    const imgData = canvas.toDataURL("image/png");
     const imgHeight = (canvas.height * contentWidth) / canvas.width;
 
     let heightLeft = imgHeight;
     let position = margin;
 
-    pdf.addImage(imgData, 'PNG', margin, position, contentWidth, imgHeight);
+    pdf.addImage(imgData, "PNG", margin, position, contentWidth, imgHeight);
     heightLeft -= contentHeight;
 
     while (heightLeft > 0) {
       position = position - pageHeight;
       pdf.addPage();
-      pdf.addImage(imgData, 'PNG', margin, position, contentWidth, imgHeight);
+      pdf.addImage(imgData, "PNG", margin, position, contentWidth, imgHeight);
       heightLeft -= contentHeight;
     }
 
-    const pdfBlob = pdf.output('blob');
+    const pdfBlob = pdf.output("blob");
     return pdfBlob;
   } catch (error) {
     if (document.body.contains(tempContainer)) {
@@ -221,4 +283,3 @@ export const mdToPdf = async (
     throw error;
   }
 };
-

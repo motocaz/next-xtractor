@@ -18,4 +18,3 @@ export interface UseBmpToPdfReturn {
   processBmpToPdf: () => Promise<void>;
   reset: () => void;
 }
-

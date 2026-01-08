@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { PDFDocument } from 'pdf-lib';
-import JSZip from 'jszip';
-import { parsePageRanges } from '@/lib/pdf/file-utils';
-import { downloadFile, saveAndDownloadPDF } from '@/lib/pdf/file-utils';
+import { PDFDocument } from "pdf-lib";
+import JSZip from "jszip";
+import { parsePageRanges } from "@/lib/pdf/file-utils";
+import { downloadFile, saveAndDownloadPDF } from "@/lib/pdf/file-utils";
 
 export interface SplitByRangeOptions {
   pageRange: string;
@@ -19,7 +19,7 @@ export interface SplitByVisualSelectionOptions {
 }
 
 export interface SplitEvenOddOptions {
-  choice: 'even' | 'odd';
+  choice: "even" | "odd";
   totalPages: number;
   originalFileName?: string;
 }
@@ -37,19 +37,19 @@ export interface SplitByNPagesOptions {
 
 export const splitByRange = async (
   pdfDoc: PDFDocument,
-  options: SplitByRangeOptions
+  options: SplitByRangeOptions,
 ): Promise<void> => {
   const { pageRange, totalPages, downloadAsZip, originalFileName } = options;
 
-  if (!pageRange || pageRange.trim() === '') {
-    throw new Error('Please enter a page range.');
+  if (!pageRange || pageRange.trim() === "") {
+    throw new Error("Please enter a page range.");
   }
 
   const pageIndices = parsePageRanges(pageRange, totalPages);
   const uniqueIndices = [...new Set(pageIndices)].sort((a, b) => a - b);
 
   if (uniqueIndices.length === 0) {
-    throw new Error('No valid pages were selected for splitting.');
+    throw new Error("No valid pages were selected for splitting.");
   }
 
   if (downloadAsZip) {
@@ -62,16 +62,16 @@ export const splitByRange = async (
       zip.file(`page-${index + 1}.pdf`, pdfBytes);
     }
 
-    const zipBlob = await zip.generateAsync({ type: 'blob' });
-    const baseName = originalFileName?.replace(/\.pdf$/i, '') || 'split-pages';
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    const baseName = originalFileName?.replace(/\.pdf$/i, "") || "split-pages";
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     downloadFile(zipBlob, undefined, `${timestamp}_${baseName}.zip`);
   } else {
     const newPdf = await PDFDocument.create();
     const copiedPages = await newPdf.copyPages(pdfDoc, uniqueIndices);
     copiedPages.forEach((page) => newPdf.addPage(page));
     const pdfBytes = await newPdf.save();
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const filename = originalFileName
       ? `${timestamp}_${originalFileName}`
       : `${timestamp}_split-document.pdf`;
@@ -81,12 +81,12 @@ export const splitByRange = async (
 
 export const splitByVisualSelection = async (
   pdfDoc: PDFDocument,
-  options: SplitByVisualSelectionOptions
+  options: SplitByVisualSelectionOptions,
 ): Promise<void> => {
   const { selectedPages, downloadAsZip, originalFileName } = options;
 
   if (selectedPages.size === 0) {
-    throw new Error('No pages were selected for splitting.');
+    throw new Error("No pages were selected for splitting.");
   }
 
   const sortedIndices = Array.from(selectedPages).sort((a, b) => a - b);
@@ -101,16 +101,16 @@ export const splitByVisualSelection = async (
       zip.file(`page-${index + 1}.pdf`, pdfBytes);
     }
 
-    const zipBlob = await zip.generateAsync({ type: 'blob' });
-    const baseName = originalFileName?.replace(/\.pdf$/i, '') || 'split-pages';
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    const baseName = originalFileName?.replace(/\.pdf$/i, "") || "split-pages";
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     downloadFile(zipBlob, undefined, `${timestamp}_${baseName}.zip`);
   } else {
     const newPdf = await PDFDocument.create();
     const copiedPages = await newPdf.copyPages(pdfDoc, sortedIndices);
     copiedPages.forEach((page) => newPdf.addPage(page));
     const pdfBytes = await newPdf.save();
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const filename = originalFileName
       ? `${timestamp}_${originalFileName}`
       : `${timestamp}_split-document.pdf`;
@@ -120,15 +120,15 @@ export const splitByVisualSelection = async (
 
 export const splitEvenOdd = async (
   pdfDoc: PDFDocument,
-  options: SplitEvenOddOptions
+  options: SplitEvenOddOptions,
 ): Promise<void> => {
   const { choice, totalPages, originalFileName } = options;
 
   const indicesToExtract: number[] = [];
   for (let i = 0; i < totalPages; i++) {
-    if (choice === 'even' && (i + 1) % 2 === 0) {
+    if (choice === "even" && (i + 1) % 2 === 0) {
       indicesToExtract.push(i);
-    } else if (choice === 'odd' && (i + 1) % 2 !== 0) {
+    } else if (choice === "odd" && (i + 1) % 2 !== 0) {
       indicesToExtract.push(i);
     }
   }
@@ -141,16 +141,16 @@ export const splitEvenOdd = async (
   const copiedPages = await newPdf.copyPages(pdfDoc, indicesToExtract);
   copiedPages.forEach((page) => newPdf.addPage(page));
   const pdfBytes = await newPdf.save();
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
   const filename = originalFileName
-    ? `${timestamp}_${originalFileName.replace(/\.pdf$/i, '')}_${choice}.pdf`
+    ? `${timestamp}_${originalFileName.replace(/\.pdf$/i, "")}_${choice}.pdf`
     : `${timestamp}_split-${choice}.pdf`;
   saveAndDownloadPDF(pdfBytes, originalFileName, filename);
 };
 
 export const splitAllPages = async (
   pdfDoc: PDFDocument,
-  options: SplitAllPagesOptions
+  options: SplitAllPagesOptions,
 ): Promise<void> => {
   const { totalPages, originalFileName } = options;
 
@@ -163,20 +163,20 @@ export const splitAllPages = async (
     zip.file(`page-${i + 1}.pdf`, pdfBytes);
   }
 
-  const zipBlob = await zip.generateAsync({ type: 'blob' });
-  const baseName = originalFileName?.replace(/\.pdf$/i, '') || 'split-pages';
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const zipBlob = await zip.generateAsync({ type: "blob" });
+  const baseName = originalFileName?.replace(/\.pdf$/i, "") || "split-pages";
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
   downloadFile(zipBlob, undefined, `${timestamp}_${baseName}.zip`);
 };
 
 export const splitByNPages = async (
   pdfDoc: PDFDocument,
-  options: SplitByNPagesOptions
+  options: SplitByNPagesOptions,
 ): Promise<void> => {
   const { nValue, totalPages, originalFileName } = options;
 
   if (nValue < 1) {
-    throw new Error('N must be at least 1.');
+    throw new Error("N must be at least 1.");
   }
 
   const zip = new JSZip();
@@ -187,7 +187,7 @@ export const splitByNPages = async (
     const endPage = Math.min(startPage + nValue - 1, totalPages - 1);
     const pageIndices = Array.from(
       { length: endPage - startPage + 1 },
-      (_, idx) => startPage + idx
+      (_, idx) => startPage + idx,
     );
 
     const newPdf = await PDFDocument.create();
@@ -197,9 +197,8 @@ export const splitByNPages = async (
     zip.file(`split-${i + 1}.pdf`, pdfBytes);
   }
 
-  const zipBlob = await zip.generateAsync({ type: 'blob' });
-  const baseName = originalFileName?.replace(/\.pdf$/i, '') || 'split-n-times';
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const zipBlob = await zip.generateAsync({ type: "blob" });
+  const baseName = originalFileName?.replace(/\.pdf$/i, "") || "split-n-times";
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
   downloadFile(zipBlob, undefined, `${timestamp}_${baseName}.zip`);
 };
-

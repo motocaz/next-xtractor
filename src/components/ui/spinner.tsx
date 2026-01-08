@@ -17,7 +17,7 @@ function Spinner({ className, size = "md", ...props }: SpinnerProps) {
       className={cn(
         "border-border border-b-primary rounded-full inline-block box-border animate-spin",
         sizeClasses[size],
-        className
+        className,
       )}
       role="status"
       aria-label="Loading..."
@@ -29,4 +29,3 @@ function Spinner({ className, size = "md", ...props }: SpinnerProps) {
 }
 
 export { Spinner };
-

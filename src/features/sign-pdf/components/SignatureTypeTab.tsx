@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
+import { useState, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 
 interface SignatureTypeTabProps {
   onSave: (imageDataUrl: string) => void;
@@ -20,18 +20,22 @@ interface SignatureTypeTabProps {
 }
 
 const FONT_OPTIONS = [
-  { value: "'Great Vibes', cursive", label: 'Signature' },
-  { value: "'Kalam', cursive", label: 'Handwritten' },
-  { value: "'Dancing Script', cursive", label: 'Script' },
-  { value: "'Lato', sans-serif", label: 'Regular' },
-  { value: "'Merriweather', serif", label: 'Formal' },
+  { value: "'Great Vibes', cursive", label: "Signature" },
+  { value: "'Kalam', cursive", label: "Handwritten" },
+  { value: "'Dancing Script', cursive", label: "Script" },
+  { value: "'Lato', sans-serif", label: "Regular" },
+  { value: "'Merriweather', serif", label: "Formal" },
 ];
 
-export const SignatureTypeTab = ({ onSave, onError, disabled }: SignatureTypeTabProps) => {
-  const [text, setText] = useState('Your Name');
+export const SignatureTypeTab = ({
+  onSave,
+  onError,
+  disabled,
+}: SignatureTypeTabProps) => {
+  const [text, setText] = useState("Your Name");
   const [fontFamily, setFontFamily] = useState("'Great Vibes', cursive");
   const [fontSize, setFontSize] = useState(32);
-  const [color, setColor] = useState('#000000');
+  const [color, setColor] = useState("#000000");
   const [isSaving, setIsSaving] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -41,16 +45,16 @@ export const SignatureTypeTab = ({ onSave, onError, disabled }: SignatureTypeTab
     setIsSaving(true);
     try {
       await document.fonts.ready;
-      
-      const fontToCheck = fontFamily.split(',')[0].trim().replace(/'/g, '');
+
+      const fontToCheck = fontFamily.split(",")[0].trim().replace(/'/g, "");
       if (!document.fonts.check(`${fontSize}px "${fontToCheck}"`)) {
         await new Promise((resolve) => setTimeout(resolve, 100));
       }
 
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
       if (!context) {
-        throw new Error('Failed to create canvas context');
+        throw new Error("Failed to create canvas context");
       }
 
       const scale = 2;
@@ -60,29 +64,30 @@ export const SignatureTypeTab = ({ onSave, onError, disabled }: SignatureTypeTab
 
       context.font = `${fontSize}px ${fontFamily}`;
       context.fillStyle = color;
-      context.textAlign = 'center';
-      context.textBaseline = 'middle';
+      context.textAlign = "center";
+      context.textBaseline = "middle";
 
       context.clearRect(0, 0, canvas.width / scale, canvas.height / scale);
 
       context.fillText(
         text,
-        (canvas.width / scale) / 2,
-        (canvas.height / scale) / 2
+        canvas.width / scale / 2,
+        canvas.height / scale / 2,
       );
 
-      const dataUrl = canvas.toDataURL('image/png');
-      
-      if (!dataUrl || dataUrl === 'data:,') {
-        throw new Error('Failed to generate image data');
+      const dataUrl = canvas.toDataURL("image/png");
+
+      if (!dataUrl || dataUrl === "data:,") {
+        throw new Error("Failed to generate image data");
       }
 
       onSave(dataUrl);
-      
-      setText('Your Name');
+
+      setText("Your Name");
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to save signature';
-      console.error('Error creating signature image:', err);
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to save signature";
+      console.error("Error creating signature image:", err);
       onError?.(errorMessage);
     } finally {
       setIsSaving(false);
@@ -102,13 +107,21 @@ export const SignatureTypeTab = ({ onSave, onError, disabled }: SignatureTypeTab
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
-          <Label htmlFor="font-family-select" className="block mb-1 text-xs font-medium">
+          <Label
+            htmlFor="font-family-select"
+            className="block mb-1 text-xs font-medium"
+          >
             Font Style
           </Label>
-          <Select value={fontFamily} onValueChange={setFontFamily} disabled={disabled}>
+          <Select
+            value={fontFamily}
+            onValueChange={setFontFamily}
+            disabled={disabled}
+          >
             <SelectTrigger id="font-family-select">
               <SelectValue placeholder="Select font">
-                {FONT_OPTIONS.find((opt) => opt.value === fontFamily)?.label || 'Select font'}
+                {FONT_OPTIONS.find((opt) => opt.value === fontFamily)?.label ||
+                  "Select font"}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
@@ -122,7 +135,10 @@ export const SignatureTypeTab = ({ onSave, onError, disabled }: SignatureTypeTab
         </div>
 
         <div>
-          <Label htmlFor="font-size-slider" className="block mb-1 text-xs font-medium">
+          <Label
+            htmlFor="font-size-slider"
+            className="block mb-1 text-xs font-medium"
+          >
             Font Size ({fontSize}px)
           </Label>
           <Slider
@@ -136,7 +152,10 @@ export const SignatureTypeTab = ({ onSave, onError, disabled }: SignatureTypeTab
         </div>
 
         <div>
-          <Label htmlFor="font-color-picker" className="block mb-1 text-xs font-medium">
+          <Label
+            htmlFor="font-color-picker"
+            className="block mb-1 text-xs font-medium"
+          >
             Color
           </Label>
           <input
@@ -159,15 +178,17 @@ export const SignatureTypeTab = ({ onSave, onError, disabled }: SignatureTypeTab
           color: color,
         }}
       >
-        {text || 'Your Name'}
+        {text || "Your Name"}
       </div>
 
       <div className="flex justify-end">
-        <Button onClick={handleSave} disabled={disabled || isSaving || !text.trim()}>
-          {isSaving ? 'Saving...' : 'Save Signature'}
+        <Button
+          onClick={handleSave}
+          disabled={disabled || isSaving || !text.trim()}
+        >
+          {isSaving ? "Saving..." : "Save Signature"}
         </Button>
       </div>
     </div>
   );
 };
-

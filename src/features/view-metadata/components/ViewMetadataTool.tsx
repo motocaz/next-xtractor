@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useViewMetadata } from '../hooks/useViewMetadata';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft } from 'lucide-react';
+import Link from "next/link";
+import { useViewMetadata } from "../hooks/useViewMetadata";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft } from "lucide-react";
 
 export const ViewMetadataTool = () => {
   const {
@@ -35,7 +35,8 @@ export const ViewMetadataTool = () => {
         View PDF Metadata
       </h2>
       <p className="mb-6 text-muted-foreground">
-        Upload a PDF to view its internal properties, such as Title, Author, and Creation Date.
+        Upload a PDF to view its internal properties, such as Title, Author, and
+        Creation Date.
       </p>
 
       <PDFUploadSection
@@ -66,7 +67,7 @@ export const ViewMetadataTool = () => {
                         {key}
                       </strong>
                       <div className="grow text-foreground break-all">
-                        {value || '- Not Set -'}
+                        {value || "- Not Set -"}
                       </div>
                     </li>
                   ))}
@@ -95,7 +96,7 @@ export const ViewMetadataTool = () => {
                         {field.fieldName}
                       </strong>
                       <div className="grow text-foreground break-all">
-                        {field.fieldValue || '- Not Set -'}
+                        {field.fieldValue || "- Not Set -"}
                       </div>
                     </li>
                   ))}
@@ -114,7 +115,7 @@ export const ViewMetadataTool = () => {
             </CardHeader>
             <CardContent className="pb-6">
               {metadata.xmpNodes.length > 0 &&
-              metadata.xmpNodes[0]?.key === 'Error' ? (
+              metadata.xmpNodes[0]?.key === "Error" ? (
                 <div>
                   <p className="text-sm text-destructive italic mb-2">
                     - Error parsing XMP XML. Displaying raw. -
@@ -132,18 +133,21 @@ export const ViewMetadataTool = () => {
                       key={index}
                       className={`flex ${
                         node.isHeader
-                          ? 'pt-2 flex-col'
-                          : 'flex-col sm:flex-row gap-2 sm:gap-0'
+                          ? "pt-2 flex-col"
+                          : "flex-col sm:flex-row gap-2 sm:gap-0"
                       }`}
                       style={{
-                        paddingLeft: node.indent > 0 ? `${node.indent * 1.2}rem` : undefined,
+                        paddingLeft:
+                          node.indent > 0
+                            ? `${node.indent * 1.2}rem`
+                            : undefined,
                       }}
                     >
                       <strong
                         className={`${
                           node.isHeader
-                            ? 'w-full shrink-0 text-foreground font-medium'
-                            : 'w-56 shrink-0 text-muted-foreground'
+                            ? "w-full shrink-0 text-foreground font-medium"
+                            : "w-56 shrink-0 text-muted-foreground"
                         }`}
                       >
                         {node.key}
@@ -184,4 +188,3 @@ export const ViewMetadataTool = () => {
     </div>
   );
 };
-

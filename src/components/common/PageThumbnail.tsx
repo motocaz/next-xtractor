@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { GripVertical, CopyPlus, XCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import type { PageThumbnailData } from '@/lib/pdf/organize-pages-utils';
-import Image from 'next/image';
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { GripVertical, CopyPlus, XCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import type { PageThumbnailData } from "@/lib/pdf/organize-pages-utils";
+import Image from "next/image";
 
 interface PageThumbnailProps {
   pageData: PageThumbnailData;
@@ -106,7 +106,7 @@ export const PageThumbnail = ({
           }}
           disabled={!canDelete}
           aria-label={`Delete page ${pageData.displayNumber}`}
-          title={canDelete ? 'Delete Page' : 'Cannot delete the last page'}
+          title={canDelete ? "Delete Page" : "Cannot delete the last page"}
         >
           <XCircle className="h-4 w-4" />
         </Button>
@@ -114,4 +114,3 @@ export const PageThumbnail = ({
     </div>
   );
 };
-

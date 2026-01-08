@@ -112,7 +112,7 @@ export const extractFormFields = (pdfDoc: PDFDocument): FormField[] => {
 
 export const applyFormValues = (
   pdfDoc: PDFDocument,
-  fieldValues: Record<string, FormFieldValue>
+  fieldValues: Record<string, FormFieldValue>,
 ): void => {
   try {
     const form = pdfDoc.getForm();

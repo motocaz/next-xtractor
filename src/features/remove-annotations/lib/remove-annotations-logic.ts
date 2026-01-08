@@ -6,7 +6,7 @@ import { PDFName } from "pdf-lib";
 export const removeAnnotationsFromDoc = (
   pdfDoc: PDFDocument,
   pageIndices: number[] | null = null,
-  annotationTypes: Set<string> | null = null
+  annotationTypes: Set<string> | null = null,
 ): void => {
   const pages = pdfDoc.getPages();
   const targetPages =

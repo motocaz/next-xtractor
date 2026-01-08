@@ -7,7 +7,7 @@ import JSZip from "jszip";
 
 export const applyRotationToPage = (
   page: ReturnType<PDFDocument["addPage"]>,
-  rotation: number
+  rotation: number,
 ): void => {
   if (rotation !== 0) {
     const currentRotation = page.getRotation().angle;
@@ -20,7 +20,7 @@ export const createBlankPage = (pdfDoc: PDFDocument): void => {
 };
 
 export const createPDFFromPages = async (
-  pages: MultiToolPageData[]
+  pages: MultiToolPageData[],
 ): Promise<Uint8Array> => {
   const newPdf = await PDFDocument.create();
 
@@ -44,7 +44,7 @@ export const createPDFFromPages = async (
 
 export const createSplitPDFs = async (
   pages: MultiToolPageData[],
-  splitMarkers: Set<string>
+  splitMarkers: Set<string>,
 ): Promise<Blob> => {
   const zip = new JSZip();
   const segments: MultiToolPageData[][] = [];
@@ -76,7 +76,7 @@ export const createSplitPDFs = async (
 export const downloadSelectedPages = async (
   pages: MultiToolPageData[],
   selectedPageIds: Set<string>,
-  originalFileName?: string
+  originalFileName?: string,
 ): Promise<void> => {
   const selectedPages = pages.filter((p) => selectedPageIds.has(p.id));
   if (selectedPages.length === 0) {
@@ -94,7 +94,7 @@ export const downloadSelectedPages = async (
 export const downloadAllPages = async (
   pages: MultiToolPageData[],
   splitMarkers: Set<string>,
-  originalFileName?: string
+  originalFileName?: string,
 ): Promise<void> => {
   if (pages.length === 0) {
     throw new Error("No pages to download");

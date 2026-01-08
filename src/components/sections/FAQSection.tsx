@@ -42,8 +42,8 @@ const faqs = [
     question: "Do you use cookies or analytics to track me?",
     answer: (
       <>
-        We care about your privacy. Xtractor does not track personal information.
-        We use{" "}
+        We care about your privacy. Xtractor does not track personal
+        information. We use{" "}
         <Link
           href="https://simpleanalytics.com"
           className="text-primary hover:underline"
@@ -72,4 +72,3 @@ export function FAQSection() {
     </section>
   );
 }
-

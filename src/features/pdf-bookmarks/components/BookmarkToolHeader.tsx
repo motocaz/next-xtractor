@@ -1,10 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, Undo2, Redo2, Trash2, RotateCcw } from 'lucide-react';
-import type { BookmarkNode } from '../types';
-import type { MessageDialogState, ConfirmDialogState } from '../hooks/useBookmarkDialogs';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Undo2, Redo2, Trash2, RotateCcw } from "lucide-react";
+import type { BookmarkNode } from "../types";
+import type {
+  MessageDialogState,
+  ConfirmDialogState,
+} from "../hooks/useBookmarkDialogs";
 
 interface BookmarkToolHeaderProps {
   originalFileName: string;
@@ -35,28 +38,29 @@ export const BookmarkToolHeader = ({
     if (bookmarkTree.length === 0) {
       setMessageDialog({
         open: true,
-        type: 'info',
-        title: 'No Bookmarks',
-        message: 'No bookmarks to delete.',
+        type: "info",
+        title: "No Bookmarks",
+        message: "No bookmarks to delete.",
       });
       return;
     }
     setConfirmDialog({
       open: true,
-      title: 'Delete All Bookmarks',
+      title: "Delete All Bookmarks",
       message: `Delete all ${bookmarkTree.length} bookmark(s)? This action cannot be undone.`,
       onConfirm: onDeleteAll,
-      variant: 'destructive',
+      variant: "destructive",
     });
   };
 
   const handleReset = () => {
     setConfirmDialog({
       open: true,
-      title: 'Reset Editor',
-      message: 'Reset and go back to file uploader? All unsaved changes will be lost.',
+      title: "Reset Editor",
+      message:
+        "Reset and go back to file uploader? All unsaved changes will be lost.",
       onConfirm: onReset,
-      variant: 'default',
+      variant: "default",
     });
   };
 
@@ -65,7 +69,7 @@ export const BookmarkToolHeader = ({
       <div className="max-w-7xl mx-auto px-4 py-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <h1 className="text-xl font-bold text-foreground">
-            {originalFileName || 'PDF Bookmark Editor'}
+            {originalFileName || "PDF Bookmark Editor"}
           </h1>
           <div className="flex gap-2 flex-wrap">
             <Button variant="outline" size="sm" asChild>
@@ -106,4 +110,3 @@ export const BookmarkToolHeader = ({
     </header>
   );
 };
-

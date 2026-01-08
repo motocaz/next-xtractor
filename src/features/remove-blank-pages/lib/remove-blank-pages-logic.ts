@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import type { PDFDocument } from 'pdf-lib';
-import { PDFDocument as PDFLibDocument } from 'pdf-lib';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
-import { isPageBlank } from '@/lib/pdf/blank-page-detector';
-import { renderPageAsImage } from '@/lib/pdf/canvas-utils';
-import type { PageAnalysisData, AnalysisResult } from '../types';
+import type { PDFDocument } from "pdf-lib";
+import { PDFDocument as PDFLibDocument } from "pdf-lib";
+import type { PDFDocumentProxy } from "pdfjs-dist";
+import { isPageBlank } from "@/lib/pdf/blank-page-detector";
+import { renderPageAsImage } from "@/lib/pdf/canvas-utils";
+import type { PageAnalysisData, AnalysisResult } from "../types";
 
 export const analyzePagesForBlankDetection = async (
   pdfJsDoc: PDFDocumentProxy,
   sensitivity: number,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<PageAnalysisData[]> => {
   const totalPages = pdfJsDoc.numPages;
 
@@ -26,7 +26,7 @@ export const analyzePagesForBlankDetection = async (
           pageRef: page,
           isBlank,
         };
-      })
+      }),
     );
   }
 
@@ -37,7 +37,7 @@ export const analyzePagesForBlankDetection = async (
 export const updateAnalysisWithSensitivity = async (
   analysisData: PageAnalysisData[],
   sensitivity: number,
-  pdfJsDoc: PDFDocumentProxy
+  pdfJsDoc: PDFDocumentProxy,
 ): Promise<AnalysisResult> => {
   const pagesToRemove: number[] = [];
   const updatedAnalysisData: PageAnalysisData[] = [];
@@ -60,20 +60,23 @@ export const updateAnalysisWithSensitivity = async (
         const thumbnailUrl = await renderPageAsImage(
           pdfJsDoc,
           pageData.pageNum,
-          0.1
+          0.1,
         );
         pageData.thumbnailUrl = thumbnailUrl;
       } catch (error) {
-        console.error(`Failed to generate thumbnail for page ${pageData.pageNum}:`, error);
+        console.error(
+          `Failed to generate thumbnail for page ${pageData.pageNum}:`,
+          error,
+        );
       }
     }
   }
 
   let message: string;
   if (pagesToRemove.length > 0) {
-    message = `Found ${pagesToRemove.length} blank page(s) to remove: ${pagesToRemove.join(', ')}`;
+    message = `Found ${pagesToRemove.length} blank page(s) to remove: ${pagesToRemove.join(", ")}`;
   } else {
-    message = 'No blank pages found at this sensitivity level.';
+    message = "No blank pages found at this sensitivity level.";
   }
 
   return {
@@ -85,14 +88,14 @@ export const updateAnalysisWithSensitivity = async (
 
 export const removeBlankPages = async (
   pdfDoc: PDFDocument,
-  pagesToKeep: number[]
+  pagesToKeep: number[],
 ): Promise<Uint8Array> => {
   if (pagesToKeep.length === 0) {
-    throw new Error('Cannot remove all pages. At least one page must be kept.');
+    throw new Error("Cannot remove all pages. At least one page must be kept.");
   }
 
   if (pagesToKeep.length === pdfDoc.getPageCount()) {
-    throw new Error('No blank pages found to remove.');
+    throw new Error("No blank pages found to remove.");
   }
 
   const newPdf = await PDFLibDocument.create();
@@ -102,4 +105,3 @@ export const removeBlankPages = async (
   const newPdfBytes = await newPdf.save();
   return newPdfBytes;
 };
-

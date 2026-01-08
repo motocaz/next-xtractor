@@ -1,35 +1,29 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
-import { getUserByClerkId } from '@/lib/db/user';
-import { getUserSubscription } from '@/lib/db/subscription';
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
+import { getUserByClerkId } from "@/lib/db/user";
+import { getUserSubscription } from "@/lib/db/subscription";
 
 export async function GET(request: NextRequest) {
   try {
     const { userId } = await auth();
 
     if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const user = await getUserByClerkId(userId);
-    
+
     if (!user) {
       return NextResponse.json(
-        { error: 'User not found in database' },
-        { status: 404 }
+        { error: "User not found in database" },
+        { status: 404 },
       );
     }
 
     const subscription = await getUserSubscription(user.id);
 
     if (!subscription) {
-      return NextResponse.json(
-        { subscription: null },
-        { status: 200 }
-      );
+      return NextResponse.json({ subscription: null }, { status: 200 });
     }
 
     return NextResponse.json({
@@ -46,11 +40,10 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Error fetching subscription:', error);
+    console.error("Error fetching subscription:", error);
     return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
+      { error: "Internal Server Error" },
+      { status: 500 },
     );
   }
 }
-

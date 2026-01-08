@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useAddAttachments } from '../hooks/useAddAttachments';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { FileUploader } from '@/components/FileUploader';
-import { FileList } from '@/components/FileList';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
-import { CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
+import Link from "next/link";
+import { useAddAttachments } from "../hooks/useAddAttachments";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { FileUploader } from "@/components/FileUploader";
+import { FileList } from "@/components/FileList";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import { CheckCircle2, AlertCircle, ArrowLeft } from "lucide-react";
 
 export const AddAttachmentsTool = () => {
   const {
@@ -38,7 +38,7 @@ export const AddAttachmentsTool = () => {
         <ArrowLeft className="h-5 w-5" />
         <span>Back to Tools</span>
       </Link>
-      
+
       <h2 className="text-2xl font-bold text-foreground mb-4">
         Add Attachments to PDF
       </h2>
@@ -87,10 +87,10 @@ export const AddAttachmentsTool = () => {
               {isProcessing ? (
                 <span className="flex items-center gap-2">
                   <Spinner size="sm" />
-                  {loadingMessage || 'Processing...'}
+                  {loadingMessage || "Processing..."}
                 </span>
               ) : (
-                'Embed Files & Download'
+                "Embed Files & Download"
               )}
             </Button>
           )}

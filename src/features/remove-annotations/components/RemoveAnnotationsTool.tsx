@@ -1,37 +1,37 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
-import { useRemoveAnnotations } from '../hooks/useRemoveAnnotations';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Card, CardContent } from '@/components/ui/card';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import type { AnnotationType } from '../types';
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useRemoveAnnotations } from "../hooks/useRemoveAnnotations";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Card, CardContent } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import type { AnnotationType } from "../types";
 
 const ANNOTATION_TYPES: Array<{ type: AnnotationType; label: string }> = [
-  { type: 'Highlight', label: 'Highlight' },
-  { type: 'StrikeOut', label: 'Strikeout' },
-  { type: 'Underline', label: 'Underline' },
-  { type: 'Ink', label: 'Ink / Draw' },
-  { type: 'Polygon', label: 'Polygon' },
-  { type: 'Square', label: 'Square' },
-  { type: 'Circle', label: 'Circle' },
-  { type: 'Line', label: 'Line / Arrow' },
-  { type: 'PolyLine', label: 'Polyline' },
-  { type: 'Link', label: 'Link' },
-  { type: 'Text', label: 'Text (Note)' },
-  { type: 'FreeText', label: 'Free Text' },
-  { type: 'Popup', label: 'Popup / Comment' },
-  { type: 'Squiggly', label: 'Squiggly' },
-  { type: 'Stamp', label: 'Stamp' },
-  { type: 'Caret', label: 'Caret' },
-  { type: 'FileAttachment', label: 'File Attachment' },
+  { type: "Highlight", label: "Highlight" },
+  { type: "StrikeOut", label: "Strikeout" },
+  { type: "Underline", label: "Underline" },
+  { type: "Ink", label: "Ink / Draw" },
+  { type: "Polygon", label: "Polygon" },
+  { type: "Square", label: "Square" },
+  { type: "Circle", label: "Circle" },
+  { type: "Line", label: "Line / Arrow" },
+  { type: "PolyLine", label: "Polyline" },
+  { type: "Link", label: "Link" },
+  { type: "Text", label: "Text (Note)" },
+  { type: "FreeText", label: "Free Text" },
+  { type: "Popup", label: "Popup / Comment" },
+  { type: "Squiggly", label: "Squiggly" },
+  { type: "Stamp", label: "Stamp" },
+  { type: "Caret", label: "Caret" },
+  { type: "FileAttachment", label: "File Attachment" },
 ];
 
 export const RemoveAnnotationsTool = () => {
@@ -109,7 +109,9 @@ export const RemoveAnnotationsTool = () => {
               <CardContent className="pt-3 pb-6">
                 <RadioGroup
                   value={pageScope}
-                  onValueChange={(value) => setPageScope(value as 'all' | 'specific')}
+                  onValueChange={(value) =>
+                    setPageScope(value as "all" | "specific")
+                  }
                   className="flex gap-4"
                 >
                   <Label
@@ -117,7 +119,9 @@ export const RemoveAnnotationsTool = () => {
                     className="flex-1 flex items-center gap-2 p-3 rounded-md hover:bg-input cursor-pointer border border-transparent hover:border-border transition-colors"
                   >
                     <RadioGroupItem value="all" id="page-scope-all" />
-                    <span className="font-semibold text-foreground">All Pages</span>
+                    <span className="font-semibold text-foreground">
+                      All Pages
+                    </span>
                   </Label>
                   <Label
                     htmlFor="page-scope-specific"
@@ -130,7 +134,7 @@ export const RemoveAnnotationsTool = () => {
                   </Label>
                 </RadioGroup>
 
-                {pageScope === 'specific' && (
+                {pageScope === "specific" && (
                   <div className="mt-4">
                     <Label htmlFor="page-range-input">
                       Enter page range (e.g., 1-3, 5, 8):
@@ -216,4 +220,3 @@ export const RemoveAnnotationsTool = () => {
     </div>
   );
 };
-

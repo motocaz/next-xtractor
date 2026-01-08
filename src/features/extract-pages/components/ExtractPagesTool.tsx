@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useExtractPages } from '../hooks/useExtractPages';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { ArrowLeft } from 'lucide-react';
+import Link from "next/link";
+import { useExtractPages } from "../hooks/useExtractPages";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft } from "lucide-react";
 
 export const ExtractPagesTool = () => {
   const {
@@ -40,9 +40,7 @@ export const ExtractPagesTool = () => {
         <span>Back to Tools</span>
       </Link>
 
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        Extract Pages
-      </h2>
+      <h2 className="text-2xl font-bold text-foreground mb-4">Extract Pages</h2>
       <p className="mb-6 text-muted-foreground">
         Extract specific pages from a PDF into separate files. Your files will
         download in a ZIP archive.
@@ -98,4 +96,3 @@ export const ExtractPagesTool = () => {
     </div>
   );
 };
-

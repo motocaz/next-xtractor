@@ -32,7 +32,7 @@ export const FileUploader = ({
 
       e.target.value = "";
     },
-    [onFilesSelected]
+    [onFilesSelected],
   );
 
   const handleDragOver = useCallback(
@@ -43,7 +43,7 @@ export const FileUploader = ({
         setIsDragging(true);
       }
     },
-    [disabled]
+    [disabled],
   );
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
@@ -69,7 +69,7 @@ export const FileUploader = ({
         fileInputRef.current.value = "";
       }
     },
-    [disabled, onFilesSelected]
+    [disabled, onFilesSelected],
   );
 
   return (
@@ -83,7 +83,7 @@ export const FileUploader = ({
         disabled &&
           "opacity-50 cursor-not-allowed hover:bg-background hover:border-border",
         isDragging && "border-primary bg-accent",
-        className
+        className,
       )}
     >
       <div className="text-center">
@@ -108,4 +108,3 @@ export const FileUploader = ({
     </label>
   );
 };
-

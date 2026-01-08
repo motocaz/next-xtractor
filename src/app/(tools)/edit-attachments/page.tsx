@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
-import { ScrollToTop } from '@/components/ScrollToTop';
+import dynamic from "next/dynamic";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const EditAttachmentsTool = dynamic(
   () =>
-    import('@/features/pdf-edit-attachments').then((mod) => ({
+    import("@/features/pdf-edit-attachments").then((mod) => ({
       default: mod.EditAttachmentsTool,
     })),
   {
@@ -17,7 +17,7 @@ const EditAttachmentsTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default function EditAttachmentsPage() {
@@ -28,4 +28,3 @@ export default function EditAttachmentsPage() {
     </>
   );
 }
-

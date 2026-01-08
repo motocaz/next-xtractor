@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
-import { useReversePages } from '../hooks/useReversePages';
-import { FileUploader } from '@/components/FileUploader';
-import { FileListSection } from '@/components/common/FileListSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useReversePages } from "../hooks/useReversePages";
+import { FileUploader } from "@/components/FileUploader";
+import { FileListSection } from "@/components/common/FileListSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
 
 export const ReversePagesTool = () => {
   const {
@@ -38,7 +38,8 @@ export const ReversePagesTool = () => {
         Reverse PDF Pages
       </h2>
       <p className="mb-6 text-muted-foreground">
-        Reverse the page order of one or more PDF files. All reversed PDFs will be downloaded as a ZIP file.
+        Reverse the page order of one or more PDF files. All reversed PDFs will
+        be downloaded as a ZIP file.
       </p>
 
       <div className="mb-4">
@@ -77,7 +78,7 @@ export const ReversePagesTool = () => {
             loadingMessage={loadingMessage}
             disabled={!canProcess}
           >
-            Reverse Pages{pdfFiles.length > 1 ? ' (All PDFs)' : ''}
+            Reverse Pages{pdfFiles.length > 1 ? " (All PDFs)" : ""}
           </ProcessButton>
 
           <ProcessMessages success={processingSuccess} error={error} />
@@ -91,4 +92,3 @@ export const ReversePagesTool = () => {
     </div>
   );
 };
-

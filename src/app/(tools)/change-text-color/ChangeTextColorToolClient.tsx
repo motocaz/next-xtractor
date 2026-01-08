@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const ChangeTextColorTool = dynamic(
   () =>
-    import('@/features/change-text-color').then((mod) => ({
+    import("@/features/change-text-color").then((mod) => ({
       default: mod.ChangeTextColorTool,
     })),
   {
@@ -16,8 +16,7 @@ const ChangeTextColorTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default ChangeTextColorTool;
-

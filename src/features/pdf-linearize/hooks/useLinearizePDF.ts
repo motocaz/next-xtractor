@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useCallback } from 'react';
-import JSZip from 'jszip';
-import { useMultiPDFProcessor } from '@/hooks/useMultiPDFProcessor';
-import { linearizePDFs } from '../lib/linearize-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
-import type { UseLinearizePDFReturn } from '../types';
+import { useCallback } from "react";
+import JSZip from "jszip";
+import { useMultiPDFProcessor } from "@/hooks/useMultiPDFProcessor";
+import { linearizePDFs } from "../lib/linearize-logic";
+import { downloadFile } from "@/lib/pdf/file-utils";
+import type { UseLinearizePDFReturn } from "../types";
 
 export const useLinearizePDF = (): UseLinearizePDFReturn => {
   const {
@@ -25,28 +25,31 @@ export const useLinearizePDF = (): UseLinearizePDFReturn => {
 
   const linearizePDFsHandler = useCallback(async () => {
     if (pdfFiles.length === 0) {
-      setError('Please upload at least one PDF file.');
+      setError("Please upload at least one PDF file.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Initializing optimization engine...');
+    setLoadingMessage("Initializing optimization engine...");
 
     try {
-      const results = await linearizePDFs(pdfFiles, (current, total, fileName) => {
-        setLoadingMessage(`Optimizing ${fileName} (${current}/${total})...`);
-      });
+      const results = await linearizePDFs(
+        pdfFiles,
+        (current, total, fileName) => {
+          setLoadingMessage(`Optimizing ${fileName} (${current}/${total})...`);
+        },
+      );
 
       if (results.length === 0) {
-        setError('No PDF files could be linearized.');
+        setError("No PDF files could be linearized.");
         setIsProcessing(false);
         setLoadingMessage(null);
         return;
       }
 
-      setLoadingMessage('Generating ZIP file...');
+      setLoadingMessage("Generating ZIP file...");
 
       const zip = new JSZip();
       for (const result of results) {
@@ -54,13 +57,13 @@ export const useLinearizePDF = (): UseLinearizePDFReturn => {
         zip.file(result.fileName, arrayBuffer);
       }
 
-      setLoadingMessage('Preparing download...');
+      setLoadingMessage("Preparing download...");
 
-      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const zipBlob = await zip.generateAsync({ type: "blob" });
 
       const baseName =
-        pdfFiles[0]?.name.replace(/\.pdf$/i, '') || 'linearized-pdfs';
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        pdfFiles[0]?.name.replace(/\.pdf$/i, "") || "linearized-pdfs";
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
       const zipFileName = `${timestamp}_${baseName}.zip`;
 
       downloadFile(zipBlob, undefined, zipFileName);
@@ -74,11 +77,11 @@ export const useLinearizePDF = (): UseLinearizePDFReturn => {
 
       setSuccess(successMessage);
     } catch (err) {
-      console.error('Error linearizing PDFs:', err);
+      console.error("Error linearizing PDFs:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'An error occurred while linearizing PDFs.'
+          : "An error occurred while linearizing PDFs.",
       );
     } finally {
       setIsProcessing(false);
@@ -98,4 +101,3 @@ export const useLinearizePDF = (): UseLinearizePDFReturn => {
     reset,
   };
 };
-

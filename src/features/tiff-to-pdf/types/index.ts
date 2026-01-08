@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface TiffFileInfo {
   id: string;
@@ -26,4 +26,3 @@ export interface TiffToPdfResult {
   successCount: number;
   failedFiles: string[];
 }
-

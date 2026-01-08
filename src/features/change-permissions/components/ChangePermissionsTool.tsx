@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useChangePermissions } from '../hooks/useChangePermissions';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowLeft } from 'lucide-react';
+import Link from "next/link";
+import { useChangePermissions } from "../hooks/useChangePermissions";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ArrowLeft } from "lucide-react";
 
 export const ChangePermissionsTool = () => {
   const {
@@ -144,7 +144,7 @@ export const ChangePermissionsTool = () => {
                   id="allow-printing"
                   checked={permissions.allowPrinting}
                   onCheckedChange={(checked) =>
-                    setPermission('allowPrinting', checked === true)
+                    setPermission("allowPrinting", checked === true)
                   }
                   disabled={isProcessing}
                 />
@@ -155,7 +155,7 @@ export const ChangePermissionsTool = () => {
                   id="allow-copying"
                   checked={permissions.allowCopying}
                   onCheckedChange={(checked) =>
-                    setPermission('allowCopying', checked === true)
+                    setPermission("allowCopying", checked === true)
                   }
                   disabled={isProcessing}
                 />
@@ -166,7 +166,7 @@ export const ChangePermissionsTool = () => {
                   id="allow-modifying"
                   checked={permissions.allowModifying}
                   onCheckedChange={(checked) =>
-                    setPermission('allowModifying', checked === true)
+                    setPermission("allowModifying", checked === true)
                   }
                   disabled={isProcessing}
                 />
@@ -177,7 +177,7 @@ export const ChangePermissionsTool = () => {
                   id="allow-annotating"
                   checked={permissions.allowAnnotating}
                   onCheckedChange={(checked) =>
-                    setPermission('allowAnnotating', checked === true)
+                    setPermission("allowAnnotating", checked === true)
                   }
                   disabled={isProcessing}
                 />
@@ -188,7 +188,7 @@ export const ChangePermissionsTool = () => {
                   id="allow-filling-forms"
                   checked={permissions.allowFillingForms}
                   onCheckedChange={(checked) =>
-                    setPermission('allowFillingForms', checked === true)
+                    setPermission("allowFillingForms", checked === true)
                   }
                   disabled={isProcessing}
                 />
@@ -199,7 +199,7 @@ export const ChangePermissionsTool = () => {
                   id="allow-document-assembly"
                   checked={permissions.allowDocumentAssembly}
                   onCheckedChange={(checked) =>
-                    setPermission('allowDocumentAssembly', checked === true)
+                    setPermission("allowDocumentAssembly", checked === true)
                   }
                   disabled={isProcessing}
                 />
@@ -210,7 +210,7 @@ export const ChangePermissionsTool = () => {
                   id="allow-page-extraction"
                   checked={permissions.allowPageExtraction}
                   onCheckedChange={(checked) =>
-                    setPermission('allowPageExtraction', checked === true)
+                    setPermission("allowPageExtraction", checked === true)
                   }
                   disabled={isProcessing}
                 />
@@ -238,4 +238,3 @@ export const ChangePermissionsTool = () => {
     </div>
   );
 };
-

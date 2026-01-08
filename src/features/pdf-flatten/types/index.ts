@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UseFlattenPDFReturn {
   isProcessing: boolean;
@@ -15,4 +15,3 @@ export interface UseFlattenPDFReturn {
   processFlatten: () => Promise<void>;
   reset: () => void;
 }
-

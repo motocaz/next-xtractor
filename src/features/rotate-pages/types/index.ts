@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export type PageRotationState = Map<number, number>;
 
@@ -22,4 +22,3 @@ export interface UseRotatePagesReturn {
   applyRotations: () => Promise<void>;
   reset: () => void;
 }
-

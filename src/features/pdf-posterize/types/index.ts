@@ -1,13 +1,13 @@
-import type { PDFDocumentProxy } from 'pdfjs-dist';
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocumentProxy } from "pdfjs-dist";
+import type { PDFDocument } from "pdf-lib";
 
-export type PageSizeKey = 'A4' | 'Letter' | 'Legal' | 'A3' | 'A5';
+export type PageSizeKey = "A4" | "Letter" | "Legal" | "A3" | "A5";
 
-export type Orientation = 'auto' | 'portrait' | 'landscape';
+export type Orientation = "auto" | "portrait" | "landscape";
 
-export type ScalingMode = 'fit' | 'fill';
+export type ScalingMode = "fit" | "fill";
 
-export type OverlapUnits = 'pt' | 'in' | 'mm';
+export type OverlapUnits = "pt" | "in" | "mm";
 
 export interface PosterizeOptions {
   rows: number;
@@ -60,4 +60,3 @@ export interface UsePosterizePDFReturn {
   posterize: () => Promise<void>;
   reset: () => void;
 }
-

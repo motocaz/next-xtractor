@@ -3,7 +3,7 @@ import { downloadFile } from "@/lib/pdf/file-utils";
 
 export const flattenBookmarks = (
   nodes: BookmarkNode[],
-  level = 0
+  level = 0,
 ): Array<BookmarkNode & { level: number }> => {
   let result: Array<BookmarkNode & { level: number }> = [];
   for (const node of nodes) {
@@ -17,7 +17,7 @@ export const flattenBookmarks = (
 
 export const exportToCSV = (
   bookmarkTree: BookmarkNode[],
-  originalFileName: string
+  originalFileName: string,
 ): void => {
   if (bookmarkTree.length === 0) {
     throw new Error("No bookmarks to export!");
@@ -37,7 +37,7 @@ export const exportToCSV = (
 
 export const exportToJSON = (
   bookmarkTree: BookmarkNode[],
-  originalFileName: string
+  originalFileName: string,
 ): void => {
   if (bookmarkTree.length === 0) {
     throw new Error("No bookmarks to export!");

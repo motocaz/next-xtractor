@@ -1,5 +1,5 @@
-import { ScrollToTop } from '@/components/ScrollToTop';
-import SignPdfToolClient from './SignPdfToolClient';
+import { ScrollToTop } from "@/components/ScrollToTop";
+import SignPdfToolClient from "./SignPdfToolClient";
 
 export default function SignPdfPage() {
   return (
@@ -9,4 +9,3 @@ export default function SignPdfPage() {
     </>
   );
 }
-

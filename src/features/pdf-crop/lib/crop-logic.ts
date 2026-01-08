@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { PDFDocument } from 'pdf-lib';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
-import type { PageCrops } from '../types';
+import { PDFDocument } from "pdf-lib";
+import type { PDFDocumentProxy } from "pdfjs-dist";
+import type { PageCrops } from "../types";
 
 export const performMetadataCrop = async (
   pdfDoc: PDFDocument,
-  cropData: PageCrops
+  cropData: PageCrops,
 ): Promise<PDFDocument> => {
   const pages = pdfDoc.getPages();
 
@@ -68,7 +68,7 @@ export const performFlatteningCrop = async (
   pdfJsDoc: PDFDocumentProxy,
   cropData: PageCrops,
   originalPdfBytes: ArrayBuffer,
-  onProgress?: (message: string) => void
+  onProgress?: (message: string) => void,
 ): Promise<PDFDocument> => {
   const newPdfDoc = await PDFDocument.create();
   const sourcePdfDocForCopying = await PDFDocument.load(originalPdfBytes, {
@@ -84,10 +84,10 @@ export const performFlatteningCrop = async (
       const page = await pdfJsDoc.getPage(pageNum);
       const viewport = page.getViewport({ scale: 2.5 });
 
-      const tempCanvas = document.createElement('canvas');
-      const tempCtx = tempCanvas.getContext('2d');
+      const tempCanvas = document.createElement("canvas");
+      const tempCtx = tempCanvas.getContext("2d");
       if (!tempCtx) {
-        throw new Error('Failed to get canvas context');
+        throw new Error("Failed to get canvas context");
       }
 
       tempCanvas.width = viewport.width;
@@ -103,10 +103,10 @@ export const performFlatteningCrop = async (
       const finalWidth = tempCanvas.width * crop.width;
       const finalHeight = tempCanvas.height * crop.height;
 
-      const finalCanvas = document.createElement('canvas');
-      const finalCtx = finalCanvas.getContext('2d');
+      const finalCanvas = document.createElement("canvas");
+      const finalCtx = finalCanvas.getContext("2d");
       if (!finalCtx) {
-        throw new Error('Failed to get final canvas context');
+        throw new Error("Failed to get final canvas context");
       }
 
       finalCanvas.width = finalWidth;
@@ -121,20 +121,17 @@ export const performFlatteningCrop = async (
         0,
         0,
         finalWidth,
-        finalHeight
+        finalHeight,
       );
 
       const pngBytes = await new Promise<ArrayBuffer>((resolve, reject) => {
-        finalCanvas.toBlob(
-          (blob) => {
-            if (blob) {
-              blob.arrayBuffer().then(resolve).catch(reject);
-            } else {
-              reject(new Error('Failed to convert canvas to blob'));
-            }
-          },
-          'image/png'
-        );
+        finalCanvas.toBlob((blob) => {
+          if (blob) {
+            blob.arrayBuffer().then(resolve).catch(reject);
+          } else {
+            reject(new Error("Failed to convert canvas to blob"));
+          }
+        }, "image/png");
       });
 
       const embeddedImage = await newPdfDoc.embedPng(pngBytes);
@@ -146,14 +143,12 @@ export const performFlatteningCrop = async (
         height: finalHeight,
       });
     } else {
-      const [copiedPage] = await newPdfDoc.copyPages(sourcePdfDocForCopying, [i]);
+      const [copiedPage] = await newPdfDoc.copyPages(sourcePdfDocForCopying, [
+        i,
+      ]);
       newPdfDoc.addPage(copiedPage);
     }
   }
 
   return newPdfDoc;
 };
-
-
-
-

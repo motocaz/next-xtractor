@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { convertWordToHtml, htmlToPdf } from '../lib/word-to-pdf-logic';
-import type { UseWordToPdfReturn } from '../types';
+import { useState, useCallback } from "react";
+import { convertWordToHtml, htmlToPdf } from "../lib/word-to-pdf-logic";
+import type { UseWordToPdfReturn } from "../types";
 
 export const useWordToPdf = (): UseWordToPdfReturn => {
   const [wordFile, setWordFile] = useState<File | null>(null);
@@ -10,22 +10,26 @@ export const useWordToPdf = (): UseWordToPdfReturn => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [processingMessage, setProcessingMessage] = useState<string | null>(null);
+  const [processingMessage, setProcessingMessage] = useState<string | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
 
   const loadWordFile = useCallback(async (file: File) => {
     const validMimeTypes = [
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/msword',
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/msword",
     ];
-    const validExtensions = ['.docx', '.doc'];
-    
-    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+    const validExtensions = [".docx", ".doc"];
+
+    const fileExtension = file.name
+      .toLowerCase()
+      .substring(file.name.lastIndexOf("."));
     const isValidMimeType = validMimeTypes.includes(file.type);
     const isValidExtension = validExtensions.includes(fileExtension);
 
     if (!isValidMimeType && !isValidExtension) {
-      setError('Please upload a valid Word document (.docx or .doc file).');
+      setError("Please upload a valid Word document (.docx or .doc file).");
       return;
     }
 
@@ -36,12 +40,12 @@ export const useWordToPdf = (): UseWordToPdfReturn => {
 
   const convertToHtml = useCallback(async () => {
     if (!wordFile) {
-      setError('Please upload a Word document first.');
+      setError("Please upload a Word document first.");
       return;
     }
 
     setIsLoading(true);
-    setLoadingMessage('Converting Word document to HTML...');
+    setLoadingMessage("Converting Word document to HTML...");
     setError(null);
 
     try {
@@ -49,11 +53,11 @@ export const useWordToPdf = (): UseWordToPdfReturn => {
       setHtmlContent(html);
       setLoadingMessage(null);
     } catch (err) {
-      console.error('Error converting Word to HTML:', err);
+      console.error("Error converting Word to HTML:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'Could not convert Word document. The file may be corrupt or contain unsupported features.'
+          : "Could not convert Word document. The file may be corrupt or contain unsupported features.",
       );
       setLoadingMessage(null);
     } finally {
@@ -63,26 +67,23 @@ export const useWordToPdf = (): UseWordToPdfReturn => {
 
   const generatePdf = useCallback(async () => {
     if (!htmlContent) {
-      setError('No HTML content available. Please convert the document first.');
+      setError("No HTML content available. Please convert the document first.");
       return;
     }
 
     setIsProcessing(true);
-    setProcessingMessage('Generating High-Quality PDF...');
+    setProcessingMessage("Generating High-Quality PDF...");
     setError(null);
 
     try {
-      await htmlToPdf(
-        htmlContent,
-        wordFile?.name
-      );
+      await htmlToPdf(htmlContent, wordFile?.name);
       setProcessingMessage(null);
     } catch (err) {
-      console.error('Error generating PDF:', err);
+      console.error("Error generating PDF:", err);
       setError(
         err instanceof Error
           ? err.message
-          : 'An error occurred while generating the PDF.'
+          : "An error occurred while generating the PDF.",
       );
       setProcessingMessage(null);
     } finally {
@@ -92,7 +93,7 @@ export const useWordToPdf = (): UseWordToPdfReturn => {
 
   const convertAndDownloadPdf = useCallback(async () => {
     if (!wordFile) {
-      setError('Please upload a Word document first.');
+      setError("Please upload a Word document first.");
       return;
     }
 
@@ -101,7 +102,7 @@ export const useWordToPdf = (): UseWordToPdfReturn => {
     let currentHtmlContent = htmlContent;
     if (!currentHtmlContent) {
       setIsLoading(true);
-      setLoadingMessage('Converting Word document to HTML...');
+      setLoadingMessage("Converting Word document to HTML...");
 
       try {
         const html = await convertWordToHtml(wordFile);
@@ -109,11 +110,11 @@ export const useWordToPdf = (): UseWordToPdfReturn => {
         currentHtmlContent = html;
         setLoadingMessage(null);
       } catch (err) {
-        console.error('Error converting Word to HTML:', err);
+        console.error("Error converting Word to HTML:", err);
         setError(
           err instanceof Error
             ? err.message
-            : 'Could not convert Word document. The file may be corrupt or contain unsupported features.'
+            : "Could not convert Word document. The file may be corrupt or contain unsupported features.",
         );
         setLoadingMessage(null);
         setIsLoading(false);
@@ -125,21 +126,18 @@ export const useWordToPdf = (): UseWordToPdfReturn => {
 
     if (currentHtmlContent) {
       setIsProcessing(true);
-      setProcessingMessage('Generating High-Quality PDF...');
+      setProcessingMessage("Generating High-Quality PDF...");
       setError(null);
 
       try {
-        await htmlToPdf(
-          currentHtmlContent,
-          wordFile?.name
-        );
+        await htmlToPdf(currentHtmlContent, wordFile?.name);
         setProcessingMessage(null);
       } catch (err) {
-        console.error('Error generating PDF:', err);
+        console.error("Error generating PDF:", err);
         setError(
           err instanceof Error
             ? err.message
-            : 'An error occurred while generating the PDF.'
+            : "An error occurred while generating the PDF.",
         );
         setProcessingMessage(null);
       } finally {
@@ -173,4 +171,3 @@ export const useWordToPdf = (): UseWordToPdfReturn => {
     reset,
   };
 };
-

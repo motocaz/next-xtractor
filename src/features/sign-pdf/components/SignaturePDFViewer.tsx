@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { Button } from '@/components/ui/button';
+import { useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
 import {
   ChevronLeft,
   ChevronRight,
@@ -9,8 +9,8 @@ import {
   ZoomOut,
   Maximize2,
   Undo2,
-} from 'lucide-react';
-import type { UseSignPdfReturn } from '../types';
+} from "lucide-react";
+import type { UseSignPdfReturn } from "../types";
 
 interface SignaturePDFViewerProps {
   hook: UseSignPdfReturn;
@@ -35,7 +35,7 @@ export const SignaturePDFViewer = ({
 
   useEffect(() => {
     if (!hook.activeSignature && ghostRef.current) {
-      ghostRef.current.classList.add('hidden');
+      ghostRef.current.classList.add("hidden");
     }
   }, [hook.activeSignature]);
 
@@ -49,21 +49,24 @@ export const SignaturePDFViewer = ({
 
       if (hook.activeSignature && ghostRef.current) {
         const rect = canvas.getBoundingClientRect();
-        const clientX = 'touches' in e ? e.touches[0]?.clientX ?? 0 : e.clientX;
-        const clientY = 'touches' in e ? e.touches[0]?.clientY ?? 0 : e.clientY;
-        
+        const clientX =
+          "touches" in e ? (e.touches[0]?.clientX ?? 0) : e.clientX;
+        const clientY =
+          "touches" in e ? (e.touches[0]?.clientY ?? 0) : e.clientY;
+
         const canvasX = clientX - rect.left;
         const canvasY = clientY - rect.top;
-        
+
         const ghost = ghostRef.current;
         const sigWidth = 600;
         const sigHeight =
-          (hook.activeSignature.image.height / hook.activeSignature.image.width) *
+          (hook.activeSignature.image.height /
+            hook.activeSignature.image.width) *
           sigWidth;
 
         const ghostX = canvasX - sigWidth / 2;
         const ghostY = canvasY - sigHeight / 2;
-        
+
         const viewportX = rect.left + ghostX;
         const viewportY = rect.top + ghostY;
 
@@ -72,13 +75,13 @@ export const SignaturePDFViewer = ({
         ghost.style.height = `${sigHeight}px`;
         ghost.style.left = `${viewportX}px`;
         ghost.style.top = `${viewportY}px`;
-        ghost.classList.remove('hidden');
+        ghost.classList.remove("hidden");
       }
     };
 
     const handleMouseLeave = () => {
       if (ghostRef.current) {
-        ghostRef.current.classList.add('hidden');
+        ghostRef.current.classList.add("hidden");
       }
     };
 
@@ -105,33 +108,37 @@ export const SignaturePDFViewer = ({
     const dragEndHandler = handleDragEnd as EventListener;
     const touchEndHandler = handleDragEnd as EventListener;
 
-    canvas.addEventListener('mousemove', mouseMoveHandler);
-    canvas.addEventListener('touchmove', touchMoveHandler, { passive: false });
-    canvas.addEventListener('mouseleave', mouseLeaveHandler);
-    canvas.addEventListener('mousedown', dragStartHandler);
-    canvas.addEventListener('touchstart', touchStartHandler, { passive: false });
-    document.addEventListener('mousemove', dragMoveHandler);
-    document.addEventListener('touchmove', touchMoveDragHandler, { passive: false });
-    document.addEventListener('mouseup', dragEndHandler);
-    document.addEventListener('touchend', touchEndHandler);
+    canvas.addEventListener("mousemove", mouseMoveHandler);
+    canvas.addEventListener("touchmove", touchMoveHandler, { passive: false });
+    canvas.addEventListener("mouseleave", mouseLeaveHandler);
+    canvas.addEventListener("mousedown", dragStartHandler);
+    canvas.addEventListener("touchstart", touchStartHandler, {
+      passive: false,
+    });
+    document.addEventListener("mousemove", dragMoveHandler);
+    document.addEventListener("touchmove", touchMoveDragHandler, {
+      passive: false,
+    });
+    document.addEventListener("mouseup", dragEndHandler);
+    document.addEventListener("touchend", touchEndHandler);
 
     const container = containerRef?.current;
     if (container) {
-      container.addEventListener('mouseleave', mouseLeaveHandler);
+      container.addEventListener("mouseleave", mouseLeaveHandler);
     }
 
     return () => {
-      canvas.removeEventListener('mousemove', mouseMoveHandler);
-      canvas.removeEventListener('touchmove', touchMoveHandler);
-      canvas.removeEventListener('mouseleave', mouseLeaveHandler);
-      canvas.removeEventListener('mousedown', dragStartHandler);
-      canvas.removeEventListener('touchstart', touchStartHandler);
-      document.removeEventListener('mousemove', dragMoveHandler);
-      document.removeEventListener('touchmove', touchMoveDragHandler);
-      document.removeEventListener('mouseup', dragEndHandler);
-      document.removeEventListener('touchend', touchEndHandler);
+      canvas.removeEventListener("mousemove", mouseMoveHandler);
+      canvas.removeEventListener("touchmove", touchMoveHandler);
+      canvas.removeEventListener("mouseleave", mouseLeaveHandler);
+      canvas.removeEventListener("mousedown", dragStartHandler);
+      canvas.removeEventListener("touchstart", touchStartHandler);
+      document.removeEventListener("mousemove", dragMoveHandler);
+      document.removeEventListener("touchmove", touchMoveDragHandler);
+      document.removeEventListener("mouseup", dragEndHandler);
+      document.removeEventListener("touchend", touchEndHandler);
       if (container) {
-        container.removeEventListener('mouseleave', mouseLeaveHandler);
+        container.removeEventListener("mouseleave", mouseLeaveHandler);
       }
     };
   }, [hook, containerRef]);
@@ -149,24 +156,42 @@ export const SignaturePDFViewer = ({
   };
 
   const getCursorClass = () => {
-    if (hook.interactionMode === 'drag') return 'cursor-move';
-    if (hook.interactionMode === 'resize') {
-      if (hook.resizeHandle?.includes('left') && hook.resizeHandle?.includes('top'))
-        return 'cursor-nwse-resize';
-      if (hook.resizeHandle?.includes('right') && hook.resizeHandle?.includes('top'))
-        return 'cursor-nesw-resize';
-      if (hook.resizeHandle?.includes('left') && hook.resizeHandle?.includes('bottom'))
-        return 'cursor-nesw-resize';
-      if (hook.resizeHandle?.includes('right') && hook.resizeHandle?.includes('bottom'))
-        return 'cursor-nwse-resize';
-      if (hook.resizeHandle?.includes('top') || hook.resizeHandle?.includes('bottom'))
-        return 'cursor-ns-resize';
-      if (hook.resizeHandle?.includes('left') || hook.resizeHandle?.includes('right'))
-        return 'cursor-ew-resize';
+    if (hook.interactionMode === "drag") return "cursor-move";
+    if (hook.interactionMode === "resize") {
+      if (
+        hook.resizeHandle?.includes("left") &&
+        hook.resizeHandle?.includes("top")
+      )
+        return "cursor-nwse-resize";
+      if (
+        hook.resizeHandle?.includes("right") &&
+        hook.resizeHandle?.includes("top")
+      )
+        return "cursor-nesw-resize";
+      if (
+        hook.resizeHandle?.includes("left") &&
+        hook.resizeHandle?.includes("bottom")
+      )
+        return "cursor-nesw-resize";
+      if (
+        hook.resizeHandle?.includes("right") &&
+        hook.resizeHandle?.includes("bottom")
+      )
+        return "cursor-nwse-resize";
+      if (
+        hook.resizeHandle?.includes("top") ||
+        hook.resizeHandle?.includes("bottom")
+      )
+        return "cursor-ns-resize";
+      if (
+        hook.resizeHandle?.includes("left") ||
+        hook.resizeHandle?.includes("right")
+      )
+        return "cursor-ew-resize";
     }
-    if (hook.activeSignature) return 'cursor-crosshair';
-    if (hook.hoveredSigId) return 'cursor-move';
-    return '';
+    if (hook.activeSignature) return "cursor-crosshair";
+    if (hook.hoveredSigId) return "cursor-move";
+    return "";
   };
 
   if (!hook.pdfJsDoc) {
@@ -240,21 +265,17 @@ export const SignaturePDFViewer = ({
         ref={containerRef}
         className={`relative w-full overflow-auto bg-background rounded-lg border border-border min-h-[400px] flex items-center justify-center ${getCursorClass()}`}
       >
-        <canvas
-          ref={canvasRef}
-          className="max-w-full h-auto block"
-        />
+        <canvas ref={canvasRef} className="max-w-full h-auto block" />
         <div
           ref={ghostRef}
           className="hidden fixed pointer-events-none z-50 opacity-80"
           style={{
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
           }}
         />
       </div>
     </div>
   );
 };
-

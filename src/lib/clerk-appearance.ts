@@ -29,7 +29,7 @@ export const clerkAppearance = {
         backgroundColor: "var(--muted)",
       },
     },
-    
+
     formFieldInput: {
       backgroundColor: "var(--input)",
       borderColor: "var(--border)",
@@ -37,7 +37,7 @@ export const clerkAppearance = {
         borderColor: "var(--primary)",
       },
     },
-    
+
     formFieldAction: {
       color: "var(--primary)",
       "&:hover": {
@@ -45,7 +45,7 @@ export const clerkAppearance = {
         opacity: 0.8,
       },
     },
-    
+
     socialButtonsBlockButton: {
       backgroundColor: "var(--input)",
       borderColor: "var(--border)",
@@ -139,4 +139,3 @@ export const clerkAppearance = {
     },
   },
 } satisfies Appearance;
-

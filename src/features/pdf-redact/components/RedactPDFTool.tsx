@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { ArrowLeft, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { useRedactPDF } from '../hooks/useRedactPDF';
-import { FileUploader } from '@/components/FileUploader';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { PdfFileCard } from '@/components/common/PdfFileCard';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import type { RedactionRect } from '../types';
+import { useEffect, useRef } from "react";
+import Link from "next/link";
+import { ArrowLeft, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useRedactPDF } from "../hooks/useRedactPDF";
+import { FileUploader } from "@/components/FileUploader";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { PdfFileCard } from "@/components/common/PdfFileCard";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import type { RedactionRect } from "../types";
 
 export const RedactPDFTool = () => {
   const {
@@ -46,14 +46,12 @@ export const RedactPDFTool = () => {
   const drawRedactionRect = (
     ctx: CanvasRenderingContext2D,
     rect: RedactionRect,
-    isDrawing: boolean
+    isDrawing: boolean,
   ) => {
-    ctx.fillStyle = isDrawing
-      ? 'rgba(0, 0, 0, 0.5)'
-      : 'rgba(0, 0, 0, 0.7)';
+    ctx.fillStyle = isDrawing ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0.7)";
     ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
 
-    ctx.strokeStyle = isDrawing ? '#ef4444' : '#000000';
+    ctx.strokeStyle = isDrawing ? "#ef4444" : "#000000";
     ctx.lineWidth = 2;
     ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
   };
@@ -64,7 +62,7 @@ export const RedactPDFTool = () => {
     }
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const img = new Image();
@@ -88,7 +86,7 @@ export const RedactPDFTool = () => {
     if (!canvasRef.current || !imageRef.current) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -104,12 +102,16 @@ export const RedactPDFTool = () => {
     }
   }, [pageRedactions, currentPageNum]);
 
-  const getEventCoordinates = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+  const getEventCoordinates = (
+    e:
+      | React.MouseEvent<HTMLCanvasElement>
+      | React.TouchEvent<HTMLCanvasElement>,
+  ) => {
     if (!canvasRef.current) return null;
 
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
-    const touch = 'touches' in e ? e.touches[0] : e;
+    const touch = "touches" in e ? e.touches[0] : e;
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
 
@@ -131,7 +133,8 @@ export const RedactPDFTool = () => {
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawingRef.current || !startPosRef.current || !canvasRef.current) return;
+    if (!isDrawingRef.current || !startPosRef.current || !canvasRef.current)
+      return;
     e.preventDefault();
 
     const coords = getEventCoordinates(e);
@@ -144,7 +147,7 @@ export const RedactPDFTool = () => {
 
     currentRectRef.current = { x, y, width, height };
 
-    const ctx = canvasRef.current.getContext('2d');
+    const ctx = canvasRef.current.getContext("2d");
     if (!ctx || !imageRef.current) return;
 
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
@@ -161,7 +164,11 @@ export const RedactPDFTool = () => {
   };
 
   const handleMouseUp = () => {
-    if (!isDrawingRef.current || !startPosRef.current || !currentRectRef.current) {
+    if (
+      !isDrawingRef.current ||
+      !startPosRef.current ||
+      !currentRectRef.current
+    ) {
       isDrawingRef.current = false;
       startPosRef.current = null;
       currentRectRef.current = null;
@@ -169,7 +176,7 @@ export const RedactPDFTool = () => {
     }
 
     const rect = currentRectRef.current;
-    
+
     if (rect.width > 5 && rect.height > 5) {
       addRedaction(rect);
     }
@@ -213,10 +220,11 @@ export const RedactPDFTool = () => {
   const currentRedactions = pageRedactions[currentPageNum] || [];
   const totalRedactions = Object.values(pageRedactions).reduce(
     (sum, redactions) => sum + redactions.length,
-    0
+    0,
   );
 
-  const canProcess = pdfFile !== null && !isProcessing && !isLoadingPDF && totalRedactions > 0;
+  const canProcess =
+    pdfFile !== null && !isProcessing && !isLoadingPDF && totalRedactions > 0;
   const canNavigate = pdfFile !== null && !isProcessing && !isLoadingPDF;
   const canDraw = pdfFile !== null && !isProcessing && !isLoadingPDF;
 
@@ -232,7 +240,8 @@ export const RedactPDFTool = () => {
 
       <h2 className="text-2xl font-bold text-foreground mb-4">Redact PDF</h2>
       <p className="mb-6 text-muted-foreground">
-        Permanently black out sensitive content from your PDFs. Draw rectangles over content you want to redact.
+        Permanently black out sensitive content from your PDFs. Draw rectangles
+        over content you want to redact.
       </p>
 
       {!pdfFile && (
@@ -277,20 +286,27 @@ export const RedactPDFTool = () => {
                 </h3>
                 <ul className="list-disc list-inside text-xs text-muted-foreground space-y-1">
                   <li>
-                    <strong className="text-foreground">Draw Rectangles:</strong>{' '}
-                    Click and drag on the page to draw redaction rectangles over sensitive content.
+                    <strong className="text-foreground">
+                      Draw Rectangles:
+                    </strong>{" "}
+                    Click and drag on the page to draw redaction rectangles over
+                    sensitive content.
                   </li>
                   <li>
-                    <strong className="text-foreground">Multiple Redactions:</strong>{' '}
+                    <strong className="text-foreground">
+                      Multiple Redactions:
+                    </strong>{" "}
                     You can draw multiple rectangles on each page.
                   </li>
                   <li>
-                    <strong className="text-foreground">Permanent:</strong>{' '}
-                    Redacted content is permanently blacked out and cannot be recovered.
+                    <strong className="text-foreground">Permanent:</strong>{" "}
+                    Redacted content is permanently blacked out and cannot be
+                    recovered.
                   </li>
                   <li>
-                    <strong className="text-foreground">Navigate Pages:</strong>{' '}
-                    Use the page navigation buttons to move between pages and add redactions to each page.
+                    <strong className="text-foreground">Navigate Pages:</strong>{" "}
+                    Use the page navigation buttons to move between pages and
+                    add redactions to each page.
                   </li>
                 </ul>
               </div>
@@ -324,7 +340,8 @@ export const RedactPDFTool = () => {
 
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>
-                {currentRedactions.length} redaction{currentRedactions.length === 1 ? '' : 's'} on this page
+                {currentRedactions.length} redaction
+                {currentRedactions.length === 1 ? "" : "s"} on this page
               </span>
               {currentRedactions.length > 0 && (
                 <Button
@@ -343,7 +360,7 @@ export const RedactPDFTool = () => {
           <div
             ref={containerRef}
             className="w-full relative overflow-hidden bg-background rounded-lg border border-border flex items-center justify-center"
-            style={{ minHeight: '500px' }}
+            style={{ minHeight: "500px" }}
           >
             {currentPageImageUrl ? (
               <canvas
@@ -356,7 +373,7 @@ export const RedactPDFTool = () => {
                 onTouchStart={canDraw ? handleTouchStart : undefined}
                 onTouchMove={canDraw ? handleTouchMove : undefined}
                 onTouchEnd={canDraw ? handleTouchEnd : undefined}
-                style={{ touchAction: 'none' }}
+                style={{ touchAction: "none" }}
               />
             ) : (
               <div className="p-8 text-muted-foreground">Loading page...</div>
@@ -376,7 +393,8 @@ export const RedactPDFTool = () => {
                       className="flex items-center justify-between p-2 bg-input rounded border border-border"
                     >
                       <span className="text-sm text-muted-foreground">
-                        Redaction {index + 1} ({Math.round(rect.width)} × {Math.round(rect.height)} px)
+                        Redaction {index + 1} ({Math.round(rect.width)} ×{" "}
+                        {Math.round(rect.height)} px)
                       </span>
                       <Button
                         variant="ghost"
@@ -439,4 +457,3 @@ export const RedactPDFTool = () => {
     </div>
   );
 };
-

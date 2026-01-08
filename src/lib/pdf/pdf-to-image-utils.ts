@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import JSZip from 'jszip';
-import { readFileAsArrayBuffer } from './file-utils';
-import { loadPDFWithPDFJSFromBuffer } from './pdfjs-loader';
+import JSZip from "jszip";
+import { readFileAsArrayBuffer } from "./file-utils";
+import { loadPDFWithPDFJSFromBuffer } from "./pdfjs-loader";
 
 type CanvasConverter = (
   canvas: HTMLCanvasElement,
@@ -17,14 +17,14 @@ export interface PdfToImageZipOptions {
   scale: number;
   fileExtension: string;
   converter: Converter;
-  converterType: 'canvas' | 'imagedata';
+  converterType: "canvas" | "imagedata";
   converterOptions?: number;
   onProgress?: (currentPage: number, totalPages: number) => void;
 }
 
 export const pdfToImageZip = async (
   pdfFile: File,
-  options: PdfToImageZipOptions
+  options: PdfToImageZipOptions,
 ): Promise<Blob> => {
   const {
     scale,
@@ -45,13 +45,13 @@ export const pdfToImageZip = async (
     const page = await pdfJsDoc.getPage(i);
     const viewport = page.getViewport({ scale });
 
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     canvas.width = viewport.width;
     canvas.height = viewport.height;
 
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext("2d");
     if (!context) {
-      throw new Error('Failed to get canvas context');
+      throw new Error("Failed to get canvas context");
     }
 
     await page.render({
@@ -62,21 +62,20 @@ export const pdfToImageZip = async (
 
     let fileData: Blob;
 
-    if (converterType === 'imagedata') {
+    if (converterType === "imagedata") {
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
       const arrayBuffer = (converter as ImageDataConverter)(imageData);
       fileData = new Blob([arrayBuffer], { type: `image/${fileExtension}` });
     } else {
       fileData = await (converter as CanvasConverter)(
         canvas,
-        ...(converterOptions !== undefined ? [converterOptions] : [])
+        ...(converterOptions !== undefined ? [converterOptions] : []),
       );
     }
 
     zip.file(`page_${i}.${fileExtension}`, fileData);
   }
 
-  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  const zipBlob = await zip.generateAsync({ type: "blob" });
   return zipBlob;
 };
-

@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useEffect, useRef } from 'react';
-import { useComparePDFs } from '../hooks/useComparePDFs';
-import { FileUploader } from '@/components/FileUploader';
-import { Button } from '@/components/ui/button';
-import { Slider } from '@/components/ui/slider';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
+import Link from "next/link";
+import { useEffect, useRef } from "react";
+import { useComparePDFs } from "../hooks/useComparePDFs";
+import { FileUploader } from "@/components/FileUploader";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import {
   ArrowLeft,
   ChevronLeft,
@@ -15,9 +15,9 @@ import {
   CheckCircle2,
   AlertCircle,
   X,
-} from 'lucide-react';
-import { Spinner } from '@/components/ui/spinner';
-import { cn } from '@/lib/utils';
+} from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
+import { cn } from "@/lib/utils";
 
 export const ComparePDFsTool = () => {
   const {
@@ -59,11 +59,14 @@ export const ComparePDFsTool = () => {
     if (!showViewer || !canvas1Ref.current || !canvas2Ref.current) return;
 
     const renderBothPages = async () => {
-      if (!wrapperRef.current || !panel1Ref.current || !panel2Ref.current) return;
+      if (!wrapperRef.current || !panel1Ref.current || !panel2Ref.current)
+        return;
       if (!canvas1Ref.current || !canvas2Ref.current) return;
 
-      const container1 = viewMode === 'overlay' ? wrapperRef.current : panel1Ref.current;
-      const container2 = viewMode === 'overlay' ? wrapperRef.current : panel2Ref.current;
+      const container1 =
+        viewMode === "overlay" ? wrapperRef.current : panel1Ref.current;
+      const container2 =
+        viewMode === "overlay" ? wrapperRef.current : panel2Ref.current;
 
       const page1 = Math.min(currentPage, pdfDoc1?.numPages || 1);
       const page2 = Math.min(currentPage, pdfDoc2?.numPages || 1);
@@ -78,17 +81,17 @@ export const ComparePDFsTool = () => {
   }, [showViewer, currentPage, pdfDoc1, pdfDoc2, viewMode, renderPage]);
 
   useEffect(() => {
-    if (canvas2Ref.current && viewMode === 'overlay') {
-      canvas2Ref.current.style.transition = '';
+    if (canvas2Ref.current && viewMode === "overlay") {
+      canvas2Ref.current.style.transition = "";
       canvas2Ref.current.style.opacity = String(opacity);
-    } else if (canvas2Ref.current && viewMode === 'side-by-side') {
-      canvas2Ref.current.style.transition = '';
-      canvas2Ref.current.style.opacity = '1';
+    } else if (canvas2Ref.current && viewMode === "side-by-side") {
+      canvas2Ref.current.style.transition = "";
+      canvas2Ref.current.style.opacity = "1";
     }
   }, [opacity, viewMode]);
 
   useEffect(() => {
-    if (!isSyncScroll || viewMode !== 'side-by-side') return;
+    if (!isSyncScroll || viewMode !== "side-by-side") return;
     if (!panel1Ref.current || !panel2Ref.current) return;
 
     const panel1 = panel1Ref.current;
@@ -114,20 +117,22 @@ export const ComparePDFsTool = () => {
       }
     };
 
-    panel1.addEventListener('scroll', handlePanel1Scroll);
-    panel2.addEventListener('scroll', handlePanel2Scroll);
+    panel1.addEventListener("scroll", handlePanel1Scroll);
+    panel2.addEventListener("scroll", handlePanel2Scroll);
 
     return () => {
-      panel1.removeEventListener('scroll', handlePanel1Scroll);
-      panel2.removeEventListener('scroll', handlePanel2Scroll);
+      panel1.removeEventListener("scroll", handlePanel1Scroll);
+      panel2.removeEventListener("scroll", handlePanel2Scroll);
     };
   }, [isSyncScroll, viewMode]);
 
   const handleFlicker = () => {
-    if (!canvas2Ref.current || viewMode !== 'overlay') return;
-    const currentOpacity = Number.parseFloat(canvas2Ref.current.style.opacity || String(opacity));
+    if (!canvas2Ref.current || viewMode !== "overlay") return;
+    const currentOpacity = Number.parseFloat(
+      canvas2Ref.current.style.opacity || String(opacity),
+    );
     const newOpacity = currentOpacity === 0 ? opacity : 0;
-    canvas2Ref.current.style.transition = 'opacity 150ms ease-in-out';
+    canvas2Ref.current.style.transition = "opacity 150ms ease-in-out";
     canvas2Ref.current.style.opacity = String(newOpacity);
   };
 
@@ -168,7 +173,9 @@ export const ComparePDFsTool = () => {
           {isLoading1 && (
             <div className="flex items-center gap-2 p-2 bg-input rounded-md mt-2">
               <Spinner size="sm" />
-              <span className="text-sm text-muted-foreground">Loading PDF...</span>
+              <span className="text-sm text-muted-foreground">
+                Loading PDF...
+              </span>
             </div>
           )}
           {error1 && (
@@ -214,7 +221,9 @@ export const ComparePDFsTool = () => {
           {isLoading2 && (
             <div className="flex items-center gap-2 p-2 bg-input rounded-md mt-2">
               <Spinner size="sm" />
-              <span className="text-sm text-muted-foreground">Loading PDF...</span>
+              <span className="text-sm text-muted-foreground">
+                Loading PDF...
+              </span>
             </div>
           )}
           {error2 && (
@@ -276,21 +285,23 @@ export const ComparePDFsTool = () => {
 
             <div className="bg-background p-1 rounded-md flex gap-1 border border-border">
               <Button
-                variant={viewMode === 'overlay' ? 'default' : 'ghost'}
+                variant={viewMode === "overlay" ? "default" : "ghost"}
                 size="sm"
-                onClick={() => setViewMode('overlay')}
+                onClick={() => setViewMode("overlay")}
                 className={cn(
-                  viewMode === 'overlay' && 'bg-primary text-primary-foreground'
+                  viewMode === "overlay" &&
+                    "bg-primary text-primary-foreground",
                 )}
               >
                 Overlay
               </Button>
               <Button
-                variant={viewMode === 'side-by-side' ? 'default' : 'ghost'}
+                variant={viewMode === "side-by-side" ? "default" : "ghost"}
                 size="sm"
-                onClick={() => setViewMode('side-by-side')}
+                onClick={() => setViewMode("side-by-side")}
                 className={cn(
-                  viewMode === 'side-by-side' && 'bg-primary text-primary-foreground'
+                  viewMode === "side-by-side" &&
+                    "bg-primary text-primary-foreground",
                 )}
               >
                 Side-by-Side
@@ -299,7 +310,7 @@ export const ComparePDFsTool = () => {
 
             <div className="h-6 w-px bg-border" />
 
-            {viewMode === 'overlay' && (
+            {viewMode === "overlay" && (
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
@@ -325,7 +336,7 @@ export const ComparePDFsTool = () => {
               </div>
             )}
 
-            {viewMode === 'side-by-side' && (
+            {viewMode === "side-by-side" && (
               <div className="flex items-center gap-2">
                 <Checkbox
                   id="sync-scroll-toggle"
@@ -347,46 +358,46 @@ export const ComparePDFsTool = () => {
           <div
             ref={wrapperRef}
             className={cn(
-              'border-2 border-border rounded-lg bg-background',
-              viewMode === 'overlay'
-                ? 'relative w-full h-[75vh] overflow-auto'
-                : 'flex gap-4 w-full'
+              "border-2 border-border rounded-lg bg-background",
+              viewMode === "overlay"
+                ? "relative w-full h-[75vh] overflow-auto"
+                : "flex gap-4 w-full",
             )}
           >
             <div
               ref={panel1Ref}
               className={cn(
-                viewMode === 'overlay'
-                  ? 'absolute top-0 left-0 w-full'
-                  : 'flex-1 min-w-0 overflow-auto h-[75vh] border-2 border-border rounded-lg'
+                viewMode === "overlay"
+                  ? "absolute top-0 left-0 w-full"
+                  : "flex-1 min-w-0 overflow-auto h-[75vh] border-2 border-border rounded-lg",
               )}
             >
               <canvas
                 ref={canvas1Ref}
                 className={cn(
-                  viewMode === 'overlay'
-                    ? 'absolute top-0 left-0 w-full h-auto'
-                    : 'w-full h-auto'
+                  viewMode === "overlay"
+                    ? "absolute top-0 left-0 w-full h-auto"
+                    : "w-full h-auto",
                 )}
               />
             </div>
             <div
               ref={panel2Ref}
               className={cn(
-                viewMode === 'overlay'
-                  ? 'absolute top-0 left-0 w-full'
-                  : 'flex-1 min-w-0 overflow-auto h-[75vh] border-2 border-border rounded-lg'
+                viewMode === "overlay"
+                  ? "absolute top-0 left-0 w-full"
+                  : "flex-1 min-w-0 overflow-auto h-[75vh] border-2 border-border rounded-lg",
               )}
             >
               <canvas
                 ref={canvas2Ref}
                 className={cn(
-                  viewMode === 'overlay'
-                    ? 'absolute top-0 left-0 w-full h-auto'
-                    : 'w-full h-auto'
+                  viewMode === "overlay"
+                    ? "absolute top-0 left-0 w-full h-auto"
+                    : "w-full h-auto",
                 )}
                 style={{
-                  opacity: viewMode === 'overlay' ? opacity : 1,
+                  opacity: viewMode === "overlay" ? opacity : 1,
                 }}
               />
             </div>
@@ -396,4 +407,3 @@ export const ComparePDFsTool = () => {
     </div>
   );
 };
-

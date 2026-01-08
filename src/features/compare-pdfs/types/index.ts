@@ -1,6 +1,6 @@
-import type { PDFDocumentProxy } from 'pdfjs-dist';
+import type { PDFDocumentProxy } from "pdfjs-dist";
 
-export type ViewMode = 'overlay' | 'side-by-side';
+export type ViewMode = "overlay" | "side-by-side";
 
 export interface UseComparePDFsReturn {
   pdfDoc1: PDFDocumentProxy | null;
@@ -33,7 +33,6 @@ export interface UseComparePDFsReturn {
     pdfDoc: PDFDocumentProxy | null,
     pageNum: number,
     canvas: HTMLCanvasElement,
-    container: HTMLElement
+    container: HTMLElement,
   ) => Promise<void>;
 }
-

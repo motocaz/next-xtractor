@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
-import { useRemoveBlankPages } from '../hooks/useRemoveBlankPages';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Card, CardContent } from '@/components/ui/card';
-import { Slider } from '@/components/ui/slider';
-import { Label } from '@/components/ui/label';
-import Image from 'next/image';
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useRemoveBlankPages } from "../hooks/useRemoveBlankPages";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Card, CardContent } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
+import { Label } from "@/components/ui/label";
+import Image from "next/image";
 
 export const RemoveBlankPagesTool = () => {
   const {
@@ -57,7 +57,8 @@ export const RemoveBlankPagesTool = () => {
       </h2>
       <p className="mb-6 text-muted-foreground">
         Automatically detect and remove blank or nearly blank pages from your
-        PDF. Adjust the sensitivity to control what is considered &quot;blank&quot;.
+        PDF. Adjust the sensitivity to control what is considered
+        &quot;blank&quot;.
       </p>
 
       <PDFUploadSection
@@ -81,7 +82,8 @@ export const RemoveBlankPagesTool = () => {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="sensitivity-slider">
-                      Sensitivity: <span className="font-semibold">{sensitivity}%</span>
+                      Sensitivity:{" "}
+                      <span className="font-semibold">{sensitivity}%</span>
                     </Label>
                     <span className="text-sm text-muted-foreground">
                       {sensitivity}%
@@ -97,8 +99,9 @@ export const RemoveBlankPagesTool = () => {
                     className="w-full"
                   />
                   <p className="text-xs text-muted-foreground">
-                    Higher sensitivity requires pages to be more &quot;blank&quot; to be
-                    removed. Lower values are more aggressive.
+                    Higher sensitivity requires pages to be more
+                    &quot;blank&quot; to be removed. Lower values are more
+                    aggressive.
                   </p>
                 </div>
               </CardContent>
@@ -179,9 +182,10 @@ export const RemoveBlankPagesTool = () => {
 
       <ProcessLoadingModal
         isProcessing={isProcessing || isAnalyzing}
-        loadingMessage={loadingMessage || (isAnalyzing ? 'Analyzing pages...' : null)}
+        loadingMessage={
+          loadingMessage || (isAnalyzing ? "Analyzing pages..." : null)
+        }
       />
     </div>
   );
 };
-

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { jpgToPdf } from '../lib/jpg-to-pdf-logic';
-import { handleImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
-import type { JpgFileInfo, UseJpgToPdfReturn } from '../types';
+import { useState, useCallback } from "react";
+import { jpgToPdf } from "../lib/jpg-to-pdf-logic";
+import { handleImageToPdfResult } from "@/lib/pdf/image-to-pdf-utils";
+import type { JpgFileInfo, UseJpgToPdfReturn } from "../types";
 
 export const useJpgToPdf = (): UseJpgToPdfReturn => {
   const [jpgFiles, setJpgFiles] = useState<JpgFileInfo[]>([]);
@@ -16,14 +16,14 @@ export const useJpgToPdf = (): UseJpgToPdfReturn => {
 
   const loadJpgFiles = useCallback(async (files: File[]) => {
     if (!files || files.length === 0) {
-      setError('Please select at least one JPG file.');
+      setError("Please select at least one JPG file.");
       return;
     }
 
     setIsLoading(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Validating JPG files...');
+    setLoadingMessage("Validating JPG files...");
 
     try {
       const validFiles: JpgFileInfo[] = [];
@@ -31,10 +31,10 @@ export const useJpgToPdf = (): UseJpgToPdfReturn => {
 
       for (const file of files) {
         const isJpg =
-          file.type === 'image/jpeg' ||
-          file.type === 'image/jpg' ||
-          file.name.toLowerCase().endsWith('.jpg') ||
-          file.name.toLowerCase().endsWith('.jpeg');
+          file.type === "image/jpeg" ||
+          file.type === "image/jpg" ||
+          file.name.toLowerCase().endsWith(".jpg") ||
+          file.name.toLowerCase().endsWith(".jpeg");
 
         if (!isJpg) {
           invalidFiles.push(file.name);
@@ -52,12 +52,14 @@ export const useJpgToPdf = (): UseJpgToPdfReturn => {
 
       if (invalidFiles.length > 0) {
         setError(
-          `The following files are not valid JPG images: ${invalidFiles.join(', ')}`
+          `The following files are not valid JPG images: ${invalidFiles.join(", ")}`,
         );
       }
 
       if (validFiles.length === 0) {
-        setError('No valid JPG files were found. Please select JPG image files.');
+        setError(
+          "No valid JPG files were found. Please select JPG image files.",
+        );
       } else {
         setJpgFiles((prev) => [...prev, ...validFiles]);
         if (validFiles.length > 0 && invalidFiles.length === 0) {
@@ -65,11 +67,11 @@ export const useJpgToPdf = (): UseJpgToPdfReturn => {
         }
       }
     } catch (err) {
-      console.error('Error loading JPG files:', err);
+      console.error("Error loading JPG files:", err);
       setError(
         err instanceof Error
           ? `Failed to load JPG files: ${err.message}`
-          : 'Failed to load JPG files. Please check your files.'
+          : "Failed to load JPG files. Please check your files.",
       );
     } finally {
       setIsLoading(false);
@@ -85,7 +87,7 @@ export const useJpgToPdf = (): UseJpgToPdfReturn => {
 
   const processJpgToPdf = useCallback(async () => {
     if (jpgFiles.length === 0) {
-      setError('Please upload at least one JPG file.');
+      setError("Please upload at least one JPG file.");
       return;
     }
 
@@ -93,7 +95,7 @@ export const useJpgToPdf = (): UseJpgToPdfReturn => {
     setError(null);
     setSuccess(null);
     setFailedFiles([]);
-    setLoadingMessage('Converting JPG to PDF...');
+    setLoadingMessage("Converting JPG to PDF...");
 
     try {
       const files = jpgFiles.map((fileInfo) => fileInfo.file);
@@ -101,7 +103,7 @@ export const useJpgToPdf = (): UseJpgToPdfReturn => {
 
       await handleImageToPdfResult({
         result,
-        firstFileName: jpgFiles[0]?.fileName || 'converted',
+        firstFileName: jpgFiles[0]?.fileName || "converted",
         extensionPattern: /\.(jpg|jpeg)$/i,
         stateSetters: {
           setFailedFiles,
@@ -109,11 +111,11 @@ export const useJpgToPdf = (): UseJpgToPdfReturn => {
         },
       });
     } catch (err) {
-      console.error('JPG to PDF conversion error:', err);
+      console.error("JPG to PDF conversion error:", err);
       setError(
         err instanceof Error
           ? `An error occurred while converting: ${err.message}`
-          : 'An error occurred while converting JPG to PDF. One of the files may be invalid.'
+          : "An error occurred while converting JPG to PDF. One of the files may be invalid.",
       );
     } finally {
       setIsProcessing(false);
@@ -145,4 +147,3 @@ export const useJpgToPdf = (): UseJpgToPdfReturn => {
     reset,
   };
 };
-

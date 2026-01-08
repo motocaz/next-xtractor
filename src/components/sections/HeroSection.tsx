@@ -11,7 +11,9 @@ export function HeroSection() {
           .
         </span>
       </h1>
-      <p className="text-lg text-muted-foreground mb-8">Fast, Secure and Professional.</p>
+      <p className="text-lg text-muted-foreground mb-8">
+        Fast, Secure and Professional.
+      </p>
       <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 mb-8">
         <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-card/50 border border-primary/30 text-primary/80 text-sm font-medium backdrop-blur-sm">
           <CheckCircle className="w-4 h-4" />
@@ -34,4 +36,3 @@ export function HeroSection() {
     </section>
   );
 }
-

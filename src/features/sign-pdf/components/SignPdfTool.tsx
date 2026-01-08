@@ -1,25 +1,26 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useSignPdf } from '../hooks/useSignPdf';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { ArrowLeft } from 'lucide-react';
-import { SignatureDrawTab } from './SignatureDrawTab';
-import { SignatureTypeTab } from './SignatureTypeTab';
-import { SignatureUploadTab } from './SignatureUploadTab';
-import { SignaturePDFViewer } from './SignaturePDFViewer';
-import { useRef } from 'react';
+import Link from "next/link";
+import { useSignPdf } from "../hooks/useSignPdf";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ArrowLeft } from "lucide-react";
+import { SignatureDrawTab } from "./SignatureDrawTab";
+import { SignatureTypeTab } from "./SignatureTypeTab";
+import { SignatureUploadTab } from "./SignatureUploadTab";
+import { SignaturePDFViewer } from "./SignaturePDFViewer";
+import { useRef } from "react";
 
 export const SignPdfTool = () => {
   const hook = useSignPdf();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const showSignatureEditor = hook.pdfDoc !== null && !hook.isLoadingPDF && !hook.pdfError;
+  const showSignatureEditor =
+    hook.pdfDoc !== null && !hook.isLoadingPDF && !hook.pdfError;
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-8">
@@ -33,7 +34,8 @@ export const SignPdfTool = () => {
 
       <h2 className="text-2xl font-bold text-foreground mb-4">Sign PDF</h2>
       <p className="mb-6 text-muted-foreground">
-        Create your signature, select it, then click on the document to place. You can drag to move placed signatures.
+        Create your signature, select it, then click on the document to place.
+        You can drag to move placed signatures.
       </p>
 
       <PDFUploadSection
@@ -86,7 +88,8 @@ export const SignPdfTool = () => {
                 <div className="flex flex-wrap gap-2 bg-input p-2 rounded-md min-h-[50px]">
                   {hook.savedSignatures.length === 0 ? (
                     <p className="text-xs text-muted-foreground text-center w-full">
-                      Your saved signatures will appear here. Click one to select it.
+                      Your saved signatures will appear here. Click one to
+                      select it.
                     </p>
                   ) : (
                     hook.savedSignatures.map((img, index) => (
@@ -96,12 +99,12 @@ export const SignPdfTool = () => {
                         tabIndex={0}
                         className={`p-1 bg-white rounded-md cursor-pointer border-2 h-20 w-24 flex items-center justify-center transition-colors relative overflow-hidden ${
                           hook.activeSignature?.index === index
-                            ? 'border-primary'
-                            : 'border-transparent hover:border-primary/50'
+                            ? "border-primary"
+                            : "border-transparent hover:border-primary/50"
                         }`}
                         onClick={() => hook.selectSignature(index)}
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
+                          if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
                             hook.selectSignature(index);
                           }
@@ -146,4 +149,3 @@ export const SignPdfTool = () => {
     </div>
   );
 };
-

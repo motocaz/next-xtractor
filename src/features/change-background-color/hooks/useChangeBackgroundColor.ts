@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { changeBackgroundColor } from '../lib/change-background-color-logic';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import type { UseChangeBackgroundColorReturn } from '../types';
+import { useState, useCallback } from "react";
+import { changeBackgroundColor } from "../lib/change-background-color-logic";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import type { UseChangeBackgroundColorReturn } from "../types";
 
 export const useChangeBackgroundColor = (): UseChangeBackgroundColorReturn => {
-  const [backgroundColor, setBackgroundColor] = useState<string>('#FFFFFF');
+  const [backgroundColor, setBackgroundColor] = useState<string>("#FFFFFF");
 
   const {
     isProcessing,
@@ -30,40 +30,48 @@ export const useChangeBackgroundColor = (): UseChangeBackgroundColorReturn => {
 
   const processBackgroundColor = useCallback(async () => {
     if (!pdfDoc) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     if (!backgroundColor || !/^#([A-Fa-f0-9]{6})$/.test(backgroundColor)) {
-      setError('Please select a valid background color.');
+      setError("Please select a valid background color.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Changing background color...');
+    setLoadingMessage("Changing background color...");
 
     try {
       const newPdf = await changeBackgroundColor(pdfDoc, backgroundColor);
       const pdfBytes = await newPdf.save();
       saveAndDownloadPDF(pdfBytes, pdfFile?.name);
-      setSuccess('Background color changed successfully!');
+      setSuccess("Background color changed successfully!");
     } catch (err) {
-      console.error('Error changing background color:', err);
+      console.error("Error changing background color:", err);
       setError(
         err instanceof Error
           ? `Failed to change background color: ${err.message}`
-          : 'Could not change the background color. Please check your inputs.'
+          : "Could not change the background color. Please check your inputs.",
       );
     } finally {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfDoc, backgroundColor, pdfFile, setIsProcessing, setError, setSuccess, setLoadingMessage]);
+  }, [
+    pdfDoc,
+    backgroundColor,
+    pdfFile,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+  ]);
 
   const reset = useCallback(() => {
-    setBackgroundColor('#FFFFFF');
+    setBackgroundColor("#FFFFFF");
     resetProcessing();
     resetPDF();
   }, [resetProcessing, resetPDF]);
@@ -85,4 +93,3 @@ export const useChangeBackgroundColor = (): UseChangeBackgroundColorReturn => {
     reset,
   };
 };
-

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { svgToPdf } from '../lib/svg-to-pdf-logic';
-import { handleImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
-import type { SvgFileInfo, UseSvgToPdfReturn } from '../types';
+import { useState, useCallback } from "react";
+import { svgToPdf } from "../lib/svg-to-pdf-logic";
+import { handleImageToPdfResult } from "@/lib/pdf/image-to-pdf-utils";
+import type { SvgFileInfo, UseSvgToPdfReturn } from "../types";
 
 export const useSvgToPdf = (): UseSvgToPdfReturn => {
   const [svgFiles, setSvgFiles] = useState<SvgFileInfo[]>([]);
@@ -16,14 +16,14 @@ export const useSvgToPdf = (): UseSvgToPdfReturn => {
 
   const loadSvgFiles = useCallback(async (files: File[]) => {
     if (!files || files.length === 0) {
-      setError('Please select at least one SVG file.');
+      setError("Please select at least one SVG file.");
       return;
     }
 
     setIsLoading(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Validating SVG files...');
+    setLoadingMessage("Validating SVG files...");
 
     try {
       const validFiles: SvgFileInfo[] = [];
@@ -31,8 +31,8 @@ export const useSvgToPdf = (): UseSvgToPdfReturn => {
 
       for (const file of files) {
         const isSvg =
-          file.type === 'image/svg+xml' ||
-          file.name.toLowerCase().endsWith('.svg');
+          file.type === "image/svg+xml" ||
+          file.name.toLowerCase().endsWith(".svg");
 
         if (!isSvg) {
           invalidFiles.push(file.name);
@@ -50,12 +50,14 @@ export const useSvgToPdf = (): UseSvgToPdfReturn => {
 
       if (invalidFiles.length > 0) {
         setError(
-          `The following files are not valid SVG images: ${invalidFiles.join(', ')}`
+          `The following files are not valid SVG images: ${invalidFiles.join(", ")}`,
         );
       }
 
       if (validFiles.length === 0) {
-        setError('No valid SVG files were found. Please select SVG image files.');
+        setError(
+          "No valid SVG files were found. Please select SVG image files.",
+        );
       } else {
         setSvgFiles((prev) => [...prev, ...validFiles]);
         if (validFiles.length > 0 && invalidFiles.length === 0) {
@@ -63,11 +65,11 @@ export const useSvgToPdf = (): UseSvgToPdfReturn => {
         }
       }
     } catch (err) {
-      console.error('Error loading SVG files:', err);
+      console.error("Error loading SVG files:", err);
       setError(
         err instanceof Error
           ? `Failed to load SVG files: ${err.message}`
-          : 'Failed to load SVG files. Please check your files.'
+          : "Failed to load SVG files. Please check your files.",
       );
     } finally {
       setIsLoading(false);
@@ -83,7 +85,7 @@ export const useSvgToPdf = (): UseSvgToPdfReturn => {
 
   const processSvgToPdf = useCallback(async () => {
     if (svgFiles.length === 0) {
-      setError('Please upload at least one SVG file.');
+      setError("Please upload at least one SVG file.");
       return;
     }
 
@@ -91,7 +93,7 @@ export const useSvgToPdf = (): UseSvgToPdfReturn => {
     setError(null);
     setSuccess(null);
     setFailedFiles([]);
-    setLoadingMessage('Converting SVG to PDF...');
+    setLoadingMessage("Converting SVG to PDF...");
 
     try {
       const files = svgFiles.map((fileInfo) => fileInfo.file);
@@ -99,7 +101,7 @@ export const useSvgToPdf = (): UseSvgToPdfReturn => {
 
       await handleImageToPdfResult({
         result,
-        firstFileName: svgFiles[0]?.fileName || 'converted',
+        firstFileName: svgFiles[0]?.fileName || "converted",
         extensionPattern: /\.(svg|SVG)$/i,
         stateSetters: {
           setFailedFiles,
@@ -107,11 +109,11 @@ export const useSvgToPdf = (): UseSvgToPdfReturn => {
         },
       });
     } catch (err) {
-      console.error('SVG to PDF conversion error:', err);
+      console.error("SVG to PDF conversion error:", err);
       setError(
         err instanceof Error
           ? `An error occurred while converting: ${err.message}`
-          : 'An error occurred while converting SVG to PDF. One of the files may be invalid.'
+          : "An error occurred while converting SVG to PDF. One of the files may be invalid.",
       );
     } finally {
       setIsProcessing(false);
@@ -143,4 +145,3 @@ export const useSvgToPdf = (): UseSvgToPdfReturn => {
     reset,
   };
 };
-

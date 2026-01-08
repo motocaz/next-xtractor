@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const ComparePDFsTool = dynamic(
   () =>
-    import('@/features/compare-pdfs').then((mod) => ({
+    import("@/features/compare-pdfs").then((mod) => ({
       default: mod.ComparePDFsTool,
     })),
   {
@@ -16,8 +16,7 @@ const ComparePDFsTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default ComparePDFsTool;
-

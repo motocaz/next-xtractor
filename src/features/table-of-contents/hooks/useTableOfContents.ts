@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { generateTableOfContents } from '../lib/table-of-contents-logic';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
+import { useState, useCallback } from "react";
+import { generateTableOfContents } from "../lib/table-of-contents-logic";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
 
 export interface UseTableOfContentsReturn {
   title: string;
@@ -15,7 +15,7 @@ export interface UseTableOfContentsReturn {
   error: string | null;
   success: string | null;
   pdfFile: File | null;
-  pdfDoc: ReturnType<typeof usePDFProcessor>['pdfDoc'];
+  pdfDoc: ReturnType<typeof usePDFProcessor>["pdfDoc"];
   isLoadingPDF: boolean;
   pdfError: string | null;
   totalPages: number;
@@ -29,7 +29,7 @@ export interface UseTableOfContentsReturn {
 }
 
 export const useTableOfContents = (): UseTableOfContentsReturn => {
-  const [title, setTitle] = useState<string>('Table of Contents');
+  const [title, setTitle] = useState<string>("Table of Contents");
   const [fontSize, setFontSize] = useState<number>(12);
   const [fontFamily, setFontFamily] = useState<number>(4);
   const [addBookmark, setAddBookmark] = useState<boolean>(true);
@@ -55,14 +55,14 @@ export const useTableOfContents = (): UseTableOfContentsReturn => {
 
   const generateTOC = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Generating table of contents...');
+    setLoadingMessage("Generating table of contents...");
 
     try {
       const pdfBytes = await generateTableOfContents(pdfFile, {
@@ -72,13 +72,13 @@ export const useTableOfContents = (): UseTableOfContentsReturn => {
         addBookmark,
       });
       saveAndDownloadPDF(pdfBytes, pdfFile.name);
-      setSuccess('Table of contents generated successfully! Download started.');
+      setSuccess("Table of contents generated successfully! Download started.");
     } catch (err) {
-      console.error('Error generating table of contents:', err);
+      console.error("Error generating table of contents:", err);
       setError(
         err instanceof Error
           ? `Failed to generate table of contents: ${err.message}`
-          : 'Could not generate table of contents. Please check that your PDF has bookmarks.'
+          : "Could not generate table of contents. Please check that your PDF has bookmarks.",
       );
     } finally {
       setIsProcessing(false);
@@ -97,7 +97,7 @@ export const useTableOfContents = (): UseTableOfContentsReturn => {
   ]);
 
   const reset = useCallback(() => {
-    setTitle('Table of Contents');
+    setTitle("Table of Contents");
     setFontSize(12);
     setFontFamily(4);
     setAddBookmark(true);
@@ -128,4 +128,3 @@ export const useTableOfContents = (): UseTableOfContentsReturn => {
     reset,
   };
 };
-

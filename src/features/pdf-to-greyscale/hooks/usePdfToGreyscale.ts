@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useCallback } from 'react';
-import { pdfToGreyscale } from '../lib/pdf-to-greyscale-logic';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import type { UsePdfToGreyscaleReturn } from '../types';
+import { useCallback } from "react";
+import { pdfToGreyscale } from "../lib/pdf-to-greyscale-logic";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import type { UsePdfToGreyscaleReturn } from "../types";
 
 export const usePdfToGreyscale = (): UsePdfToGreyscaleReturn => {
   const {
@@ -28,29 +28,29 @@ export const usePdfToGreyscale = (): UsePdfToGreyscaleReturn => {
 
   const processPdfToGreyscale = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Converting PDF to greyscale...');
+    setLoadingMessage("Converting PDF to greyscale...");
 
     try {
       const pdfBytes = await pdfToGreyscale(pdfFile, (current, total) => {
         setLoadingMessage(`Processing page ${current} of ${total}...`);
       });
 
-      setLoadingMessage('Preparing download...');
+      setLoadingMessage("Preparing download...");
       saveAndDownloadPDF(pdfBytes, pdfFile.name);
-      setSuccess('PDF converted to greyscale successfully!');
+      setSuccess("PDF converted to greyscale successfully!");
     } catch (err) {
-      console.error('Error converting to greyscale:', err);
+      console.error("Error converting to greyscale:", err);
       setError(
         err instanceof Error
           ? `Failed to convert to greyscale: ${err.message}`
-          : 'Could not convert PDF to greyscale. Please check your inputs.'
+          : "Could not convert PDF to greyscale. Please check your inputs.",
       );
     } finally {
       setIsProcessing(false);
@@ -78,4 +78,3 @@ export const usePdfToGreyscale = (): UsePdfToGreyscaleReturn => {
     reset,
   };
 };
-

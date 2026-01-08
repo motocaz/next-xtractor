@@ -1,3 +1,6 @@
-export { RemoveBlankPagesTool } from './components/RemoveBlankPagesTool';
-export type { UseRemoveBlankPagesReturn, AnalysisResult, PageAnalysisData } from './types';
-
+export { RemoveBlankPagesTool } from "./components/RemoveBlankPagesTool";
+export type {
+  UseRemoveBlankPagesReturn,
+  AnalysisResult,
+  PageAnalysisData,
+} from "./types";

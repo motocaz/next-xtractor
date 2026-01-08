@@ -36,7 +36,7 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem={true}
             storageKey="theme"
-            themes={['light', 'dark', 'system']}
+            themes={["light", "dark", "system"]}
           >
             <Navbar />
             <main className="min-h-screen">{children}</main>

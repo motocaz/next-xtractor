@@ -1,6 +1,10 @@
-export type CompressionLevel = 'balanced' | 'high-quality' | 'small-size' | 'extreme';
+export type CompressionLevel =
+  | "balanced"
+  | "high-quality"
+  | "small-size"
+  | "extreme";
 
-export type CompressionAlgorithm = 'vector' | 'photon' | 'automatic';
+export type CompressionAlgorithm = "vector" | "photon" | "automatic";
 
 export interface SmartCompressionSettings {
   quality: number;
@@ -12,7 +16,7 @@ export interface SmartCompressionSettings {
   scaleFactor?: number;
   minDimension?: number;
   smoothing?: boolean;
-  smoothingQuality?: 'low' | 'medium' | 'high';
+  smoothingQuality?: "low" | "medium" | "high";
   grayscale?: boolean;
   contrast?: number;
   brightness?: number;
@@ -40,7 +44,7 @@ export interface CompressionResult {
   savingsPercent: number;
 }
 
-import type { FileInfo } from '@/hooks/useFileInfoLoader';
+import type { FileInfo } from "@/hooks/useFileInfoLoader";
 
 export type PDFFileInfo = FileInfo;
 
@@ -66,4 +70,3 @@ export interface UseCompressPDFReturn {
   processCompression: () => Promise<void>;
   reset: () => void;
 }
-

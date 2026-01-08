@@ -96,14 +96,14 @@ export const useImageToPdf = (): UseImageToPdfReturn => {
       if (invalidFiles.length > 0) {
         setError(
           `The following files are not valid image files: ${invalidFiles.join(
-            ", "
-          )}`
+            ", ",
+          )}`,
         );
       }
 
       if (validFiles.length === 0) {
         setError(
-          "No valid image files were found. Please select image files (JPG, PNG, WebP, BMP, TIFF, SVG, or HEIC)."
+          "No valid image files were found. Please select image files (JPG, PNG, WebP, BMP, TIFF, SVG, or HEIC).",
         );
       } else {
         setImageFiles((prev) => [...prev, ...validFiles]);
@@ -116,7 +116,7 @@ export const useImageToPdf = (): UseImageToPdfReturn => {
       setError(
         err instanceof Error
           ? `Failed to load image files: ${err.message}`
-          : "Failed to load image files. Please check your files."
+          : "Failed to load image files. Please check your files.",
       );
     } finally {
       setIsLoading(false);
@@ -180,7 +180,7 @@ export const useImageToPdf = (): UseImageToPdfReturn => {
       const baseName =
         firstFileName.replace(
           /\.(jpg|jpeg|png|gif|bmp|webp|tiff|tif|svg|heic|heif)$/i,
-          ""
+          "",
         ) || "converted";
 
       saveAndDownloadPDF(pdfBytes, baseName);
@@ -199,7 +199,7 @@ export const useImageToPdf = (): UseImageToPdfReturn => {
       setError(
         err instanceof Error
           ? `An error occurred while converting: ${err.message}`
-          : "An error occurred while converting images to PDF. One of the files may be invalid."
+          : "An error occurred while converting images to PDF. One of the files may be invalid.",
       );
     } finally {
       setIsProcessing(false);

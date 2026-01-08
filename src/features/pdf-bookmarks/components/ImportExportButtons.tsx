@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Upload, Download, ChevronDown, FileText, Braces } from 'lucide-react';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Upload, Download, ChevronDown, FileText, Braces } from "lucide-react";
 
 interface ImportExportButtonsProps {
   onImportCSV: (file: File) => Promise<void>;
@@ -23,16 +23,16 @@ export const ImportExportButtons = ({
   const [exportDropdownOpen, setExportDropdownOpen] = useState(false);
 
   const handleImportCSV = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.csv';
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".csv";
     input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
         try {
           await onImportCSV(file);
         } catch (err) {
-          onError(err instanceof Error ? err : new Error('Unknown error'));
+          onError(err instanceof Error ? err : new Error("Unknown error"));
         }
       }
     };
@@ -41,16 +41,16 @@ export const ImportExportButtons = ({
   };
 
   const handleImportJSON = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
     input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
         try {
           await onImportJSON(file);
         } catch (err) {
-          onError(err instanceof Error ? err : new Error('Unknown error'));
+          onError(err instanceof Error ? err : new Error("Unknown error"));
         }
       }
     };
@@ -63,7 +63,7 @@ export const ImportExportButtons = ({
       onExportCSV();
       setExportDropdownOpen(false);
     } catch (err) {
-      onError(err instanceof Error ? err : new Error('Unknown error'));
+      onError(err instanceof Error ? err : new Error("Unknown error"));
       setExportDropdownOpen(false);
     }
   };
@@ -73,7 +73,7 @@ export const ImportExportButtons = ({
       onExportJSON();
       setExportDropdownOpen(false);
     } catch (err) {
-      onError(err instanceof Error ? err : new Error('Unknown error'));
+      onError(err instanceof Error ? err : new Error("Unknown error"));
       setExportDropdownOpen(false);
     }
   };
@@ -152,4 +152,3 @@ export const ImportExportButtons = ({
     </div>
   );
 };
-

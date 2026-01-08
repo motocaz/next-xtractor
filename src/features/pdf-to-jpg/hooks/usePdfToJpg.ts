@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
-import { pdfToJpg } from '../lib/pdf-to-jpg-logic';
-import { downloadFile } from '@/lib/pdf/file-utils';
-import type { UsePdfToJpgReturn } from '../types';
+import { useState, useCallback } from "react";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
+import { pdfToJpg } from "../lib/pdf-to-jpg-logic";
+import { downloadFile } from "@/lib/pdf/file-utils";
+import type { UsePdfToJpgReturn } from "../types";
 
 export const usePdfToJpg = (): UsePdfToJpgReturn => {
   const [quality, setQuality] = useState<number>(0.9);
-  
+
   const {
     pdfFile,
     pdfDoc,
@@ -30,40 +30,56 @@ export const usePdfToJpg = (): UsePdfToJpgReturn => {
 
   const processPdfToJpg = useCallback(async () => {
     if (!pdfFile) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Converting PDF to JPG images...');
+    setLoadingMessage("Converting PDF to JPG images...");
 
     try {
-      const zipBlob = await pdfToJpg(pdfFile, quality, (currentPage, totalPages) => {
-        setLoadingMessage(`Processing page ${currentPage} of ${totalPages}...`);
-      });
+      const zipBlob = await pdfToJpg(
+        pdfFile,
+        quality,
+        (currentPage, totalPages) => {
+          setLoadingMessage(
+            `Processing page ${currentPage} of ${totalPages}...`,
+          );
+        },
+      );
 
-      setLoadingMessage('Compressing files into a ZIP...');
+      setLoadingMessage("Compressing files into a ZIP...");
 
-      const baseName = pdfFile.name.replace(/\.pdf$/i, '') || 'converted_jpg_images';
+      const baseName =
+        pdfFile.name.replace(/\.pdf$/i, "") || "converted_jpg_images";
       const timestamp = new Date().toISOString();
       const filename = `${timestamp}_${baseName}.zip`;
 
       downloadFile(zipBlob, undefined, filename);
-      setSuccess('PDF converted to JPG images successfully! ZIP file downloaded.');
+      setSuccess(
+        "PDF converted to JPG images successfully! ZIP file downloaded.",
+      );
     } catch (err) {
-      console.error('PDF to JPG conversion error:', err);
+      console.error("PDF to JPG conversion error:", err);
       setError(
         err instanceof Error
           ? `Failed to convert PDF to JPG: ${err.message}`
-          : 'Failed to convert PDF to JPG. The file might be corrupted.'
+          : "Failed to convert PDF to JPG. The file might be corrupted.",
       );
     } finally {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfFile, quality, setIsProcessing, setLoadingMessage, setError, setSuccess]);
+  }, [
+    pdfFile,
+    quality,
+    setIsProcessing,
+    setLoadingMessage,
+    setError,
+    setSuccess,
+  ]);
 
   const reset = useCallback(() => {
     setQuality(0.9);
@@ -88,4 +104,3 @@ export const usePdfToJpg = (): UsePdfToJpgReturn => {
     reset,
   };
 };
-

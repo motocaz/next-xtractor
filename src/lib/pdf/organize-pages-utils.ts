@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import type { PDFDocument } from 'pdf-lib';
-import { PDFDocument as PDFLibDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
+import { PDFDocument as PDFLibDocument } from "pdf-lib";
 
 export interface PageThumbnailData {
   id: string;
@@ -15,10 +15,10 @@ export const buildPageOrder = (pages: PageThumbnailData[]): number[] => {
 
 export const processOrganizedPages = async (
   pdfDoc: PDFDocument,
-  pageIndices: number[]
+  pageIndices: number[],
 ): Promise<Uint8Array> => {
   if (!pageIndices || pageIndices.length === 0) {
-    throw new Error('No pages to process.');
+    throw new Error("No pages to process.");
   }
 
   const totalPages = pdfDoc.getPageCount();
@@ -36,4 +36,3 @@ export const processOrganizedPages = async (
   const newPdfBytes = await newPdf.save();
   return newPdfBytes;
 };
-

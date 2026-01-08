@@ -1,4 +1,4 @@
-globalThis.importScripts('/coherentpdf.browser.min.js');
+globalThis.importScripts("/coherentpdf.browser.min.js");
 
 function convertPDFsToJSONInWorker(fileBuffers, fileNames) {
   try {
@@ -9,7 +9,7 @@ function convertPDFsToJSONInWorker(fileBuffers, fileNames) {
       const buffer = fileBuffers[i];
       const fileName = fileNames[i];
       const uint8Array = new Uint8Array(buffer);
-      const pdf = coherentpdf.fromMemory(uint8Array, '');
+      const pdf = coherentpdf.fromMemory(uint8Array, "");
 
       const jsonData = coherentpdf.outputJSONMemory(true, false, false, pdf);
 
@@ -25,25 +25,24 @@ function convertPDFsToJSONInWorker(fileBuffers, fileNames) {
 
     globalThis.postMessage(
       {
-        status: 'success',
+        status: "success",
         jsonFiles: jsonFiles,
       },
-      transferBuffers
+      transferBuffers,
     );
   } catch (error) {
     globalThis.postMessage({
-      status: 'error',
+      status: "error",
       message:
         error instanceof Error
           ? error.message
-          : 'Unknown error during PDF to JSON conversion.',
+          : "Unknown error during PDF to JSON conversion.",
     });
   }
 }
 
 globalThis.onmessage = (e) => {
-  if (e.data.command === 'convert') {
+  if (e.data.command === "convert") {
     convertPDFsToJSONInWorker(e.data.fileBuffers, e.data.fileNames);
   }
 };
-

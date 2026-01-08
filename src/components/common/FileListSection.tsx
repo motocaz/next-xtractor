@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { FileCard } from './FileCard';
+import { FileCard } from "./FileCard";
 
 export interface FileListSectionProps {
   title: string;
@@ -43,4 +43,3 @@ export const FileListSection = ({
     </div>
   );
 };
-

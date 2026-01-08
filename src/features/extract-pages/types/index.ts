@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface UseExtractPagesReturn {
   pagesToExtract: string;
@@ -17,4 +17,3 @@ export interface UseExtractPagesReturn {
   extractPages: () => Promise<void>;
   reset: () => void;
 }
-

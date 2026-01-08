@@ -1,16 +1,19 @@
-'use client';
+"use client";
 
-import { useRef, useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { setupDrawingCanvas } from '../lib/signature-canvas';
+import { useRef, useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { setupDrawingCanvas } from "../lib/signature-canvas";
 
 interface SignatureDrawTabProps {
   onSave: (imageDataUrl: string) => void;
   disabled?: boolean;
 }
 
-export const SignatureDrawTab = ({ onSave, disabled }: SignatureDrawTabProps) => {
+export const SignatureDrawTab = ({
+  onSave,
+  disabled,
+}: SignatureDrawTabProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const colorPickerRef = useRef<HTMLInputElement>(null);
   const [, setIsDrawing] = useState(false);
@@ -21,11 +24,11 @@ export const SignatureDrawTab = ({ onSave, disabled }: SignatureDrawTabProps) =>
 
     const cleanup = setupDrawingCanvas(
       canvasRef.current,
-      canvasRef.current.getContext('2d')!,
+      canvasRef.current.getContext("2d")!,
       colorPickerRef.current,
       setIsDrawing,
       () => {},
-      () => {}
+      () => {},
     );
 
     cleanupRef.current = cleanup;
@@ -39,7 +42,7 @@ export const SignatureDrawTab = ({ onSave, disabled }: SignatureDrawTabProps) =>
 
   const handleClear = () => {
     if (!canvasRef.current) return;
-    const context = canvasRef.current.getContext('2d');
+    const context = canvasRef.current.getContext("2d");
     if (!context) return;
     context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
   };
@@ -93,4 +96,3 @@ export const SignatureDrawTab = ({ onSave, disabled }: SignatureDrawTabProps) =>
     </div>
   );
 };
-

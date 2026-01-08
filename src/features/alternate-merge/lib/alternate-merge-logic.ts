@@ -2,7 +2,7 @@ import { PDFDocument } from "pdf-lib";
 import type { PDFDocument as PDFLibDocument } from "pdf-lib";
 
 export const alternateMergePDFs = async (
-  pdfDocs: PDFLibDocument[]
+  pdfDocs: PDFLibDocument[],
 ): Promise<PDFDocument> => {
   if (!pdfDocs || pdfDocs.length === 0) {
     throw new Error("At least one PDF document is required for merging.");

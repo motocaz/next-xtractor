@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { PDFUploadSection } from './PDFUploadSection';
-import { ProcessButton } from './ProcessButton';
-import { ProcessMessages } from './ProcessMessages';
-import { ProcessLoadingModal } from './ProcessLoadingModal';
-import { ArrowLeft } from 'lucide-react';
+import Link from "next/link";
+import { PDFUploadSection } from "./PDFUploadSection";
+import { ProcessButton } from "./ProcessButton";
+import { ProcessMessages } from "./ProcessMessages";
+import { ProcessLoadingModal } from "./ProcessLoadingModal";
+import { ArrowLeft } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -14,17 +14,17 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   SortableContext,
   sortableKeyboardCoordinates,
   rectSortingStrategy,
-} from '@dnd-kit/sortable';
-import { PageThumbnail } from './PageThumbnail';
+} from "@dnd-kit/sortable";
+import { PageThumbnail } from "./PageThumbnail";
 import type {
   UsePageOrganizerReturn,
   UsePageOrganizerWithDuplicateReturn,
-} from '@/types/pdf-organize';
+} from "@/types/pdf-organize";
 
 interface PageOrganizerToolProps {
   title: string;
@@ -60,14 +60,14 @@ export const PageOrganizerTool = ({
     reset,
   } = hookReturn;
 
-  const hasDuplicate = 'duplicatePage' in hookReturn;
+  const hasDuplicate = "duplicatePage" in hookReturn;
   const duplicatePage = hasDuplicate ? hookReturn.duplicatePage : undefined;
 
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -79,10 +79,13 @@ export const PageOrganizerTool = ({
   };
 
   const pageIds = pages.map((page) => page.id);
-  const showThumbnails = pdfDoc !== null && !isLoadingPDF && !pdfError && pages.length > 0;
+  const showThumbnails =
+    pdfDoc !== null && !isLoadingPDF && !pdfError && pages.length > 0;
 
   const getThumbnailUrl = (originalPageIndex: number): string | undefined => {
-    const thumbnail = thumbnails.find((t) => t.pageNum === originalPageIndex + 1);
+    const thumbnail = thumbnails.find(
+      (t) => t.pageNum === originalPageIndex + 1,
+    );
     return thumbnail?.imageUrl;
   };
 
@@ -112,7 +115,7 @@ export const PageOrganizerTool = ({
       {isLoadingThumbnails && (
         <div className="mt-6 p-4 bg-input rounded-lg">
           <p className="text-sm text-muted-foreground">
-            {loadingMessage || 'Rendering page thumbnails...'}
+            {loadingMessage || "Rendering page thumbnails..."}
           </p>
         </div>
       )}
@@ -140,7 +143,9 @@ export const PageOrganizerTool = ({
                     thumbnailUrl={getThumbnailUrl(page.originalPageIndex)}
                     onDelete={() => deletePage(page.id)}
                     canDelete={pages.length > 1}
-                    onDuplicate={duplicatePage ? () => duplicatePage(page.id) : undefined}
+                    onDuplicate={
+                      duplicatePage ? () => duplicatePage(page.id) : undefined
+                    }
                   />
                 ))}
               </div>
@@ -161,8 +166,10 @@ export const PageOrganizerTool = ({
         </div>
       )}
 
-      <ProcessLoadingModal isProcessing={isProcessing} loadingMessage={loadingMessage} />
+      <ProcessLoadingModal
+        isProcessing={isProcessing}
+        loadingMessage={loadingMessage}
+      />
     </div>
   );
 };
-

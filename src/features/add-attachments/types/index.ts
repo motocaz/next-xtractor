@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface AttachmentFile {
   file: File;
@@ -15,5 +15,3 @@ export interface AddAttachmentsState {
   error: string | null;
   success: string | null;
 }
-
-

@@ -1,9 +1,11 @@
-export type SplitType = 'vertical' | 'horizontal';
+export type SplitType = "vertical" | "horizontal";
 
 export interface UseSplitInHalfReturn {
   splitType: SplitType;
   pdfFile: File | null;
-  pdfDoc: ReturnType<typeof import('@/hooks/usePDFProcessor').usePDFProcessor>['pdfDoc'];
+  pdfDoc: ReturnType<
+    typeof import("@/hooks/usePDFProcessor").usePDFProcessor
+  >["pdfDoc"];
   isProcessing: boolean;
   loadingMessage: string | null;
   error: string | null;
@@ -17,4 +19,3 @@ export interface UseSplitInHalfReturn {
   processSplit: () => Promise<void>;
   reset: () => void;
 }
-

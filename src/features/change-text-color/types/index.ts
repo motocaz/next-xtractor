@@ -17,4 +17,3 @@ export interface UseChangeTextColorReturn {
   processTextColor: () => Promise<void>;
   reset: () => void;
 }
-

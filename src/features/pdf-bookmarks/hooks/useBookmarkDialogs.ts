@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export interface MessageDialogState {
   open: boolean;
-  type: 'success' | 'error' | 'info';
+  type: "success" | "error" | "info";
   title: string;
   message: string;
 }
@@ -14,23 +14,23 @@ export interface ConfirmDialogState {
   title: string;
   message: string;
   onConfirm: () => void;
-  variant?: 'default' | 'destructive';
+  variant?: "default" | "destructive";
 }
 
 export const useBookmarkDialogs = () => {
   const [messageDialog, setMessageDialog] = useState<MessageDialogState>({
     open: false,
-    type: 'info',
-    title: '',
-    message: '',
+    type: "info",
+    title: "",
+    message: "",
   });
 
   const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState>({
     open: false,
-    title: '',
-    message: '',
+    title: "",
+    message: "",
     onConfirm: () => {},
-    variant: 'default',
+    variant: "default",
   });
 
   return {
@@ -40,4 +40,3 @@ export const useBookmarkDialogs = () => {
     setConfirmDialog,
   };
 };
-

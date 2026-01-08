@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
-import { useRemoveRestrictions } from '../hooks/useRemoveRestrictions';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useRemoveRestrictions } from "../hooks/useRemoveRestrictions";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const RemoveRestrictionsTool = () => {
   const {
@@ -67,11 +67,14 @@ export const RemoveRestrictionsTool = () => {
                 This operation will:
               </p>
               <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1 ml-2">
-                <li>Remove all permission restrictions (printing, copying, editing)</li>
+                <li>
+                  Remove all permission restrictions (printing, copying,
+                  editing)
+                </li>
                 <li>Remove encryption even if the file is encrypted</li>
                 <li>
-                  Remove security restrictions associated with digitally signed PDF
-                  files (will make signature invalid)
+                  Remove security restrictions associated with digitally signed
+                  PDF files (will make signature invalid)
                 </li>
                 <li>Create a fully editable, unrestricted PDF</li>
               </ul>
@@ -106,30 +109,32 @@ export const RemoveRestrictionsTool = () => {
               </p>
               <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1 ml-2">
                 <li>
-                  Removing restrictions from PDFs you own or have permission to modify
+                  Removing restrictions from PDFs you own or have permission to
+                  modify
                 </li>
                 <li>
-                  Recovering access to a PDF when you legitimately forgot the password
+                  Recovering access to a PDF when you legitimately forgot the
+                  password
                 </li>
                 <li>Accessing content you legally purchased or created</li>
                 <li>Editing documents for authorized business purposes</li>
                 <li>
-                  Opening documents for legitimate archival, compliance, or recovery
-                  workflows
+                  Opening documents for legitimate archival, compliance, or
+                  recovery workflows
                 </li>
                 <li className="font-semibold">
-                  Limitations: this tool can only remove restrictions from weakly
-                  protected PDFs or PDFs that do not have an owner password set. It
-                  cannot remove or bypass properly applied AES‑256 (256‑bit)
-                  encryption.
+                  Limitations: this tool can only remove restrictions from
+                  weakly protected PDFs or PDFs that do not have an owner
+                  password set. It cannot remove or bypass properly applied
+                  AES‑256 (256‑bit) encryption.
                 </li>
               </ul>
               <p className="text-sm text-muted-foreground mt-3 font-semibold">
-                Using this tool to bypass copyright protections, violate intellectual
-                property rights, or access documents without authorization may be
-                illegal in your jurisdiction. We are not liable for any misuse of this
-                tool — if you&apos;re unsure, consult legal counsel or the document
-                owner before proceeding.
+                Using this tool to bypass copyright protections, violate
+                intellectual property rights, or access documents without
+                authorization may be illegal in your jurisdiction. We are not
+                liable for any misuse of this tool — if you&apos;re unsure,
+                consult legal counsel or the document owner before proceeding.
               </p>
             </CardContent>
           </Card>
@@ -153,4 +158,3 @@ export const RemoveRestrictionsTool = () => {
     </div>
   );
 };
-

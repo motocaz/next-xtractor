@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument } from "pdf-lib";
 import {
   convertImageToPngBytes,
   addImageAsPage,
   createImageToPdfResult,
   type ImageToPdfResult,
-} from '@/lib/pdf/image-to-pdf-utils';
+} from "@/lib/pdf/image-to-pdf-utils";
 
 export interface SvgToPdfResult {
-  pdfDoc: ImageToPdfResult['pdfDoc'];
+  pdfDoc: ImageToPdfResult["pdfDoc"];
   successCount: number;
   failedFiles: string[];
 }
 
 export const svgToPdf = async (files: File[]): Promise<SvgToPdfResult> => {
   if (files.length === 0) {
-    throw new Error('Please select at least one SVG file.');
+    throw new Error("Please select at least one SVG file.");
   }
 
   const pdfDoc = await PDFDocument.create();
@@ -35,4 +35,3 @@ export const svgToPdf = async (files: File[]): Promise<SvgToPdfResult> => {
 
   return createImageToPdfResult(pdfDoc, failedFiles);
 };
-

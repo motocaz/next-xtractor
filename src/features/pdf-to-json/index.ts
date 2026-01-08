@@ -1,5 +1,5 @@
-export { PdfToJsonTool } from './components/PdfToJsonTool';
-export { usePdfToJson } from './hooks/usePdfToJson';
+export { PdfToJsonTool } from "./components/PdfToJsonTool";
+export { usePdfToJson } from "./hooks/usePdfToJson";
 export type {
   PdfFileInfo,
   JsonFileData,
@@ -8,5 +8,4 @@ export type {
   PdfToJsonSuccessResponse,
   PdfToJsonErrorResponse,
   UsePdfToJsonReturn,
-} from './types';
-
+} from "./types";

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 export interface FileInfo {
   id: string;
@@ -32,16 +32,16 @@ export interface UseFileInfoLoaderReturn {
 }
 
 const DEFAULT_ERROR_MESSAGES = {
-  noFiles: 'Please select at least one file.',
-  noValidFiles: 'No valid files were found.',
+  noFiles: "Please select at least one file.",
+  noValidFiles: "No valid files were found.",
   invalidFiles: (fileNames: string[]) =>
-    `The following files are not valid: ${fileNames.join(', ')}`,
+    `The following files are not valid: ${fileNames.join(", ")}`,
   loadFailed: (fileName: string) =>
     `Failed to load ${fileName}. Please check your file.`,
 };
 
 export const useFileInfoLoader = (
-  options: UseFileInfoLoaderOptions = {}
+  options: UseFileInfoLoaderOptions = {},
 ): UseFileInfoLoaderReturn => {
   const {
     acceptMimeTypes = [],
@@ -70,11 +70,13 @@ export const useFileInfoLoader = (
       const fileNameLower = file.name.toLowerCase();
       const matchesExtension =
         acceptExtensions.length === 0 ||
-        acceptExtensions.some((ext) => fileNameLower.endsWith(ext.toLowerCase()));
+        acceptExtensions.some((ext) =>
+          fileNameLower.endsWith(ext.toLowerCase()),
+        );
 
       return matchesMimeType || matchesExtension;
     },
-    [acceptMimeTypes, acceptExtensions]
+    [acceptMimeTypes, acceptExtensions],
   );
 
   const loadFiles = useCallback(
@@ -87,7 +89,7 @@ export const useFileInfoLoader = (
       setIsLoading(true);
       setError(null);
       setSuccess(null);
-      setLoadingMessage('Validating files...');
+      setLoadingMessage("Validating files...");
 
       try {
         const validFiles: FileInfo[] = [];
@@ -121,18 +123,18 @@ export const useFileInfoLoader = (
           }
         }
       } catch (err) {
-        console.error('Error loading files:', err);
+        console.error("Error loading files:", err);
         setError(
           err instanceof Error
             ? `Failed to load files: ${err.message}`
-            : 'Failed to load files. Please check your files.'
+            : "Failed to load files. Please check your files.",
         );
       } finally {
         setIsLoading(false);
         setLoadingMessage(null);
       }
     },
-    [validateFile, messages]
+    [validateFile, messages],
   );
 
   const removeFile = useCallback((id: string) => {
@@ -160,4 +162,3 @@ export const useFileInfoLoader = (
     reset,
   };
 };
-

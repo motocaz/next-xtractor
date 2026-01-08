@@ -10,12 +10,11 @@ export default function PrivacyPage() {
           your data.
         </p>
         <p className="text-muted-foreground mb-4">
-          Since all processing happens locally in your browser, we never collect,
-          store, or transmit your files. Your documents remain completely private.
+          Since all processing happens locally in your browser, we never
+          collect, store, or transmit your files. Your documents remain
+          completely private.
         </p>
       </div>
     </div>
   );
 }
-
-

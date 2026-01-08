@@ -15,14 +15,16 @@ export const parsePdfDate = (pdfDate: string | null | undefined): string => {
     const minute = pdfDate.substring(12, 14);
     const second = pdfDate.substring(14, 16);
     return new Date(
-      `${year}-${month}-${day}T${hour}:${minute}:${second}Z`
+      `${year}-${month}-${day}T${hour}:${minute}:${second}Z`,
     ).toLocaleString();
   } catch {
     return pdfDate;
   }
 };
 
-export const formatIsoDate = (isoDateString: string | null | undefined): string => {
+export const formatIsoDate = (
+  isoDateString: string | null | undefined,
+): string => {
   if (!isoDateString || typeof isoDateString !== "string") {
     return isoDateString || "";
   }
@@ -45,34 +47,29 @@ export interface XmpMetadataNode {
   isHeader: boolean;
 }
 
-export const parseXmpMetadata = (rawXmpString: string | null): XmpMetadataNode[] => {
+export const parseXmpMetadata = (
+  rawXmpString: string | null,
+): XmpMetadataNode[] => {
   if (!rawXmpString) {
     return [];
   }
 
   const nodes: XmpMetadataNode[] = [];
-  const xmpDateKeys = [
-    "xap:CreateDate",
-    "xap:ModifyDate",
-    "xap:MetadataDate",
-  ];
+  const xmpDateKeys = ["xap:CreateDate", "xap:ModifyDate", "xap:MetadataDate"];
 
   try {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(rawXmpString, "application/xml");
 
-    const appendXmpNodes = (
-      xmlNode: Element,
-      indentLevel: number
-    ): void => {
+    const appendXmpNodes = (xmlNode: Element, indentLevel: number): void => {
       const childNodes = Array.from(xmlNode.children);
 
       for (const child of childNodes) {
-        if (child.nodeType !== 1) continue; 
+        if (child.nodeType !== 1) continue;
 
         let key = child.tagName;
         const elementChildren = Array.from(child.children).filter(
-          (c) => c.nodeType === 1
+          (c) => c.nodeType === 1,
         );
 
         if (key === "rdf:li") {

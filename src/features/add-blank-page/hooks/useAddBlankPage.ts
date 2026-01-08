@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { addBlankPages } from '../lib/add-blank-page-logic';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { usePDFProcessor } from '@/hooks/usePDFProcessor';
+import { useState, useCallback } from "react";
+import { addBlankPages } from "../lib/add-blank-page-logic";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import { usePDFProcessor } from "@/hooks/usePDFProcessor";
 
 export interface UseAddBlankPageReturn {
   pageNumber: string;
@@ -13,7 +13,7 @@ export interface UseAddBlankPageReturn {
   error: string | null;
   success: string | null;
   pdfFile: File | null;
-  pdfDoc: ReturnType<typeof usePDFProcessor>['pdfDoc'];
+  pdfDoc: ReturnType<typeof usePDFProcessor>["pdfDoc"];
   isLoadingPDF: boolean;
   pdfError: string | null;
   totalPages: number;
@@ -26,8 +26,8 @@ export interface UseAddBlankPageReturn {
 }
 
 export const useAddBlankPage = (): UseAddBlankPageReturn => {
-  const [pageNumber, setPageNumber] = useState<string>('');
-  const [pageCount, setPageCount] = useState<string>('1');
+  const [pageNumber, setPageNumber] = useState<string>("");
+  const [pageCount, setPageCount] = useState<string>("1");
 
   const {
     isProcessing,
@@ -50,37 +50,37 @@ export const useAddBlankPage = (): UseAddBlankPageReturn => {
 
   const processBlankPages = useCallback(async () => {
     if (!pdfDoc) {
-      setError('Please upload a PDF file first.');
+      setError("Please upload a PDF file first.");
       return;
     }
 
-    if (pageCount.trim() === '') {
-      setError('Please enter the number of pages to insert.');
+    if (pageCount.trim() === "") {
+      setError("Please enter the number of pages to insert.");
       return;
     }
 
-    const position = pageNumber.trim() === '' 
-      ? 0 
-      : Number.parseInt(pageNumber, 10);
+    const position =
+      pageNumber.trim() === "" ? 0 : Number.parseInt(pageNumber, 10);
     const count = Number.parseInt(pageCount, 10);
     const total = pdfDoc.getPageCount();
 
-    if (pageNumber.trim() !== '' && (isNaN(position) || position < 0 || position > total)) {
+    if (
+      pageNumber.trim() !== "" &&
+      (isNaN(position) || position < 0 || position > total)
+    ) {
       setError(`Please enter a number between 0 and ${total}.`);
       return;
     }
 
     if (isNaN(count) || count < 1) {
-      setError('Please enter a valid number of pages (1 or more).');
+      setError("Please enter a valid number of pages (1 or more).");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage(
-      `Adding ${count} blank page${count > 1 ? 's' : ''}...`
-    );
+    setLoadingMessage(`Adding ${count} blank page${count > 1 ? "s" : ""}...`);
 
     try {
       const newPdf = await addBlankPages(pdfDoc, position, count);
@@ -88,24 +88,33 @@ export const useAddBlankPage = (): UseAddBlankPageReturn => {
       saveAndDownloadPDF(pdfBytes, pdfFile?.name);
 
       setSuccess(
-        `Successfully added ${count} blank page${count > 1 ? 's' : ''}.`
+        `Successfully added ${count} blank page${count > 1 ? "s" : ""}.`,
       );
     } catch (err) {
-      console.error('Error adding blank pages:', err);
+      console.error("Error adding blank pages:", err);
       setError(
         err instanceof Error
           ? `Failed to add blank pages: ${err.message}`
-          : `Could not add blank page${count > 1 ? 's' : ''}.`
+          : `Could not add blank page${count > 1 ? "s" : ""}.`,
       );
     } finally {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfDoc, pageNumber, pageCount, pdfFile, setIsProcessing, setError, setSuccess, setLoadingMessage]);
+  }, [
+    pdfDoc,
+    pageNumber,
+    pageCount,
+    pdfFile,
+    setIsProcessing,
+    setError,
+    setSuccess,
+    setLoadingMessage,
+  ]);
 
   const reset = useCallback(() => {
-    setPageNumber('');
-    setPageCount('1');
+    setPageNumber("");
+    setPageCount("1");
     resetProcessing();
     resetPDF();
   }, [resetProcessing, resetPDF]);
@@ -130,4 +139,3 @@ export const useAddBlankPage = (): UseAddBlankPageReturn => {
     reset,
   };
 };
-

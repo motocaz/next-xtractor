@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
-import { ScrollToTop } from '@/components/ScrollToTop';
+import dynamic from "next/dynamic";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const ViewMetadataTool = dynamic(
   () =>
-    import('@/features/view-metadata').then((mod) => ({
+    import("@/features/view-metadata").then((mod) => ({
       default: mod.ViewMetadataTool,
     })),
   {
@@ -17,7 +17,7 @@ const ViewMetadataTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default function ViewMetadataPage() {
@@ -28,4 +28,3 @@ export default function ViewMetadataPage() {
     </>
   );
 }
-

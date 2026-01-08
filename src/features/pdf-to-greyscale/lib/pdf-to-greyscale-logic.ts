@@ -6,7 +6,7 @@ const PROCESSING_SCALE = 1.5;
 
 export const pdfToGreyscale = async (
   file: File,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
 ): Promise<Uint8Array> => {
   return processPDFPagesWithCanvas(
     file,
@@ -20,6 +20,6 @@ export const pdfToGreyscale = async (
         data[j + 2] = avg;
       }
     },
-    onProgress
+    onProgress,
   );
 };

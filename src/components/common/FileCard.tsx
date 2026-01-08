@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle2, X } from 'lucide-react';
-import { formatBytes } from '@/lib/pdf/file-utils';
-import { cn } from '@/lib/utils';
+import { Card, CardContent } from "@/components/ui/card";
+import { CheckCircle2, X } from "lucide-react";
+import { formatBytes } from "@/lib/pdf/file-utils";
+import { cn } from "@/lib/utils";
 
 export interface FileCardProps {
   fileName: string;
@@ -23,7 +23,7 @@ export const FileCard = ({
   className,
 }: FileCardProps) => {
   return (
-    <Card className={cn('bg-input border-border', className)}>
+    <Card className={cn("bg-input border-border", className)}>
       <CardContent className="p-3 flex items-center justify-between gap-2">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           {showIcon && (
@@ -51,4 +51,3 @@ export const FileCard = ({
     </Card>
   );
 };
-

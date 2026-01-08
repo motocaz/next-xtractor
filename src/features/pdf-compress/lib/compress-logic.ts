@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { PDFDocument, PDFName, PDFDict, PDFStream, PDFNumber } from 'pdf-lib';
-import { readFileAsArrayBuffer } from '@/lib/pdf/file-utils';
-import { loadPDFWithPDFJSFromBuffer } from '@/lib/pdf/pdfjs-loader';
-import { removeMetadataFromDoc } from '@/lib/pdf/metadata-utils';
+import { PDFDocument, PDFName, PDFDict, PDFStream, PDFNumber } from "pdf-lib";
+import { readFileAsArrayBuffer } from "@/lib/pdf/file-utils";
+import { loadPDFWithPDFJSFromBuffer } from "@/lib/pdf/pdfjs-loader";
+import { removeMetadataFromDoc } from "@/lib/pdf/metadata-utils";
 import type {
   CompressionLevel,
   CompressionAlgorithm,
@@ -11,10 +11,10 @@ import type {
   LegacyCompressionSettings,
   CompressionSettings,
   CompressionResult,
-} from '../types';
+} from "../types";
 
 const dataUrlToBytes = (dataUrl: string): Uint8Array => {
-  const base64 = dataUrl.split(',')[1];
+  const base64 = dataUrl.split(",")[1];
   const binaryString = atob(base64);
   const len = binaryString.length;
   const bytes = new Uint8Array(len);
@@ -25,15 +25,15 @@ const dataUrlToBytes = (dataUrl: string): Uint8Array => {
 };
 
 const getImageDimensions = (
-  stream: PDFStream
+  stream: PDFStream,
 ): { width: number; height: number } => {
   const width =
-    stream.dict.get(PDFName.of('Width')) instanceof PDFNumber
-      ? (stream.dict.get(PDFName.of('Width')) as PDFNumber).asNumber()
+    stream.dict.get(PDFName.of("Width")) instanceof PDFNumber
+      ? (stream.dict.get(PDFName.of("Width")) as PDFNumber).asNumber()
       : 0;
   const height =
-    stream.dict.get(PDFName.of('Height')) instanceof PDFNumber
-      ? (stream.dict.get(PDFName.of('Height')) as PDFNumber).asNumber()
+    stream.dict.get(PDFName.of("Height")) instanceof PDFNumber
+      ? (stream.dict.get(PDFName.of("Height")) as PDFNumber).asNumber()
       : 0;
   return { width, height };
 };
@@ -41,7 +41,7 @@ const getImageDimensions = (
 const calculateNewDimensions = (
   width: number,
   height: number,
-  settings: SmartCompressionSettings
+  settings: SmartCompressionSettings,
 ): { newWidth: number; newHeight: number } | null => {
   const scaleFactor = settings.scaleFactor || 1;
   let newWidth = Math.floor(width * scaleFactor);
@@ -69,7 +69,9 @@ const calculateNewDimensions = (
   };
 };
 
-const loadImageFromBytes = (imageBytes: Uint8Array): Promise<HTMLImageElement> => {
+const loadImageFromBytes = (
+  imageBytes: Uint8Array,
+): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
     const arrayBuffer = new ArrayBuffer(imageBytes.length);
@@ -82,7 +84,7 @@ const loadImageFromBytes = (imageBytes: Uint8Array): Promise<HTMLImageElement> =
     };
     img.onerror = () => {
       URL.revokeObjectURL(imageUrl);
-      reject(new Error('Failed to load image'));
+      reject(new Error("Failed to load image"));
     };
     img.src = imageUrl;
   });
@@ -90,19 +92,19 @@ const loadImageFromBytes = (imageBytes: Uint8Array): Promise<HTMLImageElement> =
 
 const configureCanvasContext = (
   ctx: CanvasRenderingContext2D,
-  settings: SmartCompressionSettings
+  settings: SmartCompressionSettings,
 ): void => {
   ctx.imageSmoothingEnabled = settings.smoothing !== false;
   const smoothingQualityMap: Record<string, ImageSmoothingQuality> = {
-    low: 'low',
-    medium: 'medium',
-    high: 'high',
+    low: "low",
+    medium: "medium",
+    high: "high",
   };
   ctx.imageSmoothingQuality =
-    smoothingQualityMap[settings.smoothingQuality || 'medium'] || 'medium';
+    smoothingQualityMap[settings.smoothingQuality || "medium"] || "medium";
 
   if (settings.grayscale) {
-    ctx.filter = 'grayscale(100%)';
+    ctx.filter = "grayscale(100%)";
   } else if (settings.contrast) {
     ctx.filter = `contrast(${settings.contrast}) brightness(${settings.brightness || 1})`;
   }
@@ -110,16 +112,16 @@ const configureCanvasContext = (
 
 const compressImageOnCanvas = (
   canvas: HTMLCanvasElement,
-  settings: SmartCompressionSettings
+  settings: SmartCompressionSettings,
 ): { bestBytes: Uint8Array; bestSize: number } => {
-  const jpegDataUrl = canvas.toDataURL('image/jpeg', settings.quality);
+  const jpegDataUrl = canvas.toDataURL("image/jpeg", settings.quality);
   const jpegBytes = dataUrlToBytes(jpegDataUrl);
   let bestBytes = jpegBytes;
   let bestSize = jpegBytes.length;
 
   if (settings.tryWebP) {
     try {
-      const webpDataUrl = canvas.toDataURL('image/webp', settings.quality);
+      const webpDataUrl = canvas.toDataURL("image/webp", settings.quality);
       const webpBytes = dataUrlToBytes(webpDataUrl);
       if (webpBytes.length < bestSize) {
         bestBytes = webpBytes;
@@ -138,26 +140,26 @@ const updateStreamWithCompressedImage = (
   bestBytes: Uint8Array,
   bestSize: number,
   canvas: HTMLCanvasElement,
-  settings: SmartCompressionSettings
+  settings: SmartCompressionSettings,
 ): void => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (stream as any).contents = bestBytes;
-  stream.dict.set(PDFName.of('Length'), PDFNumber.of(bestSize));
-  stream.dict.set(PDFName.of('Width'), PDFNumber.of(canvas.width));
-  stream.dict.set(PDFName.of('Height'), PDFNumber.of(canvas.height));
-  stream.dict.set(PDFName.of('Filter'), PDFName.of('DCTDecode'));
-  stream.dict.delete(PDFName.of('DecodeParms'));
-  stream.dict.set(PDFName.of('BitsPerComponent'), PDFNumber.of(8));
+  stream.dict.set(PDFName.of("Length"), PDFNumber.of(bestSize));
+  stream.dict.set(PDFName.of("Width"), PDFNumber.of(canvas.width));
+  stream.dict.set(PDFName.of("Height"), PDFNumber.of(canvas.height));
+  stream.dict.set(PDFName.of("Filter"), PDFName.of("DCTDecode"));
+  stream.dict.delete(PDFName.of("DecodeParms"));
+  stream.dict.set(PDFName.of("BitsPerComponent"), PDFNumber.of(8));
 
   if (settings.grayscale) {
-    stream.dict.set(PDFName.of('ColorSpace'), PDFName.of('DeviceGray'));
+    stream.dict.set(PDFName.of("ColorSpace"), PDFName.of("DeviceGray"));
   }
 };
 
 const processImageInStream = async (
   stream: PDFStream,
   pdfDoc: PDFDocument,
-  settings: SmartCompressionSettings
+  settings: SmartCompressionSettings,
 ): Promise<void> => {
   const imageBytes = stream.getContents();
   if (imageBytes.length < settings.skipSize) {
@@ -174,8 +176,8 @@ const processImageInStream = async (
     return;
   }
 
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
   if (!ctx) {
     return;
   }
@@ -190,21 +192,27 @@ const processImageInStream = async (
   const { bestBytes, bestSize } = compressImageOnCanvas(canvas, settings);
 
   if (bestSize < imageBytes.length * settings.threshold) {
-    updateStreamWithCompressedImage(stream, bestBytes, bestSize, canvas, settings);
+    updateStreamWithCompressedImage(
+      stream,
+      bestBytes,
+      bestSize,
+      canvas,
+      settings,
+    );
   }
 };
 
 const processPageImages = async (
-  page: ReturnType<PDFDocument['getPages']>[0],
+  page: ReturnType<PDFDocument["getPages"]>[0],
   pdfDoc: PDFDocument,
-  settings: SmartCompressionSettings
+  settings: SmartCompressionSettings,
 ): Promise<void> => {
   const resources = page.node.Resources();
   if (!resources) {
     return;
   }
 
-  const xobjects = resources.lookup(PDFName.of('XObject'));
+  const xobjects = resources.lookup(PDFName.of("XObject"));
   if (!(xobjects instanceof PDFDict)) {
     return;
   }
@@ -213,7 +221,7 @@ const processPageImages = async (
     const stream = pdfDoc.context.lookup(value);
     if (
       !(stream instanceof PDFStream) ||
-      stream.dict.get(PDFName.of('Subtype')) !== PDFName.of('Image')
+      stream.dict.get(PDFName.of("Subtype")) !== PDFName.of("Image")
     ) {
       continue;
     }
@@ -221,14 +229,14 @@ const processPageImages = async (
     try {
       await processImageInStream(stream, pdfDoc, settings);
     } catch (error) {
-      console.warn('Skipping an uncompressible image in smart mode:', error);
+      console.warn("Skipping an uncompressible image in smart mode:", error);
     }
   }
 };
 
 const performSmartCompression = async (
   arrayBuffer: ArrayBuffer,
-  settings: SmartCompressionSettings
+  settings: SmartCompressionSettings,
 ): Promise<Uint8Array> => {
   const pdfDoc = await PDFDocument.load(arrayBuffer, {
     ignoreEncryption: true,
@@ -254,7 +262,7 @@ const performSmartCompression = async (
 
 const performLegacyCompression = async (
   arrayBuffer: ArrayBuffer,
-  settings: LegacyCompressionSettings
+  settings: LegacyCompressionSettings,
 ): Promise<Uint8Array> => {
   const pdfJsDoc = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
   const newPdfDoc = await PDFDocument.create();
@@ -262,8 +270,8 @@ const performLegacyCompression = async (
   for (let i = 1; i <= pdfJsDoc.numPages; i++) {
     const page = await pdfJsDoc.getPage(i);
     const viewport = page.getViewport({ scale: settings.scale });
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
     if (!context) continue;
 
     canvas.height = viewport.height;
@@ -273,7 +281,7 @@ const performLegacyCompression = async (
       .promise;
 
     const jpegBlob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob(resolve, 'image/jpeg', settings.quality)
+      canvas.toBlob(resolve, "image/jpeg", settings.quality),
     );
 
     if (!jpegBlob) continue;
@@ -292,7 +300,7 @@ const performLegacyCompression = async (
 };
 
 const getCompressionSettings = (
-  level: CompressionLevel
+  level: CompressionLevel,
 ): CompressionSettings => {
   const settings: Record<CompressionLevel, CompressionSettings> = {
     balanced: {
@@ -305,7 +313,7 @@ const getCompressionSettings = (
       },
       legacy: { scale: 1.5, quality: 0.6 },
     },
-    'high-quality': {
+    "high-quality": {
       smart: {
         quality: 0.7,
         threshold: 0.98,
@@ -315,7 +323,7 @@ const getCompressionSettings = (
       },
       legacy: { scale: 2, quality: 0.9 },
     },
-    'small-size': {
+    "small-size": {
       smart: {
         quality: 0.3,
         threshold: 0.95,
@@ -344,7 +352,7 @@ export const compressPDF = async (
   file: File,
   level: CompressionLevel,
   algorithm: CompressionAlgorithm,
-  onProgress?: (message: string) => void
+  onProgress?: (message: string) => void,
 ): Promise<CompressionResult> => {
   const arrayBuffer = await readFileAsArrayBuffer(file);
   const settings = getCompressionSettings(level);
@@ -357,28 +365,28 @@ export const compressPDF = async (
   let resultBytes: Uint8Array;
   let usedMethod: string;
 
-  if (algorithm === 'vector') {
-    onProgress?.('Running Vector (Smart) compression...');
+  if (algorithm === "vector") {
+    onProgress?.("Running Vector (Smart) compression...");
     resultBytes = await performSmartCompression(arrayBuffer, smartSettings);
-    usedMethod = 'Vector';
-  } else if (algorithm === 'photon') {
-    onProgress?.('Running Photon (Rasterize) compression...');
+    usedMethod = "Vector";
+  } else if (algorithm === "photon") {
+    onProgress?.("Running Photon (Rasterize) compression...");
     resultBytes = await performLegacyCompression(arrayBuffer, legacySettings);
-    usedMethod = 'Photon';
+    usedMethod = "Photon";
   } else {
-    onProgress?.('Running Automatic (Vector first)...');
+    onProgress?.("Running Automatic (Vector first)...");
     const vectorResultBytes = await performSmartCompression(
       arrayBuffer,
-      smartSettings
+      smartSettings,
     );
 
     if (vectorResultBytes.length < file.size) {
       resultBytes = vectorResultBytes;
-      usedMethod = 'Vector (Automatic)';
+      usedMethod = "Vector (Automatic)";
     } else {
-      onProgress?.('Running Automatic (Photon fallback)...');
+      onProgress?.("Running Automatic (Photon fallback)...");
       resultBytes = await performLegacyCompression(arrayBuffer, legacySettings);
-      usedMethod = 'Photon (Automatic)';
+      usedMethod = "Photon (Automatic)";
     }
   }
 
@@ -386,7 +394,9 @@ export const compressPDF = async (
   const compressedSize = resultBytes.length;
   const savings = originalSize - compressedSize;
   const savingsPercent =
-    savings > 0 ? Number.parseFloat(((savings / originalSize) * 100).toFixed(1)) : 0;
+    savings > 0
+      ? Number.parseFloat(((savings / originalSize) * 100).toFixed(1))
+      : 0;
 
   return {
     bytes: resultBytes,
@@ -402,9 +412,15 @@ export const compressMultiplePDFs = async (
   files: File[],
   level: CompressionLevel,
   algorithm: CompressionAlgorithm,
-  onProgress?: (current: number, total: number, fileName: string) => void
-): Promise<Array<{ fileName: string; bytes: Uint8Array; result: CompressionResult }>> => {
-  const results: Array<{ fileName: string; bytes: Uint8Array; result: CompressionResult }> = [];
+  onProgress?: (current: number, total: number, fileName: string) => void,
+): Promise<
+  Array<{ fileName: string; bytes: Uint8Array; result: CompressionResult }>
+> => {
+  const results: Array<{
+    fileName: string;
+    bytes: Uint8Array;
+    result: CompressionResult;
+  }> = [];
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
@@ -423,4 +439,3 @@ export const compressMultiplePDFs = async (
 
   return results;
 };
-

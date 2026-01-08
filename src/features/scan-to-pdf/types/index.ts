@@ -1,5 +1,4 @@
 export type {
   ImageFileInfo,
   UseImageToPdfReturn,
-} from '@/features/image-to-pdf/types';
-
+} from "@/features/image-to-pdf/types";

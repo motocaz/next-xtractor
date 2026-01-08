@@ -1,4 +1,4 @@
-import type { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from "pdf-lib";
 
 export interface PDFMetadata {
   title: string;
@@ -37,4 +37,3 @@ export interface UseEditMetadataReturn {
   processMetadata: () => Promise<void>;
   reset: () => void;
 }
-

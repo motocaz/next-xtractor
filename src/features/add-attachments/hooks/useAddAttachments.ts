@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import type { AttachmentFile } from '../types';
-import { addAttachmentsToPDF } from '../lib/add-attachments-logic';
-import { saveAndDownloadPDF } from '@/lib/pdf/file-utils';
-import { usePDFLoader } from '@/hooks/usePDFLoader';
+import { useState, useCallback } from "react";
+import type { AttachmentFile } from "../types";
+import { addAttachmentsToPDF } from "../lib/add-attachments-logic";
+import { saveAndDownloadPDF } from "@/lib/pdf/file-utils";
+import { usePDFLoader } from "@/hooks/usePDFLoader";
 
 export interface UseAddAttachmentsReturn {
   attachments: AttachmentFile[];
@@ -13,7 +13,7 @@ export interface UseAddAttachmentsReturn {
   error: string | null;
   success: string | null;
   pdfFile: File | null;
-  pdfDoc: ReturnType<typeof usePDFLoader>['pdfDoc'];
+  pdfDoc: ReturnType<typeof usePDFLoader>["pdfDoc"];
   isLoadingPDF: boolean;
   pdfError: string | null;
 
@@ -47,21 +47,26 @@ export const useAddAttachments = (): UseAddAttachmentsReturn => {
     setSuccess(null);
   }, []);
 
-  const addAttachmentFiles = useCallback((files: File[]) => {
-    if (!files || files.length === 0) {
-      clearAttachments();
-      return;
-    }
+  const addAttachmentFiles = useCallback(
+    (files: File[]) => {
+      if (!files || files.length === 0) {
+        clearAttachments();
+        return;
+      }
 
-    const newAttachments: AttachmentFile[] = Array.from(files).map((file) => ({
-      file,
-      name: file.name,
-      size: file.size,
-    }));
+      const newAttachments: AttachmentFile[] = Array.from(files).map(
+        (file) => ({
+          file,
+          name: file.name,
+          size: file.size,
+        }),
+      );
 
-    setAttachments(newAttachments);
-    setError(null);
-  }, [clearAttachments]);
+      setAttachments(newAttachments);
+      setError(null);
+    },
+    [clearAttachments],
+  );
 
   const removeAttachment = useCallback((index: number) => {
     setAttachments((prev) => prev.filter((_, i) => i !== index));
@@ -69,32 +74,28 @@ export const useAddAttachments = (): UseAddAttachmentsReturn => {
 
   const processAttachments = useCallback(async () => {
     if (!pdfDoc) {
-      setError('Main PDF is not loaded.');
+      setError("Main PDF is not loaded.");
       return;
     }
 
     if (attachments.length === 0) {
-      setError('Please select at least one file to attach.');
+      setError("Please select at least one file to attach.");
       return;
     }
 
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Embedding files into PDF...');
+    setLoadingMessage("Embedding files into PDF...");
 
     try {
       const files = attachments.map((att) => att.file);
 
-      await addAttachmentsToPDF(
-        pdfDoc,
-        files,
-        (progress) => {
-          setLoadingMessage(
-            `Attaching ${progress.fileName} (${progress.current}/${progress.total})...`
-          );
-        }
-      );
+      await addAttachmentsToPDF(pdfDoc, files, (progress) => {
+        setLoadingMessage(
+          `Attaching ${progress.fileName} (${progress.current}/${progress.total})...`,
+        );
+      });
 
       const pdfBytes = await pdfDoc.save();
       saveAndDownloadPDF(pdfBytes, pdfFile?.name);
@@ -102,11 +103,11 @@ export const useAddAttachments = (): UseAddAttachmentsReturn => {
       setSuccess(`${attachments.length} file(s) attached successfully.`);
       clearAttachments();
     } catch (err) {
-      console.error('Error attaching files:', err);
+      console.error("Error attaching files:", err);
       setError(
         err instanceof Error
           ? `Failed to attach files: ${err.message}`
-          : 'Failed to attach files.'
+          : "Failed to attach files.",
       );
     } finally {
       setIsProcessing(false);

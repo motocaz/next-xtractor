@@ -12,7 +12,7 @@ const getCatalogDict = (pdfDoc: PDFDocument): any => {
 const safeLookupAsDict = (
   pdfDoc: PDFDocument,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ref: any
+  ref: any,
 ): PDFDict | null => {
   try {
     const obj = pdfDoc.context.lookup(ref);
@@ -28,7 +28,7 @@ const deleteFromNamesDict = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   catalogDict: any,
   keyName: string,
-  errorMessage: string
+  errorMessage: string,
 ): boolean => {
   const namesRef = catalogDict.get(PDFName.of("Names"));
   if (!namesRef) return false;
@@ -49,7 +49,7 @@ const deleteFromNamesDict = (
 const deleteFromCatalogDict = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   catalogDict: any,
-  keyName: string
+  keyName: string,
 ): boolean => {
   if (catalogDict.has(PDFName.of(keyName))) {
     catalogDict.delete(PDFName.of(keyName));
@@ -61,7 +61,7 @@ const deleteFromCatalogDict = (
 const deleteFromPageDict = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pageDict: any,
-  keyName: string
+  keyName: string,
 ): boolean => {
   if (pageDict.has(PDFName.of(keyName))) {
     pageDict.delete(PDFName.of(keyName));
@@ -88,7 +88,7 @@ export const removeJavaScriptFromDoc = (pdfDoc: PDFDocument): boolean => {
         pdfDoc,
         catalogDict,
         "JavaScript",
-        "Could not access Names/JavaScript:"
+        "Could not access Names/JavaScript:",
       )
     ) {
       changesMade = true;
@@ -214,7 +214,7 @@ export const removeEmbeddedFilesFromDoc = (pdfDoc: PDFDocument): boolean => {
         pdfDoc,
         catalogDict,
         "EmbeddedFiles",
-        "Could not access Names/EmbeddedFiles:"
+        "Could not access Names/EmbeddedFiles:",
       )
     ) {
       changesMade = true;
@@ -433,7 +433,7 @@ export const removeLinksFromDoc = (pdfDoc: PDFDocument): boolean => {
         const error =
           pageError instanceof Error ? pageError.message : String(pageError);
         console.warn(
-          `Could not process page ${pageIndex + 1} for links: ${error}`
+          `Could not process page ${pageIndex + 1} for links: ${error}`,
         );
       }
     }
@@ -445,7 +445,7 @@ export const removeLinksFromDoc = (pdfDoc: PDFDocument): boolean => {
           pdfDoc,
           catalogDict,
           "Dests",
-          "Could not access Names/Dests:"
+          "Could not access Names/Dests:",
         )
       ) {
         changesMade = true;
@@ -566,7 +566,7 @@ export const removeFontsFromDoc = (pdfDoc: PDFDocument): boolean => {
                     const specificFontTyped = specificFont as PDFDict;
                     if (specificFontTyped.has(PDFName.of("FontDescriptor"))) {
                       const descriptorRef = specificFontTyped.get(
-                        PDFName.of("FontDescriptor")
+                        PDFName.of("FontDescriptor"),
                       );
                       const descriptor = pdfDoc.context.lookup(descriptorRef);
                       if (!descriptor || !("has" in descriptor)) {
@@ -605,7 +605,7 @@ export const removeFontsFromDoc = (pdfDoc: PDFDocument): boolean => {
         const error = e instanceof Error ? e.message : String(e);
         console.warn(
           `Could not remove fonts from page ${pageIndex + 1}:`,
-          error
+          error,
         );
       }
     }

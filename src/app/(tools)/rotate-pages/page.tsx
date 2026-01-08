@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { ScrollToTop } from '@/components/ScrollToTop';
-import dynamic from 'next/dynamic';
+import { ScrollToTop } from "@/components/ScrollToTop";
+import dynamic from "next/dynamic";
 
 const RotatePagesTool = dynamic(
   () =>
-    import('@/features/rotate-pages').then((mod) => ({
+    import("@/features/rotate-pages").then((mod) => ({
       default: mod.RotatePagesTool,
     })),
   {
@@ -17,7 +17,7 @@ const RotatePagesTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default function RotatePagesPage() {
@@ -28,4 +28,3 @@ export default function RotatePagesPage() {
     </>
   );
 }
-

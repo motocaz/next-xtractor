@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { bmpToPdf } from '../lib/bmp-to-pdf-logic';
-import { handleImageToPdfResult } from '@/lib/pdf/image-to-pdf-utils';
-import type { BmpFileInfo, UseBmpToPdfReturn } from '../types';
+import { useState, useCallback } from "react";
+import { bmpToPdf } from "../lib/bmp-to-pdf-logic";
+import { handleImageToPdfResult } from "@/lib/pdf/image-to-pdf-utils";
+import type { BmpFileInfo, UseBmpToPdfReturn } from "../types";
 
 export const useBmpToPdf = (): UseBmpToPdfReturn => {
   const [bmpFiles, setBmpFiles] = useState<BmpFileInfo[]>([]);
@@ -16,21 +16,24 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
 
   const loadBmpFiles = useCallback(async (files: File[]) => {
     if (!files || files.length === 0) {
-      setError('Please select at least one BMP file.');
+      setError("Please select at least one BMP file.");
       return;
     }
 
     setIsLoading(true);
     setError(null);
     setSuccess(null);
-    setLoadingMessage('Validating BMP files...');
+    setLoadingMessage("Validating BMP files...");
 
     try {
       const validFiles: BmpFileInfo[] = [];
       const invalidFiles: string[] = [];
 
       for (const file of files) {
-        if (file.type !== 'image/bmp' && !file.name.toLowerCase().endsWith('.bmp')) {
+        if (
+          file.type !== "image/bmp" &&
+          !file.name.toLowerCase().endsWith(".bmp")
+        ) {
           invalidFiles.push(file.name);
           continue;
         }
@@ -46,12 +49,14 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
 
       if (invalidFiles.length > 0) {
         setError(
-          `The following files are not valid BMP images: ${invalidFiles.join(', ')}`
+          `The following files are not valid BMP images: ${invalidFiles.join(", ")}`,
         );
       }
 
       if (validFiles.length === 0) {
-        setError('No valid BMP files were found. Please select BMP image files.');
+        setError(
+          "No valid BMP files were found. Please select BMP image files.",
+        );
       } else {
         setBmpFiles((prev) => [...prev, ...validFiles]);
         if (validFiles.length > 0 && invalidFiles.length === 0) {
@@ -59,11 +64,11 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
         }
       }
     } catch (err) {
-      console.error('Error loading BMP files:', err);
+      console.error("Error loading BMP files:", err);
       setError(
         err instanceof Error
           ? `Failed to load BMP files: ${err.message}`
-          : 'Failed to load BMP files. Please check your files.'
+          : "Failed to load BMP files. Please check your files.",
       );
     } finally {
       setIsLoading(false);
@@ -79,7 +84,7 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
 
   const processBmpToPdf = useCallback(async () => {
     if (bmpFiles.length === 0) {
-      setError('Please upload at least one BMP file.');
+      setError("Please upload at least one BMP file.");
       return;
     }
 
@@ -87,7 +92,7 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
     setError(null);
     setSuccess(null);
     setFailedFiles([]);
-    setLoadingMessage('Converting BMP to PDF...');
+    setLoadingMessage("Converting BMP to PDF...");
 
     try {
       const files = bmpFiles.map((fileInfo) => fileInfo.file);
@@ -95,7 +100,7 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
 
       await handleImageToPdfResult({
         result,
-        firstFileName: bmpFiles[0]?.fileName || 'converted',
+        firstFileName: bmpFiles[0]?.fileName || "converted",
         extensionPattern: /\.bmp$/i,
         stateSetters: {
           setFailedFiles,
@@ -103,11 +108,11 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
         },
       });
     } catch (err) {
-      console.error('BMP to PDF conversion error:', err);
+      console.error("BMP to PDF conversion error:", err);
       setError(
         err instanceof Error
           ? `An error occurred while converting: ${err.message}`
-          : 'An error occurred while converting BMP to PDF. One of the files may be invalid.'
+          : "An error occurred while converting BMP to PDF. One of the files may be invalid.",
       );
     } finally {
       setIsProcessing(false);
@@ -139,4 +144,3 @@ export const useBmpToPdf = (): UseBmpToPdfReturn => {
     reset,
   };
 };
-

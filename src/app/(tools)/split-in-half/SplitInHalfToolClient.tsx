@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const SplitInHalfTool = dynamic(
   () =>
-    import('@/features/split-in-half').then((mod) => ({
+    import("@/features/split-in-half").then((mod) => ({
       default: mod.SplitInHalfTool,
     })),
   {
@@ -16,8 +16,7 @@ const SplitInHalfTool = dynamic(
         </div>
       </div>
     ),
-  }
+  },
 );
 
 export default SplitInHalfTool;
-

@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useInvertColors } from '../hooks/useInvertColors';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { ArrowLeft } from 'lucide-react';
+import Link from "next/link";
+import { useInvertColors } from "../hooks/useInvertColors";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { ArrowLeft } from "lucide-react";
 
 export const InvertColorsTool = () => {
   const {
@@ -79,4 +79,3 @@ export const InvertColorsTool = () => {
     </div>
   );
 };
-

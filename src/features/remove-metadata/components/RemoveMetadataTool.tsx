@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
-import { useRemoveMetadata } from '../hooks/useRemoveMetadata';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useRemoveMetadata } from "../hooks/useRemoveMetadata";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
 
 export const RemoveMetadataTool = () => {
   const {
@@ -75,4 +75,3 @@ export const RemoveMetadataTool = () => {
     </div>
   );
 };
-

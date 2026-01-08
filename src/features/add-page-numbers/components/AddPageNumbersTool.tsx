@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useAddPageNumbers } from '../hooks/useAddPageNumbers';
-import { PDFUploadSection } from '@/components/common/PDFUploadSection';
-import { ProcessButton } from '@/components/common/ProcessButton';
-import { ProcessMessages } from '@/components/common/ProcessMessages';
-import { ProcessLoadingModal } from '@/components/common/ProcessLoadingModal';
-import { Input } from '@/components/ui/input';
+import Link from "next/link";
+import { useAddPageNumbers } from "../hooks/useAddPageNumbers";
+import { PDFUploadSection } from "@/components/common/PDFUploadSection";
+import { ProcessButton } from "@/components/common/ProcessButton";
+import { ProcessMessages } from "@/components/common/ProcessMessages";
+import { ProcessLoadingModal } from "@/components/common/ProcessLoadingModal";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { ArrowLeft } from 'lucide-react';
+} from "@/components/ui/select";
+import { ArrowLeft } from "lucide-react";
 
 export const AddPageNumbersTool = () => {
   const {
@@ -185,4 +185,3 @@ export const AddPageNumbersTool = () => {
     </div>
   );
 };
-

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { FileUploader } from '@/components/FileUploader';
-import { Spinner } from '@/components/ui/spinner';
-import { CheckCircle2, AlertCircle, X } from 'lucide-react';
-import type { PDFDocument } from 'pdf-lib';
+import { FileUploader } from "@/components/FileUploader";
+import { Spinner } from "@/components/ui/spinner";
+import { CheckCircle2, AlertCircle, X } from "lucide-react";
+import type { PDFDocument } from "pdf-lib";
 
 export interface PDFUploadSectionProps {
   pdfFile: File | null;
@@ -79,4 +79,3 @@ export const PDFUploadSection = ({
     </>
   );
 };
-

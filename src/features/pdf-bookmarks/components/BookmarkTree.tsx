@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
+import { useMemo } from "react";
 import {
   DndContext,
   closestCenter,
@@ -9,17 +9,17 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Search, ChevronsDown, ChevronsUp } from 'lucide-react';
-import { BookmarkNode } from './BookmarkNode';
-import type { BookmarkNode as BookmarkNodeType } from '../types';
+} from "@dnd-kit/sortable";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search, ChevronsDown, ChevronsUp } from "lucide-react";
+import { BookmarkNode } from "./BookmarkNode";
+import type { BookmarkNode as BookmarkNodeType } from "../types";
 
 interface BookmarkTreeProps {
   bookmarkTree: BookmarkNodeType[];
@@ -33,8 +33,17 @@ interface BookmarkTreeProps {
   onEdit: (node: BookmarkNodeType) => void;
   onDelete: (id: string) => void;
   onAddChild: (node: BookmarkNodeType) => void;
-  onNavigate: (page: number, destX: number | null, destY: number | null, zoom: string | null) => void;
-  onReorder: (activeId: string, overId: string, parentId: string | null) => void;
+  onNavigate: (
+    page: number,
+    destX: number | null,
+    destY: number | null,
+    zoom: string | null,
+  ) => void;
+  onReorder: (
+    activeId: string,
+    overId: string,
+    parentId: string | null,
+  ) => void;
   onExpandAll: () => void;
   onCollapseAll: () => void;
 }
@@ -66,7 +75,7 @@ export const BookmarkTree = ({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const filteredTree = useMemo(() => {
@@ -95,7 +104,7 @@ export const BookmarkTree = ({
     const findParent = (
       nodes: BookmarkNodeType[],
       targetId: string,
-      parentId: string | null = null
+      parentId: string | null = null,
     ): string | null => {
       for (const node of nodes) {
         if (node.id === targetId) return parentId;
@@ -156,7 +165,9 @@ export const BookmarkTree = ({
       <div className="mb-4 max-h-96 overflow-y-auto border border-border rounded-lg p-2">
         {filteredTree.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground text-sm">
-            {searchQuery ? 'No bookmarks match your search.' : 'No bookmarks yet. Add one above!'}
+            {searchQuery
+              ? "No bookmarks match your search."
+              : "No bookmarks yet. Add one above!"}
           </div>
         ) : (
           <DndContext
@@ -197,4 +208,3 @@ export const BookmarkTree = ({
     </div>
   );
 };
-
