@@ -28,7 +28,7 @@ export const FormFieldRenderer = ({
 
   if (field.type === 'unsupported') {
     return (
-      <div className="p-4 bg-input rounded-lg border border-border">
+      <div className="p-4 bg-input rounded-lg border border-accent">
         <p className="text-sm text-muted-foreground">
           {field.name.includes('Signature')
             ? 'Signature field: Not supported for direct editing.'
@@ -39,7 +39,7 @@ export const FormFieldRenderer = ({
   }
 
   return (
-    <div className="p-4 bg-input rounded-lg border border-border space-y-2">
+    <div className="p-4 bg-input rounded-lg border border-accent space-y-2">
       <Label htmlFor={`field-${field.name}`} className="block text-sm font-medium capitalize">
         {labelText}
         {field.required && <span className="text-destructive ml-1">*</span>}
@@ -51,7 +51,7 @@ export const FormFieldRenderer = ({
           type="text"
           value={String(value)}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full"
+          className="w-full dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15"
         />
       )}
 
@@ -92,7 +92,7 @@ export const FormFieldRenderer = ({
 
       {field.type === 'dropdown' && field.options && (
         <Select value={String(value)} onValueChange={(val) => onChange(val)}>
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15">
             <SelectValue placeholder="Select an option" />
           </SelectTrigger>
           <SelectContent>
@@ -116,7 +116,7 @@ export const FormFieldRenderer = ({
               const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
               onChange(selected);
             }}
-            className="w-full bg-input border border-border text-foreground rounded-md p-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="w-full dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15 text-foreground rounded-md p-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             {field.options.map((option) => (
               <option key={option} value={option}>

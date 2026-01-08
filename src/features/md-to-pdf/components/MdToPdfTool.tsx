@@ -127,18 +127,20 @@ export const MdToPdfTool = () => {
         />
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 mt-8">
         <ProcessMessages success={success} error={error} />
       </div>
 
-      <ProcessButton
-        onClick={processMdToPdf}
-        disabled={!canProcess}
-        isProcessing={isProcessing}
-        loadingMessage={loadingMessage}
-      >
-        Create PDF from Markdown
-      </ProcessButton>
+      <div className="mt-8">
+        <ProcessButton
+          onClick={processMdToPdf}
+          disabled={!canProcess}
+          isProcessing={isProcessing}
+          loadingMessage={loadingMessage}
+        >
+          Create PDF from Markdown
+        </ProcessButton>
+      </div>
 
       <ProcessLoadingModal
         isProcessing={isProcessing}

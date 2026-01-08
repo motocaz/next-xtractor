@@ -51,7 +51,7 @@ export const FileList = ({ files, onRemove, className }: FileListProps) => {
             {onRemove && (
               <button
                 onClick={() => onRemove(index)}
-                className="text-destructive hover:text-destructive/80 text-xs px-2 py-1 rounded"
+                className="text-destructive hover:text-destructive/80 text-xl px-2 py-1 rounded"
                 aria-label={`Remove ${file.name}`}
               >
                 ×

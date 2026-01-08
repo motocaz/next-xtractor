@@ -40,7 +40,7 @@ export const SortableFileItem = ({
   const inputId = `range-${safeFileName}`;
 
   return (
-    <Card ref={setNodeRef} style={style} className="bg-input border-border">
+    <Card ref={setNodeRef} style={style} className="bg-input border-accent">
       <CardContent className="p-3 space-y-2">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -81,7 +81,7 @@ export const SortableFileItem = ({
             value={pageRange}
             onChange={(e) => onPageRangeChange(pdfInfo.id, e.target.value)}
             placeholder="Leave blank for all pages"
-            className="w-full bg-background border-border text-foreground text-sm"
+            className="w-full bg-background dark:bg-accent dark:placeholder:text-accent-foreground/70 border-accent-foreground/15 text-foreground text-sm"
           />
         </div>
       </CardContent>

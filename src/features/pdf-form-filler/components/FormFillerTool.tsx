@@ -64,7 +64,7 @@ export const FormFillerTool = () => {
       />
 
       {showNoFieldsMessage && (
-        <div className="mt-6 p-4 bg-input rounded-lg border border-border text-center">
+        <div className="mt-6 p-4 bg-input rounded-lg border border-accent text-center">
           <p className="text-muted-foreground">This PDF contains no form fields.</p>
         </div>
       )}
@@ -72,7 +72,7 @@ export const FormFillerTool = () => {
       {showOptions && (
         <div className="mt-6 space-y-4">
           <div className="flex flex-col lg:flex-row gap-4 min-h-[600px]">
-            <div className="w-full lg:w-1/3 bg-input rounded-lg p-4 overflow-y-auto border border-border shrink-0 max-h-[600px]">
+            <div className="w-full lg:w-1/3 bg-input rounded-lg p-4 overflow-y-auto border border-accent shrink-0 max-h-[600px]">
               <h3 className="text-lg font-semibold text-foreground mb-4">Form Fields</h3>
               <div className="space-y-4">
                 {formFields.map((field) => (

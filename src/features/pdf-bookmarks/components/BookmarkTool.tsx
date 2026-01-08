@@ -73,7 +73,7 @@ export const BookmarkTool = () => {
   const { messageDialog, setMessageDialog, confirmDialog, setConfirmDialog } =
     useBookmarkDialogs();
 
-  const [autoExtract, setAutoExtract] = useState(false);
+  const [autoExtract, setAutoExtract] = useState(true);
   const [bookmarkTitle, setBookmarkTitle] = useState("");
   const [editingBookmark, setEditingBookmark] = useState<BookmarkNode | null>(
     null

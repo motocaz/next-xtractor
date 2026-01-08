@@ -270,7 +270,7 @@ export const RedactPDFTool = () => {
       {pdfFile && (
         <div className="space-y-6">
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 pb-6">
               <div className="mb-4">
                 <h3 className="text-sm font-semibold text-foreground mb-2">
                   How it works:
@@ -365,7 +365,7 @@ export const RedactPDFTool = () => {
 
           {currentRedactions.length > 0 && (
             <Card>
-              <CardContent className="pt-6">
+              <CardContent className="pt-6 pb-6">
                 <h3 className="text-sm font-semibold text-foreground mb-3">
                   Redactions on this page:
                 </h3>

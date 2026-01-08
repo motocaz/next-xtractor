@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { PDFDocument, PDFImage } from 'pdf-lib';
-import { saveAndDownloadPDF } from './file-utils';
+import { PDFDocument, PDFImage } from "pdf-lib";
+import { saveAndDownloadPDF } from "./file-utils";
 
 export interface ImageToPdfResult {
   pdfDoc: PDFDocument;
@@ -38,7 +38,7 @@ export const createImageToPdfResult = (
 ): ImageToPdfResult => {
   if (pdfDoc.getPageCount() === 0) {
     throw new Error(
-      'No valid images could be processed. Please check your files.'
+      "No valid images could be processed. Please check your files."
     );
   }
 
@@ -82,7 +82,7 @@ export const handleImageToPdfResult = async (
   const { setFailedFiles, setSuccess } = stateSetters;
 
   const pdfBytes = await result.pdfDoc.save();
-  const baseName = firstFileName.replace(extensionPattern, '') || 'converted';
+  const baseName = firstFileName.replace(extensionPattern, "") || "converted";
   saveAndDownloadPDF(pdfBytes, baseName);
 
   if (result.failedFiles.length > 0) {
@@ -99,63 +99,109 @@ export const handleImageToPdfResult = async (
 export const convertImageToPngBytes = async (
   file: File
 ): Promise<ArrayBuffer> => {
+  const isSvg =
+    file.type === "image/svg+xml" || file.name.toLowerCase().endsWith(".svg");
+  let objectUrl: string | null = null;
+
+  if (isSvg) {
+    try {
+      objectUrl = URL.createObjectURL(file);
+    } catch {}
+  }
+
   return new Promise((resolve, reject) => {
     const img = new Image();
     const reader = new FileReader();
-
-    reader.onload = (e) => {
-      if (!e.target?.result || typeof e.target.result !== 'string') {
-        reject(new Error('Failed to read file.'));
-        return;
+    const cleanup = () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
       }
-
-      img.onload = async () => {
-        try {
-          const canvas = document.createElement('canvas');
-          canvas.width = img.width;
-          canvas.height = img.height;
-          const ctx = canvas.getContext('2d');
-
-          if (!ctx) {
-            reject(new Error('Failed to get canvas context.'));
-            return;
-          }
-
-          ctx.drawImage(img, 0, 0);
-          const pngBlob = await new Promise<Blob | null>((res) =>
-            canvas.toBlob(res, 'image/png')
-          );
-
-          if (!pngBlob) {
-            reject(new Error('Failed to convert image to PNG.'));
-            return;
-          }
-
-          const pngBytes = await pngBlob.arrayBuffer();
-          resolve(pngBytes);
-        } catch (error) {
-          reject(error);
-        }
-      };
-
-      img.onerror = () => reject(new Error('Failed to load image.'));
-      img.src = e.target.result;
     };
 
-    reader.onerror = () => reject(new Error('Failed to read file.'));
-    reader.readAsDataURL(file);
+    img.onload = async () => {
+      try {
+        let width = img.naturalWidth || img.width;
+        let height = img.naturalHeight || img.height;
+
+        if (
+          width === 0 ||
+          height === 0 ||
+          !Number.isFinite(width) ||
+          !Number.isFinite(height)
+        ) {
+          width = width || 800;
+          height = height || 600;
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+
+        if (!ctx) {
+          cleanup();
+          reject(new Error("Failed to get canvas context."));
+          return;
+        }
+
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.drawImage(img, 0, 0, width, height);
+        const pngBlob = await new Promise<Blob | null>((res) =>
+          canvas.toBlob(res, "image/png")
+        );
+
+        if (!pngBlob) {
+          cleanup();
+          reject(new Error("Failed to convert image to PNG."));
+          return;
+        }
+
+        const pngBytes = await pngBlob.arrayBuffer();
+        cleanup();
+        resolve(pngBytes);
+      } catch (error) {
+        cleanup();
+        reject(error);
+      }
+    };
+
+    img.onerror = () => {
+      cleanup();
+      reject(new Error("Failed to load image."));
+    };
+
+    if (objectUrl) {
+      img.src = objectUrl;
+    } else {
+      reader.onload = (e) => {
+        if (!e.target?.result || typeof e.target.result !== "string") {
+          cleanup();
+          reject(new Error("Failed to read file."));
+          return;
+        }
+        img.src = e.target.result;
+      };
+
+      reader.onerror = () => {
+        cleanup();
+        reject(new Error("Failed to read file."));
+      };
+      reader.readAsDataURL(file);
+    }
   });
 };
 
 export const convertHeicToPngBytes = async (
   file: File
 ): Promise<ArrayBuffer> => {
-  const heic2any = (await import('heic2any')).default;
+  const heic2any = (await import("heic2any")).default;
 
   try {
     const conversionResult = await heic2any({
       blob: file,
-      toType: 'image/png',
+      toType: "image/png",
     });
 
     const pngBlob = Array.isArray(conversionResult)
@@ -163,15 +209,16 @@ export const convertHeicToPngBytes = async (
       : conversionResult;
 
     if (!pngBlob) {
-      throw new Error('Failed to convert HEIC to PNG.');
+      throw new Error("Failed to convert HEIC to PNG.");
     }
 
     const pngBytes = await pngBlob.arrayBuffer();
     return pngBytes;
   } catch (error) {
     throw new Error(
-      `Failed to convert HEIC to PNG: ${error instanceof Error ? error.message : 'Unknown error'}`
+      `Failed to convert HEIC to PNG: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
     );
   }
 };
-

@@ -147,7 +147,7 @@ export const PageOrganizerTool = ({
             </SortableContext>
           </DndContext>
 
-          <div className="mt-6">
+          <div className="mt-6 py-4 space-y-4">
             <ProcessButton
               onClick={processAndSave}
               isProcessing={isProcessing}

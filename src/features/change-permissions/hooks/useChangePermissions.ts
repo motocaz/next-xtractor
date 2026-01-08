@@ -43,7 +43,7 @@ export const useChangePermissions = (): UseChangePermissionsReturn => {
     setSuccess,
     setLoadingMessage,
     resetProcessing,
-  } = usePDFProcessor();
+  } = usePDFProcessor(true);
 
   const processPermissions = useCallback(async () => {
     if (!pdfFile) {
@@ -79,14 +79,18 @@ export const useChangePermissions = (): UseChangePermissionsReturn => {
     } catch (err) {
       console.error('Error changing PDF permissions:', err);
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if ((err as any)?.xa === 44) {
+        setError(
+          'Incorrect password. The current password you entered is incorrect. Please verify and try again.'
+        );
+        return;
+      }
+
       if (err instanceof Error) {
         if (err.message === 'INVALID_PASSWORD') {
           setError(
-            'The current password you entered is incorrect. Please try again.'
-          );
-        } else if (err.message === 'PASSWORD_REQUIRED') {
-          setError(
-            'This PDF is password-protected. Please enter the current password to proceed.'
+            'Incorrect password. The current password you entered is incorrect. Please verify and try again.'
           );
         } else {
           setError(

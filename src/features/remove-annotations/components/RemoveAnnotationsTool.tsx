@@ -106,7 +106,7 @@ export const RemoveAnnotationsTool = () => {
               1. Choose Pages
             </h3>
             <Card>
-              <CardContent className="pt-6">
+              <CardContent className="pt-3 pb-6">
                 <RadioGroup
                   value={pageScope}
                   onValueChange={(value) => setPageScope(value as 'all' | 'specific')}

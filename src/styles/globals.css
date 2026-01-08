@@ -2,6 +2,11 @@
 @import "@fontsource/jetbrains-mono/500.css";
 @import "@fontsource/jetbrains-mono/600.css";
 @import "@fontsource/jetbrains-mono/700.css";
+@import "@fontsource/great-vibes/400.css";
+@import "@fontsource/kalam/400.css";
+@import "@fontsource/dancing-script/400.css";
+@import "@fontsource/lato/400.css";
+@import "@fontsource/merriweather/400.css";
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -267,7 +272,6 @@ input[type='file']::file-selector-button:hover {
   }
 }
 
-/* Fix checkmark icon color in Clerk PricingTable */
 [class*="cl-pricingTable"] svg[viewBox="0 0 10 10"] path {
   stroke: var(--primary) !important;
 }

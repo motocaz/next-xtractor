@@ -44,24 +44,26 @@ export const PageThumbnail = ({
       className="relative cursor-move flex flex-col items-center gap-2 group"
     >
       <div
-        {...attributes}
-        {...listeners}
-        className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing p-1 rounded bg-background/80 backdrop-blur-sm"
+        className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded bg-background/80 backdrop-blur-sm pointer-events-none"
         aria-label="Drag to reorder"
       >
         <GripVertical className="h-4 w-4 text-muted-foreground" />
       </div>
 
-      <div className="absolute top-1 left-1 z-10 bg-gray-900/75 dark:bg-gray-100/75 text-white dark:text-gray-900 text-xs rounded-full px-2 py-1 font-semibold">
+      <div className="absolute top-1 left-1 z-10 bg-gray-900/75 dark:bg-gray-100/75 text-white dark:text-gray-900 text-xs rounded-full px-2 py-1 font-semibold pointer-events-none">
         {pageData.displayNumber}
       </div>
 
-      <div className="relative w-full h-36 bg-background rounded-lg flex items-center justify-center overflow-hidden border-2 border-border hover:border-primary transition-colors">
+      <div
+        {...attributes}
+        {...listeners}
+        className="relative w-full h-36 bg-background rounded-lg flex items-center justify-center overflow-hidden border-2 border-border hover:border-primary transition-colors cursor-grab active:cursor-grabbing"
+      >
         {thumbnailUrl ? (
           <Image
             src={thumbnailUrl}
             alt={`Page ${pageData.displayNumber}`}
-            className="object-contain"
+            className="object-contain pointer-events-none"
             fill
             unoptimized
           />

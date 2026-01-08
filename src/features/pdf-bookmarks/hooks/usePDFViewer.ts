@@ -37,8 +37,20 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
 
   const pdfJsDocRef = useRef<PDFDocumentProxy | null>(null);
   const currentViewportRef = useRef<PageViewport | null>(null);
+  const renderTaskRef = useRef<{
+    cancel: () => void;
+    promise: Promise<void>;
+  } | null>(null);
+  const isRenderingRef = useRef<boolean>(false);
 
   const loadPDF = useCallback(async (arrayBuffer: ArrayBuffer) => {
+    if (renderTaskRef.current) {
+      try {
+        renderTaskRef.current.cancel();
+      } catch {}
+      renderTaskRef.current = null;
+    }
+
     setState((prev) => ({ ...prev, isLoading: true }));
     try {
       const pdfDoc = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
@@ -66,6 +78,22 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
     ) => {
       if (!pdfJsDocRef.current) return;
 
+      if (isRenderingRef.current && renderTaskRef.current) {
+        try {
+          renderTaskRef.current.cancel();
+        } catch {}
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+
+      isRenderingRef.current = true;
+
+      if (renderTaskRef.current) {
+        try {
+          renderTaskRef.current.cancel();
+        } catch {}
+        renderTaskRef.current = null;
+      }
+
       const page = await pdfJsDocRef.current.getPage(pageNum);
       let zoomScale;
       if (zoom !== null && zoom !== 0) {
@@ -90,13 +118,32 @@ export const usePDFViewer = (): UsePDFViewerReturn => {
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
       ctx.scale(dpr, dpr);
 
-      await page.render({
+      const renderTask = page.render({
         canvasContext: ctx,
         viewport: viewport,
         canvas: canvas,
-      }).promise;
+      });
+      renderTaskRef.current = renderTask;
+
+      try {
+        await renderTask.promise;
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          error.name !== "RenderingCancelledException"
+        ) {
+          throw error;
+        }
+      } finally {
+        if (renderTaskRef.current === renderTask) {
+          renderTaskRef.current = null;
+        }
+        isRenderingRef.current = false;
+      }
 
       if (destX !== null && destY !== null) {
         const canvasX = destX;

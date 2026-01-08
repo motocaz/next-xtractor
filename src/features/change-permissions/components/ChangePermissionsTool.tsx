@@ -111,7 +111,7 @@ export const ChangePermissionsTool = () => {
           </div>
 
           <Card className="border-primary/30 bg-primary/5">
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 pb-6">
               <h3 className="font-semibold text-base mb-2 text-foreground">
                 How It Works
               </h3>

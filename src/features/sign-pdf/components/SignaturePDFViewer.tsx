@@ -34,6 +34,12 @@ export const SignaturePDFViewer = ({
   }, [hook]);
 
   useEffect(() => {
+    if (!hook.activeSignature && ghostRef.current) {
+      ghostRef.current.classList.add('hidden');
+    }
+  }, [hook.activeSignature]);
+
+  useEffect(() => {
     if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
@@ -42,19 +48,30 @@ export const SignaturePDFViewer = ({
       hook.handleMouseMove(e, canvas);
 
       if (hook.activeSignature && ghostRef.current) {
+        const rect = canvas.getBoundingClientRect();
         const clientX = 'touches' in e ? e.touches[0]?.clientX ?? 0 : e.clientX;
         const clientY = 'touches' in e ? e.touches[0]?.clientY ?? 0 : e.clientY;
+        
+        const canvasX = clientX - rect.left;
+        const canvasY = clientY - rect.top;
+        
         const ghost = ghostRef.current;
-        const sigWidth = 150;
+        const sigWidth = 600;
         const sigHeight =
           (hook.activeSignature.image.height / hook.activeSignature.image.width) *
           sigWidth;
 
+        const ghostX = canvasX - sigWidth / 2;
+        const ghostY = canvasY - sigHeight / 2;
+        
+        const viewportX = rect.left + ghostX;
+        const viewportY = rect.top + ghostY;
+
         ghost.style.backgroundImage = `url('${hook.activeSignature.image.src}')`;
         ghost.style.width = `${sigWidth}px`;
         ghost.style.height = `${sigHeight}px`;
-        ghost.style.left = `${clientX + 5}px`;
-        ghost.style.top = `${clientY + 5}px`;
+        ghost.style.left = `${viewportX}px`;
+        ghost.style.top = `${viewportY}px`;
         ghost.classList.remove('hidden');
       }
     };
@@ -164,7 +181,7 @@ export const SignaturePDFViewer = ({
           variant="outline"
           size="icon"
           onClick={handlePrevPage}
-          disabled={hook.currentPage <= 1 || hook.isRendering}
+          disabled={hook.currentPage <= 1}
           aria-label="Previous page"
         >
           <ChevronLeft className="h-4 w-4" />
@@ -176,7 +193,7 @@ export const SignaturePDFViewer = ({
           variant="outline"
           size="icon"
           onClick={handleNextPage}
-          disabled={hook.currentPage >= hook.totalPages || hook.isRendering}
+          disabled={hook.currentPage >= hook.totalPages}
           aria-label="Next page"
         >
           <ChevronRight className="h-4 w-4" />
@@ -186,7 +203,6 @@ export const SignaturePDFViewer = ({
           variant="outline"
           size="icon"
           onClick={hook.zoomOut}
-          disabled={hook.isRendering}
           aria-label="Zoom out"
         >
           <ZoomOut className="h-4 w-4" />
@@ -195,7 +211,6 @@ export const SignaturePDFViewer = ({
           variant="outline"
           size="icon"
           onClick={hook.fitToWidth}
-          disabled={hook.isRendering}
           aria-label="Fit to width"
         >
           <Maximize2 className="h-4 w-4" />
@@ -204,7 +219,6 @@ export const SignaturePDFViewer = ({
           variant="outline"
           size="icon"
           onClick={hook.zoomIn}
-          disabled={hook.isRendering}
           aria-label="Zoom in"
         >
           <ZoomIn className="h-4 w-4" />

@@ -119,7 +119,7 @@ export const RemoveBlankPagesTool = () => {
                 Analysis Results
               </h3>
               <Card>
-                <CardContent className="pt-6">
+                <CardContent className="pt-6 pb-6">
                   <div className="space-y-4">
                     <p className="text-foreground">{analysisResult.message}</p>
 

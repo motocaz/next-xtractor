@@ -73,7 +73,6 @@ export const useLinearizePDF = (): UseLinearizePDFReturn => {
       }
 
       setSuccess(successMessage);
-      reset();
     } catch (err) {
       console.error('Error linearizing PDFs:', err);
       setError(
@@ -85,7 +84,7 @@ export const useLinearizePDF = (): UseLinearizePDFReturn => {
       setIsProcessing(false);
       setLoadingMessage(null);
     }
-  }, [pdfFiles, setIsProcessing, setError, setSuccess, setLoadingMessage, reset]);
+  }, [pdfFiles, setIsProcessing, setError, setSuccess, setLoadingMessage]);
 
   return {
     pdfFiles,

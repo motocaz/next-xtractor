@@ -7,10 +7,10 @@ export interface UseDecryptPDFReturn {
   error: string | null;
   success: string | null;
   pdfFile: File | null;
-  pdfDoc: PDFDocument | null;
+  pdfDoc: PDFDocument | null; 
   isLoadingPDF: boolean;
   pdfError: string | null;
-  totalPages: number;
+  totalPages: number; 
 
   setPassword: (password: string) => void;
   loadPDF: (file: File) => Promise<void>;

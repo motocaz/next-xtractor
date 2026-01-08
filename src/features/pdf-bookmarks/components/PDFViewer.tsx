@@ -39,7 +39,10 @@ export const PDFViewer = ({
     if (canvasRef.current && state.totalPages > 0) {
       const destX = destinationMarker?.x ?? null;
       const destY = destinationMarker?.y ?? null;
-      renderPage(state.currentPage, canvasRef.current, null, destX, destY);
+      const timeoutId = setTimeout(() => {
+        renderPage(state.currentPage, canvasRef.current!, null, destX, destY);
+      }, 0);
+      return () => clearTimeout(timeoutId);
     }
   }, [state.currentPage, state.zoom, state.totalPages, renderPage, destinationMarker]);
 

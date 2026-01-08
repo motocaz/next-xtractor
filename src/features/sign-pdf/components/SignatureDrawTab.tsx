@@ -67,7 +67,7 @@ export const SignatureDrawTab = ({ onSave, disabled }: SignatureDrawTabProps) =>
             ref={colorPickerRef}
             type="color"
             id="signature-color"
-            defaultValue="#22c55e"
+            defaultValue="#000000"
             className="w-10 h-10 bg-input border border-border rounded-lg p-1 cursor-pointer"
             disabled={disabled}
           />

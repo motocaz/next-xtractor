@@ -84,6 +84,7 @@ export const MultiToolPageCard = ({
           e.stopPropagation();
           onSelect();
         }}
+        onMouseDown={(e) => e.stopPropagation()}
         className="absolute top-2 left-2 z-10 p-1 rounded bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
         aria-label={isSelected ? 'Deselect page' : 'Select page'}
       >
@@ -104,7 +105,10 @@ export const MultiToolPageCard = ({
         </div>
       )}
 
-      <div className="relative w-full h-36 bg-background rounded-lg flex items-center justify-center overflow-hidden border border-border">
+      <div
+        {...listeners}
+        className="relative w-full h-36 bg-background rounded-lg flex items-center justify-center overflow-hidden border border-border cursor-grab active:cursor-grabbing"
+      >
         <div
           className="absolute inset-0 flex items-center justify-center"
           style={{

@@ -31,7 +31,7 @@ export const SignatureTypeTab = ({ onSave, onError, disabled }: SignatureTypeTab
   const [text, setText] = useState('Your Name');
   const [fontFamily, setFontFamily] = useState("'Great Vibes', cursive");
   const [fontSize, setFontSize] = useState(32);
-  const [color, setColor] = useState('#22c55e');
+  const [color, setColor] = useState('#000000');
   const [isSaving, setIsSaving] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -40,6 +40,13 @@ export const SignatureTypeTab = ({ onSave, onError, disabled }: SignatureTypeTab
 
     setIsSaving(true);
     try {
+      await document.fonts.ready;
+      
+      const fontToCheck = fontFamily.split(',')[0].trim().replace(/'/g, '');
+      if (!document.fonts.check(`${fontSize}px "${fontToCheck}"`)) {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
       if (!context) {
@@ -100,7 +107,9 @@ export const SignatureTypeTab = ({ onSave, onError, disabled }: SignatureTypeTab
           </Label>
           <Select value={fontFamily} onValueChange={setFontFamily} disabled={disabled}>
             <SelectTrigger id="font-family-select">
-              <SelectValue />
+              <SelectValue placeholder="Select font">
+                {FONT_OPTIONS.find((opt) => opt.value === fontFamily)?.label || 'Select font'}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {FONT_OPTIONS.map((option) => (
@@ -143,7 +152,7 @@ export const SignatureTypeTab = ({ onSave, onError, disabled }: SignatureTypeTab
 
       <div
         ref={previewRef}
-        className="p-4 h-[80px] bg-transparent rounded-md flex items-center justify-center text-4xl"
+        className="p-4 h-[80px] bg-white rounded-md flex items-center justify-center text-4xl border border-border"
         style={{
           fontFamily: fontFamily,
           fontSize: `${fontSize}px`,
