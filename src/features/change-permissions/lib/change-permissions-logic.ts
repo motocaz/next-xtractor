@@ -69,28 +69,17 @@ export const changePermissions = async (
       qpdf.callMain(args);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (qpdfError: any) {
-      console.error('qpdf execution error:', qpdfError);
-
-      const errorMsg = qpdfError.message || '';
-
-      if (
-        errorMsg.includes('invalid password') ||
-        errorMsg.includes('incorrect password') ||
-        errorMsg.includes('password')
-      ) {
+      if (qpdfError.xa === 44) {
         throw new Error('INVALID_PASSWORD');
       }
 
-      if (
-        errorMsg.includes('encrypted') ||
-        errorMsg.includes('password required')
-      ) {
-        throw new Error('PASSWORD_REQUIRED');
-      }
+      const errorMsg = 
+        qpdfError.message || 
+        qpdfError.toString() || 
+        String(qpdfError) || 
+        'Unknown error';
 
-      throw new Error(
-        'Processing failed: ' + (errorMsg || 'Unknown error')
-      );
+      throw new Error('Processing failed: ' + errorMsg);
     }
 
     const blob = readQpdfOutput(

@@ -34,7 +34,7 @@ export const useFormFiller = (): UseFormFillerReturn => {
     Record<string, FormFieldValue>
   >({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [zoom, setZoom] = useState(2);
+  const [zoom, setZoom] = useState(1);
   const [isRendering, setIsRendering] = useState(false);
   const [pdfJsDoc, setPdfJsDoc] = useState<PDFDocumentProxy | null>(null);
 
@@ -208,7 +208,7 @@ export const useFormFiller = (): UseFormFillerReturn => {
     setFormFields([]);
     setFieldValues({});
     setCurrentPage(1);
-    setZoom(2);
+    setZoom(1);
     setPdfJsDoc(null);
     if (renderTimeoutRef.current) {
       clearTimeout(renderTimeoutRef.current);

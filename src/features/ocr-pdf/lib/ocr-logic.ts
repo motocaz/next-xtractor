@@ -42,17 +42,8 @@ export const processOCR = async ({
   const pdf = await loadPDFWithPDFJSFromBuffer(arrayBuffer);
 
   const workerOptions: {
-    logger?: (m: { status?: string; progress?: number }) => void;
     workerPath?: string;
-  } = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    logger: (m: any) => {
-      onProgress({
-        status: m.status || "Processing...",
-        progress: m.progress || 0,
-      });
-    },
-  };
+  } = {};
 
   if (globalThis.window !== undefined) {
     try {

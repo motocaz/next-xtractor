@@ -26,6 +26,7 @@ import {
   Check,
   Download,
   FileScan,
+  ChevronDown,
 } from "lucide-react";
 import { tesseractLanguages } from "../lib/tesseract-languages";
 import type { TesseractLanguageCode } from "../lib/tesseract-languages";
@@ -163,8 +164,9 @@ export const OCRTool = () => {
                   value={langSearch}
                   onChange={(e) => setLangSearch(e.target.value)}
                   disabled={isProcessing}
+                  className="dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15"
                 />
-                <div className="max-h-48 overflow-y-auto border border-border rounded-lg p-2 bg-input">
+                <div className="max-h-48 overflow-y-auto border border-accent rounded-lg p-2 bg-input">
                   {filteredLanguages.map(([code, name]) => (
                     <label
                       key={code}
@@ -190,7 +192,7 @@ export const OCRTool = () => {
               </div>
 
               <details
-                className="bg-input border border-border rounded-lg p-3"
+                className="bg-input border border-accent rounded-lg p-3"
                 open={showAdvanced}
                 onToggle={(e) => setShowAdvanced(e.currentTarget.open)}
               >
@@ -198,13 +200,11 @@ export const OCRTool = () => {
                   <span>
                     Advanced Settings (Recommended to improve accuracy)
                   </span>
-                  <span
-                    className={`transition-transform ${
+                  <ChevronDown
+                    className={`w-4 h-4 text-muted-foreground transition-transform shrink-0 ${
                       showAdvanced ? "rotate-180" : ""
                     }`}
-                  >
-                    ▼
-                  </span>
+                  />
                 </summary>
                 <div className="mt-4 space-y-4">
                   <div>
@@ -218,7 +218,7 @@ export const OCRTool = () => {
                       }
                       disabled={isProcessing}
                     >
-                      <SelectTrigger id="ocr-resolution" className="w-full">
+                      <SelectTrigger id="ocr-resolution" className="w-full dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -255,7 +255,7 @@ export const OCRTool = () => {
                       onValueChange={handleWhitelistPresetChange}
                       disabled={isProcessing}
                     >
-                      <SelectTrigger id="whitelist-preset" className="w-full">
+                      <SelectTrigger id="whitelist-preset" className="w-full dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15">
                         <SelectValue placeholder="None (All characters)" />
                       </SelectTrigger>
                       <SelectContent>
@@ -303,7 +303,7 @@ export const OCRTool = () => {
                         isProcessing ||
                         (whitelistPreset !== "" && whitelistPreset !== "custom")
                       }
-                      className="w-full"
+                      className="w-full dark:bg-accent dark:placeholder:text-accent-foreground/70 bg-background border-accent-foreground/15"
                     />
                     <p className="text-xs text-muted-foreground mt-1">
                       Only these characters will be recognized. Leave empty for
