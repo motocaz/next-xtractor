@@ -126,8 +126,8 @@ export const convertImageToPngBytes = async (
         if (
           width === 0 ||
           height === 0 ||
-          !isFinite(width) ||
-          !isFinite(height)
+          !Number.isFinite(width) ||
+          !Number.isFinite(height)
         ) {
           width = width || 800;
           height = height || 600;
